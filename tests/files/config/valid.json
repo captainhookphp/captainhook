@@ -1,0 +1,20 @@
+{
+  "commit-msg": {
+    "enabled": true,
+    "actions": []
+  },
+  "pre-commit": {
+    "enabled": true,
+    "actions": [
+      {
+        "type": "cli",
+        "action": "phpunit --configuration=build/phpunit-hook.xml",
+        "options": []
+      }
+    ]
+  },
+  "pre-push": {
+    "enabled": true,
+    "actions": []
+  }
+}
