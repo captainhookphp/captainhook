@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="tests/bootstrap.php"
+         backupGlobals="false"
+         verbose="true">
+  <testsuites>
+    <testsuite name="hookmeup">
+      <directory>tests/hookmeup</directory>
+    </testsuite>
+  </testsuites>
+  <filter>
+    <whitelist>
+      <directory>src</directory>
+    </whitelist>
+  </filter>
+  <logging>
+    <log type="coverage-html" target="build/coverage" title="PHPBU" charset="UTF-8" yui="true" highlight="true" lowUpperBound="35" highLowerBound="70" />
+    <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false" />
+  </logging>
+</phpunit>
