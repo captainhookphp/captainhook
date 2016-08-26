@@ -31,6 +31,13 @@ class Hook extends Runner
     private $hookToExecute;
 
     /**
+     * Hook config
+     *
+     * @var \HookMeUp\Config\Hook
+     */
+    private $hookConfig;
+
+    /**
      * @param  string $hook
      * @return \HookMeUp\Runner\Hook
      * @throws \HookMeUp\Exception\InvalidHookName
@@ -49,12 +56,19 @@ class Hook extends Runner
      */
     public function run()
     {
-        $this->io->write('EXECUTE: ' . $this->hookToExecute);
+        /** @var \HookMeUp\Config\Hook $hookConfig */
+        $this->hookConfig = $this->config->getHookConfig($this->hookToExecute);
 
-        foreach ($this->getActionsToRun() as $action) {
-            $this->io->write(PHP_EOL . str_repeat('#', 80) . PHP_EOL);
-            $runner = $this->getActionRunner($action->getType());
-            $runner->execute($this->config, $this->io, $this->repository, $action);
+        // execute hooks only if hook is enabled in hookmeup.json
+        if ($this->hookConfig->isEnabled()) {
+            $this->io->write('EXECUTE: ' . $this->hookToExecute);
+            foreach ($this->getActionsToRun() as $action) {
+                $this->io->write(PHP_EOL . str_repeat('#', 80) . PHP_EOL);
+                $runner = $this->getActionRunner($action->getType());
+                $runner->execute($this->config, $this->io, $this->repository, $action);
+            }
+        } else {
+            $this->io->write('SKIP: ' . $this->hookToExecute . ' is disabled.');
         }
     }
 
@@ -65,16 +79,14 @@ class Hook extends Runner
      */
     protected function getActionsToRun()
     {
-        /** @var \HookMeUp\Config\Hook $hookConfig */
-        $hookConfig = $this->config->getHookConfig($this->hookToExecute);
-        return $hookConfig->getActions();
+        return $this->hookConfig->getActions();
     }
 
     /**
      * Return matching action runner.
      *
      * @param  string $type
-     * @return \HookMeUp\Runner\Action
+     * @return \HookMeUp\Hook\Action
      * @throws \RuntimeException
      */
     protected function getActionRunner($type)
