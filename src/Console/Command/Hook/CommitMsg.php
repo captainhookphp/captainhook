@@ -59,7 +59,12 @@ class CommitMsg extends Hook
         $hook->run();
     }
 
-
+    /**
+     * Return written commit message.
+     *
+     * @param  string $path
+     * @return \HookMeUp\Git\CommitMessage
+     */
     protected function getCommitMsg($path)
     {
         if (!file_exists($path)) {
