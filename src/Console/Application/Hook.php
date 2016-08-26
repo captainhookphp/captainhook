@@ -108,11 +108,6 @@ class Hook extends Application
         return $this;
     }
 
-    public function getHookToExecute()
-    {
-        return 'commit-msg';
-    }
-
     /**
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
@@ -134,6 +129,7 @@ class Hook extends Application
      */
     private function createCommand()
     {
+        /* @var \HookMeUp\Console\Command\Hook $command */
         $class   = '\\HookMeUp\\Console\\Command\\Hook\\' . $this->hookCommandMap[$this->hookToExecute];
         $command =  new $class($this->getConfigFile(), $this->getRepositoryPath());
         $command->setHelperSet($this->getHelperSet());
