@@ -12,10 +12,33 @@ namespace HookMeUp\Hook\Message;
 use HookMeUp\Config;
 use HookMeUp\Console\IO\NullIO;
 use HookMeUp\Git\CommitMessage;
+use HookMeUp\Git\DummyRepo;
 use HookMeUp\Git\Repository;
 
 class BeamsTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \HookMeUp\Git\DummyRepo
+     */
+    private $repo;
+
+    /**
+     * Setup dummy repo.
+     */
+    public function setUp()
+    {
+        $this->repo = new DummyRepo();
+        $this->repo->setup();
+    }
+
+    /**
+     * Cleanup dummy repo.
+     */
+    public function tearDown()
+    {
+        $this->repo->cleanup();
+    }
+
     /**
      * Tests Beams::execute
      */
@@ -24,7 +47,7 @@ class BeamsTest extends \PHPUnit_Framework_TestCase
         $io     = new NullIO();
         $config = new Config(HMU_PATH_FILES . '/hookmeup.json');
         $action = new Config\Action('php', '\\HookMeUp\\Hook\\Message\\Beams');
-        $repo   = new Repository(HMU_PATH_FILES . '/git/repo-default');
+        $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
         $standard = new Beams();
@@ -41,7 +64,7 @@ class BeamsTest extends \PHPUnit_Framework_TestCase
         $io     = new NullIO();
         $config = new Config(HMU_PATH_FILES . '/hookmeup.json');
         $action = new Config\Action('php', '\\HookMeUp\\Hook\\Message\\Beams');
-        $repo   = new Repository(HMU_PATH_FILES . '/git/repo-default');
+        $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('foo bar baz.'));
 
         $standard = new Beams();

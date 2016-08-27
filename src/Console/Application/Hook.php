@@ -10,6 +10,7 @@
 namespace HookMeUp\Console\Application;
 
 use HookMeUp\Console\Application;
+use HookMeUp\Hook\Util;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -50,7 +51,9 @@ class Hook extends Application
      * @var array
      */
     protected $hookCommandMap = [
+        'pre-commit' => 'PreCommit',
         'commit-msg' => 'CommitMsg',
+        'pre-push'   => 'PrePush'
     ];
 
     /**
@@ -101,7 +104,7 @@ class Hook extends Application
      */
     public function executeHook($hook)
     {
-        if (!isset($this->hookCommandMap[$hook])) {
+        if (!Util::isValid($hook)) {
             throw new \RuntimeException('Invalid hook name');
         }
         $this->hookToExecute = $hook;
@@ -109,9 +112,10 @@ class Hook extends Application
     }
 
     /**
+     * Execute hook.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface   $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param  \Symfony\Component\Console\Input\InputInterface   $input
+     * @param  \Symfony\Component\Console\Output\OutputInterface $output
      * @return int
      */
     public function doRun(InputInterface $input, OutputInterface $output)
@@ -119,7 +123,7 @@ class Hook extends Application
         $input->setInteractive(false);
 
         $command = $this->createCommand();
-        $command->run($input, $output);
+        return $command->run($input, $output);
     }
 
     /**

@@ -56,13 +56,6 @@ interface IO
     public function isDebug();
 
     /**
-     * Is this output decorated?
-     *
-     * @return bool
-     */
-    public function isDecorated();
-
-    /**
      * Writes a message to the output.
      *
      * @param string|array $messages  The message as an array of lines or a single string
@@ -119,19 +112,4 @@ interface IO
      * @return mixed
      */
     public function askAndValidate($question, $validator, $attempts = null, $default = null);
-
-    /**
-     * Asks the user to select a value.
-     *
-     * @param string|array $question     The question to ask
-     * @param array        $choices      List of choices to pick from
-     * @param bool|string  $default      The default answer if the user enters nothing
-     * @param bool|int     $attempts     Max number of times to ask before giving up (false by default, which means infinite)
-     * @param string       $errorMessage Message which will be shown if invalid value from choice list would be picked
-     * @param bool         $multiSelect  Select more than one value separated by comma
-     *
-     * @throws \InvalidArgumentException
-     * @return int|string|array          The selected value or values (the key of the choices array)
-     */
-    public function select($question, $choices, $default, $attempts = false, $errorMessage = 'Value "%s" is invalid', $multiSelect = false);
 }

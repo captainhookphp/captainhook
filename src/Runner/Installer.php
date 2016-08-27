@@ -134,7 +134,10 @@ class Installer extends Runner
             '}' . PHP_EOL .
             'require $autoLoader;' . PHP_EOL .
             '$config = realpath(__DIR__ . \'/../../hookmeup.json\');' . PHP_EOL .
-            'HookMeUp\Cmd::hook(\'' . $hook . '\', $config);' . PHP_EOL;
+            '$app    = new HookMeUp\Console\Application\Hook();' . PHP_EOL .
+            '$app->executeHook(\'' . $hook . '\')' . PHP_EOL .
+            '    ->useConfigFile($config)' . PHP_EOL .
+            '    ->run();' . PHP_EOL . PHP_EOL;
 
             $file = new File($hookFile);
             $file->write($code);

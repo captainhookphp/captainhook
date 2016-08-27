@@ -138,8 +138,7 @@ class Configurator extends Runner
      */
     public function writeConfig(Config $config)
     {
-        //$this->config->getHookConfig('config_path');
-        $filePath = '.' .DIRECTORY_SEPARATOR . 'hookmeup.json';
+        $filePath = $this->config->getPath();
         $file     = new Json($filePath);
         $file->write($config->getJsonData());
     }

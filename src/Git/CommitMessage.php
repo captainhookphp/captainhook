@@ -132,4 +132,18 @@ class CommitMessage
     {
         return $this->lineCount < 3 ? [] : array_slice($this->lines, 2);
     }
+
+    /**
+     * Create CommitMessage from file.
+     *
+     * @param  string $path
+     * @return \HookMeUp\Git\CommitMessage
+     */
+    public static function createFromFile($path)
+    {
+        if (!file_exists($path)) {
+            throw new \RuntimeException('Commit message file not found');
+        }
+        return new CommitMessage(file_get_contents($path));
+    }
 }

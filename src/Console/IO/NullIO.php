@@ -54,14 +54,6 @@ class NullIO extends Base
     /**
      * {@inheritDoc}
      */
-    public function isDecorated()
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function write($messages, $newline = true, $verbosity = self::NORMAL)
     {
     }
@@ -93,14 +85,6 @@ class NullIO extends Base
      * {@inheritDoc}
      */
     public function askAndValidate($question, $validator, $attempts = false, $default = null)
-    {
-        return $default;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function select($question, $choices, $default, $attempts = false, $errorMessage = 'Value "%s" is invalid', $multiselect = false)
     {
         return $default;
     }

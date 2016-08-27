@@ -106,7 +106,7 @@ class Repository
      */
     public function isMerging()
     {
-        foreach (array('MERGE_MSG', 'MERGE_HEAD', 'MERGE_MODE') as $fileName) {
+        foreach (['MERGE_MSG', 'MERGE_HEAD', 'MERGE_MODE'] as $fileName) {
             if (file_exists($this->dotGitDir . DIRECTORY_SEPARATOR . $fileName)) {
                 return true;
             }

@@ -9,8 +9,9 @@
  */
 namespace HookMeUp\Console\Command;
 
+use HookMeUp\Git\CommitMessage;
 use HookMeUp\Git\Repository;
-use HookMeUp\Runner\Hook;
+use HookMeUp\Runner;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -34,12 +35,14 @@ class Run extends Base
         $this->setName('run')
              ->setDescription('Run git hook.')
              ->setHelp("This command executes a configured git hook.")
-             ->addArgument('hook', InputArgument::REQUIRED, 'Hook you want to execute.'
-             )->addOption(
+             ->addArgument('hook', InputArgument::REQUIRED, 'Hook you want to execute.')
+             ->addOption('message', 'm', InputOption::VALUE_OPTIONAL, 'File containing the commit message.')
+             ->addOption(
                 'configuration',
                 'c',
                 InputOption::VALUE_OPTIONAL,
-                'Path to your json configuration', getcwd() . DIRECTORY_SEPARATOR . 'hookmeup.json'
+                'Path to your json configuration',
+                 getcwd() . DIRECTORY_SEPARATOR . 'hookmeup.json'
              );
     }
 
@@ -52,13 +55,16 @@ class Run extends Base
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io     = $this->getIO($input, $output);
-        $config = $this->getConfig($input->getOption('configuration'), true);
-        $repo   = new Repository();
+        $io      = $this->getIO($input, $output);
+        $config  = $this->getConfig($input->getOption('configuration'), true);
+        $repo    = new Repository();
+        $msgFile = $input->getOption('message');
+        if (!empty($msgFile)) {
+            $repo->setCommitMsg(CommitMessage::createFromFile($msgFile));
+        }
 
-        $hook = new Hook($io, $config, $repo);
+        $hook = new Runner\Hook($io, $config, $repo);
         $hook->setHook($input->getArgument('hook'));
-
         $hook->run();
     }
 }

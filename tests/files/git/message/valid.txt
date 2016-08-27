@@ -1,0 +1,7 @@
+This is a valid dummy commit Message
+
+It contains a subject line and some body line.
+Subject and body are separated by a blank line.
+No body line is longer than 80 characters.
+Subject starts with a capital letter and doesn't end
+with a period.

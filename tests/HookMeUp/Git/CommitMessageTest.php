@@ -96,4 +96,14 @@ class CommitMessageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Bar', $msg->getLine(1));
         $this->assertEquals('Baz', $msg->getLine(2));
     }
+
+    /**
+     * Tests CommitMessage::createFromFile
+     *
+     * @expectedException \Exception
+     */
+    public function testCreateFromFile()
+    {
+        CommitMessage::createFromFile('iDoNotExist.txt');
+    }
 }

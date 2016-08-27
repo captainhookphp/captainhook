@@ -17,24 +17,23 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class CommitMessage
+ * Class PreCommit
  *
  * @package HookMeUp
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/hookmeup
  * @since   Class available since Release 0.9.0
  */
-class CommitMsg extends Hook
+class PreCommit extends Hook
 {
     /**
      * Configure the command.
      */
     protected function configure()
     {
-        $this->setName('commit-msg')
-             ->setDescription('Run git commit-msg hook.')
-             ->setHelp("This command executes the commit-msg hook.")
-             ->addArgument('file', InputArgument::REQUIRED, 'File containing the commit message.');
+        $this->setName('pre-commit')
+             ->setDescription('Run git pre-commit hook.')
+             ->setHelp("This command executes the pre-commit hook.");
     }
 
     /**
@@ -50,12 +49,9 @@ class CommitMsg extends Hook
         $config = $this->getConfig($this->configFile, true);
 
         $repository = new Git\Repository($this->repositoryPath);
-        $repository->setCommitMsg(Git\CommitMessage::createFromFile($input->getFirstArgument()));
-
-        //print_r($repository); exit(1);
 
         $hook = new Runner\Hook($io, $config, $repository);
-        $hook->setHook('commit-msg');
+        $hook->setHook('pre-commit');
         $hook->run();
     }
 }

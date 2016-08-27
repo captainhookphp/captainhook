@@ -46,6 +46,14 @@ class Application extends SymfonyApplication
     protected $io;
 
     /**
+     * Application constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct('hookmeup', '0.9.1');
+    }
+
+    /**
      * Make default help message to include the logo.
      *
      * @return string

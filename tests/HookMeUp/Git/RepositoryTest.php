@@ -12,13 +12,35 @@ namespace HookMeUp\Git;
 class RepositoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var \HookMeUp\Git\DummyRepo
+     */
+    private $repo;
+
+    /**
+     * Setup dummy repo.
+     */
+    public function setUp()
+    {
+        $this->repo = new DummyRepo();
+        $this->repo->setup();
+    }
+
+    /**
+     * Cleanup dummy repo.
+     */
+    public function tearDown()
+    {
+        $this->repo->cleanup();
+    }
+
+    /**
      * Tests Repository::__construct
      *
      * @expectedException \Exception
      */
     public function testInvalidRepository()
     {
-        $repository = new Repository(realpath(__DIR__ . '/../../files/git/repo-invalid'));
+        $repository = new Repository('invalidGitRepo');
         $this->assertFalse(is_a($repository, '\\HookMeUp\\Git\\Repository'));
     }
 
@@ -27,9 +49,8 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetHooksDir()
     {
-        $repoPath   = realpath(__DIR__ . '/../../files/git/repo-default');
-        $repository = new Repository($repoPath);
-        $this->assertEquals($repoPath . '/.git/hooks', $repository->getHooksDir());
+        $repository = new Repository($this->repo->getPath());
+        $this->assertEquals($this->repo->getPath() . '/.git/hooks', $repository->getHooksDir());
     }
 
     /**
@@ -37,8 +58,9 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testHookExists()
     {
-        $repoPath   = realpath(__DIR__ . '/../../files/git/repo-default');
-        $repository = new Repository($repoPath);
+        $this->repo->touchHook('pre-commit');
+
+        $repository = new Repository($this->repo->getPath());
 
         $this->assertTrue($repository->hookExists('pre-commit'));
         $this->assertFalse($repository->hookExists('pre-push'));
@@ -51,8 +73,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCommitMessageFail()
     {
-        $repoPath   = realpath(__DIR__ . '/../../files/git/repo-default');
-        $repository = new Repository($repoPath);
+        $repository = new Repository($this->repo->getPath());
         $repository->getCommitMsg();
     }
 }

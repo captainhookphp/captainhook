@@ -102,14 +102,6 @@ class DefaultIO extends Base
     /**
      * {@inheritDoc}
      */
-    public function isDecorated()
-    {
-        return $this->output->isDecorated();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function write($messages, $newline = true, $verbosity = self::NORMAL)
     {
         $this->doWrite($messages, $newline, false, $verbosity);
@@ -175,18 +167,6 @@ class DefaultIO extends Base
         $question->setMaxAttempts($attempts);
 
         return $helper->ask($this->input, $this->getErrorOutput(), $question);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function select($question, $choices, $default, $attempts = false, $errorMessage = 'Value "%s" is invalid', $multiSelect = false)
-    {
-        if ($this->isInteractive()) {
-            return $this->helperSet->get('dialog')->select($this->getErrorOutput(), $question, $choices, $default, $attempts, $errorMessage, $multiSelect);
-        }
-
-        return $default;
     }
 
     /**
