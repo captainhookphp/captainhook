@@ -1,0 +1,18 @@
+language: php
+
+php:
+  - 7.0
+
+before_script:
+  - composer self-update
+  - composer install --no-interaction --prefer-source
+
+script:
+  - phpunit --configuration ./.travis.phpunit.xml
+
+after_success:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover clover.xml
+
+notifications:
+  email: false
