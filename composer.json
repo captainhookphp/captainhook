@@ -27,7 +27,7 @@
     }
   },
   "scripts": {
-    "post-install-cmd": [
+    "post-package-install": [
       "vendor/bin/hookmeup configure"
     ]
   },
