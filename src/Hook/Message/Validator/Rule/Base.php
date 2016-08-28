@@ -41,5 +41,5 @@ abstract class Base implements Rule
      * @param  \HookMeUp\Git\CommitMessage $msg
      * @return bool
      */
-    public abstract function pass(CommitMessage $msg);
+    abstract public function pass(CommitMessage $msg);
 }
