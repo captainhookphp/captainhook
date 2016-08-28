@@ -10,6 +10,7 @@
 namespace HookMeUp\Runner;
 
 use HookMeUp\Config;
+use HookMeUp\Console\IOUtil;
 use HookMeUp\Runner;
 use HookMeUp\Storage\File\Json;
 use HookMeUp\Hook\Util;
@@ -74,7 +75,7 @@ class Configurator extends Runner
     public function configureHook(Config $config, $hook)
     {
         $answer = $this->io->ask('    <info>Enable \'' . $hook . '\' hook [y,n]?</info> ', 'n');
-        $enable = 'y' === $answer;
+        $enable = IOUtil::answerToBool($answer);
 
         /** @var \HookMeUp\Config\Hook $hookConfig */
         $hookConfig = $config->getHookConfig($hook);
@@ -83,7 +84,7 @@ class Configurator extends Runner
         if ($enable) {
             $addAction = $this->io->ask('    <info>Add a validation action [y,n]?</info> ', 'n');
 
-            while ($addAction == 'y') {
+            while (IOUtil::answerToBool($addAction)) {
                 $hookConfig->addAction($this->getActionConfig());
                 // add another action?
                 $addAction = $this->io->ask('    <info>Add another validation action [y,n]?</info> ', 'n');
