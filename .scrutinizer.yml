@@ -2,6 +2,13 @@ build:
     environment:
         php: '7.0.8'
 
+    override:
+        -
+            command: 'phpunit --coverage-clover=clover.xml'
+            coverage:
+                file: 'clover.xml'
+                format: 'clover'
+
 # language: php
 
 # tests: true
