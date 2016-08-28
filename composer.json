@@ -6,7 +6,8 @@
     "git",
     "hooks",
     "pre-commit",
-    "pre-push"
+    "pre-push",
+    "commit-msg"
   ],
   "homepage": "https://github.com/sebastianfeldmann/hookmeup",
   "license": "MIT",
@@ -28,8 +29,8 @@
   "require": {
     "ext-json": "*",
     "ext-spl": "*",
-    "symfony/console": "3.*",
-    "symfony/process": "3.*"
+    "symfony/console": ">=2.7 <4.0",
+    "symfony/process": ">=2.7 <4.0"
   },
   "bin": [
     "hookmeup"
