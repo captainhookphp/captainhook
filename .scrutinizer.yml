@@ -1,3 +1,7 @@
+build:
+    environment:
+        php: '7.0.8'
+
 # language: php
 
 # tests: true
