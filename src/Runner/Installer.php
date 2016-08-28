@@ -11,8 +11,6 @@ namespace HookMeUp\Runner;
 
 use HookMeUp\Console\IOUtil;
 use HookMeUp\Hook\Template;
-use HookMeUp\Runner;
-use HookMeUp\Exception;
 use HookMeUp\Storage\File;
 use HookMeUp\Hook\Util;
 
@@ -97,7 +95,7 @@ class Installer extends HookHandler
 
         // if hook is configured and no force option is set
         // ask the user if overwriting the hook is ok
-        if ($this->repository->hookExists($hook) && !$this->force) {
+        if ($this->needInstallConfirmation($hook)) {
             $answer = $this->io->ask(
                 '    <comment>The \'' . $hook . '\' hook exists! Overwrite [y,n]?</comment> ',
                 'n'
@@ -112,5 +110,16 @@ class Installer extends HookHandler
             chmod($hookFile, 0755);
             $this->io->write('    <info>\'' . $hook . '\' hook installed successfully</info>');
         }
+    }
+
+    /**
+     * If the hook already exists the user has to confirm the installation.
+     *
+     * @param  string $hook The name of the hook to check
+     * @return bool
+     */
+    protected function needInstallConfirmation($hook)
+    {
+        return $this->repository->hookExists($hook) && !$this->force;
     }
 }
