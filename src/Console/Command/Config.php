@@ -9,7 +9,6 @@
  */
 namespace HookMeUp\Console\Command;
 
-use HookMeUp\Config;
 use HookMeUp\Git\Repository;
 use HookMeUp\Runner\Configurator;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,14 +16,14 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class Configure
+ * Class Config
  *
  * @package HookMeUp
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/hookmeup
  * @since   Class available since Release 0.9.0
  */
-class Configure extends Base
+class Config extends Base
 {
     /**
      * Configure the command.

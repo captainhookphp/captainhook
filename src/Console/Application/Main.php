@@ -32,7 +32,7 @@ class Main extends Application
         $commands = array_merge(
             parent::getDefaultCommands(),
             [
-                new Command\Configure(),
+                new Command\Config(),
                 new Command\Install(),
                 new Command\Run(),
             ]

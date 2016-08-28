@@ -22,7 +22,7 @@ class ConfigureTest extends \PHPUnit_Framework_TestCase
     public function testExecute()
     {
         $config    = sys_get_temp_dir() . DIRECTORY_SEPARATOR . md5(mt_rand(0, 9999)) . '.json';
-        $configure = new Configure();
+        $configure = new Config();
         $output    = new DummyOutput();
         $input     = new ArrayInput(['--configuration' => $config]);
 
