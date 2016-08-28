@@ -9,6 +9,7 @@
  */
 namespace HookMeUp\Console\IO;
 
+use HookMeUp\Console\IOUtil;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
@@ -139,10 +140,10 @@ class DefaultIO extends Base
     public function ask($question, $default = null)
     {
         /** @var \Symfony\Component\Console\Helper\QuestionHelper $helper */
-        $helper = $this->helperSet->get('question');
-        $ask    = new Question($question, $default);
+        $helper   = $this->helperSet->get('question');
+        $question = new Question($question, $default);
 
-        return $helper->ask($this->input, $this->getOutputToWriteTo(), $ask);
+        return $helper->ask($this->input, $this->getOutputToWriteTo(), $question);
     }
 
     /**
@@ -154,7 +155,7 @@ class DefaultIO extends Base
         $helper   = $this->helperSet->get('question');
         $question = new ConfirmationQuestion($question, $default);
 
-        return $helper->ask($this->input, $this->getOutputToWriteTo(), $question);
+        return IOUtil::answerToBool($helper->ask($this->input, $this->getOutputToWriteTo(), $question));
     }
 
     /**
