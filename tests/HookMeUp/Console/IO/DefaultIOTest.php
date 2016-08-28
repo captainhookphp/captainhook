@@ -201,10 +201,10 @@ class DefaultIOTest extends \PHPUnit_Framework_TestCase
         $output         = $this->getConsoleOutputMock();
         $helper         = $this->getHelperSetMock();
 
-        $output->expects($this->once())->method('getErrorOutput')->willReturn($this->getOutputMock());
         $output->expects($this->once())->method('getVerbosity')->willReturn(OutputInterface::VERBOSITY_DEBUG);
+        $output->expects($this->once())->method('getErrorOutput')->willReturn($this->getOutputMock());
 
         $io = new DefaultIO($input, $output, $helper);
-        $io->write('foo');
+        $io->writeError('foo');
     }
 }

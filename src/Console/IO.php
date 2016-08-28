@@ -76,8 +76,8 @@ interface IO
     /**
      * Asks a question to the user.
      *
-     * @param string|array $question The question to ask
-     * @param string       $default  The default answer if none is given by the user
+     * @param string $question The question to ask
+     * @param string $default  The default answer if none is given by the user
      *
      * @throws \RuntimeException If there is no data to read in the input stream
      * @return string            The user answer
@@ -89,8 +89,8 @@ interface IO
      *
      * The question will be asked until the user answers by nothing, yes, or no.
      *
-     * @param string|array $question The question to ask
-     * @param bool         $default  The default answer if the user enters nothing
+     * @param string $question The question to ask
+     * @param bool   $default  The default answer if the user enters nothing
      *
      * @return bool true if the user has confirmed, false otherwise
      */
@@ -103,10 +103,10 @@ interface IO
      * validated data when the data is valid and throw an exception
      * otherwise.
      *
-     * @param string|array $question  The question to ask
-     * @param callback     $validator A PHP callback
-     * @param null|int     $attempts  Max number of times to ask before giving up (default of null means infinite)
-     * @param mixed        $default   The default answer if none is given by the user
+     * @param string   $question  The question to ask
+     * @param callback $validator A PHP callback
+     * @param null|int $attempts  Max number of times to ask before giving up (default of null means infinite)
+     * @param mixed    $default   The default answer if none is given by the user
      *
      * @throws \Exception When any of the validators return an error
      * @return mixed

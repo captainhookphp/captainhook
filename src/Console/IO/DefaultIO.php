@@ -116,6 +116,8 @@ class DefaultIO extends Base
     }
 
     /**
+     * Write to the appropriate user output.
+     *
      * @param array|string $messages
      * @param bool         $newline
      * @param bool         $stderr
@@ -128,7 +130,7 @@ class DefaultIO extends Base
             return;
         }
 
-        $this->getErrorOutput()->write($messages, $newline, $sfVerbosity);
+        $this->getOutputToWriteTo($stderr)->write($messages, $newline, $sfVerbosity);
     }
 
     /**
@@ -137,10 +139,10 @@ class DefaultIO extends Base
     public function ask($question, $default = null)
     {
         /** @var \Symfony\Component\Console\Helper\QuestionHelper $helper */
-        $helper   = $this->helperSet->get('question');
-        $question = new Question($question, $default);
+        $helper = $this->helperSet->get('question');
+        $ask    = new Question($question, $default);
 
-        return $helper->ask($this->input, $this->getErrorOutput(), $question);
+        return $helper->ask($this->input, $this->getOutputToWriteTo(), $ask);
     }
 
     /**
@@ -152,7 +154,7 @@ class DefaultIO extends Base
         $helper   = $this->helperSet->get('question');
         $question = new ConfirmationQuestion($question, $default);
 
-        return $helper->ask($this->input, $this->getErrorOutput(), $question);
+        return $helper->ask($this->input, $this->getOutputToWriteTo(), $question);
     }
 
     /**
@@ -166,15 +168,18 @@ class DefaultIO extends Base
         $question->setValidator($validator);
         $question->setMaxAttempts($attempts);
 
-        return $helper->ask($this->input, $this->getErrorOutput(), $question);
+        return $helper->ask($this->input, $this->getOutputToWriteTo(), $question);
     }
 
     /**
-     * @return OutputInterface
+     * Return the output to write to.
+     *
+     * @param  bool $stdErr
+     * @return \Symfony\Component\Console\Output\OutputInterface
      */
-    private function getErrorOutput()
+    private function getOutputToWriteTo($stdErr = false)
     {
-        if ($this->output instanceof ConsoleOutputInterface) {
+        if ($stdErr && $this->output instanceof ConsoleOutputInterface) {
             return $this->output->getErrorOutput();
         }
 
