@@ -34,22 +34,15 @@ class Install extends Base
         $this->setName('install')
              ->setDescription('Install git hooks.')
              ->setHelp('This command will install the git hooks to your .git directory.')
-             ->addArgument(
-                 'hook',
-                 InputArgument::OPTIONAL,
-                 'Hook you want to install.'
-             )->addOption(
+             ->addArgument('hook', InputArgument::OPTIONAL, 'Hook you want to install.')
+             ->addOption(
                  'configuration',
                  'c',
                  InputOption::VALUE_OPTIONAL,
                  'Path to your json configuration',
                  getcwd() . DIRECTORY_SEPARATOR . 'hookmeup.json'
-             )->addOption(
-                 'force',
-                 'f',
-                 InputOption::VALUE_NONE,
-                 'Force to overwrite existing hooks'
-             )->addOption(
+             )->addOption('force', 'f', InputOption::VALUE_NONE, 'Force to overwrite existing hooks')
+             ->addOption(
                  'git-directory',
                  'g',
                  InputOption::VALUE_OPTIONAL,
