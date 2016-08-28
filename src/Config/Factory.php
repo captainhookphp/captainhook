@@ -49,7 +49,7 @@ class Factory
         $config     = new Config($path, $fileExists);
 
         if ($fileExists) {
-            $this->configure($config, $json->read());
+            $this->configure($config, $json->readAssoc());
         }
 
         return $config;

@@ -27,9 +27,19 @@ class Json extends File
      * @param  bool $assoc
      * @return \stdClass|array
      */
-    public function read($assoc = true)
+    public function read($assoc = false)
     {
         return json_decode(parent::read(), $assoc);
+    }
+
+    /**
+     * Read the file and decode to assoc array.
+     *
+     * @return array
+     */
+    public function readAssoc()
+    {
+        return $this->read(true);
     }
 
     /**

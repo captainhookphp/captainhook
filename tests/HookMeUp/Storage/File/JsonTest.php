@@ -14,11 +14,11 @@ class JsonTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests Json::read
      */
-    public function testRead()
+    public function testReadAssoc()
     {
         $path = realpath(__DIR__ . '/../../../files/storage/test.json');
         $json = new Json($path);
-        $data = $json->read();
+        $data = $json->readAssoc();
 
         $this->assertEquals('bar', $data['foo']);
     }
