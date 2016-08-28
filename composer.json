@@ -26,6 +26,11 @@
       "HookMeUp\\": "src/"
     }
   },
+  "scripts": {
+    "post-install-cmd": [
+      "vendor/bin/hookmeup configure"
+    ]
+  },
   "require": {
     "ext-json": "*",
     "ext-spl": "*",
