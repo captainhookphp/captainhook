@@ -9,6 +9,8 @@
  */
 namespace HookMeUp\Runner;
 
+use HookMeUp\Console\IOUtil;
+use HookMeUp\Hook\Template;
 use HookMeUp\Runner;
 use HookMeUp\Exception;
 use HookMeUp\Storage\File;
@@ -97,7 +99,7 @@ class Installer extends Runner
         $doIt = true;
         if ($ask) {
             $answer = $this->io->ask('    <info>Install \'' . $hook . '\' hook [y,n]?</info> ', 'y');
-            $doIt = ('y' === $answer);
+            $doIt = IOUtil::answerToBool($answer);
         }
 
         if ($doIt) {
@@ -115,30 +117,16 @@ class Installer extends Runner
         $hooksDir = $this->repository->getHooksDir();
         $hookFile = $hooksDir . DIRECTORY_SEPARATOR . $hook;
         $doIt     = true;
+
+        // if hook is configured and no force option is set
+        // ask the user if overwriting the hook is ok
         if ($this->repository->hookExists($hook) && !$this->force) {
             $answer = $this->io->ask('    <comment>The \'' . $hook . '\' hook exists! Overwrite [y,n]?</comment> ', 'n');
-            $doIt   = ('y' === $answer);
+            $doIt   = IOUtil::answerToBool($answer);
         }
 
         if ($doIt) {
-            $code = '#!/usr/bin/env php' . PHP_EOL .
-            '<?php' . PHP_EOL .
-            '$autoLoader = __DIR__ . \'/../../vendor/autoload.php\';' . PHP_EOL . PHP_EOL .
-            'if (!file_exists($autoLoader)) {' . PHP_EOL .
-            '    fwrite(STDERR,' . PHP_EOL .
-            '        \'Composer autoload.php could not be found\' . PHP_EOL .' . PHP_EOL .
-            '        \'Please re-install the hook with:\' . PHP_EOL .' . PHP_EOL .
-            '        \'$ hookmeup install --composer-vendor-path=...\' . PHP_EOL' . PHP_EOL .
-            '    );' . PHP_EOL .
-            '    exit(1);' . PHP_EOL .
-            '}' . PHP_EOL .
-            'require $autoLoader;' . PHP_EOL .
-            '$config = realpath(__DIR__ . \'/../../hookmeup.json\');' . PHP_EOL .
-            '$app    = new HookMeUp\Console\Application\Hook();' . PHP_EOL .
-            '$app->executeHook(\'' . $hook . '\')' . PHP_EOL .
-            '    ->useConfigFile($config)' . PHP_EOL .
-            '    ->run();' . PHP_EOL . PHP_EOL;
-
+            $code = Template::getCode($hook);
             $file = new File($hookFile);
             $file->write($code);
             chmod($hookFile, 0755);
