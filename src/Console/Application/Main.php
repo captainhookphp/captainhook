@@ -10,7 +10,7 @@
 namespace HookMeUp\Console\Application;
 
 use HookMeUp\Console\Application;
-use HookMeUp\Console\Command;
+use HookMeUp\Console\Command as Cmd;
 
 /**
  * Class Main
@@ -32,9 +32,9 @@ class Main extends Application
         $commands = array_merge(
             parent::getDefaultCommands(),
             [
-                new Command\Configuration(),
-                new Command\Install(),
-                new Command\Run(),
+                new Cmd\Configuration(),
+                new Cmd\Install(),
+                new Cmd\Run(),
             ]
         );
         return $commands;
