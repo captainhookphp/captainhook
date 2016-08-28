@@ -9,9 +9,9 @@
  */
 namespace HookMeUp\Console\Command\Hook;
 
+use HookMeUp\Config;
 use HookMeUp\Console\Command\Hook;
 use HookMeUp\Git;
-use HookMeUp\Runner;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,35 +27,33 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CommitMsg extends Hook
 {
     /**
+     * Hook to execute.
+     *
+     * @var string
+     */
+    protected $hookName = 'commit-msg';
+
+    /**
      * Configure the command.
      */
     protected function configure()
     {
-        $this->setName('commit-msg')
-             ->setDescription('Run git commit-msg hook.')
-             ->setHelp("This command executes the commit-msg hook.")
-             ->addArgument('file', InputArgument::REQUIRED, 'File containing the commit message.');
+        parent::configure();
+        $this->addArgument('file', InputArgument::REQUIRED, 'File containing the commit message.');
     }
 
     /**
-     * Execute the command.
+     * Read the commit message from file.
      *
-     * @param  \Symfony\Component\Console\Input\InputInterface   $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return void
+     *
+     * @param \Symfony\Component\Console\Input\InputInterface   $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param \HookMeUp\Config                                  $config
+     * @param \HookMeUp\Git\Repository                          $repository
+     * @internal param \HookMeUp\Console\Command\Hook\IO $io
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function setup(InputInterface $input, OutputInterface $output, Config $config, Git\Repository $repository)
     {
-        $io     = $this->getIO($input, $output);
-        $config = $this->getConfig($this->configFile, true);
-
-        $repository = new Git\Repository($this->repositoryPath);
         $repository->setCommitMsg(Git\CommitMessage::createFromFile($input->getFirstArgument()));
-
-        //print_r($repository); exit(1);
-
-        $hook = new Runner\Hook($io, $config, $repository);
-        $hook->setHook('commit-msg');
-        $hook->run();
     }
 }

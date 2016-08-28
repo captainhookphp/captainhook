@@ -14,7 +14,7 @@ use HookMeUp\Git\DummyRepo;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 
-class CommitMsgTest extends \PHPUnit_Framework_TestCase
+class PrePushTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Tests CommitMsg::run
@@ -24,13 +24,9 @@ class CommitMsgTest extends \PHPUnit_Framework_TestCase
         $repo = new DummyRepo();
         $repo->setup();
 
-        $cmd    = new CommitMsg(HMU_PATH_FILES . '/config/valid.json', $repo->getPath());
+        $cmd    = new PrePush(HMU_PATH_FILES . '/config/empty.json', $repo->getPath());
         $output = new DummyOutput();
-        $input  = new ArrayInput(
-            [
-                'file' => HMU_PATH_FILES . '/git/message/valid.txt'
-            ]
-        );
+        $input  = new ArrayInput([]);
 
         $cmd->setIO(new NullIO());
         $cmd->run($input, $output);

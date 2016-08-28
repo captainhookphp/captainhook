@@ -65,4 +65,36 @@ class HookTest extends BaseTestRunner
         $runner->setHook('pre-commit');
         $runner->run();
     }
+
+    /**
+     * Tests Hook::getActionRunner
+     */
+    public function testGetRunner()
+    {
+        $io           = $this->getIOMock();
+        $config       = $this->getConfigMock();
+        $repo         = $this->getRepositoryMock();
+
+        $hook   = new Hook($io, $config, $repo);
+        $php    = $hook->getActionRunner('php');
+        $cli    = $hook->getActionRunner('cli');
+
+        $this->assertTrue(is_a($php, '\\HookMeUp\\Runner\\Action\\PHP'));
+        $this->assertTrue(is_a($cli, '\\HookMeUp\\Runner\\Action\\Cli'));
+    }
+
+    /**
+     * Tests Hook::getActionRunner
+     *
+     * @expectedException \Exception
+     */
+    public function testGetRunnerFailure()
+    {
+        $io           = $this->getIOMock();
+        $config       = $this->getConfigMock();
+        $repo         = $this->getRepositoryMock();
+
+        $hook   = new Hook($io, $config, $repo);
+        $hook->getActionRunner('foo');
+    }
 }

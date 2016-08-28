@@ -9,7 +9,7 @@
  */
 namespace HookMeUp\Console\Command;
 
-use HookMeUp\Config\Factory;
+use HookMeUp\Config;
 use HookMeUp\Console\IO;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,16 +26,22 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Base extends Command
 {
     /**
+     * Input output handler.
+     *
      * @var \HookMeUp\Console\IO
      */
     private $io;
 
     /**
+     * HookMeUp configuration
+     *
      * @var \HookMeUp\Config
      */
     private $config;
 
     /**
+     * IO setter.
+     *
      * @param \HookMeUp\Console\IO $io
      */
     public function setIO(IO $io)
@@ -59,13 +65,15 @@ class Base extends Command
     }
 
     /**
+     * HookMeUp config getter.
+     *
      * @param  string $path
      * @param  bool   $failIfNotFound
      * @return \HookMeUp\Config
      */
     protected function getConfig($path = null, $failIfNotFound = false)
     {
-        $this->config = Factory::create($path);
+        $this->config = Config\Factory::create($path);
 
         if ($failIfNotFound && !$this->config->isLoadedFromFile()) {
             throw new \RuntimeException(
@@ -74,7 +82,6 @@ class Base extends Command
                 'If you have a configuration located elsewhere use the --configuration option'
             );
         }
-
         return $this->config;
     }
 }

@@ -24,6 +24,16 @@ class DefaultIOTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @return \Symfony\Component\Console\Output\ConsoleOutputInterface
+     */
+    public function getConsoleOutputMock()
+    {
+        return $this->getMockBuilder('\\Symfony\\Component\\Console\\Output\\ConsoleOutputInterface')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+    }
+
+    /**
      * @return \Symfony\Component\Console\Output\OutputInterface
      */
     public function getOutputMock()
@@ -180,5 +190,21 @@ class DefaultIOTest extends \PHPUnit_Framework_TestCase
         $io     = new DefaultIO($input, $output, $helper);
         $answer = $io->askAndValidate('foo', function() { return true; });
         $this->assertTrue($answer);
+    }
+
+    /**
+     * Tests DefaultIO::write
+     */
+    public function testWrite()
+    {
+        $input          = $this->getInputMock();
+        $output         = $this->getConsoleOutputMock();
+        $helper         = $this->getHelperSetMock();
+
+        $output->expects($this->once())->method('getErrorOutput')->willReturn($this->getOutputMock());
+        $output->expects($this->once())->method('getVerbosity')->willReturn(OutputInterface::VERBOSITY_DEBUG);
+
+        $io = new DefaultIO($input, $output, $helper);
+        $io->write('foo');
     }
 }

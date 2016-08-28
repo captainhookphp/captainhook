@@ -89,7 +89,7 @@ class Hook extends Runner
      * @return \HookMeUp\Hook\Action
      * @throws \RuntimeException
      */
-    protected function getActionRunner($type)
+    public function getActionRunner($type)
     {
         switch ($type) {
             case 'php':

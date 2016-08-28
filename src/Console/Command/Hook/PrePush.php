@@ -12,19 +12,19 @@ namespace HookMeUp\Console\Command\Hook;
 use HookMeUp\Console\Command\Hook;
 
 /**
- * Class PreCommit
+ * Class PrePush
  *
  * @package HookMeUp
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/hookmeup
  * @since   Class available since Release 0.9.0
  */
-class PreCommit extends Hook
+class PrePush extends Hook
 {
     /**
      * Hook to execute.
      *
      * @var string
      */
-    protected $hookName = 'pre-commit';
+    protected $hookName = 'pre-push';
 }
