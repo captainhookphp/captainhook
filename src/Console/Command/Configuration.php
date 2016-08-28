@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @link    https://github.com/sebastianfeldmann/hookmeup
  * @since   Class available since Release 0.9.0
  */
-class Config extends Base
+class Configuration extends Base
 {
     /**
      * Configure the command.

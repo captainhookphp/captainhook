@@ -14,7 +14,7 @@ use HookMeUp\Git\DummyRepo;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 
-class ConfigureTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Tests Configure::run
@@ -22,7 +22,7 @@ class ConfigureTest extends \PHPUnit_Framework_TestCase
     public function testExecute()
     {
         $config    = sys_get_temp_dir() . DIRECTORY_SEPARATOR . md5(mt_rand(0, 9999)) . '.json';
-        $configure = new Config();
+        $configure = new Configuration();
         $output    = new DummyOutput();
         $input     = new ArrayInput(['--configuration' => $config]);
 
