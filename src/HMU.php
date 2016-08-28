@@ -19,7 +19,6 @@ namespace HookMeUp;
  */
 class HMU
 {
-    const VERSION = '@package_version@';
-    const BRANCH_ALIAS_VERSION = '@package_branch_alias_version@';
-    const RELEASE_DATE = '@release_date@';
+    const VERSION      = '0.9.0';
+    const RELEASE_DATE = '';
 }

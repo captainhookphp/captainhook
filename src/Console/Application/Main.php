@@ -9,7 +9,6 @@
  */
 namespace HookMeUp\Console\Application;
 
-use HookMeUp\HMU;
 use HookMeUp\Console\Application;
 use HookMeUp\Console\Command;
 
@@ -24,21 +23,9 @@ use HookMeUp\Console\Command;
 class Main extends Application
 {
     /**
-     * Application constructor.
-     */
-    public function __construct()
-    {
-        if (function_exists('ini_set') && extension_loaded('xdebug')) {
-            ini_set('xdebug.show_exception_trace', false);
-            ini_set('xdebug.scream', false);
-        }
-        parent::__construct('HookMeUp', HMU::VERSION);
-    }
-
-    /**
      * Initializes all the hookmeup commands.
      *
-     * @return array
+     * @return \Symfony\Component\Console\Command\Command[]
      */
     protected function getDefaultCommands()
     {

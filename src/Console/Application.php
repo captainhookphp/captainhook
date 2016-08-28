@@ -9,6 +9,7 @@
  */
 namespace HookMeUp\Console;
 
+use HookMeUp\HMU;
 use Symfony\Component\Console\Application as SymfonyApplication;
 
 /**
@@ -50,7 +51,11 @@ class Application extends SymfonyApplication
      */
     public function __construct()
     {
-        parent::__construct('hookmeup', '0.9.1');
+        if (function_exists('ini_set') && extension_loaded('xdebug')) {
+            ini_set('xdebug.show_exception_trace', false);
+            ini_set('xdebug.scream', false);
+        }
+        parent::__construct('HookMeUp', HMU::VERSION);
     }
 
     /**
