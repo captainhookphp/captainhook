@@ -47,7 +47,7 @@ class Configurator extends Runner
      * Set configuration mode.
      *
      * @param  string $mode
-     * @return \HookMeUp\Configurator
+     * @return \HookMeUp\Runner\Configurator
      */
     public function setMode($mode)
     {
@@ -62,7 +62,7 @@ class Configurator extends Runner
      */
     public function getConfigToManipulate()
     {
-        return 'extend' === $this->mode ? $this->config : new Config();
+        return 'extend' === $this->mode ? $this->config : new Config($this->config->getPath());
     }
 
     /**
@@ -92,6 +92,8 @@ class Configurator extends Runner
     }
 
     /**
+     * Setup a action config with user input.
+     *
      * @return \HookMeUp\Config\Action
      */
     public function getActionConfig()
@@ -105,6 +107,8 @@ class Configurator extends Runner
     }
 
     /**
+     * Ask the user for the action type.
+     *
      * @return string
      * @throws \RuntimeException
      */
@@ -124,10 +128,16 @@ class Configurator extends Runner
     }
 
     /**
+     * Ask the user for any action options.
+     *
+     * @param  string $type
      * @return array
      */
-    public function getActionOptions()
+    public function getActionOptions($type)
     {
+        if ('cli' === $type) {
+            return [];
+        }
         return [];
     }
 
