@@ -40,8 +40,6 @@ class Cli implements Action
         $process = new Process($action->getAction());
         $process->run();
 
-        // ch dir(dirname($config->getPath()));
-
         if (!$process->isSuccessful()) {
             throw new Exception\ActionExecution($process->getOutput() . PHP_EOL . $process->getErrorOutput());
         }
