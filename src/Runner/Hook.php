@@ -9,10 +9,6 @@
  */
 namespace HookMeUp\Runner;
 
-use HookMeUp\Runner;
-use HookMeUp\Exception;
-use HookMeUp\Hook\Util as HookUtil;
-
 /**
  *  Hook
  *
@@ -21,15 +17,8 @@ use HookMeUp\Hook\Util as HookUtil;
  * @link    https://github.com/sebastianfeldmann/hookmeup
  * @since   Class available since Release 0.9.0
  */
-class Hook extends Runner
+class Hook extends HookHandler
 {
-    /**
-     * Hook that should be executed
-     *
-     * @var string
-     */
-    private $hookToExecute;
-
     /**
      * Hook config
      *
@@ -38,42 +27,28 @@ class Hook extends Runner
     private $hookConfig;
 
     /**
-     * @param  string $hook
-     * @return \HookMeUp\Runner\Hook
-     * @throws \HookMeUp\Exception\InvalidHookName
-     */
-    public function setHook($hook)
-    {
-        if (null !== $hook && !HookUtil::isValid($hook)) {
-            throw new Exception\InvalidHookName('Invalid hook name \'' . $hook . '\'');
-        }
-        $this->hookToExecute = $hook;
-        return $this;
-    }
-
-    /**
      * Execute installation.
      */
     public function run()
     {
         /** @var \HookMeUp\Config\Hook $hookConfig */
-        $this->hookConfig = $this->config->getHookConfig($this->hookToExecute);
+        $this->hookConfig = $this->config->getHookConfig($this->hookToHandle);
 
         // execute hooks only if hook is enabled in hookmeup.json
         if ($this->hookConfig->isEnabled()) {
-            $this->io->write('EXECUTE: ' . $this->hookToExecute);
+            $this->io->write('EXECUTE: ' . $this->hookToHandle);
             foreach ($this->getActionsToRun() as $action) {
                 $this->io->write(PHP_EOL . str_repeat('#', 80) . PHP_EOL);
                 $runner = $this->getActionRunner($action->getType());
                 $runner->execute($this->config, $this->io, $this->repository, $action);
             }
         } else {
-            $this->io->write('SKIP: ' . $this->hookToExecute . ' is disabled.');
+            $this->io->write('SKIP: ' . $this->hookToHandle . ' is disabled.');
         }
     }
 
     /**
-     * Return list aof actions to run.
+     * Return list of actions to run.
      *
      * @return \HookMeUp\Config\Action[]
      */
@@ -93,9 +68,9 @@ class Hook extends Runner
     {
         switch ($type) {
             case 'php':
-                return new Runner\Action\PHP();
+                return new Action\PHP();
             case 'cli':
-                return new Runner\Action\Cli();
+                return new Action\Cli();
             default:
                 throw new \RuntimeException('Unknown action type: ' . $type);
         }

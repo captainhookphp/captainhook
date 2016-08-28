@@ -24,7 +24,7 @@ use HookMeUp\Hook\Util;
  * @link    https://github.com/sebastianfeldmann/hookmeup
  * @since   Class available since Release 0.9.0
  */
-class Installer extends Runner
+class Installer extends HookHandler
 {
     /**
      * Overwrite hook
@@ -34,35 +34,12 @@ class Installer extends Runner
     private $force;
 
     /**
-     * Hook that should be installed
-     *
-     * @var string
-     */
-    private $hookToInstall;
-
-    /**
      * @param  bool $force
      * @return \HookMeUp\Runner\Installer
      */
     public function setForce($force)
     {
         $this->force = $force;
-        return $this;
-    }
-
-    /**
-     * Define a hook you want to install.
-     *
-     * @param  string $hook
-     * @return \HookMeUp\Runner\Installer
-     * @throws \HookMeUp\Exception\InvalidHookName
-     */
-    public function setHook($hook)
-    {
-        if (null !== $hook && !Util::isValid($hook)) {
-            throw new Exception\InvalidHookName('Invalid hook name \'' . $hook . '\'');
-        }
-        $this->hookToInstall = $hook;
         return $this;
     }
 
@@ -85,7 +62,7 @@ class Installer extends Runner
      */
     public function getHooksToInstall()
     {
-        return null === $this->hookToInstall ? Util::getValidHooks() : [$this->hookToInstall => false];
+        return null === $this->hookToHandle ? Util::getValidHooks() : [$this->hookToHandle => false];
     }
 
     /**
