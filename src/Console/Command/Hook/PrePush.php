@@ -10,6 +10,7 @@
 namespace HookMeUp\Console\Command\Hook;
 
 use HookMeUp\Console\Command\Hook;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * Class PrePush
@@ -27,4 +28,14 @@ class PrePush extends Hook
      * @var string
      */
     protected $hookName = 'pre-push';
+
+    /**
+     * Configure the command.
+     */
+    protected function configure()
+    {
+        parent::configure();
+        $this->addArgument('target', InputArgument::OPTIONAL, 'Target repository name');
+        $this->addArgument('url', InputArgument::OPTIONAL, 'Target repository url');
+    }
 }
