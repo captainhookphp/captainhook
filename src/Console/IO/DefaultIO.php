@@ -53,7 +53,7 @@ class DefaultIO extends Base
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      * @param \Symfony\Component\Console\Helper\HelperSet       $helperSet
      */
-    public function __construct(InputInterface $input, OutputInterface $output, HelperSet $helperSet)
+    public function __construct(InputInterface $input, OutputInterface $output, HelperSet $helperSet = null)
     {
         $this->input        = $input;
         $this->output       = $output;
