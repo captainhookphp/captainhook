@@ -135,7 +135,7 @@ class Hook extends Application
     {
         /* @var \HookMeUp\Console\Command\Hook $command */
         $class   = '\\HookMeUp\\Console\\Command\\Hook\\' . $this->hookCommandMap[$this->hookToExecute];
-        $command =  new $class($this->getConfigFile(), $this->getRepositoryPath());
+        $command = new $class($this->getConfigFile(), $this->getRepositoryPath());
         $command->setHelperSet($this->getHelperSet());
 
         return $command;

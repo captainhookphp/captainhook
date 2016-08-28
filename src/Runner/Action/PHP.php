@@ -47,7 +47,7 @@ class PHP implements Action
             }
             $exe->execute($config, $io, $repository, $action);
 
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             throw new ActionExecution('Execution failed: ' . $e->getMessage());
         } catch (\Error $e) {
             throw new ActionExecution('PHP Error: ' . $e->getMessage());
