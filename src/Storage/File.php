@@ -20,6 +20,13 @@ namespace HookMeUp\Storage;
 class File
 {
     /**
+     * Path to file
+     *
+     * @var string
+     */
+    protected $path;
+
+    /**
      * File constructor.
      *
      * @param string $path
