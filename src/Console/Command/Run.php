@@ -38,10 +38,10 @@ class Run extends Base
              ->addArgument('hook', InputArgument::REQUIRED, 'Hook you want to execute.')
              ->addOption('message', 'm', InputOption::VALUE_OPTIONAL, 'File containing the commit message.')
              ->addOption(
-                'configuration',
-                'c',
-                InputOption::VALUE_OPTIONAL,
-                'Path to your json configuration',
+                 'configuration',
+                 'c',
+                 InputOption::VALUE_OPTIONAL,
+                 'Path to your json configuration',
                  getcwd() . DIRECTORY_SEPARATOR . 'hookmeup.json'
              );
     }

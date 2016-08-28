@@ -98,7 +98,10 @@ class Installer extends HookHandler
         // if hook is configured and no force option is set
         // ask the user if overwriting the hook is ok
         if ($this->repository->hookExists($hook) && !$this->force) {
-            $answer = $this->io->ask('    <comment>The \'' . $hook . '\' hook exists! Overwrite [y,n]?</comment> ', 'n');
+            $answer = $this->io->ask(
+                '    <comment>The \'' . $hook . '\' hook exists! Overwrite [y,n]?</comment> ',
+                'n'
+            );
             $doIt   = IOUtil::answerToBool($answer);
         }
 

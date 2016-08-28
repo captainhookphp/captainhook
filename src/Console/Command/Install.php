@@ -42,18 +42,20 @@ class Install extends Base
                  'configuration',
                  'c',
                  InputOption::VALUE_OPTIONAL,
-                 'Path to your json configuration', getcwd() . DIRECTORY_SEPARATOR . 'hookmeup.json'
+                 'Path to your json configuration',
+                 getcwd() . DIRECTORY_SEPARATOR . 'hookmeup.json'
              )->addOption(
-                'force',
-                'f',
-                InputOption::VALUE_NONE,
-                'Force to overwrite existing hooks'
-            )->addOption(
-                'git-directory',
-                'g',
-                InputOption::VALUE_OPTIONAL,
-                'Path to your .git directory', getcwd() . DIRECTORY_SEPARATOR . '.git'
-            );
+                 'force',
+                 'f',
+                 InputOption::VALUE_NONE,
+                 'Force to overwrite existing hooks'
+             )->addOption(
+                 'git-directory',
+                 'g',
+                 InputOption::VALUE_OPTIONAL,
+                 'Path to your .git directory',
+                 getcwd() . DIRECTORY_SEPARATOR . '.git'
+             );
     }
 
     /**

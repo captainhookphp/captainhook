@@ -35,10 +35,11 @@ class Configuration extends Base
              ->setHelp('This command creates or updates your hookmeup configuration.')
              ->addOption('extend', 'e', InputOption::VALUE_NONE, 'Extend existing configuration file')
              ->addOption(
-                'configuration',
-                'c',
-                InputOption::VALUE_OPTIONAL,
-                'Path to your json configuration', getcwd() . DIRECTORY_SEPARATOR . 'hookmeup.json'
+                 'configuration',
+                 'c',
+                 InputOption::VALUE_OPTIONAL,
+                 'Path to your json configuration',
+                 getcwd() . DIRECTORY_SEPARATOR . 'hookmeup.json'
              );
     }
 
