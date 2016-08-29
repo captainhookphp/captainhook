@@ -23,4 +23,4 @@ To finally activate the hooks you have to install them to your local .git reposi
 
     $ vendor/bin/hookmeup install
 
-[Install hookmeup](https://phpbu.de/images/hookmeup.gif)
+![Install hookmeup](https://phpbu.de/images/hookmeup.gif)
