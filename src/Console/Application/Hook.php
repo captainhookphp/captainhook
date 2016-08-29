@@ -9,7 +9,6 @@
  */
 namespace HookMeUp\Console\Application;
 
-use HookMeUp\Console\Application;
 use HookMeUp\Hook\Util;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,15 +21,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @link    https://github.com/sebastianfeldmann/hookmeup
  * @since   Class available since Release 0.9.0
  */
-class Hook extends Application
+class Hook extends ConfigHandler
 {
-    /**
-     * Path to hookmeup config file
-     *
-     * @var string
-     */
-    protected $configFile;
-
     /**
      * Path to the git repository
      *
@@ -57,34 +49,13 @@ class Hook extends Application
     ];
 
     /**
-     * @param  string $config
-     * @return \HookMeUp\Console\Application\Hook
+     * Repository path setter.
+     *
+     * @param string $git
      */
-    public function useConfigFile($config)
-    {
-        $this->configFile = $config;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getConfigFile()
-    {
-        if (null === $this->configFile) {
-            $this->configFile = getcwd() . '/hookmeup.json';
-        }
-        return $this->configFile;
-    }
-
-    /**
-     * @param  string $git
-     * @return \HookMeUp\Console\Application\Hook
-     */
-    public function useRepository($git)
+    public function setRepositoryPath($git)
     {
         $this->repositoryPath = $git;
-        return $this;
     }
 
     /**
@@ -99,10 +70,12 @@ class Hook extends Application
     }
 
     /**
+     * Set the hook to execute.
+     *
      * @param  string $hook
      * @return \HookMeUp\Console\Application\Hook
      */
-    public function executeHook($hook)
+    public function setHook($hook)
     {
         if (!Util::isValid($hook)) {
             throw new \RuntimeException('Invalid hook name');
@@ -134,10 +107,23 @@ class Hook extends Application
     private function createCommand()
     {
         /* @var \HookMeUp\Console\Command\Hook $command */
-        $class   = '\\HookMeUp\\Console\\Command\\Hook\\' . $this->hookCommandMap[$this->hookToExecute];
+        $class   = '\\HookMeUp\\Console\\Command\\Hook\\' . $this->getHookCommand();
         $command = new $class($this->getConfigFile(), $this->getRepositoryPath());
         $command->setHelperSet($this->getHelperSet());
 
         return $command;
+    }
+
+    /**
+     * Get the command class name to execute.
+     *
+     * @return string
+     */
+    private function getHookCommand()
+    {
+        if (null === $this->hookToExecute) {
+            throw new \RuntimeException('No hook to execute');
+        }
+        return $this->hookCommandMap[$this->hookToExecute];
     }
 }

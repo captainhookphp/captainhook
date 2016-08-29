@@ -41,8 +41,8 @@ abstract class Template
                'require $autoLoader;' . PHP_EOL .
                '$config = realpath(__DIR__ . \'/../../hookmeup.json\');' . PHP_EOL .
                '$app    = new HookMeUp\Console\Application\Hook();' . PHP_EOL .
-               '$app->executeHook(\'' . $hook . '\')' . PHP_EOL .
-               '    ->useConfigFile($config)' . PHP_EOL .
-               '    ->run();' . PHP_EOL . PHP_EOL;
+               '$app->setHook(\'' . $hook . '\');' . PHP_EOL .
+               '$app->setConfigFile($config);' . PHP_EOL .
+               '$app->run();' . PHP_EOL . PHP_EOL;
     }
 }

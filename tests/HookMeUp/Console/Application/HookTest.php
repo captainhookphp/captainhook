@@ -28,9 +28,9 @@ class HookTest extends \PHPUnit_Framework_TestCase
             'file' => HMU_PATH_FILES . '/git/message/valid.txt',
         ]);
         $app = new Hook();
-        $app->useConfigFile($config);
-        $app->useRepository($repo->getPath());
-        $app->executeHook('commit-msg');
+        $app->setConfigFile($config);
+        $app->setRepositoryPath($repo->getPath());
+        $app->setHook('commit-msg');
         $app->setAutoExit(false);
         $app->run($input, $output);
 
@@ -45,7 +45,21 @@ class HookTest extends \PHPUnit_Framework_TestCase
     public function testRunInvalidHook()
     {
         $app = new Hook();
-        $app->executeHook('pre-foo');
+        $app->setHook('pre-foo');
+    }
+
+    /**
+     * Tests Hook::executeHook
+     */
+    public function testRunNoHook()
+    {
+        $input  = new ArrayInput([]);
+        $output = new NullOutput();
+        $app    = new Hook();
+        $app->setAutoExit(false);
+        $exit = $app->run($input, $output);
+
+        $this->assertTrue($exit != 0);
     }
 
     /**

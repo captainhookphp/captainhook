@@ -19,7 +19,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $code = Template::getCode('commit-msg');
 
         $this->assertTrue(strpos($code, '#!/usr/bin/env php') !== false);
-        $this->assertTrue(strpos($code, '$app->executeHook(\'commit-msg\')') !== false);
-        $this->assertTrue(strpos($code, '->run()') !== false);
+        $this->assertTrue(strpos($code, '$app->setHook(\'commit-msg\');') !== false);
+        $this->assertTrue(strpos($code, '$app->run();') !== false);
     }
 }
