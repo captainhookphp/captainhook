@@ -42,6 +42,13 @@ class Configurator extends Runner
             $this->configureHook($config, $hook);
         }
         $this->writeConfig($config);
+
+        $this->io->write(
+            [
+                '<info>Configuration created successfully</info>',
+                'Run <comment>\'vendor/bin/hookmeup install\'</comment> to activate your hook configuration',
+            ]
+        );
     }
 
     /**
