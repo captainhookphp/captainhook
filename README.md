@@ -31,7 +31,7 @@ To finally activate the hooks you have to install them to your local .git reposi
 ## Configuration
 
 The *hookmeup* configuration file
-
+```javascript
     {
         "commit-msg": {
             "enabled": false,
@@ -61,3 +61,4 @@ The *hookmeup* configuration file
             "actions": []
         }
     }
+```
