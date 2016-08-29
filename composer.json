@@ -26,16 +26,14 @@
       "HookMeUp\\": "src/"
     }
   },
-  "scripts": {
-    "post-package-install": [
-      "vendor/bin/hookmeup configure"
-    ]
-  },
   "require": {
     "ext-json": "*",
     "ext-spl": "*",
     "symfony/console": ">=2.7 <4.0",
     "symfony/process": ">=2.7 <4.0"
+  },
+  "require-dev": {
+    "composer/composer": "~1"
   },
   "bin": [
     "hookmeup"
@@ -44,5 +42,10 @@
     "branch-alias": {
       "dev-master": "0.9.x-dev"
     }
+  },
+  "scripts": {
+    "post-package-install": [
+      "HookMeUp\\Composer\\Cmd::configure"
+    ]
   }
 }
