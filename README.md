@@ -48,11 +48,11 @@ The *hookmeup* configuration file
             "actions": [
                 {
                     "type": "cli",
-                    "action": "phpunit",
+                    "action": "phpunit"
                 },
                 {
                     "type": "cli",
-                    "action": "phpcs --standard=psr2 src",
+                    "action": "phpcs --standard=psr2 src"
                 }
             ]
         },
