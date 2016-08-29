@@ -44,7 +44,6 @@
     }
   },
   "scripts": {
-    "post-install-cmd": "HookMeUp\\Composer\\Cmd::configure",
-    "post-update-cmd": "HookMeUp\\Composer\\Cmd::configure"
+    "post-root-package-install": "HookMeUp\\Composer\\Cmd::configure"
   }
 }
