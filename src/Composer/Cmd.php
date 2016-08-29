@@ -21,6 +21,12 @@ use Composer\Script\Event;
  */
 abstract class Cmd
 {
+    /**
+     * Gets called by composer after a successful package installation.
+     *
+     * @param \Composer\Script\Event $event
+     * @param string                 $config
+     */
     public static function configure(Event $event, $config = null)
     {
         $app = new Application();
