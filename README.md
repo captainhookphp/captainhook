@@ -23,4 +23,41 @@ To finally activate the hooks you have to install them to your local .git reposi
 
     $ vendor/bin/hookmeup install
 
+### Installation demo
+
 ![Install hookmeup](https://phpbu.de/images/hookmeup.gif)
+
+
+## Configuration
+
+The *hookmeup* configuration file
+
+    {
+        "commit-msg": {
+            "enabled": false,
+            "actions": [
+                {
+                    "type": "php",
+                    "action": "\\HookMeUp\\Hook\\Message\\Beams",
+                    "options": []
+                }
+            ]
+        },
+        "pre-commit": {
+            "enabled": false,
+            "actions": [
+                {
+                    "type": "cli",
+                    "action": "phpunit",
+                },
+                {
+                    "type": "cli",
+                    "action": "phpcs --standard=psr2 src",
+                }
+            ]
+        },
+        "pre-push": {
+            "enabled": false,
+            "actions": []
+        }
+    }
