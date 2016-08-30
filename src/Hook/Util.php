@@ -56,4 +56,15 @@ abstract class Util
     {
         return array_keys(self::$validHooks);
     }
+
+    /**
+     * Return action type.
+     *
+     * @param  string $action
+     * @return string
+     */
+    public static function getActionType($action)
+    {
+        return substr($action, 0, 1) === '\\' ? 'php' : 'cli';
+    }
 }

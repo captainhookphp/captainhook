@@ -41,4 +41,14 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(in_array('pre-push', Util::getHooks()));
         $this->assertTrue(in_array('commit-msg', Util::getHooks()));
     }
+
+    /**
+     * Tests Util::getActionType
+     */
+    public function testGetActionType()
+    {
+        $this->assertEquals('php', Util::getActionType('\\Foo\\Bar'));
+        $this->assertEquals('cli', Util::getActionType('echo foo'));
+        $this->assertEquals('cli', Util::getActionType('/usr/local/bin/phpunit.phar'));
+    }
 }
