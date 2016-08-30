@@ -10,7 +10,7 @@
 namespace HookMeUp\Config;
 
 use HookMeUp\Config;
-use HookMeUp\Hook;
+use HookMeUp\Hook\Util;
 use HookMeUp\Storage\File\Json;
 
 /**
@@ -79,7 +79,7 @@ class Factory
     {
         $config->setEnabled($json['enabled']);
         foreach ($json['actions'] as $actionJson) {
-            $type = Hook\Util::getActionType($actionJson['action']);
+            $type = Util::getActionType($actionJson['action']);
             $config->addAction(new Config\Action($type, $actionJson['action'], $actionJson['options']));
         }
     }
