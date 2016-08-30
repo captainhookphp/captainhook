@@ -24,7 +24,7 @@ use HookMeUp\Git\Repository;
 interface Action
 {
     /**
-     * Execute the configured action.
+     * Executes the action.
      *
      * @param  \HookMeUp\Config         $config
      * @param  \HookMeUp\Console\IO     $io
