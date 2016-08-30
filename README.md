@@ -37,7 +37,6 @@ The *hookmeup* configuration file
             "enabled": false,
             "actions": [
                 {
-                    "type": "php",
                     "action": "\\HookMeUp\\Hook\\Message\\Beams",
                     "options": []
                 }
@@ -47,11 +46,9 @@ The *hookmeup* configuration file
             "enabled": false,
             "actions": [
                 {
-                    "type": "cli",
                     "action": "phpunit"
                 },
                 {
-                    "type": "cli",
                     "action": "phpcs --standard=psr2 src"
                 }
             ]

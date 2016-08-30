@@ -103,7 +103,6 @@ class Action
     public function getJsonData()
     {
         return [
-            'type'    => $this->type,
             'action'  => $this->action,
             'options' => $this->options,
         ];
