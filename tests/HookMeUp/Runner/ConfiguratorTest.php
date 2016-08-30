@@ -63,7 +63,7 @@ class ConfiguratorTest extends BaseTestRunner
      */
     public function testConfigureFileExtend()
     {
-        $path   = sys_get_temp_dir() . md5(__FILE__);
+        $path   = sys_get_temp_dir() . DIRECTORY_SEPARATOR . md5(__FILE__);
         $io     = $this->getIOMock();
         $config = $this->getConfigMock();
         $repo   = $this->getRepositoryMock();
