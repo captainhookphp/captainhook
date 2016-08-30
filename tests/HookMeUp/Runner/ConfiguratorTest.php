@@ -21,8 +21,7 @@ class ConfiguratorTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $runner = new Configurator($io, $config, $repo);
         $config->method('getHookConfig')->willReturn($this->getHookConfigMock());
-        $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', 'echo \'foo\''. 'n'));
-        $io->expects($this->once())->method('askAndValidate')->willReturn('cli');
+        $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', 'echo \'foo\'', 'n'));
         $runner->configureHook($config, 'pre-push', true);
     }
 
@@ -36,8 +35,47 @@ class ConfiguratorTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $runner = new Configurator($io, $config, $repo);
         $config->method('getHookConfig')->willReturn($this->getHookConfigMock());
-        $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', 'echo \'foo\''. 'n'));
-        $io->expects($this->once())->method('askAndValidate')->willReturn('php');
+        $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', '\\Foo\\Bar', 'y', 'n'));
+        $io->expects($this->once())->method('askAndValidate')->willReturn('foo:bar');
         $runner->configureHook($config, 'pre-push', true);
+    }
+
+    /**
+     * Tests Installer::installHook
+     *
+     * @expectedException \Exception
+     */
+    public function testConfigureFileExists()
+    {
+        $io     = $this->getIOMock();
+        $config = $this->getConfigMock();
+        $repo   = $this->getRepositoryMock();
+        $runner = new Configurator($io, $config, $repo);
+        $config->expects($this->once())->method('isLoadedFromFile')->willReturn(true);
+        $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', '\\Foo\\Bar', 'y', 'n'));
+        $runner->run();
+
+    }
+
+
+    /**
+     * Tests Installer::installHook
+     */
+    public function testConfigureFileExtend()
+    {
+        $path   = sys_get_temp_dir() . md5(__FILE__);
+        $io     = $this->getIOMock();
+        $config = $this->getConfigMock();
+        $repo   = $this->getRepositoryMock();
+        $runner = new Configurator($io, $config, $repo);
+        $config->method('getHookConfig')->willReturn($this->getHookConfigMock());
+        $config->method('getPath')->willReturn($path);
+        $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', '\\Foo\\Bar', 'y', 'n'));
+        $io->expects($this->once())->method('askAndValidate')->willReturn('foo:bar');
+        $runner->extend(true);
+        $runner->run();
+
+        $this->assertTrue(file_exists($path));
+        unlink($path);
     }
 }

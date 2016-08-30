@@ -11,9 +11,9 @@ namespace HookMeUp\Runner;
 
 use HookMeUp\Config;
 use HookMeUp\Console\IOUtil;
+use HookMeUp\Hook\Util;
 use HookMeUp\Runner;
 use HookMeUp\Storage\File\Json;
-use HookMeUp\Hook\Util;
 
 /**
  * Class Configurator
@@ -25,6 +25,13 @@ use HookMeUp\Hook\Util;
  */
 class Configurator extends Runner
 {
+    /**
+     * Force mode
+     *
+     * @var bool
+     */
+    private $force;
+
     /**
      * Extend existing config or create new one
      *
@@ -52,14 +59,26 @@ class Configurator extends Runner
     }
 
     /**
-     * Set configuration mode.
+     * Force mode setter.
      *
-     * @param  string $mode
+     * @param  bool $force
      * @return \HookMeUp\Runner\Configurator
      */
-    public function setMode($mode)
+    public function force($force)
     {
-        $this->mode = null === $mode ? 'create' : 'extend';
+        $this->force = $force;
+        return $this;
+    }
+
+    /**
+     * Set configuration mode.
+     *
+     * @param  bool $extend
+     * @return \HookMeUp\Runner\Configurator
+     */
+    public function extend($extend)
+    {
+        $this->mode = $extend ? 'extend' : 'create';
         return $this;
     }
 
@@ -70,7 +89,25 @@ class Configurator extends Runner
      */
     public function getConfigToManipulate()
     {
-        return 'extend' === $this->mode ? $this->config : new Config($this->config->getPath());
+        // create mode, create blank configuration
+        if ('extend' !== $this->mode) {
+            // make sure the force option is set if the configuration file exists
+            $this->ensureForce();
+            return new Config($this->config->getPath());
+        }
+        return $this->config;
+    }
+
+    /**
+     * Make sure force mode is set if config file exists.
+     *
+     * @throws \RuntimeException
+     */
+    private function ensureForce()
+    {
+        if ($this->config->isLoadedFromFile() && !$this->force) {
+            throw new \RuntimeException('Configuration file exists, use -f to overwrite, or -e to extend');
+        }
     }
 
     /**
@@ -106,33 +143,11 @@ class Configurator extends Runner
      */
     public function getActionConfig()
     {
-        $type    = $this->getActionType();
-        $msg     = 'php' === $type ? 'PHP class to execute' : 'Script to execute';
-        $call    = $this->io->ask('    <info>' . $msg . '?</info> ', '');
+        $call    = $this->io->ask('    <info>PHP class or shell command to execute?</info> ', '');
+        $type    = Util::getActionType($call);
         $options = $this->getActionOptions($type);
 
         return new Config\Action($type, $call, $options);
-    }
-
-    /**
-     * Ask the user for the action type.
-     *
-     * @return string
-     * @throws \RuntimeException
-     */
-    public function getActionType()
-    {
-        return $this->io->askAndValidate(
-            '    <info>Choose action type [php,cli]?</info> ',
-            function($answer) {
-                if (!in_array($answer, ['php', 'cli'])) {
-                    throw new \RuntimeException('You have to choose either \'php\' or \'cli\'');
-                }
-                return $answer;
-            },
-            3,
-            ''
-        );
     }
 
     /**
@@ -143,10 +158,50 @@ class Configurator extends Runner
      */
     public function getActionOptions($type)
     {
-        if ('cli' === $type) {
-            return [];
+        return 'php' === $type ? $this->getPHPActionOptions() : [];
+    }
+
+    /**
+     * Get the php action options.
+     *
+     * @return array
+     */
+    protected function getPHPActionOptions()
+    {
+        $options = [];
+        $addOption = $this->io->ask('    <info>Add a validator option [y,n]?</info> ', 'n');
+        while (IOUtil::answerToBool($addOption)) {
+            $options = array_merge($options, $this->getPHPActionOption());
+            // add another action?
+            $addOption = $this->io->ask('    <info>Add another validator option [y,n]?</info> ', 'n');
         }
-        return [];
+        return $options;
+    }
+
+    /**
+     * Ask the user for a php action option.
+     *
+     * @return array
+     */
+    protected function getPHPActionOption()
+    {
+        $result = [];
+        $answer = $this->io->askAndValidate(
+            '    <info>Specify options name and value [name:value]</info> ',
+            function($value) {
+                if (count(explode(':', $value)) !== 2) {
+                    throw new \Exception('Invalid option, use "key:value"');
+                }
+                return $value;
+            },
+            3,
+            null
+        );
+        if (null !== $answer) {
+            list($key, $value) = explode(':', $answer);
+            $result = [$key => $value];
+        }
+        return $result;
     }
 
     /**

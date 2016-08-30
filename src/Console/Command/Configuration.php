@@ -34,6 +34,7 @@ class Configuration extends Base
              ->setDescription('Configure your hooks.')
              ->setHelp('This command creates or updates your hookmeup configuration.')
              ->addOption('extend', 'e', InputOption::VALUE_NONE, 'Extend existing configuration file')
+             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing configuration file')
              ->addOption(
                  'configuration',
                  'c',
@@ -57,7 +58,8 @@ class Configuration extends Base
         $repo   = new Repository();
 
         $configurator = new Configurator($io, $config, $repo);
-        $configurator->setMode($input->getOption('extend') ? 'extend' : 'new');
-        $configurator->run();
+        $configurator->force($input->getOption('force'))
+                     ->extend($input->getOption('extend'))
+                     ->run();
     }
 }
