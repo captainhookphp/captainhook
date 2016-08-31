@@ -18,3 +18,6 @@ checks:
 # language: php
 
 # tests: true
+
+filter:
+    paths: ["src/*"]
