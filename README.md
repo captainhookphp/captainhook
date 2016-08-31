@@ -3,7 +3,7 @@
 CaptainHook is an easy to use and very flexible git hook library for
 php developers.
 Configure your git hook actions with a simple json file. You can
-configure cli commands, execute *CaptainHooks* own validators, or write
+configure cli commands, use CaptainHooks build in validators, or write
 your own PHP class that gets triggered by a git event. 
 
 [![Latest Stable Version](https://poser.pugx.org/sebastianfeldmann/captainhook/v/stable.svg?v=1)](https://packagist.org/packages/sebastianfeldmann/captainhook)
@@ -15,17 +15,20 @@ your own PHP class that gets triggered by a git event.
 ## Installation
 
 Use Composer to install CaptainHook.
-
+```bash
     $ composer require --dev sebastianfeldmann/captainhook:~1.0
+```
     
 After installing CaptainHook you can use the *captainhook* executable to create a configuration.
-
+```bash
     $ vendor/bin/captainhook configure
-     
+```
+
 Now you should have a *captainhook.json* configuration file.
 To finally activate the hooks you have to install them to your local .git repository. 
-
+```bash
     $ vendor/bin/captainhook install
+```
 
 ## Configuration
 
