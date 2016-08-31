@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Hook\Message;
+namespace CaptainHook\Hook\Message;
 
-use CaptainHook\App\Config;
-use CaptainHook\App\Console\IO;
-use CaptainHook\App\Git\Repository;
-use CaptainHook\App\Hook\Action;
+use CaptainHook\Config;
+use CaptainHook\Console\IO;
+use CaptainHook\Git\Repository;
+use CaptainHook\Hook\Action;
 
 /**
  * Class Base
@@ -27,19 +27,19 @@ abstract class Base implements Action
     /**
      * Execute the configured action.
      *
-     * @param  \CaptainHook\App\Config         $config
-     * @param  \CaptainHook\App\Console\IO     $io
-     * @param  \CaptainHook\App\Git\Repository $repository
-     * @param  \CaptainHook\App\Config\Action  $action
-     * @throws \CaptainHook\App\Exception\ActionExecution
+     * @param  \CaptainHook\Config         $config
+     * @param  \CaptainHook\Console\IO     $io
+     * @param  \CaptainHook\Git\Repository $repository
+     * @param  \CaptainHook\Config\Action  $action
+     * @throws \CaptainHook\Exception\ActionExecution
      */
     abstract public function execute(Config $config, IO $io, Repository $repository, Config\Action $action);
 
     /**
      * Validate the message.
      *
-     * @param \CaptainHook\App\Hook\Message\Validator $validator
-     * @param \CaptainHook\App\Git\Repository         $repository
+     * @param \CaptainHook\Hook\Message\Validator $validator
+     * @param \CaptainHook\Git\Repository         $repository
      */
     protected function executeValidator(Validator $validator, Repository $repository)
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace CaptainHook\App\Console\IO;
+namespace CaptainHook\Console\IO;
 
 class NullIOTest extends \PHPUnit_Framework_TestCase
 {

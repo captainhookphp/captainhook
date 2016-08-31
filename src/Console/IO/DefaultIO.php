@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Console\IO;
+namespace CaptainHook\Console\IO;
 
-use CaptainHook\App\Console\IOUtil;
+use CaptainHook\Console\IOUtil;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;

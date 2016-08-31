@@ -7,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Runner\Action;
+namespace CaptainHook\Runner\Action;
 
-use CaptainHook\App\Config;
-use CaptainHook\App\Console\IO;
-use CaptainHook\App\Git\Repository;
-use CaptainHook\App\Hook\Action as ActionInterface;
-use CaptainHook\App\Runner\BaseTestRunner;
+use CaptainHook\Config;
+use CaptainHook\Console\IO;
+use CaptainHook\Git\Repository;
+use CaptainHook\Hook\Action as ActionInterface;
+use CaptainHook\Runner\BaseTestRunner;
 
 class PHPTest extends BaseTestRunner
 {
@@ -27,7 +27,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\CaptainHook\\App\\Runner\\Action\\DummyPHPSuccess';
+        $class = '\\CaptainHook\\Runner\\Action\\DummyPHPSuccess';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -47,7 +47,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\CaptainHook\\App\\Runner\\Action\\DummyPHPFailure';
+        $class = '\\CaptainHook\\Runner\\Action\\DummyPHPFailure';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -67,7 +67,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\CaptainHook\\App\\Runner\\Action\\DummyPHPError';
+        $class = '\\CaptainHook\\Runner\\Action\\DummyPHPError';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -87,7 +87,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\CaptainHook\\App\\Runner\\Action\\DummyNoAction';
+        $class = '\\CaptainHook\\Runner\\Action\\DummyNoAction';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -101,11 +101,11 @@ class DummyPHPSuccess implements ActionInterface
     /**
      * Execute the configured action.
      *
-     * @param  \CaptainHook\App\Config         $config
-     * @param  \CaptainHook\App\Console\IO     $io
-     * @param  \CaptainHook\App\Git\Repository $repository
-     * @param  \CaptainHook\App\Config\Action  $action
-     * @throws \CaptainHook\App\Exception\ActionExecution
+     * @param  \CaptainHook\Config         $config
+     * @param  \CaptainHook\Console\IO     $io
+     * @param  \CaptainHook\Git\Repository $repository
+     * @param  \CaptainHook\Config\Action  $action
+     * @throws \CaptainHook\Exception\ActionExecution
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
@@ -118,11 +118,11 @@ class DummyPHPFailure implements ActionInterface
     /**
      * Execute the configured action.
      *
-     * @param  \CaptainHook\App\Config         $config
-     * @param  \CaptainHook\App\Console\IO     $io
-     * @param  \CaptainHook\App\Git\Repository $repository
-     * @param  \CaptainHook\App\Config\Action  $action
-     * @throws \CaptainHook\App\Exception\ActionExecution
+     * @param  \CaptainHook\Config         $config
+     * @param  \CaptainHook\Console\IO     $io
+     * @param  \CaptainHook\Git\Repository $repository
+     * @param  \CaptainHook\Config\Action  $action
+     * @throws \CaptainHook\Exception\ActionExecution
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
@@ -135,11 +135,11 @@ class DummyPHPError implements ActionInterface
     /**
      * Execute the configured action.
      *
-     * @param  \CaptainHook\App\Config         $config
-     * @param  \CaptainHook\App\Console\IO     $io
-     * @param  \CaptainHook\App\Git\Repository $repository
-     * @param  \CaptainHook\App\Config\Action  $action
-     * @throws \CaptainHook\App\Exception\ActionExecution
+     * @param  \CaptainHook\Config         $config
+     * @param  \CaptainHook\Console\IO     $io
+     * @param  \CaptainHook\Git\Repository $repository
+     * @param  \CaptainHook\Config\Action  $action
+     * @throws \CaptainHook\Exception\ActionExecution
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {

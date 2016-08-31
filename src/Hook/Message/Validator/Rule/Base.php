@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Hook\Message\Validator\Rule;
+namespace CaptainHook\Hook\Message\Validator\Rule;
 
-use CaptainHook\App\Git\CommitMessage;
-use CaptainHook\App\Hook\Message\Validator\Rule;
+use CaptainHook\Git\CommitMessage;
+use CaptainHook\Hook\Message\Validator\Rule;
 
 /**
  * Class Base
@@ -38,7 +38,7 @@ abstract class Base implements Rule
     }
 
     /**
-     * @param  \CaptainHook\App\Git\CommitMessage $msg
+     * @param  \CaptainHook\Git\CommitMessage $msg
      * @return bool
      */
     abstract public function pass(CommitMessage $msg);

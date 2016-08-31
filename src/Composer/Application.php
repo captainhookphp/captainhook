@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Composer;
+namespace CaptainHook\Composer;
 
 use Composer\IO\IOInterface;
-use CaptainHook\App\Console\Application\ConfigHandler;
-use CaptainHook\App\Console\Command\Configuration;
-use CaptainHook\App\Console\IO\ComposerIO;
+use CaptainHook\Console\Application\ConfigHandler;
+use CaptainHook\Console\Command\Configuration;
+use CaptainHook\Console\IO\ComposerIO;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -30,7 +30,7 @@ class Application extends ConfigHandler
     /**
      * Composer IO Proxy
      *
-     * @var \CaptainHook\App\Console\IO\ComposerIO
+     * @var \CaptainHook\Console\IO\ComposerIO
      */
     protected $io;
 

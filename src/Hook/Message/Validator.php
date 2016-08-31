@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Hook\Message;
+namespace CaptainHook\Hook\Message;
 
-use CaptainHook\App\Git\CommitMessage;
-use CaptainHook\App\Hook\Message\Validator\Rule;
+use CaptainHook\Git\CommitMessage;
+use CaptainHook\Hook\Message\Validator\Rule;
 
 /**
  * Class Validator
@@ -25,15 +25,15 @@ class Validator
     /**
      * List of rules to check
      *
-     * @var \CaptainHook\App\Hook\Message\Validator\Rule[]
+     * @var \CaptainHook\Hook\Message\Validator\Rule[]
      */
     private $rules = [];
 
     /**
      * Set rules to check.
      *
-     * @param  \CaptainHook\App\Hook\Message\Validator\Rule[] $rules
-     * @return \CaptainHook\App\Hook\Message\Validator
+     * @param  \CaptainHook\Hook\Message\Validator\Rule[] $rules
+     * @return \CaptainHook\Hook\Message\Validator
      */
     public function setRules(array $rules)
     {
@@ -44,8 +44,8 @@ class Validator
     /**
      * Add a rule to the list.
      *
-     * @param  \CaptainHook\App\Hook\Message\Validator\Rule $rule
-     * @return \CaptainHook\App\Hook\Message\Validator
+     * @param  \CaptainHook\Hook\Message\Validator\Rule $rule
+     * @return \CaptainHook\Hook\Message\Validator
      */
     public function addRule(Rule $rule)
     {
@@ -56,7 +56,7 @@ class Validator
     /**
      * Validates all rules.
      *
-     * @param  \CaptainHook\App\Git\CommitMessage $msg
+     * @param  \CaptainHook\Git\CommitMessage $msg
      * @throws \RuntimeException
      */
     public function validate(CommitMessage $msg)

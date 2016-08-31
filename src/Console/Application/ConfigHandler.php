@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Console\Application;
+namespace CaptainHook\Console\Application;
 
-use CaptainHook\App\Console\Application;
+use CaptainHook\Console\Application;
 
 /**
  * Class ConfigHandler

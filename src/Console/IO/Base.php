@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Console\IO;
+namespace CaptainHook\Console\IO;
 
-use CaptainHook\App\Console\IO;
+use CaptainHook\Console\IO;
 
 /**
  * Class Base

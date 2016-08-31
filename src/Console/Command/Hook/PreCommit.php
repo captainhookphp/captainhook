@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Console\Command\Hook;
+namespace CaptainHook\Console\Command\Hook;
 
-use CaptainHook\App\Console\Command\Hook;
+use CaptainHook\Console\Command\Hook;
 
 /**
  * Class PreCommit

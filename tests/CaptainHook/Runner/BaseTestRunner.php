@@ -7,56 +7,56 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Runner;
+namespace CaptainHook\Runner;
 
 class BaseTestRunner extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @return \CaptainHook\App\Console\IO\DefaultIO
+     * @return \CaptainHook\Console\IO\DefaultIO
      */
     public function getIOMock()
     {
-        return $this->getMockBuilder('\\CaptainHook\\App\\Console\\IO\DefaultIO')
+        return $this->getMockBuilder('\\CaptainHook\\Console\\IO\DefaultIO')
                     ->disableOriginalConstructor()
                     ->getMock();
     }
 
     /**
-     * @return \CaptainHook\App\Config
+     * @return \CaptainHook\Config
      */
     public function getConfigMock()
     {
-        return $this->getMockBuilder('\\CaptainHook\\App\\Config')
+        return $this->getMockBuilder('\\CaptainHook\\Config')
                     ->disableOriginalConstructor()
                     ->getMock();
     }
 
     /**
-     * @return \CaptainHook\App\Config\Hook
+     * @return \CaptainHook\Config\Hook
      */
     public function getHookConfigMock()
     {
-        return $this->getMockBuilder('\\CaptainHook\\App\\Config\\Hook')
+        return $this->getMockBuilder('\\CaptainHook\\Config\\Hook')
                     ->disableOriginalConstructor()
                     ->getMock();
     }
 
     /**
-     * @return \CaptainHook\App\Config\Action
+     * @return \CaptainHook\Config\Action
      */
     public function getActionConfigMock()
     {
-        return $this->getMockBuilder('\\CaptainHook\\App\\Config\\Action')
+        return $this->getMockBuilder('\\CaptainHook\\Config\\Action')
                     ->disableOriginalConstructor()
                     ->getMock();
     }
 
     /**
-     * @return \CaptainHook\App\Git\Repository
+     * @return \CaptainHook\Git\Repository
      */
     public function getRepositoryMock()
     {
-        return $this->getMockBuilder('\\CaptainHook\\App\\Git\\Repository')
+        return $this->getMockBuilder('\\CaptainHook\\Git\\Repository')
                     ->disableOriginalConstructor()
                     ->getMock();
     }

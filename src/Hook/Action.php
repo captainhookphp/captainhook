@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Hook;
+namespace CaptainHook\Hook;
 
-use CaptainHook\App\Config;
-use CaptainHook\App\Console\IO;
-use CaptainHook\App\Git\Repository;
+use CaptainHook\Config;
+use CaptainHook\Console\IO;
+use CaptainHook\Git\Repository;
 
 /**
  * Class Action
@@ -26,11 +26,11 @@ interface Action
     /**
      * Executes the action.
      *
-     * @param  \CaptainHook\App\Config         $config
-     * @param  \CaptainHook\App\Console\IO     $io
-     * @param  \CaptainHook\App\Git\Repository $repository
-     * @param  \CaptainHook\App\Config\Action  $action
-     * @throws \CaptainHook\App\Exception\ActionExecution
+     * @param  \CaptainHook\Config         $config
+     * @param  \CaptainHook\Console\IO     $io
+     * @param  \CaptainHook\Git\Repository $repository
+     * @param  \CaptainHook\Config\Action  $action
+     * @throws \CaptainHook\Exception\ActionExecution
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action);
 }

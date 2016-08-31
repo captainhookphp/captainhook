@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Hook\Message\Validator\Rule;
+namespace CaptainHook\Hook\Message\Validator\Rule;
 
-use CaptainHook\App\Git\CommitMessage;
+use CaptainHook\Git\CommitMessage;
 
 /**
  * Class UseImperativeMood
@@ -32,7 +32,7 @@ class UseImperativeMood extends Base
     /**
      * Check if commit message is written in imperative mood.
      *
-     * @param  \CaptainHook\App\Git\CommitMessage $msg
+     * @param  \CaptainHook\Git\CommitMessage $msg
      * @return bool
      */
     public function pass(CommitMessage $msg)

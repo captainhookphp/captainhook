@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Storage\File;
+namespace CaptainHook\Storage\File;
 
-use CaptainHook\App\Storage\File;
+use CaptainHook\Storage\File;
 
 /**
  * Class Json

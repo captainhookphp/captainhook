@@ -7,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Runner;
+namespace CaptainHook\Runner;
 
-use CaptainHook\App\Config;
-use CaptainHook\App\Console\IOUtil;
-use CaptainHook\App\Hook\Util;
-use CaptainHook\App\Runner;
-use CaptainHook\App\Storage\File\Json;
+use CaptainHook\Config;
+use CaptainHook\Console\IOUtil;
+use CaptainHook\Hook\Util;
+use CaptainHook\Runner;
+use CaptainHook\Storage\File\Json;
 
 /**
  * Class Configurator
@@ -62,7 +62,7 @@ class Configurator extends Runner
      * Force mode setter.
      *
      * @param  bool $force
-     * @return \CaptainHook\App\Runner\Configurator
+     * @return \CaptainHook\Runner\Configurator
      */
     public function force($force)
     {
@@ -74,7 +74,7 @@ class Configurator extends Runner
      * Set configuration mode.
      *
      * @param  bool $extend
-     * @return \CaptainHook\App\Runner\Configurator
+     * @return \CaptainHook\Runner\Configurator
      */
     public function extend($extend)
     {
@@ -85,7 +85,7 @@ class Configurator extends Runner
     /**
      * Return config to handle.
      *
-     * @return \CaptainHook\App\Config
+     * @return \CaptainHook\Config
      */
     public function getConfigToManipulate()
     {
@@ -113,7 +113,7 @@ class Configurator extends Runner
     /**
      * Configure a hook.
      *
-     * @param \CaptainHook\App\Config $config
+     * @param \CaptainHook\Config $config
      * @param string           $hook
      */
     public function configureHook(Config $config, $hook)
@@ -121,7 +121,7 @@ class Configurator extends Runner
         $answer = $this->io->ask('  <info>Enable \'' . $hook . '\' hook?</info> <comment>[y,n]</comment> ', 'n');
         $enable = IOUtil::answerToBool($answer);
 
-        /** @var \CaptainHook\App\Config\Hook $hookConfig */
+        /** @var \CaptainHook\Config\Hook $hookConfig */
         $hookConfig = $config->getHookConfig($hook);
         $hookConfig->setEnabled($enable);
 
@@ -142,7 +142,7 @@ class Configurator extends Runner
     /**
      * Setup a action config with user input.
      *
-     * @return \CaptainHook\App\Config\Action
+     * @return \CaptainHook\Config\Action
      */
     public function getActionConfig()
     {
@@ -210,7 +210,7 @@ class Configurator extends Runner
     /**
      * Write config to project root.
      *
-     * @param \CaptainHook\App\Config $config
+     * @param \CaptainHook\Config $config
      */
     public function writeConfig(Config $config)
     {

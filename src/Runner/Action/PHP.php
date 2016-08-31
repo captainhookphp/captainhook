@@ -7,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Runner\Action;
+namespace CaptainHook\Runner\Action;
 
-use CaptainHook\App\Config;
-use CaptainHook\App\Console\IO;
-use CaptainHook\App\Exception\ActionExecution;
-use CaptainHook\App\Git\Repository;
-use CaptainHook\App\Hook\Action;
+use CaptainHook\Config;
+use CaptainHook\Console\IO;
+use CaptainHook\Exception\ActionExecution;
+use CaptainHook\Git\Repository;
+use CaptainHook\Hook\Action;
 
 /**
  * Class PHP
@@ -28,18 +28,18 @@ class PHP implements Action
     /**
      * Execute the configured action.
      *
-     * @param  \CaptainHook\App\Config         $config
-     * @param  \CaptainHook\App\Console\IO     $io
-     * @param  \CaptainHook\App\Git\Repository $repository
-     * @param  \CaptainHook\App\Config\Action  $action
-     * @throws \CaptainHook\App\Exception\ActionExecution
+     * @param  \CaptainHook\Config         $config
+     * @param  \CaptainHook\Console\IO     $io
+     * @param  \CaptainHook\Git\Repository $repository
+     * @param  \CaptainHook\Config\Action  $action
+     * @throws \CaptainHook\Exception\ActionExecution
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
         $class = $action->getAction();
 
         try {
-            /* @var \CaptainHook\App\Hook\Action $exe */
+            /* @var \CaptainHook\Hook\Action $exe */
             $exe = new $class();
 
             if (!$exe instanceof Action) {

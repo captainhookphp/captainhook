@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Console\Command;
+namespace CaptainHook\Console\Command;
 
-use CaptainHook\App\Console\IO\NullIO;
-use CaptainHook\App\Git\DummyRepo;
+use CaptainHook\Console\IO\NullIO;
+use CaptainHook\Git\DummyRepo;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 

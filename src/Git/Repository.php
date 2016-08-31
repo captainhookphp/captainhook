@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Git;
+namespace CaptainHook\Git;
 
 /**
  * Class Repository
@@ -36,7 +36,7 @@ class Repository
     /**
      * Commit message data
      *
-     * @var \CaptainHook\App\Git\CommitMessage
+     * @var \CaptainHook\Git\CommitMessage
      */
     private $commitMsg;
 
@@ -79,7 +79,7 @@ class Repository
     /**
      * CommitMessage setter.
      *
-     * @param \CaptainHook\App\Git\CommitMessage $commitMsg
+     * @param \CaptainHook\Git\CommitMessage $commitMsg
      */
     public function setCommitMsg(CommitMessage $commitMsg)
     {
@@ -89,7 +89,7 @@ class Repository
     /**
      * CommitMessage getter.
      *
-     * @return \CaptainHook\App\Git\CommitMessage
+     * @return \CaptainHook\Git\CommitMessage
      */
     public function getCommitMsg()
     {

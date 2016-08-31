@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Console\Command;
+namespace CaptainHook\Console\Command;
 
-use CaptainHook\App\Git\Repository;
-use CaptainHook\App\Runner\Installer;
+use CaptainHook\Git\Repository;
+use CaptainHook\Runner\Installer;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

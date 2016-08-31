@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App;
+namespace CaptainHook;
 
-use CaptainHook\App\Console\IO;
-use CaptainHook\App\Git\Repository;
+use CaptainHook\Console\IO;
+use CaptainHook\Git\Repository;
 
 /**
  * Class Runner
@@ -23,26 +23,26 @@ use CaptainHook\App\Git\Repository;
 abstract class Runner
 {
     /**
-     * @var \CaptainHook\App\Console\IO|\CaptainHook\App\IO
+     * @var \CaptainHook\Console\IO|\CaptainHook\IO
      */
     protected $io;
 
     /**
-     * @var \CaptainHook\App\Config
+     * @var \CaptainHook\Config
      */
     protected $config;
 
     /**
-     * @var \CaptainHook\App\Git\Repository
+     * @var \CaptainHook\Git\Repository
      */
     protected $repository;
 
     /**
      * Installer constructor.
      *
-     * @param \CaptainHook\App\Console\IO     $io
-     * @param \CaptainHook\App\Config         $config
-     * @param \CaptainHook\App\Git\Repository $repository
+     * @param \CaptainHook\Console\IO     $io
+     * @param \CaptainHook\Config         $config
+     * @param \CaptainHook\Git\Repository $repository
      */
     public function __construct(IO $io, Config $config, Repository $repository)
     {
