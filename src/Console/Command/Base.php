@@ -1,16 +1,16 @@
 <?php
 /**
- * This file is part of HookMeUp.
+ * This file is part of CaptainHook.
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\App\Console\Command;
+namespace CaptainHook\App\Console\Command;
 
-use HookMeUp\App\Config;
-use HookMeUp\App\Console\IO;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,9 +18,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class Base
  *
- * @package HookMeUp
+ * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/sebastianfeldmann/hookmeup
+ * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
 class Base extends Command
@@ -28,21 +28,21 @@ class Base extends Command
     /**
      * Input output handler.
      *
-     * @var \HookMeUp\App\Console\IO
+     * @var \CaptainHook\App\Console\IO
      */
     private $io;
 
     /**
-     * HookMeUp configuration
+     * CaptainHook configuration
      *
-     * @var \HookMeUp\App\Config
+     * @var \CaptainHook\App\Config
      */
     private $config;
 
     /**
      * IO setter.
      *
-     * @param \HookMeUp\App\Console\IO $io
+     * @param \CaptainHook\App\Console\IO $io
      */
     public function setIO(IO $io)
     {
@@ -54,7 +54,7 @@ class Base extends Command
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return \HookMeUp\App\Console\IO
+     * @return \CaptainHook\App\Console\IO
      */
     public function getIO(InputInterface $input, OutputInterface $output)
     {
@@ -65,11 +65,11 @@ class Base extends Command
     }
 
     /**
-     * HookMeUp config getter.
+     * CaptainHook config getter.
      *
      * @param  string $path
      * @param  bool   $failIfNotFound
-     * @return \HookMeUp\App\Config
+     * @return \CaptainHook\App\Config
      */
     protected function getConfig($path = null, $failIfNotFound = false)
     {
@@ -77,8 +77,8 @@ class Base extends Command
 
         if ($failIfNotFound && !$this->config->isLoadedFromFile()) {
             throw new \RuntimeException(
-                'Please create a hookmeup configuration first' . PHP_EOL .
-                'Run \'hookmeup configure\'' . PHP_EOL .
+                'Please create a captainhook configuration first' . PHP_EOL .
+                'Run \'captainhook configure\'' . PHP_EOL .
                 'If you have a configuration located elsewhere use the --configuration option'
             );
         }

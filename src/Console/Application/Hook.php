@@ -1,24 +1,24 @@
 <?php
 /**
- * This file is part of HookMeUp.
+ * This file is part of CaptainHook.
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\App\Console\Application;
+namespace CaptainHook\App\Console\Application;
 
-use HookMeUp\App\Hook\Util;
+use CaptainHook\App\Hook\Util;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class Hook
  *
- * @package HookMeUp
+ * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/sebastianfeldmann/hookmeup
+ * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
 class Hook extends ConfigHandler
@@ -73,7 +73,7 @@ class Hook extends ConfigHandler
      * Set the hook to execute.
      *
      * @param  string $hook
-     * @return \HookMeUp\App\Console\Application\Hook
+     * @return \CaptainHook\App\Console\Application\Hook
      */
     public function setHook($hook)
     {
@@ -102,12 +102,12 @@ class Hook extends ConfigHandler
     /**
      * Create the hook command.
      *
-     * @return \HookMeUp\App\Console\Command\Hook
+     * @return \CaptainHook\App\Console\Command\Hook
      */
     private function createCommand()
     {
-        /* @var \HookMeUp\App\Console\Command\Hook $command */
-        $class   = '\\HookMeUp\\App\\Console\\Command\\Hook\\' . $this->getHookCommand();
+        /* @var \CaptainHook\App\Console\Command\Hook $command */
+        $class   = '\\CaptainHook\\App\\Console\\Command\\Hook\\' . $this->getHookCommand();
         $command = new $class($this->getConfigFile(), $this->getRepositoryPath());
         $command->setHelperSet($this->getHelperSet());
 

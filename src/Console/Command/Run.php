@@ -1,17 +1,17 @@
 <?php
 /**
- * This file is part of HookMeUp.
+ * This file is part of CaptainHook.
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\App\Console\Command;
+namespace CaptainHook\App\Console\Command;
 
-use HookMeUp\App\Git\CommitMessage;
-use HookMeUp\App\Git\Repository;
-use HookMeUp\App\Runner;
+use CaptainHook\App\Git\CommitMessage;
+use CaptainHook\App\Git\Repository;
+use CaptainHook\App\Runner;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,9 +20,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class Run
  *
- * @package HookMeUp
+ * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/sebastianfeldmann/hookmeup
+ * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
 class Run extends Base
@@ -42,7 +42,7 @@ class Run extends Base
                  'c',
                  InputOption::VALUE_OPTIONAL,
                  'Path to your json configuration',
-                 getcwd() . DIRECTORY_SEPARATOR . 'hookmeup.json'
+                 getcwd() . DIRECTORY_SEPARATOR . 'captainhook.json'
              );
     }
 

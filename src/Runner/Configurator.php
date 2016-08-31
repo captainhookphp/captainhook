@@ -1,26 +1,26 @@
 <?php
 /**
- * This file is part of HookMeUp.
+ * This file is part of CaptainHook.
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\App\Runner;
+namespace CaptainHook\App\Runner;
 
-use HookMeUp\App\Config;
-use HookMeUp\App\Console\IOUtil;
-use HookMeUp\App\Hook\Util;
-use HookMeUp\App\Runner;
-use HookMeUp\App\Storage\File\Json;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IOUtil;
+use CaptainHook\App\Hook\Util;
+use CaptainHook\App\Runner;
+use CaptainHook\App\Storage\File\Json;
 
 /**
  * Class Configurator
  *
- * @package HookMeUp
+ * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/sebastianfeldmann/hookmeup
+ * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
 class Configurator extends Runner
@@ -53,7 +53,7 @@ class Configurator extends Runner
         $this->io->write(
             [
                 '<info>Configuration created successfully</info>',
-                'Run <comment>\'vendor/bin/hookmeup install\'</comment> to activate your hook configuration',
+                'Run <comment>\'vendor/bin/captainhook install\'</comment> to activate your hook configuration',
             ]
         );
     }
@@ -62,7 +62,7 @@ class Configurator extends Runner
      * Force mode setter.
      *
      * @param  bool $force
-     * @return \HookMeUp\App\Runner\Configurator
+     * @return \CaptainHook\App\Runner\Configurator
      */
     public function force($force)
     {
@@ -74,7 +74,7 @@ class Configurator extends Runner
      * Set configuration mode.
      *
      * @param  bool $extend
-     * @return \HookMeUp\App\Runner\Configurator
+     * @return \CaptainHook\App\Runner\Configurator
      */
     public function extend($extend)
     {
@@ -85,7 +85,7 @@ class Configurator extends Runner
     /**
      * Return config to handle.
      *
-     * @return \HookMeUp\App\Config
+     * @return \CaptainHook\App\Config
      */
     public function getConfigToManipulate()
     {
@@ -113,7 +113,7 @@ class Configurator extends Runner
     /**
      * Configure a hook.
      *
-     * @param \HookMeUp\App\Config $config
+     * @param \CaptainHook\App\Config $config
      * @param string           $hook
      */
     public function configureHook(Config $config, $hook)
@@ -121,7 +121,7 @@ class Configurator extends Runner
         $answer = $this->io->ask('    <info>Enable \'' . $hook . '\' hook [y,n]?</info> ', 'n');
         $enable = IOUtil::answerToBool($answer);
 
-        /** @var \HookMeUp\App\Config\Hook $hookConfig */
+        /** @var \CaptainHook\App\Config\Hook $hookConfig */
         $hookConfig = $config->getHookConfig($hook);
         $hookConfig->setEnabled($enable);
 
@@ -139,7 +139,7 @@ class Configurator extends Runner
     /**
      * Setup a action config with user input.
      *
-     * @return \HookMeUp\App\Config\Action
+     * @return \CaptainHook\App\Config\Action
      */
     public function getActionConfig()
     {
@@ -207,7 +207,7 @@ class Configurator extends Runner
     /**
      * Write config to project root.
      *
-     * @param \HookMeUp\App\Config $config
+     * @param \CaptainHook\App\Config $config
      */
     public function writeConfig(Config $config)
     {

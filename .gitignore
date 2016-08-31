@@ -6,7 +6,7 @@
 composer.lock
 
 # Ignore local dev configuration
-hookmeup.json
+captainhook.json
 
 # Ignore the build directory
 build

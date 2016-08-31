@@ -1,25 +1,25 @@
 <?php
 /**
- * This file is part of HookMeUp.
+ * This file is part of CaptainHook.
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\App\Runner;
+namespace CaptainHook\App\Runner;
 
-use HookMeUp\App\Console\IOUtil;
-use HookMeUp\App\Hook\Template;
-use HookMeUp\App\Storage\File;
-use HookMeUp\App\Hook\Util;
+use CaptainHook\App\Console\IOUtil;
+use CaptainHook\App\Hook\Template;
+use CaptainHook\App\Storage\File;
+use CaptainHook\App\Hook\Util;
 
 /**
  * Class Installer
  *
- * @package HookMeUp
+ * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/sebastianfeldmann/hookmeup
+ * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
 class Installer extends HookHandler
@@ -33,7 +33,7 @@ class Installer extends HookHandler
 
     /**
      * @param  bool $force
-     * @return \HookMeUp\App\Runner\Installer
+     * @return \CaptainHook\App\Runner\Installer
      */
     public function setForce($force)
     {

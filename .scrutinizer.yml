@@ -5,7 +5,7 @@ build:
   tests:
     override:
       -
-        command: 'phpunit --coverage-clover=clover.xml --bootstrap=tests/bootstrap.php tests/HookMeUp'
+        command: 'phpunit --coverage-clover=clover.xml --bootstrap=tests/bootstrap.php tests/CaptainHook'
         coverage:
           file: 'clover.xml'
           format: 'clover'

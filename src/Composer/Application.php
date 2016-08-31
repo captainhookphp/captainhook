@@ -1,18 +1,18 @@
 <?php
 /**
- * This file is part of HookMeUp.
+ * This file is part of CaptainHook.
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\App\Composer;
+namespace CaptainHook\App\Composer;
 
 use Composer\IO\IOInterface;
-use HookMeUp\App\Console\Application\ConfigHandler;
-use HookMeUp\App\Console\Command\Configuration;
-use HookMeUp\App\Console\IO\ComposerIO;
+use CaptainHook\App\Console\Application\ConfigHandler;
+use CaptainHook\App\Console\Command\Configuration;
+use CaptainHook\App\Console\IO\ComposerIO;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,9 +20,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class Application
  *
- * @package HookMeUp
+ * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/sebastianfeldmann/hookmeup
+ * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
 class Application extends ConfigHandler
@@ -30,7 +30,7 @@ class Application extends ConfigHandler
     /**
      * Composer IO Proxy
      *
-     * @var \HookMeUp\App\Console\IO\ComposerIO
+     * @var \CaptainHook\App\Console\IO\ComposerIO
      */
     protected $io;
 

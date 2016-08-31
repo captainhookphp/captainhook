@@ -1,23 +1,23 @@
 <?php
 /**
- * This file is part of HookMeUp.
+ * This file is part of CaptainHook.
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\App\Hook\Message;
+namespace CaptainHook\App\Hook\Message;
 
-use HookMeUp\App\Git\CommitMessage;
-use HookMeUp\App\Hook\Message\Validator\Rule;
+use CaptainHook\App\Git\CommitMessage;
+use CaptainHook\App\Hook\Message\Validator\Rule;
 
 /**
  * Class Validator
  *
- * @package HookMeUp
+ * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/sebastianfeldmann/hookmeup
+ * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
 class Validator
@@ -25,15 +25,15 @@ class Validator
     /**
      * List of rules to check
      *
-     * @var \HookMeUp\App\Hook\Message\Validator\Rule[]
+     * @var \CaptainHook\App\Hook\Message\Validator\Rule[]
      */
     private $rules = [];
 
     /**
      * Set rules to check.
      *
-     * @param  \HookMeUp\App\Hook\Message\Validator\Rule[] $rules
-     * @return \HookMeUp\App\Hook\Message\Validator
+     * @param  \CaptainHook\App\Hook\Message\Validator\Rule[] $rules
+     * @return \CaptainHook\App\Hook\Message\Validator
      */
     public function setRules(array $rules)
     {
@@ -44,8 +44,8 @@ class Validator
     /**
      * Add a rule to the list.
      *
-     * @param  \HookMeUp\App\Hook\Message\Validator\Rule $rule
-     * @return \HookMeUp\App\Hook\Message\Validator
+     * @param  \CaptainHook\App\Hook\Message\Validator\Rule $rule
+     * @return \CaptainHook\App\Hook\Message\Validator
      */
     public function addRule(Rule $rule)
     {
@@ -56,7 +56,7 @@ class Validator
     /**
      * Validates all rules.
      *
-     * @param  \HookMeUp\App\Git\CommitMessage $msg
+     * @param  \CaptainHook\App\Git\CommitMessage $msg
      * @throws \RuntimeException
      */
     public function validate(CommitMessage $msg)

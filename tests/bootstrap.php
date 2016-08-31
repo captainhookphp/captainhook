@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of HookMeUp.
+ * This file is part of CaptainHook.
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
@@ -12,5 +12,5 @@ define('HMU_PATH_FILES', realpath(__DIR__ . '/files'));
 define('HMU_TEST_RUN', true);
 
 require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/HookMeUp/Git/DummyRepo.php';
-require __DIR__ . '/HookMeUp/Runner/BaseTestRunner.php';
+require __DIR__ . '/CaptainHook/Git/DummyRepo.php';
+require __DIR__ . '/CaptainHook/Runner/BaseTestRunner.php';

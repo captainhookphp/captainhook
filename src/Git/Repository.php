@@ -1,20 +1,20 @@
 <?php
 /**
- * This file is part of HookMeUp.
+ * This file is part of CaptainHook.
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\App\Git;
+namespace CaptainHook\App\Git;
 
 /**
  * Class Repository
  *
- * @package HookMeUp
+ * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/sebastianfeldmann/hookmeup
+ * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
 class Repository
@@ -36,7 +36,7 @@ class Repository
     /**
      * Commit message data
      *
-     * @var \HookMeUp\App\Git\CommitMessage
+     * @var \CaptainHook\App\Git\CommitMessage
      */
     private $commitMsg;
 
@@ -79,7 +79,7 @@ class Repository
     /**
      * CommitMessage setter.
      *
-     * @param \HookMeUp\App\Git\CommitMessage $commitMsg
+     * @param \CaptainHook\App\Git\CommitMessage $commitMsg
      */
     public function setCommitMsg(CommitMessage $commitMsg)
     {
@@ -89,7 +89,7 @@ class Repository
     /**
      * CommitMessage getter.
      *
-     * @return \HookMeUp\App\Git\CommitMessage
+     * @return \CaptainHook\App\Git\CommitMessage
      */
     public function getCommitMsg()
     {

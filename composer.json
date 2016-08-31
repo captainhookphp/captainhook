@@ -1,9 +1,9 @@
 {
-  "name": "sebastianfeldmann/hookmeup",
+  "name": "sebastianfeldmann/captainhook",
   "description": "PHP git hook manager",
   "type": "library",
   "keywords": ["git", "hooks", "pre-commit", "pre-push", "commit-msg"],
-  "homepage": "https://github.com/sebastianfeldmann/hookmeup",
+  "homepage": "https://github.com/sebastianfeldmann/captainhook",
   "license": "MIT",
   "authors": [
     {
@@ -12,11 +12,11 @@
     }
   ],
   "support": {
-    "issues": "https://github.com/sebastianfeldmann/hookmeup/issues"
+    "issues": "https://github.com/sebastianfeldmann/captainhook/issues"
   },
   "autoload": {
     "psr-4": {
-      "HookMeUp\\App\\": "src/"
+      "CaptainHook\\App\\": "src/"
     }
   },
   "require": {
@@ -29,7 +29,7 @@
     "composer/composer": "~1"
   },
   "bin": [
-    "hookmeup"
+    "captainhook"
   ],
   "extra": {
     "branch-alias": {
@@ -37,9 +37,9 @@
     }
   },
   "scripts": {
-    "post-package-install": "\\HookMeUp\\Composer\\Cmd::configure"
+    "post-package-install": "\\CaptainHook\\Composer\\Cmd::configure"
   },
   "suggest": {
-    "your git hooks": "run 'vendor/bin/hookmeup configure' to set up your hook configuration"
+    "your git hooks": "run 'vendor/bin/captainhook configure' to set up your hook configuration"
   }
 }

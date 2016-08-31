@@ -1,15 +1,15 @@
 <?php
 /**
- * This file is part of HookMeUp.
+ * This file is part of CaptainHook.
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\App\Console\IO;
+namespace CaptainHook\App\Console\IO;
 
-use HookMeUp\App\Console\IOUtil;
+use CaptainHook\App\Console\IOUtil;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
@@ -20,9 +20,9 @@ use Symfony\Component\Console\Question\Question;
 /**
  * Class DefaultIO
  *
- * @package HookMeUp
+ * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/sebastianfeldmann/hookmeup
+ * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
 class DefaultIO extends Base

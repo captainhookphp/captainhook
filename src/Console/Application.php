@@ -1,48 +1,89 @@
 <?php
 /**
- * This file is part of HookMeUp.
+ * This file is part of CaptainHook.
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\App\Console;
+namespace CaptainHook\App\Console;
 
-use HookMeUp\App\HMU;
+use CaptainHook\App\CH;
 use Symfony\Component\Console\Application as SymfonyApplication;
 
 /**
  * Class Application
  *
- * @package HookMeUp
+ * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/sebastianfeldmann/hookmeup
+ * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
 class Application extends SymfonyApplication
 {
     /**
-     * @var \HookMeUp\App\Config
+     * @var \CaptainHook\App\Config
      */
     protected $config;
 
     /**
      * @var string
      */
-    private static $logo = '  __                      __                                            
- /\\ \\                    /\\ \\                                           
- \\ \\ \\___     ___     ___\\ \\ \\/\'\\     ___ ___      __   __  __  _____   
-  \\ \\  _ `\\  / __`\\  / __`\\ \\ , <   /\' __` __`\\  /\'__`\\/\\ \\/\\ \\/\\ \'__`\\ 
-   \\ \\ \\ \\ \\/\\ \\L\\ \\/\\ \\L\\ \\ \\ \\\\`\\ /\\ \\/\\ \\/\\ \\/\\  __/\\ \\ \\_\\ \\ \\ \\L\\ \\
-    \\ \\_\\ \\_\\ \\____/\\ \\____/\\ \\_\\ \\_\\ \\_\\ \\_\\ \\_\\ \\____\\\\ \\____/\\ \\ ,__/
-     \\/_/\\/_/\\/___/  \\/___/  \\/_/\\/_/\\/_/\\/_/\\/_/\\/____/ \\/___/  \\ \\ \\/ 
-                                                                  \\ \\_\\ 
-                                                                   \\/_/
+    private static $logo = '   .oooooo.                            .              o8o              
+  d8P\'  `Y8b                         .o8              `"\'              
+ 888           .oooo.   oo.ooooo.  .o888oo  .oooo.   oooo  ooo. .oo.   
+ 888          `P  )88b   888\' `88b   888   `P  )88b  `888  `888P"Y88b  
+ 888           .oP"888   888   888   888    .oP"888   888   888   888  
+ `88b    ooo  d8(  888   888   888   888 . d8(  888   888   888   888  
+  `Y8bood8P\'  `Y888""8o  888bod8P\'   "888" `Y888""8o o888o o888o o888o 
+                         888                                           
+                        o888o
+      
+                         .ed"""" """$$$$be.                     
+                       -"           ^""**$$$e.                  
+                     ."                   \'$$$c                 
+                    /                      "4$$b                
+                   d  3                     $$$$                
+                   $  *                   .$$$$$$               
+                  .$  ^c           $$$$$e$$$$$$$$.              
+                  d$L  4.         4$$$$$$$$$$$$$$b              
+                  $$$$b ^ceeeee.  4$$ECL.F*$$$$$$$              
+      e$""=.      $$$$P d$$$$F $ $$$$$$$$$- $$$$$$              
+     z$$b. ^c     3$$$F "$$$$b   $"$$$$$$$  $$$$*"      .=""$c  
+    4$$$$L   \     $$P"  "$$b   .$ $$$$$...e$$        .=  e$$$. 
+    ^*$$$$$c  %..   *c    ..    $$ 3$$$$$$$$$$eF     zP  d$$$$$ 
+      "**$$$ec   "\   %ce""    $$$  $$$$$$$$$$*    .r" =$$$$P"" 
+            "*$b.  "c  *$e.    *** d$$$$$"L$$    .d"  e$$***"   
+              ^*$$c ^$c $$$      4J$$$$$% $$$ .e*".eeP"         
+                 "$$$$$$"\'$=e....$*$$**$cz$$" "..d$*"           
+                   "*$$$  *=%4.$ L L$ P3$$$F $$$P"              
+                      "$   "%*ebJLzb$e$$$$$b $P"                
+                        %..      4$$$$$$$$$$ "                  
+                         $$$e   z$$$$$$$$$$%                    
+                          "*$c  "$$$$$$$P"                      
+                           ."""*$$$$$$$$bc                      
+                        .-"    .$***$$$"""*e.                   
+                     .-"    .e$"     "*$c  ^*b.                 
+              .=*""""    .e$*"          "*bc  "*$e..            
+            .$"        .z*"               ^*$e.   "*****e.      
+            $$ee$c   .d"                     "*$.        3.     
+            ^*$E")$..$"                         *   .ee==d%     
+               $.d$$$*                           *  J$$$e*      
+                """""                             "$$$"
+
+             ooooo   ooooo                     oooo        
+             `888\'   `888\'                     `888        
+              888     888   .ooooo.   .ooooo.   888  oooo  
+              888ooooo888  d88\' `88b d88\' `88b  888 .8P\'   
+              888     888  888   888 888   888  888888.    
+              888     888  888   888 888   888  888 `88b.  
+             o888o   o888o `Y8bod8P\' `Y8bod8P\' o888o o888o 
+
 ';
 
     /**
-     * @var \HookMeUp\App\Console\IO
+     * @var \CaptainHook\App\Console\IO
      */
     protected $io;
 
@@ -55,7 +96,7 @@ class Application extends SymfonyApplication
             ini_set('xdebug.show_exception_trace', false);
             ini_set('xdebug.scream', false);
         }
-        parent::__construct('HookMeUp', HMU::VERSION);
+        parent::__construct('CaptainHook', CH::VERSION);
     }
 
     /**

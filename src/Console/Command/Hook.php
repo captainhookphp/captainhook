@@ -1,26 +1,26 @@
 <?php
 /**
- * This file is part of HookMeUp.
+ * This file is part of CaptainHook.
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\App\Console\Command;
+namespace CaptainHook\App\Console\Command;
 
-use HookMeUp\App\Config;
-use HookMeUp\App\Git;
-use HookMeUp\App\Runner;
+use CaptainHook\App\Config;
+use CaptainHook\App\Git;
+use CaptainHook\App\Runner;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class Hook
  *
- * @package HookMeUp
+ * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/sebastianfeldmann/hookmeup
+ * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
 abstract class Hook extends Base
@@ -96,9 +96,9 @@ abstract class Hook extends Base
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \HookMeUp\App\Config                                  $config
-     * @param \HookMeUp\App\Git\Repository                          $repository
-     * @internal param \HookMeUp\App\Console\Command\IO $io
+     * @param \CaptainHook\App\Config                                  $config
+     * @param \CaptainHook\App\Git\Repository                          $repository
+     * @internal param \CaptainHook\App\Console\Command\IO $io
      */
     protected function setup(InputInterface $input, OutputInterface $output, Config $config, Git\Repository $repository)
     {

@@ -1,20 +1,20 @@
 <?php
 /**
- * This file is part of HookMeUp.
+ * This file is part of CaptainHook.
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\App\Runner;
+namespace CaptainHook\App\Runner;
 
 /**
  *  Hook
  *
- * @package HookMeUp
+ * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/sebastianfeldmann/hookmeup
+ * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
 class Hook extends HookHandler
@@ -22,7 +22,7 @@ class Hook extends HookHandler
     /**
      * Hook config
      *
-     * @var \HookMeUp\App\Config\Hook
+     * @var \CaptainHook\App\Config\Hook
      */
     private $hookConfig;
 
@@ -31,10 +31,10 @@ class Hook extends HookHandler
      */
     public function run()
     {
-        /** @var \HookMeUp\App\Config\Hook $hookConfig */
+        /** @var \CaptainHook\App\Config\Hook $hookConfig */
         $this->hookConfig = $this->config->getHookConfig($this->hookToHandle);
 
-        // execute hooks only if hook is enabled in hookmeup.json
+        // execute hooks only if hook is enabled in captainhook.json
         if ($this->hookConfig->isEnabled()) {
             $this->io->write('EXECUTE: ' . $this->hookToHandle);
             foreach ($this->getActionsToRun() as $action) {
@@ -50,7 +50,7 @@ class Hook extends HookHandler
     /**
      * Return list of actions to run.
      *
-     * @return \HookMeUp\App\Config\Action[]
+     * @return \CaptainHook\App\Config\Action[]
      */
     protected function getActionsToRun()
     {
@@ -61,7 +61,7 @@ class Hook extends HookHandler
      * Return matching action runner.
      *
      * @param  string $type
-     * @return \HookMeUp\App\Hook\Action
+     * @return \CaptainHook\App\Hook\Action
      * @throws \RuntimeException
      */
     public function getActionRunner($type)

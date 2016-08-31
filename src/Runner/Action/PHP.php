@@ -1,26 +1,26 @@
 <?php
 /**
- * This file is part of HookMeUp.
+ * This file is part of CaptainHook.
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\App\Runner\Action;
+namespace CaptainHook\App\Runner\Action;
 
-use HookMeUp\App\Config;
-use HookMeUp\App\Console\IO;
-use HookMeUp\App\Exception\ActionExecution;
-use HookMeUp\App\Git\Repository;
-use HookMeUp\App\Hook\Action;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO;
+use CaptainHook\App\Exception\ActionExecution;
+use CaptainHook\App\Git\Repository;
+use CaptainHook\App\Hook\Action;
 
 /**
  * Class PHP
  *
- * @package HookMeUp
+ * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/sebastianfeldmann/hookmeup
+ * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
 class PHP implements Action
@@ -28,18 +28,18 @@ class PHP implements Action
     /**
      * Execute the configured action.
      *
-     * @param  \HookMeUp\App\Config         $config
-     * @param  \HookMeUp\App\Console\IO     $io
-     * @param  \HookMeUp\App\Git\Repository $repository
-     * @param  \HookMeUp\App\Config\Action  $action
-     * @throws \HookMeUp\App\Exception\ActionExecution
+     * @param  \CaptainHook\App\Config         $config
+     * @param  \CaptainHook\App\Console\IO     $io
+     * @param  \CaptainHook\App\Git\Repository $repository
+     * @param  \CaptainHook\App\Config\Action  $action
+     * @throws \CaptainHook\App\Exception\ActionExecution
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
         $class = $action->getAction();
 
         try {
-            /* @var \HookMeUp\App\Hook\Action $exe */
+            /* @var \CaptainHook\App\Hook\Action $exe */
             $exe = new $class();
 
             if (!$exe instanceof Action) {

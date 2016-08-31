@@ -1,28 +1,28 @@
 <?php
 /**
- * This file is part of HookMeUp.
+ * This file is part of CaptainHook.
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\App\Console\Application;
+namespace CaptainHook\App\Console\Application;
 
-use HookMeUp\App\Console\Application;
+use CaptainHook\App\Console\Application;
 
 /**
  * Class ConfigHandler
  *
- * @package HookMeUp
+ * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/sebastianfeldmann/hookmeup
+ * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
 abstract class ConfigHandler extends Application
 {
     /**
-     * Path to HookMeUp config file
+     * Path to CaptainHook config file
      *
      * @var string
      */
@@ -46,7 +46,7 @@ abstract class ConfigHandler extends Application
     public function getConfigFile()
     {
         if (null === $this->configFile) {
-            $this->configFile = getcwd() . DIRECTORY_SEPARATOR . 'hookmeup.json';
+            $this->configFile = getcwd() . DIRECTORY_SEPARATOR . 'captainhook.json';
         }
         return $this->configFile;
     }

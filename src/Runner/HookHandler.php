@@ -1,24 +1,24 @@
 <?php
 /**
- * This file is part of HookMeUp.
+ * This file is part of CaptainHook.
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\App\Runner;
+namespace CaptainHook\App\Runner;
 
-use HookMeUp\App\Exception;
-use HookMeUp\App\Hook\Util as HookUtil;
-use HookMeUp\App\Runner;
+use CaptainHook\App\Exception;
+use CaptainHook\App\Hook\Util as HookUtil;
+use CaptainHook\App\Runner;
 
 /**
  * Class HookHandler
  *
- * @package HookMeUp
+ * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/sebastianfeldmann/hookmeup
+ * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
 abstract class HookHandler extends Runner
@@ -34,8 +34,8 @@ abstract class HookHandler extends Runner
      * Hook setter.
      *
      * @param  string $hook
-     * @return \HookMeUp\App\Runner\HookHandler
-     * @throws \HookMeUp\App\Exception\InvalidHookName
+     * @return \CaptainHook\App\Runner\HookHandler
+     * @throws \CaptainHook\App\Exception\InvalidHookName
      */
     public function setHook($hook)
     {
