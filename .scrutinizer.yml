@@ -2,11 +2,6 @@ build:
   environment:
     php: '7.0.8'
 
-  checks:
-      php:
-          code_rating: true
-          duplication: true
-
   tests:
     override:
       -
@@ -14,3 +9,8 @@ build:
         coverage:
           file: 'clover.xml'
           format: 'clover'
+
+checks:
+  php:
+    code_rating: true
+    duplication: true
