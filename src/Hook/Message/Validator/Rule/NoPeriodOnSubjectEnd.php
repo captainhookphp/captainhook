@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\Hook\Message\Validator\Rule;
+namespace sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule;
 
-use CaptainHook\Git\CommitMessage;
+use sebastianfeldmann\CaptainHook\Git\CommitMessage;
 
 /**
  * Class NoPeriodOnSubjectEnd
@@ -32,7 +32,7 @@ class NoPeriodOnSubjectEnd extends Base
     /**
      * Check if commit message doesn't end with a period.
      *
-     * @param  \CaptainHook\Git\CommitMessage $msg
+     * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
      * @return bool
      */
     public function pass(CommitMessage $msg)

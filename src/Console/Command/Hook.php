@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\Console\Command;
+namespace sebastianfeldmann\CaptainHook\Console\Command;
 
-use CaptainHook\Config;
-use CaptainHook\Git;
-use CaptainHook\Runner;
+use sebastianfeldmann\CaptainHook\Config;
+use sebastianfeldmann\CaptainHook\Git;
+use sebastianfeldmann\CaptainHook\Runner;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -96,9 +96,9 @@ abstract class Hook extends Base
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \CaptainHook\Config                                  $config
-     * @param \CaptainHook\Git\Repository                          $repository
-     * @internal param \CaptainHook\Console\Command\IO $io
+     * @param \sebastianfeldmann\CaptainHook\Config                                  $config
+     * @param \sebastianfeldmann\CaptainHook\Git\Repository                          $repository
+     * @internal param \sebastianfeldmann\CaptainHook\Console\Command\IO $io
      */
     protected function setup(InputInterface $input, OutputInterface $output, Config $config, Git\Repository $repository)
     {

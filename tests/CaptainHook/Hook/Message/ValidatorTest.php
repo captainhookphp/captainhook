@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\Hook\Message;
+namespace sebastianfeldmann\CaptainHook\Hook\Message;
 
-use CaptainHook\Git\CommitMessage;
-use CaptainHook\Hook\Message\Validator\Rule\CapitalizeSubject;
-use CaptainHook\Hook\Message\Validator\Rule\MsgNotEmpty;
+use sebastianfeldmann\CaptainHook\Git\CommitMessage;
+use sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule\CapitalizeSubject;
+use sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule\MsgNotEmpty;
 
 class ValidatorTest extends \PHPUnit_Framework_TestCase
 {

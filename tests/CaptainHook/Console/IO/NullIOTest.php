@@ -1,6 +1,6 @@
 <?php
 
-namespace CaptainHook\Console\IO;
+namespace sebastianfeldmann\CaptainHook\Console\IO;
 
 class NullIOTest extends \PHPUnit_Framework_TestCase
 {
@@ -73,6 +73,16 @@ class NullIOTest extends \PHPUnit_Framework_TestCase
     public function testAskAndValidate()
     {
         $io = new NullIO();
-        $this->assertEquals(true, $io->askAndValidate('foo', function() { return true; }, false, true));
+        $this->assertEquals(
+            true,
+            $io->askAndValidate(
+                'foo',
+                function() {
+                    return true;
+                },
+                false,
+                true
+            )
+        );
     }
 }

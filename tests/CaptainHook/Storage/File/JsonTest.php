@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\Storage\File;
+namespace sebastianfeldmann\CaptainHook\Storage\File;
 
 class JsonTest extends \PHPUnit_Framework_TestCase
 {

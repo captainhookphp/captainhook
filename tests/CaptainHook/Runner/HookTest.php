@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\Runner;
+namespace sebastianfeldmann\CaptainHook\Runner;
 
 class HookTest extends BaseTestRunner
 {
@@ -79,8 +79,8 @@ class HookTest extends BaseTestRunner
         $php    = $hook->getActionRunner('php');
         $cli    = $hook->getActionRunner('cli');
 
-        $this->assertTrue(is_a($php, '\\CaptainHook\\Runner\\Action\\PHP'));
-        $this->assertTrue(is_a($cli, '\\CaptainHook\\Runner\\Action\\Cli'));
+        $this->assertTrue(is_a($php, '\\sebastianfeldmann\\CaptainHook\\Runner\\Action\\PHP'));
+        $this->assertTrue(is_a($cli, '\\sebastianfeldmann\\CaptainHook\\Runner\\Action\\Cli'));
     }
 
     /**

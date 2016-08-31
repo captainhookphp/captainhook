@@ -32,7 +32,7 @@ The *captainhook* configuration file
             "enabled": false,
             "actions": [
                 {
-                    "action": "\\CaptainHook\\Hook\\Message\\Beams",
+                    "action": "\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Beams",
                     "options": {}
                 }
             ]

@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\Hook\Message;
+namespace sebastianfeldmann\CaptainHook\Hook\Message;
 
-use CaptainHook\Config;
-use CaptainHook\Console\IO;
-use CaptainHook\Git\Repository;
+use sebastianfeldmann\CaptainHook\Config;
+use sebastianfeldmann\CaptainHook\Console\IO;
+use sebastianfeldmann\CaptainHook\Git\Repository;
 
 /**
  * Class Beams
@@ -26,11 +26,11 @@ class Beams extends Base
     /**
      * Execute the configured action.
      *
-     * @param  \CaptainHook\Config         $config
-     * @param  \CaptainHook\Console\IO     $io
-     * @param  \CaptainHook\Git\Repository $repository
-     * @param  \CaptainHook\Config\Action  $action
-     * @throws \CaptainHook\Exception\ActionExecution
+     * @param  \sebastianfeldmann\CaptainHook\Config         $config
+     * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
+     * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
+     * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
+     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionExecution
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {

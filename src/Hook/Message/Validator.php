@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\Hook\Message;
+namespace sebastianfeldmann\CaptainHook\Hook\Message;
 
-use CaptainHook\Git\CommitMessage;
-use CaptainHook\Hook\Message\Validator\Rule;
+use sebastianfeldmann\CaptainHook\Git\CommitMessage;
+use sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule;
 
 /**
  * Class Validator
@@ -25,15 +25,15 @@ class Validator
     /**
      * List of rules to check
      *
-     * @var \CaptainHook\Hook\Message\Validator\Rule[]
+     * @var \sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule[]
      */
     private $rules = [];
 
     /**
      * Set rules to check.
      *
-     * @param  \CaptainHook\Hook\Message\Validator\Rule[] $rules
-     * @return \CaptainHook\Hook\Message\Validator
+     * @param  \sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule[] $rules
+     * @return \sebastianfeldmann\CaptainHook\Hook\Message\Validator
      */
     public function setRules(array $rules)
     {
@@ -44,8 +44,8 @@ class Validator
     /**
      * Add a rule to the list.
      *
-     * @param  \CaptainHook\Hook\Message\Validator\Rule $rule
-     * @return \CaptainHook\Hook\Message\Validator
+     * @param  \sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule $rule
+     * @return \sebastianfeldmann\CaptainHook\Hook\Message\Validator
      */
     public function addRule(Rule $rule)
     {
@@ -56,7 +56,7 @@ class Validator
     /**
      * Validates all rules.
      *
-     * @param  \CaptainHook\Git\CommitMessage $msg
+     * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
      * @throws \RuntimeException
      */
     public function validate(CommitMessage $msg)

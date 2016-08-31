@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\Hook\Message\Validator\Rule;
+namespace sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule;
 
-use CaptainHook\Git\CommitMessage;
+use sebastianfeldmann\CaptainHook\Git\CommitMessage;
 
 class UseImperativeMoodTest extends \PHPUnit_Framework_TestCase
 {

@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\Console;
+namespace sebastianfeldmann\CaptainHook\Console;
 
-use CaptainHook\CH;
+use sebastianfeldmann\CaptainHook\CH;
 use Symfony\Component\Console\Application as SymfonyApplication;
 
 /**
@@ -23,7 +23,7 @@ use Symfony\Component\Console\Application as SymfonyApplication;
 class Application extends SymfonyApplication
 {
     /**
-     * @var \CaptainHook\Config
+     * @var \sebastianfeldmann\CaptainHook\Config
      */
     protected $config;
 
@@ -83,7 +83,7 @@ class Application extends SymfonyApplication
 ';
 
     /**
-     * @var \CaptainHook\Console\IO
+     * @var \sebastianfeldmann\CaptainHook\Console\IO
      */
     protected $io;
 

@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\Runner;
+namespace sebastianfeldmann\CaptainHook\Runner;
 
 /**
  *  Hook
@@ -22,7 +22,7 @@ class Hook extends HookHandler
     /**
      * Hook config
      *
-     * @var \CaptainHook\Config\Hook
+     * @var \sebastianfeldmann\CaptainHook\Config\Hook
      */
     private $hookConfig;
 
@@ -31,7 +31,7 @@ class Hook extends HookHandler
      */
     public function run()
     {
-        /** @var \CaptainHook\Config\Hook $hookConfig */
+        /** @var \sebastianfeldmann\CaptainHook\Config\Hook $hookConfig */
         $this->hookConfig = $this->config->getHookConfig($this->hookToHandle);
 
         // execute hooks only if hook is enabled in captainhook.json
@@ -50,7 +50,7 @@ class Hook extends HookHandler
     /**
      * Return list of actions to run.
      *
-     * @return \CaptainHook\Config\Action[]
+     * @return \sebastianfeldmann\CaptainHook\Config\Action[]
      */
     protected function getActionsToRun()
     {
@@ -61,7 +61,7 @@ class Hook extends HookHandler
      * Return matching action runner.
      *
      * @param  string $type
-     * @return \CaptainHook\Hook\Action
+     * @return \sebastianfeldmann\CaptainHook\Hook\Action
      * @throws \RuntimeException
      */
     public function getActionRunner($type)

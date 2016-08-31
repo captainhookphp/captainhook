@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\Git;
+namespace sebastianfeldmann\CaptainHook\Git;
 
 /**
  * Class CommitMessage
@@ -137,7 +137,7 @@ class CommitMessage
      * Create CommitMessage from file.
      *
      * @param  string $path
-     * @return \CaptainHook\Git\CommitMessage
+     * @return \sebastianfeldmann\CaptainHook\Git\CommitMessage
      */
     public static function createFromFile($path)
     {

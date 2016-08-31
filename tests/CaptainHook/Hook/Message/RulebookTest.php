@@ -7,18 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\Hook\Message;
+namespace sebastianfeldmann\CaptainHook\Hook\Message;
 
-use CaptainHook\Config;
-use CaptainHook\Console\IO\NullIO;
-use CaptainHook\Git\CommitMessage;
-use CaptainHook\Git\DummyRepo;
-use CaptainHook\Git\Repository;
+use sebastianfeldmann\CaptainHook\Config;
+use sebastianfeldmann\CaptainHook\Console\IO\NullIO;
+use sebastianfeldmann\CaptainHook\Git\CommitMessage;
+use sebastianfeldmann\CaptainHook\Git\DummyRepo;
+use sebastianfeldmann\CaptainHook\Git\Repository;
 
 class RulebookTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \CaptainHook\Git\DummyRepo
+     * @var \sebastianfeldmann\CaptainHook\Git\DummyRepo
      */
     private $repo;
 
@@ -46,7 +46,7 @@ class RulebookTest extends \PHPUnit_Framework_TestCase
     {
         $io     = new NullIO();
         $config = new Config(HMU_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action('php', '\\CaptainHook\\Hook\\Message\\Beams');
+        $action = new Config\Action('php', '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Beams');
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
@@ -63,8 +63,12 @@ class RulebookTest extends \PHPUnit_Framework_TestCase
     {
         $io     = new NullIO();
         $config = new Config(HMU_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action('php', '\\CaptainHook\\Hook\\Message\\Rulebook', ['\\CaptainHook\\Foo']);
         $repo   = new Repository($this->repo->getPath());
+        $action = new Config\Action(
+            'php',
+            '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Rulebook',
+            ['\\sebastianfeldmann\\CaptainHook\\Foo']
+        );
 
         $standard = new Rulebook();
         $standard->execute($config, $io, $repo, $action);
@@ -81,8 +85,8 @@ class RulebookTest extends \PHPUnit_Framework_TestCase
         $config = new Config(HMU_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
             'php',
-            '\\CaptainHook\\Hook\\Message\\Rulebook',
-            ['\\CaptainHook\\Hook\\Message\\Validator']
+            '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Rulebook',
+            ['\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Validator']
         );
         $repo   = new Repository($this->repo->getPath());
 
@@ -99,8 +103,8 @@ class RulebookTest extends \PHPUnit_Framework_TestCase
         $config = new Config(HMU_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
             'php',
-            '\\CaptainHook\\Hook\\Message\\Rulebook',
-            ['\\CaptainHook\\Hook\\Message\\Validator\\Rule\\CapitalizeSubject']
+            '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Rulebook',
+            ['\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Validator\\Rule\\CapitalizeSubject']
         );
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));

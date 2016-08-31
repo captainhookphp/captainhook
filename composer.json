@@ -16,7 +16,7 @@
   },
   "autoload": {
     "psr-4": {
-      "CaptainHook\\": "src/"
+      "sebastianfeldmann\\CaptainHook\\": "src/"
     }
   },
   "require": {
@@ -37,7 +37,7 @@
     }
   },
   "scripts": {
-    "post-update-cmd": "\\CaptainHook\\Composer\\Cmd::configure"
+    "post-update-cmd": "\\sebastianfeldmann\\CaptainHook\\Composer\\Cmd::configure"
   },
   "suggest": {
     "your git hooks": "run 'vendor/bin/captainhook configure' to set up your hook configuration"

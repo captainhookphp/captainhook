@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\Console\Application;
+namespace sebastianfeldmann\CaptainHook\Console\Application;
 
-use CaptainHook\Hook\Util;
+use sebastianfeldmann\CaptainHook\Hook\Util;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -73,7 +73,7 @@ class Hook extends ConfigHandler
      * Set the hook to execute.
      *
      * @param  string $hook
-     * @return \CaptainHook\Console\Application\Hook
+     * @return \sebastianfeldmann\CaptainHook\Console\Application\Hook
      */
     public function setHook($hook)
     {
@@ -102,12 +102,12 @@ class Hook extends ConfigHandler
     /**
      * Create the hook command.
      *
-     * @return \CaptainHook\Console\Command\Hook
+     * @return \sebastianfeldmann\CaptainHook\Console\Command\Hook
      */
     private function createCommand()
     {
-        /* @var \CaptainHook\Console\Command\Hook $command */
-        $class   = '\\CaptainHook\\Console\\Command\\Hook\\' . $this->getHookCommand();
+        /* @var \sebastianfeldmann\CaptainHook\Console\Command\Hook $command */
+        $class   = '\\sebastianfeldmann\\CaptainHook\\Console\\Command\\Hook\\' . $this->getHookCommand();
         $command = new $class($this->getConfigFile(), $this->getRepositoryPath());
         $command->setHelperSet($this->getHelperSet());
 

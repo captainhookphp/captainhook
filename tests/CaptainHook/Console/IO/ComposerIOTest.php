@@ -1,11 +1,11 @@
 <?php
 
-namespace CaptainHook\Console\IO;
+namespace sebastianfeldmann\CaptainHook\Console\IO;
 
 class ComposerIOTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \CaptainHook\Console\IO;
+     * @var \sebastianfeldmann\CaptainHook\Console\IO;
      */
     private $io;
 
@@ -105,6 +105,16 @@ class ComposerIOTest extends \PHPUnit_Framework_TestCase
      */
     public function testAskAndValidate()
     {
-        $this->assertEquals(true, $this->io->askAndValidate('foo', function() { return true; }, false, true));
+        $this->assertEquals(
+            true,
+            $this->io->askAndValidate(
+                'foo',
+                function() {
+                    return true;
+                },
+                false,
+                true
+            )
+        );
     }
 }

@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\Console\IO;
+namespace sebastianfeldmann\CaptainHook\Console\IO;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -188,7 +188,12 @@ class DefaultIOTest extends \PHPUnit_Framework_TestCase
         $questionHelper->expects($this->once())->method('ask')->willReturn(true);
 
         $io     = new DefaultIO($input, $output, $helper);
-        $answer = $io->askAndValidate('foo', function() { return true; });
+        $answer = $io->askAndValidate(
+            'foo',
+            function() {
+                return true;
+            }
+        );
         $this->assertTrue($answer);
     }
 
