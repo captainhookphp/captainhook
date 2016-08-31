@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Console\Application;
+namespace HookMeUp\App\Console\Application;
 
-use HookMeUp\Console\Application;
-use HookMeUp\Console\Command as Cmd;
+use HookMeUp\App\Console\Application;
+use HookMeUp\App\Console\Command as Cmd;
 
 /**
  * Class Main
@@ -23,7 +23,7 @@ use HookMeUp\Console\Command as Cmd;
 class Main extends Application
 {
     /**
-     * Initializes all the hookmeup commands.
+     * Initializes all the HookMeUp commands.
      *
      * @return \Symfony\Component\Console\Command\Command[]
      */

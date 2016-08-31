@@ -7,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Runner\Action;
+namespace HookMeUp\App\Runner\Action;
 
-use HookMeUp\Config;
-use HookMeUp\Console\IO;
-use HookMeUp\Git\Repository;
-use HookMeUp\Hook\Action as ActionInterface;
-use HookMeUp\Runner\BaseTestRunner;
+use HookMeUp\App\Config;
+use HookMeUp\App\Console\IO;
+use HookMeUp\App\Git\Repository;
+use HookMeUp\App\Hook\Action as ActionInterface;
+use HookMeUp\App\Runner\BaseTestRunner;
 
 class PHPTest extends BaseTestRunner
 {
@@ -27,7 +27,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\HookMeUp\\Runner\\Action\\DummyPHPSuccess';
+        $class = '\\HookMeUp\\App\\Runner\\Action\\DummyPHPSuccess';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -47,7 +47,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\HookMeUp\\Runner\\Action\\DummyPHPFailure';
+        $class = '\\HookMeUp\\App\\Runner\\Action\\DummyPHPFailure';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -67,7 +67,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\HookMeUp\\Runner\\Action\\DummyPHPError';
+        $class = '\\HookMeUp\\App\\Runner\\Action\\DummyPHPError';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -87,7 +87,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\HookMeUp\\Runner\\Action\\DummyNoAction';
+        $class = '\\HookMeUp\\App\\Runner\\Action\\DummyNoAction';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -101,11 +101,11 @@ class DummyPHPSuccess implements ActionInterface
     /**
      * Execute the configured action.
      *
-     * @param  \HookMeUp\Config         $config
-     * @param  \HookMeUp\Console\IO     $io
-     * @param  \HookMeUp\Git\Repository $repository
-     * @param  \HookMeUp\Config\Action  $action
-     * @throws \HookMeUp\Exception\ActionExecution
+     * @param  \HookMeUp\App\Config         $config
+     * @param  \HookMeUp\App\Console\IO     $io
+     * @param  \HookMeUp\App\Git\Repository $repository
+     * @param  \HookMeUp\App\Config\Action  $action
+     * @throws \HookMeUp\App\Exception\ActionExecution
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
@@ -118,11 +118,11 @@ class DummyPHPFailure implements ActionInterface
     /**
      * Execute the configured action.
      *
-     * @param  \HookMeUp\Config         $config
-     * @param  \HookMeUp\Console\IO     $io
-     * @param  \HookMeUp\Git\Repository $repository
-     * @param  \HookMeUp\Config\Action  $action
-     * @throws \HookMeUp\Exception\ActionExecution
+     * @param  \HookMeUp\App\Config         $config
+     * @param  \HookMeUp\App\Console\IO     $io
+     * @param  \HookMeUp\App\Git\Repository $repository
+     * @param  \HookMeUp\App\Config\Action  $action
+     * @throws \HookMeUp\App\Exception\ActionExecution
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
@@ -135,11 +135,11 @@ class DummyPHPError implements ActionInterface
     /**
      * Execute the configured action.
      *
-     * @param  \HookMeUp\Config         $config
-     * @param  \HookMeUp\Console\IO     $io
-     * @param  \HookMeUp\Git\Repository $repository
-     * @param  \HookMeUp\Config\Action  $action
-     * @throws \HookMeUp\Exception\ActionExecution
+     * @param  \HookMeUp\App\Config         $config
+     * @param  \HookMeUp\App\Console\IO     $io
+     * @param  \HookMeUp\App\Git\Repository $repository
+     * @param  \HookMeUp\App\Config\Action  $action
+     * @throws \HookMeUp\App\Exception\ActionExecution
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {

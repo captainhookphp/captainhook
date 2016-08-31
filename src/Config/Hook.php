@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Config;
+namespace HookMeUp\App\Config;
 
 /**
  * Class Hook
@@ -29,7 +29,7 @@ class Hook
     /**
      * List of Actions
      *
-     * @var \HookMeUp\Config\Action[]
+     * @var \HookMeUp\App\Config\Action[]
      */
     private $actions = [];
 
@@ -66,7 +66,7 @@ class Hook
     /**
      * Add an action to the list.
      *
-     * @param \HookMeUp\Config\Action $action
+     * @param \HookMeUp\App\Config\Action $action
      */
     public function addAction(Action $action)
     {
@@ -76,7 +76,7 @@ class Hook
     /**
      * Return the action list.
      *
-     * @return \HookMeUp\Config\Action[]
+     * @return \HookMeUp\App\Config\Action[]
      */
     public function getActions()
     {

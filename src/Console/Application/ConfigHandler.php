@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Console\Application;
+namespace HookMeUp\App\Console\Application;
 
-use HookMeUp\Console\Application;
+use HookMeUp\App\Console\Application;
 
 /**
  * Class ConfigHandler
@@ -22,7 +22,7 @@ use HookMeUp\Console\Application;
 abstract class ConfigHandler extends Application
 {
     /**
-     * Path to hookmeup config file
+     * Path to HookMeUp config file
      *
      * @var string
      */
@@ -46,7 +46,7 @@ abstract class ConfigHandler extends Application
     public function getConfigFile()
     {
         if (null === $this->configFile) {
-            $this->configFile = getcwd() . '/hookmeup.json';
+            $this->configFile = getcwd() . DIRECTORY_SEPARATOR . 'hookmeup.json';
         }
         return $this->configFile;
     }

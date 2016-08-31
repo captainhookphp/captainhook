@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Git;
+namespace HookMeUp\App\Git;
 
 /**
  * Class Repository
@@ -36,7 +36,7 @@ class Repository
     /**
      * Commit message data
      *
-     * @var \HookMeUp\Git\CommitMessage
+     * @var \HookMeUp\App\Git\CommitMessage
      */
     private $commitMsg;
 
@@ -79,7 +79,7 @@ class Repository
     /**
      * CommitMessage setter.
      *
-     * @param \HookMeUp\Git\CommitMessage $commitMsg
+     * @param \HookMeUp\App\Git\CommitMessage $commitMsg
      */
     public function setCommitMsg(CommitMessage $commitMsg)
     {
@@ -89,7 +89,7 @@ class Repository
     /**
      * CommitMessage getter.
      *
-     * @return \HookMeUp\Git\CommitMessage
+     * @return \HookMeUp\App\Git\CommitMessage
      */
     public function getCommitMsg()
     {

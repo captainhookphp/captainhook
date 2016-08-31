@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Console\IO;
+namespace HookMeUp\App\Console\IO;
 
-use HookMeUp\Console\IOUtil;
+use HookMeUp\App\Console\IOUtil;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;

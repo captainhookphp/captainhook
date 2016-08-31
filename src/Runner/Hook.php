@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Runner;
+namespace HookMeUp\App\Runner;
 
 /**
  *  Hook
@@ -22,7 +22,7 @@ class Hook extends HookHandler
     /**
      * Hook config
      *
-     * @var \HookMeUp\Config\Hook
+     * @var \HookMeUp\App\Config\Hook
      */
     private $hookConfig;
 
@@ -31,7 +31,7 @@ class Hook extends HookHandler
      */
     public function run()
     {
-        /** @var \HookMeUp\Config\Hook $hookConfig */
+        /** @var \HookMeUp\App\Config\Hook $hookConfig */
         $this->hookConfig = $this->config->getHookConfig($this->hookToHandle);
 
         // execute hooks only if hook is enabled in hookmeup.json
@@ -50,7 +50,7 @@ class Hook extends HookHandler
     /**
      * Return list of actions to run.
      *
-     * @return \HookMeUp\Config\Action[]
+     * @return \HookMeUp\App\Config\Action[]
      */
     protected function getActionsToRun()
     {
@@ -61,7 +61,7 @@ class Hook extends HookHandler
      * Return matching action runner.
      *
      * @param  string $type
-     * @return \HookMeUp\Hook\Action
+     * @return \HookMeUp\App\Hook\Action
      * @throws \RuntimeException
      */
     public function getActionRunner($type)

@@ -1,6 +1,6 @@
 # HookMeUp (alpha version)
 
-Easy to use and very flexible lib to use git hooks for php developers.
+Easy to use and very flexible git hook lib for php developers.
 
 [![Latest Stable Version](https://poser.pugx.org/sebastianfeldmann/hookmeup/v/stable.svg)](https://packagist.org/packages/sebastianfeldmann/hookmeup)
 [![License](https://poser.pugx.org/sebastianfeldmann/hookmeup/license.svg)](https://packagist.org/packages/sebastianfeldmann/hookmeup)
@@ -23,22 +23,17 @@ To finally activate the hooks you have to install them to your local .git reposi
 
     $ vendor/bin/hookmeup install
 
-### Installation demo
-
-![Install hookmeup](https://phpbu.de/images/hookmeup.gif)
-
-
 ## Configuration
 
 The *hookmeup* configuration file
-```javascript
+```json
     {
         "commit-msg": {
             "enabled": false,
             "actions": [
                 {
-                    "action": "\\HookMeUp\\Hook\\Message\\Beams",
-                    "options": []
+                    "action": "\\HookMeUp\\App\\Hook\\Message\\Beams",
+                    "options": {}
                 }
             ]
         },

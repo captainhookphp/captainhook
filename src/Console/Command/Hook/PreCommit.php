@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Console\Command\Hook;
+namespace HookMeUp\App\Console\Command\Hook;
 
-use HookMeUp\Console\Command\Hook;
+use HookMeUp\App\Console\Command\Hook;
 
 /**
  * Class PreCommit

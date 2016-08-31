@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Runner;
+namespace HookMeUp\App\Runner;
 
 class HookTest extends BaseTestRunner
 {
@@ -79,8 +79,8 @@ class HookTest extends BaseTestRunner
         $php    = $hook->getActionRunner('php');
         $cli    = $hook->getActionRunner('cli');
 
-        $this->assertTrue(is_a($php, '\\HookMeUp\\Runner\\Action\\PHP'));
-        $this->assertTrue(is_a($cli, '\\HookMeUp\\Runner\\Action\\Cli'));
+        $this->assertTrue(is_a($php, '\\HookMeUp\\App\\Runner\\Action\\PHP'));
+        $this->assertTrue(is_a($cli, '\\HookMeUp\\App\\Runner\\Action\\Cli'));
     }
 
     /**

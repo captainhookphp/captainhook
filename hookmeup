@@ -54,5 +54,5 @@ if (!defined('HOOKMEUP_COMPOSER_AUTOLOAD')) {
 
 require HOOKMEUP_COMPOSER_AUTOLOAD;
 
-$app = new HookMeUp\Console\Application\Main();
+$app = new HookMeUp\App\Console\Application\Main();
 $app->run();

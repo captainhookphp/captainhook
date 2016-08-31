@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Hook;
+namespace HookMeUp\App\Hook;
 
-use HookMeUp\Config;
-use HookMeUp\Console\IO;
-use HookMeUp\Git\Repository;
+use HookMeUp\App\Config;
+use HookMeUp\App\Console\IO;
+use HookMeUp\App\Git\Repository;
 
 /**
  * Class Action
@@ -26,11 +26,11 @@ interface Action
     /**
      * Executes the action.
      *
-     * @param  \HookMeUp\Config         $config
-     * @param  \HookMeUp\Console\IO     $io
-     * @param  \HookMeUp\Git\Repository $repository
-     * @param  \HookMeUp\Config\Action  $action
-     * @throws \HookMeUp\Exception\ActionExecution
+     * @param  \HookMeUp\App\Config         $config
+     * @param  \HookMeUp\App\Console\IO     $io
+     * @param  \HookMeUp\App\Git\Repository $repository
+     * @param  \HookMeUp\App\Config\Action  $action
+     * @throws \HookMeUp\App\Exception\ActionExecution
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action);
 }

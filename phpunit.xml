@@ -3,8 +3,8 @@
          backupGlobals="false"
          verbose="true">
   <testsuites>
-    <testsuite name="hookmeup">
-      <directory>tests/hookmeup</directory>
+    <testsuite name="HookMeUp">
+      <directory>tests/HookMeUp</directory>
     </testsuite>
   </testsuites>
   <filter>

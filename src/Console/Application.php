@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Console;
+namespace HookMeUp\App\Console;
 
-use HookMeUp\HMU;
+use HookMeUp\App\HMU;
 use Symfony\Component\Console\Application as SymfonyApplication;
 
 /**
@@ -23,7 +23,7 @@ use Symfony\Component\Console\Application as SymfonyApplication;
 class Application extends SymfonyApplication
 {
     /**
-     * @var \HookMeUp\Config
+     * @var \HookMeUp\App\Config
      */
     protected $config;
 
@@ -42,7 +42,7 @@ class Application extends SymfonyApplication
 ';
 
     /**
-     * @var \HookMeUp\Console\IO
+     * @var \HookMeUp\App\Console\IO
      */
     protected $io;
 

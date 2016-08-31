@@ -1,11 +1,11 @@
 <?php
 
-namespace HookMeUp\Console\IO;
+namespace HookMeUp\App\Console\IO;
 
 class ComposerIOTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \HookMeUp\Console\IO;
+     * @var \HookMeUp\App\Console\IO;
      */
     private $io;
 

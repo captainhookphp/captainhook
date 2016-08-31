@@ -15,7 +15,7 @@ use HookMeUp\App\Git\CommitMessage;
 use HookMeUp\App\Git\DummyRepo;
 use HookMeUp\App\Git\Repository;
 
-class BeamsTest extends \PHPUnit_Framework_TestCase
+class RulebookTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \HookMeUp\App\Git\DummyRepo
@@ -40,7 +40,7 @@ class BeamsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests Beams::execute
+     * Tests Rulebook::execute
      */
     public function testExecute()
     {
@@ -55,19 +55,57 @@ class BeamsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests Beams::execute
+     * Tests Rulebook::execute
      *
      * @expectedException \Exception
      */
-    public function testExecuteFail()
+    public function testExecuteClassNotFound()
     {
         $io     = new NullIO();
         $config = new Config(HMU_PATH_FILES . '/hookmeup.json');
-        $action = new Config\Action('php', '\\HookMeUp\\App\\Hook\\Message\\Beams');
+        $action = new Config\Action('php', '\\HookMeUp\\App\\Hook\\Message\\Rulebook', ['\\HookMeUp\\App\\Foo']);
         $repo   = new Repository($this->repo->getPath());
-        $repo->setCommitMsg(new CommitMessage('foo bar baz.'));
 
-        $standard = new Beams();
+        $standard = new Rulebook();
+        $standard->execute($config, $io, $repo, $action);
+    }
+
+    /**
+     * Tests Rulebook::execute
+     *
+     * @expectedException \Exception
+     */
+    public function testExecuteInvalidClass()
+    {
+        $io     = new NullIO();
+        $config = new Config(HMU_PATH_FILES . '/hookmeup.json');
+        $action = new Config\Action(
+            'php',
+            '\\HookMeUp\\App\\Hook\\Message\\Rulebook',
+            ['\\HookMeUp\\App\\Hook\\Message\\Validator']
+        );
+        $repo   = new Repository($this->repo->getPath());
+
+        $standard = new Rulebook();
+        $standard->execute($config, $io, $repo, $action);
+    }
+
+    /**
+     * Tests Rulebook::execute
+     */
+    public function testExecuteValidRule()
+    {
+        $io     = new NullIO();
+        $config = new Config(HMU_PATH_FILES . '/hookmeup.json');
+        $action = new Config\Action(
+            'php',
+            '\\HookMeUp\\App\\Hook\\Message\\Rulebook',
+            ['\\HookMeUp\\App\\Hook\\Message\\Validator\\Rule\\CapitalizeSubject']
+        );
+        $repo   = new Repository($this->repo->getPath());
+        $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
+
+        $standard = new Rulebook();
         $standard->execute($config, $io, $repo, $action);
     }
 }

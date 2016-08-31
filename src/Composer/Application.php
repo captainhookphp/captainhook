@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Composer;
+namespace HookMeUp\App\Composer;
 
 use Composer\IO\IOInterface;
-use HookMeUp\Console\Application\ConfigHandler;
-use HookMeUp\Console\Command\Configuration;
-use HookMeUp\Console\IO\ComposerIO;
+use HookMeUp\App\Console\Application\ConfigHandler;
+use HookMeUp\App\Console\Command\Configuration;
+use HookMeUp\App\Console\IO\ComposerIO;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -30,7 +30,7 @@ class Application extends ConfigHandler
     /**
      * Composer IO Proxy
      *
-     * @var \HookMeUp\Console\IO\ComposerIO
+     * @var \HookMeUp\App\Console\IO\ComposerIO
      */
     protected $io;
 

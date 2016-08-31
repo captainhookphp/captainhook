@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Console\Command;
+namespace HookMeUp\App\Console\Command;
 
-use HookMeUp\Config;
-use HookMeUp\Git;
-use HookMeUp\Runner;
+use HookMeUp\App\Config;
+use HookMeUp\App\Git;
+use HookMeUp\App\Runner;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -96,9 +96,9 @@ abstract class Hook extends Base
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \HookMeUp\Config                                  $config
-     * @param \HookMeUp\Git\Repository                          $repository
-     * @internal param \HookMeUp\Console\Command\IO $io
+     * @param \HookMeUp\App\Config                                  $config
+     * @param \HookMeUp\App\Git\Repository                          $repository
+     * @internal param \HookMeUp\App\Console\Command\IO $io
      */
     protected function setup(InputInterface $input, OutputInterface $output, Config $config, Git\Repository $repository)
     {

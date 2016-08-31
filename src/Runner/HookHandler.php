@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Runner;
+namespace HookMeUp\App\Runner;
 
-use HookMeUp\Exception;
-use HookMeUp\Hook\Util as HookUtil;
-use HookMeUp\Runner;
+use HookMeUp\App\Exception;
+use HookMeUp\App\Hook\Util as HookUtil;
+use HookMeUp\App\Runner;
 
 /**
  * Class HookHandler
@@ -34,8 +34,8 @@ abstract class HookHandler extends Runner
      * Hook setter.
      *
      * @param  string $hook
-     * @return \HookMeUp\Runner\HookHandler
-     * @throws \HookMeUp\Exception\InvalidHookName
+     * @return \HookMeUp\App\Runner\HookHandler
+     * @throws \HookMeUp\App\Exception\InvalidHookName
      */
     public function setHook($hook)
     {

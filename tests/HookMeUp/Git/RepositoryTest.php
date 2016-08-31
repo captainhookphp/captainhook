@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Git;
+namespace HookMeUp\App\Git;
 
 class RepositoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \HookMeUp\Git\DummyRepo
+     * @var \HookMeUp\App\Git\DummyRepo
      */
     private $repo;
 
@@ -41,7 +41,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
     public function testInvalidRepository()
     {
         $repository = new Repository('invalidGitRepo');
-        $this->assertFalse(is_a($repository, '\\HookMeUp\\Git\\Repository'));
+        $this->assertFalse(is_a($repository, '\\HookMeUp\\App\\Git\\Repository'));
     }
 
     /**

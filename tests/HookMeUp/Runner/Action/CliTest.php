@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Runner\Action;
+namespace HookMeUp\App\Runner\Action;
 
-use HookMeUp\Runner\BaseTestRunner;
+use HookMeUp\App\Runner\BaseTestRunner;
 
 class CliTest extends BaseTestRunner
 {

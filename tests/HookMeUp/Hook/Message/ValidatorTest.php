@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Hook\Message;
+namespace HookMeUp\App\Hook\Message;
 
-use HookMeUp\Git\CommitMessage;
-use HookMeUp\Hook\Message\Validator\Rule\CapitalizeSubject;
-use HookMeUp\Hook\Message\Validator\Rule\MsgNotEmpty;
+use HookMeUp\App\Git\CommitMessage;
+use HookMeUp\App\Hook\Message\Validator\Rule\CapitalizeSubject;
+use HookMeUp\App\Hook\Message\Validator\Rule\MsgNotEmpty;
 
 class ValidatorTest extends \PHPUnit_Framework_TestCase
 {

@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Runner;
+namespace HookMeUp\App\Runner;
 
-use HookMeUp\Console\IOUtil;
-use HookMeUp\Hook\Template;
-use HookMeUp\Storage\File;
-use HookMeUp\Hook\Util;
+use HookMeUp\App\Console\IOUtil;
+use HookMeUp\App\Hook\Template;
+use HookMeUp\App\Storage\File;
+use HookMeUp\App\Hook\Util;
 
 /**
  * Class Installer
@@ -33,7 +33,7 @@ class Installer extends HookHandler
 
     /**
      * @param  bool $force
-     * @return \HookMeUp\Runner\Installer
+     * @return \HookMeUp\App\Runner\Installer
      */
     public function setForce($force)
     {

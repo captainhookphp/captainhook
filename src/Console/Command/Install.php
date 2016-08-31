@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Console\Command;
+namespace HookMeUp\App\Console\Command;
 
-use HookMeUp\Git\Repository;
-use HookMeUp\Runner\Installer;
+use HookMeUp\App\Git\Repository;
+use HookMeUp\App\Runner\Installer;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Hook\Message\Validator;
+namespace HookMeUp\App\Hook\Message\Validator;
 
-use HookMeUp\Git\CommitMessage;
+use HookMeUp\App\Git\CommitMessage;
 
 /**
  * Interface Rule
@@ -31,7 +31,7 @@ interface Rule
     /**
      * Checks if a commit message passes the rule.
      *
-     * @param  \HookMeUp\Git\CommitMessage $msg
+     * @param  \HookMeUp\App\Git\CommitMessage $msg
      * @return bool
      */
     public function pass(CommitMessage $msg);

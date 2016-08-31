@@ -7,24 +7,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\App\Runner\Action;
+namespace HookMeUp\App\Hook\Message;
 
 use HookMeUp\App\Config;
 use HookMeUp\App\Console\IO;
-use HookMeUp\App\Exception;
 use HookMeUp\App\Git\Repository;
-use HookMeUp\App\Hook\Action;
-use Symfony\Component\Process\Process;
 
 /**
- * Class Cli
+ * Class Rulebook
  *
  * @package HookMeUp
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/hookmeup
  * @since   Class available since Release 0.9.0
  */
-class Cli implements Action
+class Rulebook extends Base
 {
     /**
      * Execute the configured action.
@@ -37,13 +34,35 @@ class Cli implements Action
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
-        $process = new Process($action->getAction());
-        $process->run();
+        $rules     = $action->getOptions();
+        $validator = new Validator();
+        foreach ($rules as $class) {
+            $validator->addRule($this->createRule($class));
+        }
+        $this->executeValidator($validator, $repository);
+    }
 
-        if (!$process->isSuccessful()) {
-            throw new Exception\ActionExecution($process->getOutput() . PHP_EOL . $process->getErrorOutput());
+    /**
+     * Create a new rule.
+     *
+     * @param  string $class
+     * @return \HookMeUp\App\Hook\Message\Validator\Rule
+     * @throws \Exception
+     */
+    protected function createRule($class)
+    {
+        // make sure the class is available
+        if (!class_exists($class)) {
+            throw new \Exception('Unknown rule: ' . $class);
         }
 
-        $io->write($process->getOutput());
+        $rule = new $class();
+
+        // make sure the class implements the Rule interface
+        if (!$rule instanceof Validator\Rule) {
+            throw new \Exception('Class \'' . $class . '\' must implement the Rule interface');
+        }
+
+        return $rule;
     }
 }

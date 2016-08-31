@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Console\Command;
+namespace HookMeUp\App\Console\Command;
 
-use HookMeUp\Config;
-use HookMeUp\Console\IO;
+use HookMeUp\App\Config;
+use HookMeUp\App\Console\IO;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,21 +28,21 @@ class Base extends Command
     /**
      * Input output handler.
      *
-     * @var \HookMeUp\Console\IO
+     * @var \HookMeUp\App\Console\IO
      */
     private $io;
 
     /**
      * HookMeUp configuration
      *
-     * @var \HookMeUp\Config
+     * @var \HookMeUp\App\Config
      */
     private $config;
 
     /**
      * IO setter.
      *
-     * @param \HookMeUp\Console\IO $io
+     * @param \HookMeUp\App\Console\IO $io
      */
     public function setIO(IO $io)
     {
@@ -54,7 +54,7 @@ class Base extends Command
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return \HookMeUp\Console\IO
+     * @return \HookMeUp\App\Console\IO
      */
     public function getIO(InputInterface $input, OutputInterface $output)
     {
@@ -69,7 +69,7 @@ class Base extends Command
      *
      * @param  string $path
      * @param  bool   $failIfNotFound
-     * @return \HookMeUp\Config
+     * @return \HookMeUp\App\Config
      */
     protected function getConfig($path = null, $failIfNotFound = false)
     {

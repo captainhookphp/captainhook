@@ -7,24 +7,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\App\Runner\Action;
+namespace HookMeUp\App\Hook\Message;
 
 use HookMeUp\App\Config;
 use HookMeUp\App\Console\IO;
-use HookMeUp\App\Exception;
 use HookMeUp\App\Git\Repository;
 use HookMeUp\App\Hook\Action;
-use Symfony\Component\Process\Process;
 
 /**
- * Class Cli
+ * Class Base
  *
  * @package HookMeUp
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/hookmeup
  * @since   Class available since Release 0.9.0
  */
-class Cli implements Action
+abstract class Base implements Action
 {
     /**
      * Execute the configured action.
@@ -35,15 +33,19 @@ class Cli implements Action
      * @param  \HookMeUp\App\Config\Action  $action
      * @throws \HookMeUp\App\Exception\ActionExecution
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
+    abstract public function execute(Config $config, IO $io, Repository $repository, Config\Action $action);
+
+    /**
+     * Validate the message.
+     *
+     * @param \HookMeUp\App\Hook\Message\Validator $validator
+     * @param \HookMeUp\App\Git\Repository         $repository
+     */
+    protected function executeValidator(Validator $validator, Repository $repository)
     {
-        $process = new Process($action->getAction());
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            throw new Exception\ActionExecution($process->getOutput() . PHP_EOL . $process->getErrorOutput());
+        // if this is no merge commit enforce message rules
+        if (!$repository->isMerging()) {
+            $validator->validate($repository->getCommitMsg());
         }
-
-        $io->write($process->getOutput());
     }
 }

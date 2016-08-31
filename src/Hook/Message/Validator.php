@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Hook\Message;
+namespace HookMeUp\App\Hook\Message;
 
-use HookMeUp\Git\CommitMessage;
-use HookMeUp\Hook\Message\Validator\Rule;
+use HookMeUp\App\Git\CommitMessage;
+use HookMeUp\App\Hook\Message\Validator\Rule;
 
 /**
  * Class Validator
@@ -25,15 +25,15 @@ class Validator
     /**
      * List of rules to check
      *
-     * @var \HookMeUp\Hook\Message\Validator\Rule[]
+     * @var \HookMeUp\App\Hook\Message\Validator\Rule[]
      */
     private $rules = [];
 
     /**
      * Set rules to check.
      *
-     * @param  \HookMeUp\Hook\Message\Validator\Rule[] $rules
-     * @return \HookMeUp\Hook\Message\Validator
+     * @param  \HookMeUp\App\Hook\Message\Validator\Rule[] $rules
+     * @return \HookMeUp\App\Hook\Message\Validator
      */
     public function setRules(array $rules)
     {
@@ -44,8 +44,8 @@ class Validator
     /**
      * Add a rule to the list.
      *
-     * @param  \HookMeUp\Hook\Message\Validator\Rule $rule
-     * @return \HookMeUp\Hook\Message\Validator
+     * @param  \HookMeUp\App\Hook\Message\Validator\Rule $rule
+     * @return \HookMeUp\App\Hook\Message\Validator
      */
     public function addRule(Rule $rule)
     {
@@ -56,7 +56,7 @@ class Validator
     /**
      * Validates all rules.
      *
-     * @param  \HookMeUp\Git\CommitMessage $msg
+     * @param  \HookMeUp\App\Git\CommitMessage $msg
      * @throws \RuntimeException
      */
     public function validate(CommitMessage $msg)

@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Config;
+namespace HookMeUp\App\Config;
 
-use HookMeUp\Config;
-use HookMeUp\Hook\Util;
-use HookMeUp\Storage\File\Json;
+use HookMeUp\App\Config;
+use HookMeUp\App\Hook\Util;
+use HookMeUp\App\Storage\File\Json;
 
 /**
  * Class Factory
@@ -27,7 +27,7 @@ class Factory
      * Config factory method.
      *
      * @param  string $path
-     * @return \HookMeUp\Config
+     * @return \HookMeUp\App\Config
      */
     public static function create($path = null)
     {
@@ -40,7 +40,7 @@ class Factory
      * Create a HookMeUp configuration.
      *
      * @param  string $path
-     * @return \HookMeUp\Config
+     * @return \HookMeUp\App\Config
      */
     public function createConfig($path = null)
     {
@@ -59,7 +59,7 @@ class Factory
     /**
      * Initialize the configuration with data load from config file.
      *
-     * @param \HookMeUp\Config $config
+     * @param \HookMeUp\App\Config $config
      * @param array            $json
      */
     protected function configure(Config $config, array $json)
@@ -72,7 +72,7 @@ class Factory
     /**
      * Setup a hook configuration by json data.
      *
-     * @param \HookMeUp\Config\Hook $config
+     * @param \HookMeUp\App\Config\Hook $config
      * @param array                 $json
      */
     protected function configureHook(Config\Hook $config, array $json)

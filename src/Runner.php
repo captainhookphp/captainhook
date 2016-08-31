@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp;
+namespace HookMeUp\App;
 
-use HookMeUp\Console\IO;
-use HookMeUp\Git\Repository;
+use HookMeUp\App\Console\IO;
+use HookMeUp\App\Git\Repository;
 
 /**
  * Class Runner
@@ -23,26 +23,26 @@ use HookMeUp\Git\Repository;
 abstract class Runner
 {
     /**
-     * @var \HookMeUp\Console\IO|\HookMeUp\IO
+     * @var \HookMeUp\App\Console\IO|\HookMeUp\App\IO
      */
     protected $io;
 
     /**
-     * @var \HookMeUp\Config
+     * @var \HookMeUp\App\Config
      */
     protected $config;
 
     /**
-     * @var \HookMeUp\Git\Repository
+     * @var \HookMeUp\App\Git\Repository
      */
     protected $repository;
 
     /**
      * Installer constructor.
      *
-     * @param \HookMeUp\Console\IO     $io
-     * @param \HookMeUp\Config         $config
-     * @param \HookMeUp\Git\Repository $repository
+     * @param \HookMeUp\App\Console\IO     $io
+     * @param \HookMeUp\App\Config         $config
+     * @param \HookMeUp\App\Git\Repository $repository
      */
     public function __construct(IO $io, Config $config, Repository $repository)
     {

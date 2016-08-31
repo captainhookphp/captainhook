@@ -7,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Runner;
+namespace HookMeUp\App\Runner;
 
-use HookMeUp\Config;
-use HookMeUp\Console\IOUtil;
-use HookMeUp\Hook\Util;
-use HookMeUp\Runner;
-use HookMeUp\Storage\File\Json;
+use HookMeUp\App\Config;
+use HookMeUp\App\Console\IOUtil;
+use HookMeUp\App\Hook\Util;
+use HookMeUp\App\Runner;
+use HookMeUp\App\Storage\File\Json;
 
 /**
  * Class Configurator
@@ -62,7 +62,7 @@ class Configurator extends Runner
      * Force mode setter.
      *
      * @param  bool $force
-     * @return \HookMeUp\Runner\Configurator
+     * @return \HookMeUp\App\Runner\Configurator
      */
     public function force($force)
     {
@@ -74,7 +74,7 @@ class Configurator extends Runner
      * Set configuration mode.
      *
      * @param  bool $extend
-     * @return \HookMeUp\Runner\Configurator
+     * @return \HookMeUp\App\Runner\Configurator
      */
     public function extend($extend)
     {
@@ -85,7 +85,7 @@ class Configurator extends Runner
     /**
      * Return config to handle.
      *
-     * @return \HookMeUp\Config
+     * @return \HookMeUp\App\Config
      */
     public function getConfigToManipulate()
     {
@@ -113,7 +113,7 @@ class Configurator extends Runner
     /**
      * Configure a hook.
      *
-     * @param \HookMeUp\Config $config
+     * @param \HookMeUp\App\Config $config
      * @param string           $hook
      */
     public function configureHook(Config $config, $hook)
@@ -121,7 +121,7 @@ class Configurator extends Runner
         $answer = $this->io->ask('    <info>Enable \'' . $hook . '\' hook [y,n]?</info> ', 'n');
         $enable = IOUtil::answerToBool($answer);
 
-        /** @var \HookMeUp\Config\Hook $hookConfig */
+        /** @var \HookMeUp\App\Config\Hook $hookConfig */
         $hookConfig = $config->getHookConfig($hook);
         $hookConfig->setEnabled($enable);
 
@@ -139,7 +139,7 @@ class Configurator extends Runner
     /**
      * Setup a action config with user input.
      *
-     * @return \HookMeUp\Config\Action
+     * @return \HookMeUp\App\Config\Action
      */
     public function getActionConfig()
     {
@@ -207,7 +207,7 @@ class Configurator extends Runner
     /**
      * Write config to project root.
      *
-     * @param \HookMeUp\Config $config
+     * @param \HookMeUp\App\Config $config
      */
     public function writeConfig(Config $config)
     {

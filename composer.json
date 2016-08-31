@@ -16,7 +16,7 @@
   },
   "autoload": {
     "psr-4": {
-      "HookMeUp\\": "src/"
+      "HookMeUp\\App\\": "src/"
     }
   },
   "require": {
@@ -37,7 +37,7 @@
     }
   },
   "scripts": {
-    "post-package-install": "HookMeUp\\Composer\\Cmd::configure"
+    "post-package-install": "\\HookMeUp\\Composer\\Cmd::configure"
   },
   "suggest": {
     "your git hooks": "run 'vendor/bin/hookmeup configure' to set up your hook configuration"

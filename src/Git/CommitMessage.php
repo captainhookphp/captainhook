@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Git;
+namespace HookMeUp\App\Git;
 
 /**
  * Class CommitMessage
@@ -137,7 +137,7 @@ class CommitMessage
      * Create CommitMessage from file.
      *
      * @param  string $path
-     * @return \HookMeUp\Git\CommitMessage
+     * @return \HookMeUp\App\Git\CommitMessage
      */
     public static function createFromFile($path)
     {

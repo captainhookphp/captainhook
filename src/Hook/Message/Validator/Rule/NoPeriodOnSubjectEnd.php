@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Hook\Message\Validator\Rule;
+namespace HookMeUp\App\Hook\Message\Validator\Rule;
 
-use HookMeUp\Git\CommitMessage;
+use HookMeUp\App\Git\CommitMessage;
 
 /**
  * Class NoPeriodOnSubjectEnd
@@ -32,7 +32,7 @@ class NoPeriodOnSubjectEnd extends Base
     /**
      * Check if commit message doesn't end with a period.
      *
-     * @param  \HookMeUp\Git\CommitMessage $msg
+     * @param  \HookMeUp\App\Git\CommitMessage $msg
      * @return bool
      */
     public function pass(CommitMessage $msg)

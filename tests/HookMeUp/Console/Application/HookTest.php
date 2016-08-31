@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace HookMeUp\Console\Application;
+namespace HookMeUp\App\Console\Application;
 
-use HookMeUp\Config;
-use HookMeUp\Git\DummyRepo;
+use HookMeUp\App\Config;
+use HookMeUp\App\Git\DummyRepo;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 

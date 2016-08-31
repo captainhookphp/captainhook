@@ -1,6 +1,6 @@
 <?php
 
-namespace HookMeUp\Console\IO;
+namespace HookMeUp\App\Console\IO;
 
 class NullIOTest extends \PHPUnit_Framework_TestCase
 {
