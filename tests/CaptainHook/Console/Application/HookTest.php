@@ -59,7 +59,7 @@ class HookTest extends \PHPUnit_Framework_TestCase
         $app->setAutoExit(false);
         $exit = $app->run($input, $output);
 
-        $this->assertTrue($exit != 0);
+        $this->assertTrue($exit !== 0);
     }
 
     /**
