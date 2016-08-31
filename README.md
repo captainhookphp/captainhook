@@ -2,11 +2,11 @@
 
 Easy to use and very flexible git hook lib for php developers.
 
-[![Latest Stable Version](https://poser.pugx.org/sebastianfeldmann/captainhook/v/stable.svg)](https://packagist.org/packages/sebastianfeldmann/captainhook)
-[![License](https://poser.pugx.org/sebastianfeldmann/captainhook/license.svg)](https://packagist.org/packages/sebastianfeldmann/captainhook)
+[![Latest Stable Version](https://poser.pugx.org/sebastianfeldmann/captainhook/v/stable.svg?v=1)](https://packagist.org/packages/sebastianfeldmann/captainhook)
+[![License](https://poser.pugx.org/sebastianfeldmann/captainhook/license.svg?v=1)](https://packagist.org/packages/sebastianfeldmann/captainhook)
 [![Build Status](https://travis-ci.org/sebastianfeldmann/captainhook.svg?branch=master)](https://travis-ci.org/sebastianfeldmann/captainhook)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sebastianfeldmann/captainhook/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sebastianfeldmann/captainhook/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/sebastianfeldmann/captainhook/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/sebastianfeldmann/captainhook/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sebastianfeldmann/captainhook/badges/quality-score.png?b=master&v=1)](https://scrutinizer-ci.com/g/sebastianfeldmann/captainhook/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/sebastianfeldmann/captainhook/badges/coverage.png?b=master&v=1)](https://scrutinizer-ci.com/g/sebastianfeldmann/captainhook/?branch=master)
 
 ## Installation
 
