@@ -73,7 +73,7 @@ class Installer extends HookHandler
     {
         $doIt = true;
         if ($ask) {
-            $answer = $this->io->ask('    <info>Install \'' . $hook . '\' hook [y,n]?</info> ', 'y');
+            $answer = $this->io->ask('    <info>Install \'' . $hook . '\' hook?</info> <comment>[y,n]</comment> ', 'y');
             $doIt   = IOUtil::answerToBool($answer);
         }
 
@@ -96,7 +96,7 @@ class Installer extends HookHandler
         // if hook is configured and no force option is set
         // ask the user if overwriting the hook is ok
         if ($this->needInstallConfirmation($hook)) {
-            $ans  = $this->io->ask('    <comment>The \'' . $hook . '\' hook exists! Overwrite [y,n]?</comment> ', 'n');
+            $ans  = $this->io->ask('    <comment>The \'' . $hook . '\' hook exists! Overwrite? [y,n]</comment> ', 'n');
             $doIt = IOUtil::answerToBool($ans);
         }
 
