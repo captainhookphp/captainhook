@@ -28,7 +28,7 @@ class HookTest extends \PHPUnit_Framework_TestCase
             'file' => HMU_PATH_FILES . '/git/message/valid.txt',
         ]);
         $app = new Hook();
-        $app->setConfigFile($config);
+        $app->setConfigFile($config->getPath());
         $app->setRepositoryPath($repo->getPath());
         $app->setHook('commit-msg');
         $app->setAutoExit(false);
