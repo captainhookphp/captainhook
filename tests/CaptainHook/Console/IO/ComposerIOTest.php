@@ -112,7 +112,7 @@ class ComposerIOTest extends \PHPUnit_Framework_TestCase
                 function() {
                     return true;
                 },
-                false,
+                null,
                 true
             )
         );
