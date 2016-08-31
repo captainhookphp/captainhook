@@ -118,7 +118,7 @@ class Configurator extends Runner
      */
     public function configureHook(Config $config, $hook)
     {
-        $answer = $this->io->ask('    <info>Enable \'' . $hook . '\' hook [y,n]?</info> ', 'n');
+        $answer = $this->io->ask('  <info>Enable \'' . $hook . '\' hook?</info> <comment>[y,n]</comment> ', 'n');
         $enable = IOUtil::answerToBool($answer);
 
         /** @var \CaptainHook\App\Config\Hook $hookConfig */
@@ -126,12 +126,15 @@ class Configurator extends Runner
         $hookConfig->setEnabled($enable);
 
         if ($enable) {
-            $addAction = $this->io->ask('    <info>Add a validation action [y,n]?</info> ', 'n');
+            $addAction = $this->io->ask('  <info>Add a validation action?</info> <comment>[y,n]</comment> ', 'n');
 
             while (IOUtil::answerToBool($addAction)) {
                 $hookConfig->addAction($this->getActionConfig());
                 // add another action?
-                $addAction = $this->io->ask('    <info>Add another validation action [y,n]?</info> ', 'n');
+                $addAction = $this->io->ask(
+                    '  <info>Add another validation action?</info> <comment>[y,n]</comment> ',
+                    'n'
+                );
             }
         }
     }
@@ -143,7 +146,7 @@ class Configurator extends Runner
      */
     public function getActionConfig()
     {
-        $call    = $this->io->ask('    <info>PHP class or shell command to execute?</info> ', '');
+        $call    = $this->io->ask('  <info>PHP class or shell command to execute?</info> ', '');
         $type    = Util::getActionType($call);
         $options = $this->getActionOptions($type);
 
@@ -169,11 +172,11 @@ class Configurator extends Runner
     protected function getPHPActionOptions()
     {
         $options = [];
-        $addOption = $this->io->ask('    <info>Add a validator option [y,n]?</info> ', 'n');
+        $addOption = $this->io->ask('  <info>Add a validator option?</info> <comment>[y,n]</comment> ', 'n');
         while (IOUtil::answerToBool($addOption)) {
             $options = array_merge($options, $this->getPHPActionOption());
             // add another action?
-            $addOption = $this->io->ask('    <info>Add another validator option [y,n]?</info> ', 'n');
+            $addOption = $this->io->ask('  <info>Add another validator option?</info> <comment>[y,n]</comment> ', 'n');
         }
         return $options;
     }
@@ -187,7 +190,7 @@ class Configurator extends Runner
     {
         $result = [];
         $answer = $this->io->askAndValidate(
-            '    <info>Specify options name and value [name:value]</info> ',
+            '  <info>Specify options name and value</info> <comment>[name:value]</comment> ',
             function($value) {
                 if (count(explode(':', $value)) !== 2) {
                     throw new \Exception('Invalid option, use "key:value"');
