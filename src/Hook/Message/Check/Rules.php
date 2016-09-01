@@ -36,7 +36,7 @@ class Rules extends Book
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
-        $rules = $action->getOptions();
+        $rules = $action->getOptions()->getAll();
         $book  = new RuleBook();
         foreach ($rules as $class) {
             $book->addRule($this->createRule($class));

@@ -36,14 +36,15 @@ class Beams extends Book
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
-        $book = new RuleBook();
+        $options = $action->getOptions();
+        $book    = new RuleBook();
         $book->setRules(
             [
                 new Rule\CapitalizeSubject(),
-                new Rule\LimitSubjectLength(50),
+                new Rule\LimitSubjectLength($options->get('subjectLength', 50)),
                 new Rule\NoPeriodOnSubjectEnd(),
                 new Rule\UseImperativeMood(),
-                new Rule\LimitBodyLineLength(),
+                new Rule\LimitBodyLineLength($options->get('bodyLineLength', 72)),
                 new Rule\SeparateSubjectFromBodyWithBlankLine(),
             ]
         );

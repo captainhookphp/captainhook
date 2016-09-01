@@ -46,15 +46,16 @@ class Regex implements Action
     /**
      * Extract regex from options array.
      *
-     * @param  array $options
+     * @param  \sebastianfeldmann\CaptainHook\Config\Options $options
      * @return string
      * @throws \sebastianfeldmann\CaptainHook\Exception\ActionExecution
      */
-    protected function getRegex(array $options)
+    protected function getRegex(Config\Options $options)
     {
-        if (!isset($options['regex'])) {
+        $regex = $options->get('regex');
+        if (empty($regex)) {
             throw new ActionExecution('No regex option');
         }
-        return $options['regex'];
+        return $regex;
     }
 }

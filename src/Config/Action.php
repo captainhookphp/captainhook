@@ -36,7 +36,7 @@ class Action
     /**
      * Map of options name => value
      *
-     * @var array
+     * @var \sebastianfeldmann\CaptainHook\Config\Options
      */
     private $options;
 
@@ -62,7 +62,7 @@ class Action
         }
         $this->type    = $type;
         $this->action  = $action;
-        $this->options = $options;
+        $this->options = new Options($options);
     }
 
     /**
@@ -88,7 +88,7 @@ class Action
     /**
      * Return option map.
      *
-     * @return array
+     * @return \sebastianfeldmann\CaptainHook\Config\Options
      */
     public function getOptions()
     {
@@ -104,7 +104,7 @@ class Action
     {
         return [
             'action'  => $this->action,
-            'options' => $this->options,
+            'options' => $this->options->getAll(),
         ];
     }
 }

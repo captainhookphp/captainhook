@@ -36,7 +36,7 @@ class ActionTest extends \PHPUnit_Framework_TestCase
     public function testGetOptions()
     {
         $action = new Action('php', '\\Foo\\Bar');
-        $this->assertEquals([], $action->getOptions());
+        $this->assertEquals([], $action->getOptions()->getAll());
     }
 
     /**
