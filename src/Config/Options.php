@@ -20,6 +20,13 @@ namespace sebastianfeldmann\CaptainHook\Config;
 class Options
 {
     /**
+     * Map of options
+     *
+     * @var array
+     */
+    private $options;
+
+    /**
      * Options constructor.
      *
      * @param array $options
