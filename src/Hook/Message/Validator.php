@@ -9,6 +9,7 @@
  */
 namespace sebastianfeldmann\CaptainHook\Hook\Message;
 
+use sebastianfeldmann\CaptainHook\Exception\ActionExecution;
 use sebastianfeldmann\CaptainHook\Git\CommitMessage;
 
 /**
@@ -56,13 +57,13 @@ class Validator
      * Validates all rules.
      *
      * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
-     * @throws \RuntimeException
+     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionExecution
      */
     public function validate(CommitMessage $msg)
     {
         foreach ($this->rules as $rule) {
             if (!$rule->pass($msg)) {
-                throw new \RuntimeException($rule->getHint());
+                throw new ActionExecution($rule->getHint());
             }
         }
     }
