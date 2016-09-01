@@ -36,14 +36,14 @@ class Hook extends HookHandler
 
         // execute hooks only if hook is enabled in captainhook.json
         if ($this->hookConfig->isEnabled()) {
-            $this->io->write('EXECUTE: ' . $this->hookToHandle);
+            $this->io->write('<info>execute hook:</info> <comment>' . $this->hookToHandle . '</comment>');
             foreach ($this->getActionsToRun() as $action) {
-                $this->io->write(PHP_EOL . str_repeat('#', 80) . PHP_EOL);
+                $this->io->write([str_repeat('#', 80), '# <info>' . $action->getAction() . '</info>', '']);
                 $runner = $this->getActionRunner($action->getType());
                 $runner->execute($this->config, $this->io, $this->repository, $action);
             }
         } else {
-            $this->io->write('SKIP: ' . $this->hookToHandle . ' is disabled.');
+            $this->io->write('<info>skip hook:</info> <comment>' . $this->hookToHandle . '</comment>');
         }
     }
 
