@@ -33,10 +33,10 @@ class Run extends Base
     protected function configure()
     {
         $this->setName('run')
-             ->setDescription('Run git hook.')
-             ->setHelp("This command executes a configured git hook.")
-             ->addArgument('hook', InputArgument::REQUIRED, 'Hook you want to execute.')
-             ->addOption('message', 'm', InputOption::VALUE_OPTIONAL, 'File containing the commit message.')
+             ->setDescription('Run a git hook')
+             ->setHelp("This command executes a configured git hook")
+             ->addArgument('hook', InputArgument::REQUIRED, 'Hook you want to execute')
+             ->addOption('message', 'm', InputOption::VALUE_OPTIONAL, 'File containing the commit message')
              ->addOption(
                  'configuration',
                  'c',

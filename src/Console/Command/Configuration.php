@@ -31,8 +31,8 @@ class Configuration extends Base
     protected function configure()
     {
         $this->setName('configure')
-             ->setDescription('Configure your hooks.')
-             ->setHelp('This command creates or updates your captainhook configuration.')
+             ->setDescription('Configure your hooks')
+             ->setHelp('This command creates or updates your captainhook configuration')
              ->addOption('extend', 'e', InputOption::VALUE_NONE, 'Extend existing configuration file')
              ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing configuration file')
              ->addOption(

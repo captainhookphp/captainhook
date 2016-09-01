@@ -32,9 +32,9 @@ class Install extends Base
     protected function configure()
     {
         $this->setName('install')
-             ->setDescription('Install git hooks.')
-             ->setHelp('This command will install the git hooks to your .git directory.')
-             ->addArgument('hook', InputArgument::OPTIONAL, 'Hook you want to install.')
+             ->setDescription('Install git hooks')
+             ->setHelp('This command will install the git hooks to your .git directory')
+             ->addArgument('hook', InputArgument::OPTIONAL, 'Hook you want to install')
              ->addOption(
                  'configuration',
                  'c',
