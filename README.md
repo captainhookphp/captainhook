@@ -24,13 +24,14 @@ After installing CaptainHook you can use the *captainhook* executable to create 
     $ vendor/bin/captainhook configure
 ```
 
-Now you should have a *captainhook.json* configuration file.
-To finally activate the hooks you have to install them to your local .git repository. 
+Now there should be a *captainhook.json* configuration file.
+To finally activate the hooks you have to install them to your local .git repository.
+You can do so by running the following command.
 ```bash
     $ vendor/bin/captainhook install
 ```
 
-## Configuration
+## Configuration example
 
 The *captainhook* configuration file
 ```json
@@ -39,8 +40,8 @@ The *captainhook* configuration file
             "enabled": false,
             "actions": [
                 {
-                    "action": "\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Beams",
-                    "options": {}
+                    "action": "\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Check\\Beams",
+                    "options": []
                 }
             ]
         },
