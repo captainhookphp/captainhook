@@ -7,36 +7,32 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule;
+namespace sebastianfeldmann\CaptainHook\Hook\Message;
 
 use sebastianfeldmann\CaptainHook\Git\CommitMessage;
 
 /**
- * Class SeparateSubjectFromBodyWithBlankLine
+ * Interface Rule
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
-class SeparateSubjectFromBodyWithBlankLine extends Base
+interface Rule
 {
     /**
-     * Constructor.
+     * Return a hint how to pass the rule.
+     *
+     * @return string
      */
-    public function __construct()
-    {
-        $this->hint = 'Subject and body have to be separated by a blank line';
-    }
+    public function getHint();
 
     /**
-     * Check if subject and body are separated by a blank line.
+     * Checks if a commit message passes the rule.
      *
      * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
      * @return bool
      */
-    public function pass(CommitMessage $msg)
-    {
-        return $msg->getLineCount() < 2 || empty($msg->getLine(1));
-    }
+    public function pass(CommitMessage $msg);
 }

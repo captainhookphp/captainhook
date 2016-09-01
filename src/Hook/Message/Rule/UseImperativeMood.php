@@ -7,32 +7,31 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Validator;
-
-use sebastianfeldmann\CaptainHook\Git\CommitMessage;
+namespace sebastianfeldmann\CaptainHook\Hook\Message\Rule;
 
 /**
- * Interface Rule
+ * Class UseImperativeMood
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
-interface Rule
+class UseImperativeMood extends Blacklist
 {
     /**
-     * Return a hint how to pass the rule.
-     *
-     * @return string
+     * Constructor.
      */
-    public function getHint();
-
-    /**
-     * Checks if a commit message passes the rule.
-     *
-     * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
-     * @return bool
-     */
-    public function pass(CommitMessage $msg);
+    public function __construct()
+    {
+        $this->hint = 'Subject should be written in imperative mood';
+        $this->setSubjectBlacklist(
+            [
+                'uploaded',
+                'updated',
+                'added',
+                'created',
+            ]
+        );
+    }
 }

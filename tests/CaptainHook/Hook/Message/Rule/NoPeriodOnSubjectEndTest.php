@@ -7,29 +7,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule;
+namespace sebastianfeldmann\CaptainHook\Hook\Message\Rule;
 
 use sebastianfeldmann\CaptainHook\Git\CommitMessage;
 
-class MsgNotEmptyTest extends \PHPUnit_Framework_TestCase
+class NoPeriodOnSubjectEndTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Tests MsgNotEmpty::pass
+     * Tests NoPeriodOnSubjectEnd::pass
      */
     public function testPassSuccess()
     {
         $msg  = new CommitMessage('Foo bar');
-        $rule = new MsgNotEmpty();
+        $rule = new NoPeriodOnSubjectEnd();
         $this->assertTrue($rule->pass($msg));
     }
 
     /**
-     * Tests MsgNotEmpty::pass
+     * Tests NoPeriodOnSubjectEnd::pass
      */
     public function testPassFail()
     {
-        $msg  = new CommitMessage('');
-        $rule = new MsgNotEmpty();
+        $msg  = new CommitMessage('Foo bar.');
+        $rule = new NoPeriodOnSubjectEnd();
         $this->assertFalse($rule->pass($msg));
     }
 }

@@ -46,7 +46,7 @@ class Rulebook extends Base
      * Create a new rule.
      *
      * @param  string $class
-     * @return \sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule
+     * @return \sebastianfeldmann\CaptainHook\Hook\Message\Rule
      * @throws \Exception
      */
     protected function createRule($class)
@@ -59,7 +59,7 @@ class Rulebook extends Base
         $rule = new $class();
 
         // make sure the class implements the Rule interface
-        if (!$rule instanceof Validator\Rule) {
+        if (!$rule instanceof Rule) {
             throw new \Exception('Class \'' . $class . '\' must implement the Rule interface');
         }
 

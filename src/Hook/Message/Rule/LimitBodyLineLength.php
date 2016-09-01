@@ -7,48 +7,53 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule;
+namespace sebastianfeldmann\CaptainHook\Hook\Message\Rule;
 
 use sebastianfeldmann\CaptainHook\Git\CommitMessage;
 
 /**
- * Class UseImperativeMood
+ * Class LimitBodyLineLength
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
-class UseImperativeMood extends Base
+class LimitBodyLineLength extends Base
 {
     /**
-     * Constructor.
+     * Length limit
+     *
+     * @var int
      */
-    public function __construct()
+    protected $maxLength;
+
+    /**
+     * Constructor.
+     *
+     * @param int $length
+     */
+    public function __construct($length = 72)
     {
-        $this->hint = 'Subject should be written in imperative mood';
+        $this->hint      = 'Body lines should not exceed ' . $length . ' characters';
+        $this->maxLength = $length;
     }
 
     /**
-     * Check if commit message is written in imperative mood.
+     * Check if a body line doesn't exceed the max length limit.
      *
      * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
      * @return bool
      */
     public function pass(CommitMessage $msg)
     {
-        $lowerSubject = strtolower($msg->getSubject());
-        $blackList    = [
-            'uploaded',
-            'updated',
-            'added',
-            'created',
-        ];
-        foreach ($blackList as $term) {
-            if (strpos($lowerSubject, $term) !== false) {
-                $this->hint .= PHP_EOL . 'Invalid use of \'' . $term . '\'';
+        $lineNr = 1;
+        foreach ($msg->getBodyLines() as $line) {
+            if (strlen($line) > $this->maxLength) {
+                $this->hint .= PHP_EOL . 'Line ' . $lineNr . ' of your body exceeds the max line length';
                 return false;
             }
+            $lineNr++;
         }
         return true;
     }

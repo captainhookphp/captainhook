@@ -10,7 +10,6 @@
 namespace sebastianfeldmann\CaptainHook\Hook\Message;
 
 use sebastianfeldmann\CaptainHook\Git\CommitMessage;
-use sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule;
 
 /**
  * Class Validator
@@ -25,14 +24,14 @@ class Validator
     /**
      * List of rules to check
      *
-     * @var \sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule[]
+     * @var \sebastianfeldmann\CaptainHook\Hook\Message\Rule[]
      */
     private $rules = [];
 
     /**
      * Set rules to check.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule[] $rules
+     * @param  \sebastianfeldmann\CaptainHook\Hook\Message\Rule[] $rules
      * @return \sebastianfeldmann\CaptainHook\Hook\Message\Validator
      */
     public function setRules(array $rules)
@@ -44,7 +43,7 @@ class Validator
     /**
      * Add a rule to the list.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule $rule
+     * @param  \sebastianfeldmann\CaptainHook\Hook\Message\Rule $rule
      * @return \sebastianfeldmann\CaptainHook\Hook\Message\Validator
      */
     public function addRule(Rule $rule)

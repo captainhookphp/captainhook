@@ -104,7 +104,7 @@ class RulebookTest extends \PHPUnit_Framework_TestCase
         $action = new Config\Action(
             'php',
             '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Rulebook',
-            ['\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Validator\\Rule\\CapitalizeSubject']
+            ['\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Rule\\CapitalizeSubject']
         );
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));

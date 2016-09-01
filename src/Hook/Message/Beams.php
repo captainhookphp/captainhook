@@ -37,12 +37,12 @@ class Beams extends Base
         $validator = new Validator();
         $validator->setRules(
             [
-                new Validator\Rule\CapitalizeSubject(),
-                new Validator\Rule\LimitSubjectLength(50),
-                new Validator\Rule\NoPeriodOnSubjectEnd(),
-                new Validator\Rule\UseImperativeMood(),
-                new Validator\Rule\LimitBodyLineLength(),
-                new Validator\Rule\SeparateSubjectFromBodyWithBlankLine(),
+                new Rule\CapitalizeSubject(),
+                new Rule\LimitSubjectLength(50),
+                new Rule\NoPeriodOnSubjectEnd(),
+                new Rule\UseImperativeMood(),
+                new Rule\LimitBodyLineLength(),
+                new Rule\SeparateSubjectFromBodyWithBlankLine(),
             ]
         );
 

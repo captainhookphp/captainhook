@@ -7,39 +7,36 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule;
+namespace sebastianfeldmann\CaptainHook\Hook\Message\Rule;
 
 use sebastianfeldmann\CaptainHook\Git\CommitMessage;
-use sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule;
 
 /**
- * Class Base
+ * Class NoPeriodOnSubjectEnd
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
-abstract class Base implements Rule
+class NoPeriodOnSubjectEnd extends Base
 {
     /**
-     * Rule hint.
-     *
-     * @var string
+     * Constructor.
      */
-    protected $hint;
-
-    /**
-     * @return string
-     */
-    public function getHint()
+    public function __construct()
     {
-        return $this->hint;
+        $this->hint = 'Subject should not end with a period';
     }
 
     /**
+     * Check if commit message doesn't end with a period.
+     *
      * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
      * @return bool
      */
-    abstract public function pass(CommitMessage $msg);
+    public function pass(CommitMessage $msg)
+    {
+        return substr(trim($msg->getSubject()), -1) !== '.';
+    }
 }

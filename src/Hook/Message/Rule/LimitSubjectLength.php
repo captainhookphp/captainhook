@@ -7,19 +7,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule;
+namespace sebastianfeldmann\CaptainHook\Hook\Message\Rule;
 
 use sebastianfeldmann\CaptainHook\Git\CommitMessage;
 
 /**
- * Class LimitBodyLineLength
+ * Class LimitSubjectLength
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
-class LimitBodyLineLength extends Base
+class LimitSubjectLength extends Base
 {
     /**
      * Length limit
@@ -33,28 +33,20 @@ class LimitBodyLineLength extends Base
      *
      * @param int $length
      */
-    public function __construct($length = 72)
+    public function __construct($length = 50)
     {
-        $this->hint      = 'Body lines should not exceed ' . $length . ' characters';
+        $this->hint      = 'Subject line should not exceed ' . $length . ' characters';
         $this->maxLength = $length;
     }
 
     /**
-     * Check if a body line doesn't exceed the max length limit.
+     * Check if commit message doesn't exceeed the max length.
      *
      * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
      * @return bool
      */
     public function pass(CommitMessage $msg)
     {
-        $lineNr = 1;
-        foreach ($msg->getBodyLines() as $line) {
-            if (strlen($line) > $this->maxLength) {
-                $this->hint .= PHP_EOL . 'Line ' . $lineNr . ' of your body exceeds the max line length';
-                return false;
-            }
-            $lineNr++;
-        }
-        return true;
+        return strlen(($msg->getSubject())) <= $this->maxLength;
     }
 }

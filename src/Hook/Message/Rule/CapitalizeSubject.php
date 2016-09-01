@@ -7,46 +7,40 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule;
+namespace sebastianfeldmann\CaptainHook\Hook\Message\Rule;
 
 use sebastianfeldmann\CaptainHook\Git\CommitMessage;
 
 /**
- * Class LimitSubjectLength
+ * Class CapitdalizeSubject
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
-class LimitSubjectLength extends Base
+class CapitalizeSubject extends Base
 {
     /**
-     * Length limit
-     *
-     * @var int
-     */
-    protected $maxLength;
-
-    /**
      * Constructor.
-     *
-     * @param int $length
      */
-    public function __construct($length = 50)
+    public function __construct()
     {
-        $this->hint      = 'Subject line should not exceed ' . $length . ' characters';
-        $this->maxLength = $length;
+        $this->hint = 'Subject line has to start with an upper case letter';
     }
 
     /**
-     * Check if commit message doesn't exceeed the max length.
+     * Check if commit message starts with upper case letter.
      *
      * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
      * @return bool
      */
     public function pass(CommitMessage $msg)
     {
-        return strlen(($msg->getSubject())) <= $this->maxLength;
+        if (!$msg->isEmpty()) {
+            $firstLetter = substr($msg->getSubject(), 0, 1);
+            return $firstLetter === strtoupper($firstLetter);
+        }
+        return false;
     }
 }

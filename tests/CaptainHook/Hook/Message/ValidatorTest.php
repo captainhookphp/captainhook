@@ -10,8 +10,8 @@
 namespace sebastianfeldmann\CaptainHook\Hook\Message;
 
 use sebastianfeldmann\CaptainHook\Git\CommitMessage;
-use sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule\CapitalizeSubject;
-use sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule\MsgNotEmpty;
+use sebastianfeldmann\CaptainHook\Hook\Message\Rule\CapitalizeSubject;
+use sebastianfeldmann\CaptainHook\Hook\Message\Rule\MsgNotEmpty;
 
 class ValidatorTest extends \PHPUnit_Framework_TestCase
 {

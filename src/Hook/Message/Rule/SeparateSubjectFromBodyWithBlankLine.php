@@ -7,36 +7,36 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Validator\Rule;
+namespace sebastianfeldmann\CaptainHook\Hook\Message\Rule;
 
 use sebastianfeldmann\CaptainHook\Git\CommitMessage;
 
 /**
- * Class NoPeriodOnSubjectEnd
+ * Class SeparateSubjectFromBodyWithBlankLine
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
-class NoPeriodOnSubjectEnd extends Base
+class SeparateSubjectFromBodyWithBlankLine extends Base
 {
     /**
      * Constructor.
      */
     public function __construct()
     {
-        $this->hint = 'Subject should not end with a period.';
+        $this->hint = 'Subject and body have to be separated by a blank line';
     }
 
     /**
-     * Check if commit message doesn't end with a period.
+     * Check if subject and body are separated by a blank line.
      *
      * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
      * @return bool
      */
     public function pass(CommitMessage $msg)
     {
-        return substr(trim($msg->getSubject()), -1) !== '.';
+        return $msg->getLineCount() < 2 || empty($msg->getLine(1));
     }
 }
