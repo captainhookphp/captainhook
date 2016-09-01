@@ -7,21 +7,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message;
+namespace sebastianfeldmann\CaptainHook\Hook\Message\Check;
 
 use sebastianfeldmann\CaptainHook\Config;
 use sebastianfeldmann\CaptainHook\Console\IO;
 use sebastianfeldmann\CaptainHook\Git\Repository;
+use sebastianfeldmann\CaptainHook\Hook\Message\Rule;
+use sebastianfeldmann\CaptainHook\Hook\Message\RuleBook;
 
 /**
- * Class Rulebook
+ * Class Rules
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
-class Rulebook extends Base
+class Rules extends Book
 {
     /**
      * Execute the configured action.
@@ -34,12 +36,12 @@ class Rulebook extends Base
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
-        $rules     = $action->getOptions();
-        $validator = new Validator();
+        $rules = $action->getOptions();
+        $book  = new RuleBook();
         foreach ($rules as $class) {
-            $validator->addRule($this->createRule($class));
+            $book->addRule($this->createRule($class));
         }
-        $this->executeValidator($validator, $repository);
+        $this->validate($book, $repository);
     }
 
     /**

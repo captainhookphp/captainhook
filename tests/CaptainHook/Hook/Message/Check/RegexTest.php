@@ -51,7 +51,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
         $repo    = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
-        $standard = new RegexCheck();
+        $standard = new Regex();
         $standard->execute($config, $io, $repo, $action);
     }
 
@@ -67,7 +67,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action('php', '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Rulebook');
 
-        $standard = new RegexCheck();
+        $standard = new Regex();
         $standard->execute($config, $io, $repo, $action);
     }
 
@@ -88,7 +88,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
-        $standard = new RegexCheck();
+        $standard = new Regex();
         $standard->execute($config, $io, $repo, $action);
     }
 }

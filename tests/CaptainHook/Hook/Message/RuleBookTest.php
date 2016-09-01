@@ -13,7 +13,7 @@ use sebastianfeldmann\CaptainHook\Git\CommitMessage;
 use sebastianfeldmann\CaptainHook\Hook\Message\Rule\CapitalizeSubject;
 use sebastianfeldmann\CaptainHook\Hook\Message\Rule\MsgNotEmpty;
 
-class ValidatorTest extends \PHPUnit_Framework_TestCase
+class RuleBookTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Tests Validator::validate
@@ -21,7 +21,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testValidOnEmptyRuleList()
     {
         $msg = new CommitMessage('Foo');
-        $v   = new Validator();
+        $v   = new RuleBook();
 
         $v->validate($msg);
         $this->assertTrue(true);
@@ -34,7 +34,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testSetRulesValid()
     {
         $msg = new CommitMessage('Foo');
-        $v   = new Validator();
+        $v   = new RuleBook();
         $v->setRules([new MsgNotEmpty()]);
 
         $v->validate($msg);
@@ -49,7 +49,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testSetRulesInvalid()
     {
         $msg = new CommitMessage('');
-        $v   = new Validator();
+        $v   = new RuleBook();
         $v->setRules([new MsgNotEmpty()]);
         $v->validate($msg);
     }
@@ -62,7 +62,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testAddRuleInvalid()
     {
         $msg = new CommitMessage('foo bar baz');
-        $v   = new Validator();
+        $v   = new RuleBook();
         $v->setRules([new MsgNotEmpty()]);
         $v->addRule(new CapitalizeSubject());
 

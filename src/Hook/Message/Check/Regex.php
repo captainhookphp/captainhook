@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message;
+namespace sebastianfeldmann\CaptainHook\Hook\Message\Check;
 
 use sebastianfeldmann\CaptainHook\Config;
 use sebastianfeldmann\CaptainHook\Console\IO;
@@ -16,14 +16,14 @@ use sebastianfeldmann\CaptainHook\Git\Repository;
 use sebastianfeldmann\CaptainHook\Hook\Action;
 
 /**
- * Class RegexCheck
+ * Class Regex
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 1.0.0
  */
-class RegexCheck implements Action
+class Regex implements Action
 {
     /**
      * Execute the configured action.

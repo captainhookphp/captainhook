@@ -13,7 +13,7 @@ use sebastianfeldmann\CaptainHook\Exception\ActionExecution;
 use sebastianfeldmann\CaptainHook\Git\CommitMessage;
 
 /**
- * Class RoolBook
+ * Class RuleBook
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
@@ -33,7 +33,7 @@ class RuleBook
      * Set rules to check.
      *
      * @param  \sebastianfeldmann\CaptainHook\Hook\Message\Rule[] $rules
-     * @return \sebastianfeldmann\CaptainHook\Hook\Message\Validator
+     * @return \sebastianfeldmann\CaptainHook\Hook\Message\Rulebook
      */
     public function setRules(array $rules)
     {
@@ -45,7 +45,7 @@ class RuleBook
      * Add a rule to the list.
      *
      * @param  \sebastianfeldmann\CaptainHook\Hook\Message\Rule $rule
-     * @return \sebastianfeldmann\CaptainHook\Hook\Message\Validator
+     * @return \sebastianfeldmann\CaptainHook\Hook\Message\Rulebook
      */
     public function addRule(Rule $rule)
     {
