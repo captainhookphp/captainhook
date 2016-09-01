@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message;
+namespace sebastianfeldmann\CaptainHook\Hook\Message\Check;
 
 use sebastianfeldmann\CaptainHook\Config;
 use sebastianfeldmann\CaptainHook\Console\IO\NullIO;
@@ -15,7 +15,7 @@ use sebastianfeldmann\CaptainHook\Git\CommitMessage;
 use sebastianfeldmann\CaptainHook\Git\DummyRepo;
 use sebastianfeldmann\CaptainHook\Git\Repository;
 
-class RegexCheckTest extends \PHPUnit_Framework_TestCase
+class RegexTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \sebastianfeldmann\CaptainHook\Git\DummyRepo

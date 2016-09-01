@@ -13,14 +13,14 @@ use sebastianfeldmann\CaptainHook\Exception\ActionExecution;
 use sebastianfeldmann\CaptainHook\Git\CommitMessage;
 
 /**
- * Class Validator
+ * Class RoolBook
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
-class Validator
+class RuleBook
 {
     /**
      * List of rules to check

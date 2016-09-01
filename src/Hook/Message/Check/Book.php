@@ -7,12 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message;
+namespace sebastianfeldmann\CaptainHook\Hook\Message\Check;
 
 use sebastianfeldmann\CaptainHook\Config;
 use sebastianfeldmann\CaptainHook\Console\IO;
 use sebastianfeldmann\CaptainHook\Git\Repository;
 use sebastianfeldmann\CaptainHook\Hook\Action;
+use sebastianfeldmann\CaptainHook\Hook\Message\Roolbook as Book;
 
 /**
  * Class Base
@@ -22,7 +23,7 @@ use sebastianfeldmann\CaptainHook\Hook\Action;
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
-abstract class Base implements Action
+abstract class RuleBook implements Action
 {
     /**
      * Execute the configured action.
@@ -38,14 +39,14 @@ abstract class Base implements Action
     /**
      * Validate the message.
      *
-     * @param \sebastianfeldmann\CaptainHook\Hook\Message\Validator $validator
-     * @param \sebastianfeldmann\CaptainHook\Git\Repository         $repository
+     * @param \sebastianfeldmann\CaptainHook\Hook\Message\RuleBook $ruleBook
+     * @param \sebastianfeldmann\CaptainHook\Git\Repository        $repository
      */
-    protected function executeValidator(Validator $validator, Repository $repository)
+    protected function validate(Book $ruleBook, Repository $repository)
     {
         // if this is no merge commit enforce message rules
         if (!$repository->isMerging()) {
-            $validator->validate($repository->getCommitMsg());
+            $ruleBook->validate($repository->getCommitMsg());
         }
     }
 }
