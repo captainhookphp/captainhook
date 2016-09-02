@@ -11,7 +11,7 @@ namespace sebastianfeldmann\CaptainHook\Hook\Message\Check;
 
 use sebastianfeldmann\CaptainHook\Config;
 use sebastianfeldmann\CaptainHook\Console\IO;
-use sebastianfeldmann\CaptainHook\Exception\ActionExecution;
+use sebastianfeldmann\CaptainHook\Exception\ActionFailed;
 use sebastianfeldmann\CaptainHook\Git\Repository;
 use sebastianfeldmann\CaptainHook\Hook\Action;
 
@@ -32,14 +32,14 @@ class Regex implements Action
      * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
      * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
      * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
-     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionExecution
+     * @throws \Exception
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
         $regex = $this->getRegex($action->getOptions());
 
         if (!preg_match($regex, $repository->getCommitMsg()->getContent())) {
-            throw new ActionExecution('Commit message did not match regex: ' . $regex);
+            throw ActionFailed::withMessage('Commit message did not match regex: ' . $regex);
         }
     }
 
@@ -48,13 +48,13 @@ class Regex implements Action
      *
      * @param  \sebastianfeldmann\CaptainHook\Config\Options $options
      * @return string
-     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionExecution
+     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionFailed
      */
     protected function getRegex(Config\Options $options)
     {
         $regex = $options->get('regex');
         if (empty($regex)) {
-            throw new ActionExecution('No regex option');
+            throw ActionFailed::withMessage('No regex option');
         }
         return $regex;
     }

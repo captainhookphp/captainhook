@@ -33,7 +33,7 @@ class Cli implements Action
      * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
      * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
      * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
-     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionExecution
+     * @throws \Exception
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
@@ -41,7 +41,7 @@ class Cli implements Action
         $process->run();
 
         if (!$process->isSuccessful()) {
-            throw new Exception\ActionExecution($process->getOutput() . PHP_EOL . $process->getErrorOutput());
+            throw Exception\ActionFailed::withMessage($process->getOutput() . PHP_EOL . $process->getErrorOutput());
         }
 
         $io->write($process->getOutput());

@@ -30,7 +30,7 @@ interface Action
      * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
      * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
      * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
-     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionExecution
+     * @throws \Exception
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action);
 }

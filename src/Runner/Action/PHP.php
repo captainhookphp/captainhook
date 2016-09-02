@@ -11,7 +11,7 @@ namespace sebastianfeldmann\CaptainHook\Runner\Action;
 
 use sebastianfeldmann\CaptainHook\Config;
 use sebastianfeldmann\CaptainHook\Console\IO;
-use sebastianfeldmann\CaptainHook\Exception\ActionExecution;
+use sebastianfeldmann\CaptainHook\Exception\ActionFailed;
 use sebastianfeldmann\CaptainHook\Git\Repository;
 use sebastianfeldmann\CaptainHook\Hook\Action;
 
@@ -32,7 +32,7 @@ class PHP implements Action
      * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
      * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
      * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
-     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionExecution
+     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionFailed
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
@@ -43,14 +43,14 @@ class PHP implements Action
             $exe = new $class();
 
             if (!$exe instanceof Action) {
-                throw new ActionExecution('PHP class ' . $class . ' has to implement the \'Action\' interface');
+                throw ActionFailed::withMessage('PHP class ' . $class . ' has to implement the \'Action\' interface');
             }
             $exe->execute($config, $io, $repository, $action);
 
         } catch (\Exception $e) {
-            throw new ActionExecution('Execution failed: ' . $e->getMessage());
+            throw ActionFailed::withMessage('Execution failed: ' . $e->getMessage());
         } catch (\Error $e) {
-            throw new ActionExecution('PHP Error: ' . $e->getMessage());
+            throw ActionFailed::withMessage('PHP Error: ' . $e->getMessage());
         }
     }
 }

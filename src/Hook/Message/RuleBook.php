@@ -9,7 +9,7 @@
  */
 namespace sebastianfeldmann\CaptainHook\Hook\Message;
 
-use sebastianfeldmann\CaptainHook\Exception\ActionExecution;
+use sebastianfeldmann\CaptainHook\Exception\ActionFailed;
 use sebastianfeldmann\CaptainHook\Git\CommitMessage;
 
 /**
@@ -57,13 +57,13 @@ class RuleBook
      * Validates all rules.
      *
      * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
-     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionExecution
+     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionFailed
      */
     public function validate(CommitMessage $msg)
     {
         foreach ($this->rules as $rule) {
             if (!$rule->pass($msg)) {
-                throw new ActionExecution($rule->getHint());
+                throw ActionFailed::withMessage($rule->getHint());
             }
         }
     }

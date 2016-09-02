@@ -10,13 +10,23 @@
 namespace sebastianfeldmann\CaptainHook\Exception;
 
 /**
- * Class ActionException
+ * Class ActionFailed
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
-class ActionExecution extends \Exception
+class ActionFailed extends \Exception
 {
+    /**
+     * Return a Action Failed exception.
+     *
+     * @param string $msg
+     * @return \sebastianfeldmann\CaptainHook\Exception\ActionFailed
+     */
+    public static function withMessage($msg)
+    {
+        return new self($msg);
+    }
 }

@@ -105,7 +105,7 @@ class DummyPHPSuccess implements ActionInterface
      * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
      * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
      * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
-     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionExecution
+     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionFailed
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
@@ -122,7 +122,7 @@ class DummyPHPFailure implements ActionInterface
      * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
      * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
      * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
-     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionExecution
+     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionFailed
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
@@ -139,7 +139,7 @@ class DummyPHPError implements ActionInterface
      * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
      * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
      * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
-     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionExecution
+     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionFailed
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
