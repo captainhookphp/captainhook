@@ -40,30 +40,30 @@ You can do so by running the following command.
 
 The *captainhook* configuration file
 ```json
-    {
-        "commit-msg": {
-            "enabled": false,
-            "actions": [
-                {
-                    "action": "\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Check\\Beams",
-                    "options": []
-                }
-            ]
-        },
-        "pre-commit": {
-            "enabled": false,
-            "actions": [
-                {
-                    "action": "phpunit"
-                },
-                {
-                    "action": "phpcs --standard=psr2 src"
-                }
-            ]
-        },
-        "pre-push": {
-            "enabled": false,
-            "actions": []
-        }
-    }
+{
+  "commit-msg": {
+    "enabled": false,
+    "actions": [
+      {
+        "action": "\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Check\\Beams",
+        "options": []
+      }
+    ]
+  },
+  "pre-commit": {
+    "enabled": false,
+    "actions": [
+      {
+        "action": "phpunit"
+      },
+      {
+        "action": "phpcs --standard=psr2 src"
+      }
+    ]
+  },
+  "pre-push": {
+    "enabled": false,
+    "actions": []
+  }
+}
 ```
