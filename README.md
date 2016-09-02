@@ -11,6 +11,7 @@ your own PHP classes that get executed by git.
 
 
 [![Latest Stable Version](https://poser.pugx.org/sebastianfeldmann/captainhook/v/stable.svg?v=1)](https://packagist.org/packages/sebastianfeldmann/captainhook)
+[![Downloads](https://img.shields.io/packagist/dt/sebastianfeldmann/captainhook.svg?v1)](https://packagist.org/packages/sebastianfeldmann/captainhook)
 [![License](https://poser.pugx.org/sebastianfeldmann/captainhook/license.svg?v=1)](https://packagist.org/packages/sebastianfeldmann/captainhook)
 [![Build Status](https://travis-ci.org/sebastianfeldmann/captainhook.svg?branch=master)](https://travis-ci.org/sebastianfeldmann/captainhook)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sebastianfeldmann/captainhook/badges/quality-score.png?b=master&v=1)](https://scrutinizer-ci.com/g/sebastianfeldmann/captainhook/?branch=master)
