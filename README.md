@@ -1,13 +1,13 @@
 # CaptainHook
 
-CaptainHook is an easy to use and very flexible git hook library for php developers.
-It allows you to configure your git hook actions with a simple json file.
+*CaptainHook* is an easy to use and very flexible git hook library for php developers.
+It enables you to configure your git hook actions in a simple json file.
 
-Use CaptainHook to validate commit messages, ensure code quality or run your unit tests before you
+You can use *CaptainHook* to validate your commit messages, ensure code quality or run unit tests before you
 commit or push changes to git.
 
-You can either run cli commands, use CaptainHooks build in validators, or write
-your own PHP classes that get executed by git.
+You can either run cli commands, use some build in validators, or write
+your own PHP classes that get executed by *CaptainHook*.
 
 
 [![Latest Stable Version](https://poser.pugx.org/sebastianfeldmann/captainhook/v/stable.svg?v=1)](https://packagist.org/packages/sebastianfeldmann/captainhook)
@@ -36,11 +36,13 @@ You can do so by running the following command.
     $ vendor/bin/captainhook install
 ```
 
+Have a look at this short installation video.
+
 [![Install demo](http://img.youtube.com/vi/zOrzlYstIcY/0.jpg)](http://www.youtube.com/watch?v=zOrzlYstIcY)
 
-## Configuration example
+## Configuration
 
-The *captainhook* configuration file
+Here's an example *captainhook.json* configuration file.
 ```json
 {
   "commit-msg": {
