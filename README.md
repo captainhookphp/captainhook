@@ -36,6 +36,8 @@ You can do so by running the following command.
     $ vendor/bin/captainhook install
 ```
 
+[![Install demo](http://img.youtube.com/vi/zOrzlYstIcY/0.jpg)](http://www.youtube.com/watch?v=zOrzlYstIcY)
+
 ## Configuration example
 
 The *captainhook* configuration file
