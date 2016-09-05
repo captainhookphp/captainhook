@@ -37,7 +37,10 @@
     }
   },
   "scripts": {
-    "post-update-cmd": "\\sebastianfeldmann\\CaptainHook\\Composer\\Cmd::configure"
+    "post-install-cmd": [
+      "\\sebastianfeldmann\\CaptainHook\\Composer\\Cmd::configure",
+      "\\sebastianfeldmann\\CaptainHook\\Composer\\Cmd::install"
+    ]
   },
   "suggest": {
     "your git hooks": "run 'vendor/bin/captainhook configure' to set up your hook configuration"
