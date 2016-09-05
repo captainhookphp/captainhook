@@ -44,7 +44,12 @@ class DummyRepo
 
     public function getGitDir()
     {
-        return $this->path . DIRECTORY_SEPARATOR . '.git';
+        return $this->getPath() . DIRECTORY_SEPARATOR . '.git';
+    }
+
+    public function getHookDir()
+    {
+        return $this->getGitDir() . DIRECTORY_SEPARATOR . 'hooks';
     }
 
     public function cleanup()
