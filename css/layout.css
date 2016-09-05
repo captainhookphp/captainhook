@@ -25,9 +25,13 @@ body {
 
 /* Custom page footer */
 .footer {
+  margin-top: 20px;
   padding-top: 19px;
   color: #777;
   border-top: 1px solid #e5e5e5;
+}
+.footer p {
+  text-align: center;
 }
 
 /* Customize container */
