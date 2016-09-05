@@ -49,7 +49,7 @@ class Installer extends HookHandler
         $hooks = $this->getHooksToInstall();
 
         foreach ($hooks as $hook => $ask) {
-            $this->installHook($hook, $ask);
+            $this->installHook($hook, ($ask && !$this->force));
         }
     }
 
