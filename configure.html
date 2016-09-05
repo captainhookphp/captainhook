@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>CaptainHook Documentation</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/layout.css" rel="stylesheet">
+    <link href="css/atom-one-dark.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">CaptainHook Documentation</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="install.html">Install</a></li>
+            <li class="active"><a href="configure.html">Configure</a></li>
+            <li><a href="extend.html">Extend</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container theme-showcase" role="main">
+
+      <h1>Configuration</h1>
+      <p>
+        If you look at a <em class="hl">captainhook.json</em> configuration, it consists of a config block for each hook.
+      </p>
+
+      <pre><code class="javascript">{
+  'commit-msg': {
+    // a hook config block
+  },
+  'pre-commit': {
+    // another hook config block
+  },
+  // ...
+}</code></pre>
+
+      <h3 id="hooks">Hook Config</h3>
+      <p>
+        Each hook configuration consists of two things an on/off switch and a list of actions to execute.
+      </p>
+
+      <pre><code class="javascript">'commit-msg': {
+  'enabled': true,
+  'actions': []
+}</code></pre>
+
+      <p>
+        By setting <em>enabled</em> to <em>false</em>, <em>CaptainHook</em> will not execute the configured actions even if the hook is
+        triggered by git.
+      </p>
+
+      <h3 id="actions">Actions</h3>
+      <h4>CLI commands</h4>
+      <p>
+        Actions can be two things, firstly you can run any cli command, as long as it uses exit codes to notify the
+        caller about its success. If you, for example, run <em>PHPUnit</em> and a test fails, it will exit with status
+        code 1, so <em>CaptainHook</em> knows that it should stop the currently running git command with an error.
+      </p>
+
+      <pre><code class="javascript">{
+  'pre-commit': {
+    'enabled': true,
+    'actions': [
+      {
+        'action': 'phpunit.phar --configuration=phpunit.git.xml'
+      }
+    ]
+  }
+}</code></pre>
+
+      <p>
+        Using the example above in a <em>pre-commit</em> hook will prevent you from committing code that
+        breaks any unit test.
+      </p>
+      <h4>PHP scripts</h4>
+      <p>
+        Secondly you can execute any PHP class implementing an interfaces defined by <em>CaptainHook</em>.
+        The interface you have to implement is <em class="hl">\sebastianfeldmann\CaptainHook\Hook\Action</em>.
+        CaptainHook comes with some build in, basic validation classes. So let's have a look at how to configure
+        those.
+      </p>
+
+      <pre><code class="javascript">{
+  'commit-msg': {
+    'enabled': true,
+    'actions': [
+      {
+        'action': '\sebastianfeldmann\CaptainHook\Hook\Message\Check\Regex',
+        'options': {
+          'regex': '#.*#'
+        }
+      }
+    ]
+  }
+}</code></pre>
+
+      <p>
+        With this configuration you can validate your commit messages against a regular expression. If your commit
+        message doesn't match your regular expression your commit fails.
+      </p>
+      <p>Here's a list of all build in actions</p>
+      <ul>
+        <li>\sebastianfeldmann\CaptainHook\Hook\Message\Check\Regex - Simple regex matching</li>
+        <li>\sebastianfeldmann\CaptainHook\Hook\Message\Check\Rules - Execute a list of <em>Rules</em></li>
+        <li>\sebastianfeldmann\CaptainHook\Hook\Message\Check\Beams - Enforces the Breams-Rules</li>
+      </ul>
+      <p>
+        You can easily build your own action classes. Have a look on how to <a href="extend.html">extend</a> CaptainHook.
+      </p>
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>

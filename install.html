@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>CaptainHook Documentation</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/layout.css" rel="stylesheet">
+    <link href="css/darcula.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">CaptainHook Documentation</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="index.html">Home</a></li>
+            <li class="active"><a href="install.html">Install</a></li>
+            <li><a href="configure.html">Configure</a></li>
+            <li><a href="extend.html">Extend</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container theme-showcase" role="main">
+
+      <h1>Installation</h1>
+      <p>
+        The easiest way to install <em>CaptainHook</em> is by using composer. You can either edit your
+        composer.json manually and put <em class="hl">"sebastianfeldmann/captainhook": "~1:0"</em> in your
+        <em class="hl">require-dev</em> package list, or run the following command.
+      </p>
+      <pre><code class="bash">$ composer require --dev sebastianfeldmann/captainhook:~1.0</code></pre>
+      <p>
+        This will install the package itself and a bin-script to you composer bin directory, usually located under
+        <em class="hl">vendor/bin</em>.<br>
+        Next, you have to create a configuration file, to define the actions you want to execute for
+        each git hook. You can either use a sample configuration from the documentation, or create one by running
+        the following command. Be aware, that if you changed your composer bin directory, you have to adjust the path.
+      </p>
+      <pre><code class="bash">$ vendor/bin/captainhook configure</code></pre>
+      <p>
+        While executing this, <em>CaptainHook</em> will ask you a series of questions to create a valid configuration
+        file for you.
+        For each hook-event you get asked, if you want to enable it. If you choose to do so,
+        <em>CaptainHook</em> will ask you to add one or more <a href="configure.html#actions">Actions</a> that should get
+        executed for this hook.
+      </p>
+      <p>
+        After creating the configuration file, there is only one step left to finish the installation.
+        You have to activate the hooks in your local git repository. To do so, just run the following command.
+      </p>
+      <pre><code class="bash">$ vendor/bin/captainhook install</code></pre>
+      <p>
+        Executing this will create a script, located in you <em class="hl">.git/hooks</em> directory, for each hook
+        you choose to install while running the command. So every time now, git triggers a hook,
+        <em>CaptainHook</em> gets executed.
+      </p>
+      <p>
+        BAM! You'r done, you have successfully installed <em>CaptainHook</em> to handle your git hooks. Please have a closer
+        look at the <a href="configure.html">configuration file</a> to setup your git hooks.
+      </p>
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>

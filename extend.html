@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>CaptainHook Documentation</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/layout.css" rel="stylesheet">
+    <link href="css/darcula.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">CaptainHook Documentation</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="install.html">Install</a></li>
+            <li><a href="configure.html">Configure</a></li>
+            <li class="active"><a href="extend.html">Extend</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container theme-showcase" role="main">
+
+      <h1>Extending</h1>
+      <p>
+        You can extend CaptainHook with your own PHP classes, this requires you to configure your PHP classes
+        with their fully qualified class names and you have to be sure that composer can autoload your classes.
+        There are two ways of hooking your own PHP code in. Let's start with the simpler, jet not so powerful one.
+      </p>
+      <h3 id="rules">Custom Rules</h3>
+      <p>
+        <em>CaptainHook</em> offers a thing called <em class="hl">RuleBook</em> to validate commit messages.
+        All of CaptainHooks message validation is done using a <em>RuleBook</em>. For example the regular expression
+        validation is using a <em>RuleBook</em> with a single rule called <em>MatchesRegularExpression</em>.
+        But let's just look at an example.
+      </p>
+      <pre><code class="javascript">{
+'commit-msg': {
+  'enabled': true,
+  'actions': [
+    {
+      'action': '\sebastianfeldmann\CaptainHook\Hook\Message\Check\Rules',
+      'options': [
+        '\sebastianfeldmann\CaptainHook\Hook\Message\Rule\SubjectStartsWithCapitalLetter'
+      ]
+    }
+  ]
+}</code></pre>
+      <p>
+        The <em>Rules</em> action accepts a list of <em class="hl">Rule</em> classes and creates a <em>RuleBook</em>
+        with all the given rules. You can write your own rules by implementing the
+        <em class="hl">sebastianfeldmann\CaptainHook\Hook\Message\Rule</em> interface. Here is an Example.
+      </p>
+
+      <pre><code class="php">&lt;?php
+namespace MyName\GitHook;
+
+use sebastianfeldmann\CaptainHook\Hooks\Message\Rule;
+use sebastianfeldmann\CaptainHook\Git\CommitMessage;
+
+class DoNotYell implements Rule
+{
+    /**
+     * Make sure nobody yells in commit messages.
+     *
+     * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $message
+     * @return bool
+     */
+    public function pass(CommitMessage $message)
+    {
+        return $message->getContent() !== strtoupper($message->getContent());
+    }
+}</code></pre>
+
+      <p>
+        With rules you can only validate your commit message. If you want to hook into other events like
+        <em class="hl">pre-commit</em> or <em class="hl">pre-push</em> or you need more flexibility,
+        then custom <em>Actions</em> are your thing.
+      </p>
+
+      <h3 id="actions">Custom Actions</h3>
+      <p>
+        Custom <em>Actions</em> allow you to execute your own logic on any git hook you want.
+        Just like the build in actions, you can define a list or map of options you want to pass to your class.
+      </p>
+      <pre><code class="javascript">{
+  'commit-msg': {
+    'enabled': true,
+    'actions': [
+      {
+        'action': '\MyName\GitHook\MyValidator',
+        'options': {
+          'key': 'value',
+          'use': 'what you need'
+        }
+      }
+    ]
+  }
+}</code></pre>
+
+      <p>
+        The whole process is best explained by an "real-world" example.
+        So let's assume you want to check if all ticket numbers in a commit message do exist in your issue tracker.
+        All you have to do, is to create a PHP class like this.
+      </p>
+
+      <pre><code class="php">&lt;?php
+namespace MyName\GitHook;
+
+use sebastianfeldmann\CaptainHook\Config;
+use sebastianfeldmann\CaptainHook\Console\IO;
+use sebastianfeldmann\CaptainHook\Git\Repository;
+use sebastianfeldmann\CaptainHook\Hook\Action;
+
+class TicketIDValidator implements Action
+{
+    /**
+     * Execute the action.
+     *
+     * @param  \sebastianfeldmann\CaptainHook\Config         $config
+     * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
+     * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
+     * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
+     * @throws \Exception
+     */
+    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
+    {
+        $message = $repository->getCommitMsg();
+
+        foreach ($this->findTicketIdsIn($message->getContent()) as $id) {
+            if (!$this->isValidTicketId($id)) {
+                throw new \Exception('invalid ticket ID: ' . $id);
+            }
+        }
+    }
+
+    /**
+     * @param  string $text
+     * @return array
+     */
+    private function findTicketIdsIn($text)
+    {
+        // put some logic here
+    }
+
+    /**
+     * @param  string $id
+     * @return bool
+     */
+    private function isValidTicketId($id)
+    {
+        // put some logic here
+    }
+}</code></pre>
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>
