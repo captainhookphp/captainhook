@@ -7,7 +7,7 @@ You can use *CaptainHook* to validate your commit messages, ensure code quality 
 commit or push changes to git.
 
 You can either run cli commands, use some build in validators, or write
-your own PHP classes that get executed by *CaptainHook*.
+your own PHP classes that get executed by *CaptainHook*. For more information have a look at the [documentation](https://sebastianfeldmann.github.io/captainhook/ "CaptainHook Documentation").
 
 
 [![Latest Stable Version](https://poser.pugx.org/sebastianfeldmann/captainhook/v/stable.svg?v=1)](https://packagist.org/packages/sebastianfeldmann/captainhook)
