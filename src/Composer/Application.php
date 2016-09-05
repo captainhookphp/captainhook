@@ -11,11 +11,7 @@ namespace sebastianfeldmann\CaptainHook\Composer;
 
 use Composer\IO\IOInterface;
 use sebastianfeldmann\CaptainHook\Console\Application\ConfigHandler;
-use sebastianfeldmann\CaptainHook\Console\Command\Configuration;
 use sebastianfeldmann\CaptainHook\Console\IO\ComposerIO;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class Application
@@ -45,17 +41,12 @@ class Application extends ConfigHandler
     }
 
     /**
-     * Execute hook.
+     * IO Getter.
      *
-     * @param  \Symfony\Component\Console\Input\InputInterface   $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return int
+     * @return \sebastianfeldmann\CaptainHook\Console\IO\ComposerIO
      */
-    public function doRun(InputInterface $input, OutputInterface $output)
+    public function getIO()
     {
-        $input   = new ArrayInput(['--configuration' => $this->getConfigFile()]);
-        $command = new Configuration();
-        $command->setIO($this->io);
-        return $command->run($input, $output);
+        return $this->io;
     }
 }
