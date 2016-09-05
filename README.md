@@ -46,7 +46,7 @@ Here's an example *captainhook.json* configuration file.
 ```json
 {
   "commit-msg": {
-    "enabled": false,
+    "enabled": true,
     "actions": [
       {
         "action": "\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Check\\Beams",
@@ -55,7 +55,7 @@ Here's an example *captainhook.json* configuration file.
     ]
   },
   "pre-commit": {
-    "enabled": false,
+    "enabled": true,
     "actions": [
       {
         "action": "phpunit"
