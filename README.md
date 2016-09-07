@@ -49,7 +49,7 @@ Here's an example *captainhook.json* configuration file.
     "enabled": true,
     "actions": [
       {
-        "action": "\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Check\\Beams",
+        "action": "\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Action\\Beams",
         "options": []
       }
     ]
