@@ -38,7 +38,7 @@ class Hook extends HookHandler
         if ($this->hookConfig->isEnabled()) {
             $this->io->write('<info>execute hook:</info> <comment>' . $this->hookToHandle . '</comment>');
             foreach ($this->getActionsToRun() as $action) {
-                $this->io->write([str_repeat('#', 80), '# <info>' . $action->getAction() . '</info>', '']);
+                $this->io->write([str_repeat('#', 80), '# <comment>' . $action->getAction() . '</comment>', '']);
                 $runner = $this->getActionRunner($action->getType());
                 $runner->execute($this->config, $this->io, $this->repository, $action);
             }
