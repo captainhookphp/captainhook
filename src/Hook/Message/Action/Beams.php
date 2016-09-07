@@ -7,23 +7,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Check;
+namespace sebastianfeldmann\CaptainHook\Hook\Message\Action;
 
 use sebastianfeldmann\CaptainHook\Config;
 use sebastianfeldmann\CaptainHook\Console\IO;
-use sebastianfeldmann\CaptainHook\Exception\ActionFailed;
 use sebastianfeldmann\CaptainHook\Git\Repository;
-use sebastianfeldmann\CaptainHook\Hook\Action;
+use sebastianfeldmann\CaptainHook\Hook\Message\Rule;
+use sebastianfeldmann\CaptainHook\Hook\Message\RuleBook;
 
 /**
- * Class Regex
+ * Class Beams
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
- * @since   Class available since Release 1.0.0
+ * @since   Class available since Release 0.9.0
  */
-class Regex implements Action
+class Beams extends Book
 {
     /**
      * Execute the configured action.
@@ -36,26 +36,19 @@ class Regex implements Action
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
-        $regex = $this->getRegex($action->getOptions());
+        $options = $action->getOptions();
+        $book    = new RuleBook();
+        $book->setRules(
+            [
+                new Rule\CapitalizeSubject(),
+                new Rule\LimitSubjectLength($options->get('subjectLength', 50)),
+                new Rule\NoPeriodOnSubjectEnd(),
+                new Rule\UseImperativeMood(),
+                new Rule\LimitBodyLineLength($options->get('bodyLineLength', 72)),
+                new Rule\SeparateSubjectFromBodyWithBlankLine(),
+            ]
+        );
 
-        if (!preg_match($regex, $repository->getCommitMsg()->getContent())) {
-            throw ActionFailed::withMessage('Commit message did not match regex: ' . $regex);
-        }
-    }
-
-    /**
-     * Extract regex from options array.
-     *
-     * @param  \sebastianfeldmann\CaptainHook\Config\Options $options
-     * @return string
-     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionFailed
-     */
-    protected function getRegex(Config\Options $options)
-    {
-        $regex = $options->get('regex');
-        if (empty($regex)) {
-            throw ActionFailed::withMessage('No regex option');
-        }
-        return $regex;
+        $this->validate($book, $repository);
     }
 }

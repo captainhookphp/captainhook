@@ -7,23 +7,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Check;
+namespace sebastianfeldmann\CaptainHook\Hook\Message\Action;
 
 use sebastianfeldmann\CaptainHook\Config;
 use sebastianfeldmann\CaptainHook\Console\IO;
+use sebastianfeldmann\CaptainHook\Exception\ActionFailed;
 use sebastianfeldmann\CaptainHook\Git\Repository;
-use sebastianfeldmann\CaptainHook\Hook\Message\Rule;
-use sebastianfeldmann\CaptainHook\Hook\Message\RuleBook;
+use sebastianfeldmann\CaptainHook\Hook\Action;
 
 /**
- * Class Rules
+ * Class Regex
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
- * @since   Class available since Release 0.9.0
+ * @since   Class available since Release 1.0.0
  */
-class Rules extends Book
+class Regex implements Action
 {
     /**
      * Execute the configured action.
@@ -36,35 +36,26 @@ class Rules extends Book
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
-        $rules = $action->getOptions()->getAll();
-        $book  = new RuleBook();
-        foreach ($rules as $class) {
-            $book->addRule($this->createRule($class));
+        $regex = $this->getRegex($action->getOptions());
+
+        if (!preg_match($regex, $repository->getCommitMsg()->getContent())) {
+            throw ActionFailed::withMessage('Commit message did not match regex: ' . $regex);
         }
-        $this->validate($book, $repository);
     }
 
     /**
-     * Create a new rule.
+     * Extract regex from options array.
      *
-     * @param  string $class
-     * @return \sebastianfeldmann\CaptainHook\Hook\Message\Rule
-     * @throws \Exception
+     * @param  \sebastianfeldmann\CaptainHook\Config\Options $options
+     * @return string
+     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionFailed
      */
-    protected function createRule($class)
+    protected function getRegex(Config\Options $options)
     {
-        // make sure the class is available
-        if (!class_exists($class)) {
-            throw new \Exception('Unknown rule: ' . $class);
+        $regex = $options->get('regex');
+        if (empty($regex)) {
+            throw ActionFailed::withMessage('No regex option');
         }
-
-        $rule = new $class();
-
-        // make sure the class implements the Rule interface
-        if (!$rule instanceof Rule) {
-            throw new \Exception('Class \'' . $class . '\' must implement the Rule interface');
-        }
-
-        return $rule;
+        return $regex;
     }
 }

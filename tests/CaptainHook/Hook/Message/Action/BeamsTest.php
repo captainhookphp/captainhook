@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Check;
+namespace sebastianfeldmann\CaptainHook\Hook\Message\Action;
 
 use sebastianfeldmann\CaptainHook\Config;
 use sebastianfeldmann\CaptainHook\Console\IO\NullIO;
@@ -46,7 +46,7 @@ class BeamsTest extends \PHPUnit_Framework_TestCase
     {
         $io     = new NullIO();
         $config = new Config(HMU_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action('php', '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Beams');
+        $action = new Config\Action('php', '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Action\\Beams');
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
@@ -63,7 +63,7 @@ class BeamsTest extends \PHPUnit_Framework_TestCase
     {
         $io     = new NullIO();
         $config = new Config(HMU_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action('php', '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Beams');
+        $action = new Config\Action('php', '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Action\\Beams');
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('foo bar baz.'));
 

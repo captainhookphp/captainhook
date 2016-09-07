@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Check;
+namespace sebastianfeldmann\CaptainHook\Hook\Message\Action;
 
 use sebastianfeldmann\CaptainHook\Config;
 use sebastianfeldmann\CaptainHook\Console\IO\NullIO;
@@ -15,7 +15,7 @@ use sebastianfeldmann\CaptainHook\Git\CommitMessage;
 use sebastianfeldmann\CaptainHook\Git\DummyRepo;
 use sebastianfeldmann\CaptainHook\Git\Repository;
 
-class RulesTest extends \PHPUnit_Framework_TestCase
+class RegexTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \sebastianfeldmann\CaptainHook\Git\DummyRepo
@@ -40,76 +40,59 @@ class RulesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests Rulebook::execute
+     * Tests RegexCheck::execute
      */
-    public function testExecuteEmptyRules()
+    public function testExecute()
     {
-        $io     = new NullIO();
-        $config = new Config(HMU_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action('php', '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Check\\Rules');
-        $repo   = new Repository($this->repo->getPath());
+        $options = ['regex' => '#.*#'];
+        $io      = new NullIO();
+        $config  = new Config(HMU_PATH_FILES . '/captainhook.json');
+        $repo    = new Repository($this->repo->getPath());
+        $action  = new Config\Action(
+            'php',
+            '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Action\\RegexCheck',
+            $options
+        );
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
-        $standard = new Rules();
+        $standard = new Regex();
         $standard->execute($config, $io, $repo, $action);
     }
 
     /**
-     * Tests Rulebook::execute
+     * Tests RegexCheck::execute
      *
      * @expectedException \Exception
      */
-    public function testExecuteClassNotFound()
+    public function testExecuteInvalidOption()
     {
         $io     = new NullIO();
         $config = new Config(HMU_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
-        $action = new Config\Action(
-            'php',
-            '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Check\\Rules',
-            ['\\sebastianfeldmann\\CaptainHook\\Foo']
-        );
+        $action = new Config\Action('php', '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Action\\Rulebook');
 
-        $standard = new Rules();
+        $standard = new Regex();
         $standard->execute($config, $io, $repo, $action);
     }
 
     /**
-     * Tests Rulebook::execute
+     * Tests RegexCheck::execute
      *
      * @expectedException \Exception
      */
-    public function testExecuteInvalidClass()
+    public function testExecuteNoMatch()
     {
         $io     = new NullIO();
         $config = new Config(HMU_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
             'php',
-            '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Check\\Rules',
-            ['\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Validator']
-        );
-        $repo   = new Repository($this->repo->getPath());
-
-        $standard = new Rules();
-        $standard->execute($config, $io, $repo, $action);
-    }
-
-    /**
-     * Tests Rulebook::execute
-     */
-    public function testExecuteValidRule()
-    {
-        $io     = new NullIO();
-        $config = new Config(HMU_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action(
-            'php',
-            '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Check\\Rules',
-            ['\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Rule\\CapitalizeSubject']
+            '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Rulebook',
+            ['regex' => '#FooBarBaz#']
         );
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
-        $standard = new Rules();
+        $standard = new Regex();
         $standard->execute($config, $io, $repo, $action);
     }
 }
