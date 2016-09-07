@@ -38,7 +38,7 @@ You can do so by running the following command.
 
 Have a look at this short installation video.
 
-[![Install demo](http://img.youtube.com/vi/zOrzlYstIcY/0.jpg)](http://www.youtube.com/watch?v=zOrzlYstIcY)
+[![Install demo](http://img.youtube.com/vi/5PvqhfDEYT8/0.jpg)](http://www.youtube.com/watch?v=5PvqhfDEYT8)
 
 ## Configuration
 
