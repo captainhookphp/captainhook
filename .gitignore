@@ -3,10 +3,10 @@
 
 # Ignore composer libs
 /vendor/
-composer.lock
+/composer.lock
 
 # Ignore local dev configuration
-captainhook.json
+/captainhook.json
 
 # Ignore the build directory
-build
+/build
