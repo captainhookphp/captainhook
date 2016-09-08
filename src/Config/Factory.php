@@ -10,7 +10,7 @@
 namespace sebastianfeldmann\CaptainHook\Config;
 
 use sebastianfeldmann\CaptainHook\Config;
-use sebastianfeldmann\CaptainHook\Hook\Util;
+use sebastianfeldmann\CaptainHook\Hook\Util as HookUtil;
 use sebastianfeldmann\CaptainHook\Storage\File\Json;
 
 /**
@@ -60,10 +60,12 @@ class Factory
      * Initialize the configuration with data load from config file.
      *
      * @param \sebastianfeldmann\CaptainHook\Config $config
-     * @param array            $json
+     * @param array                                 $json
      */
     protected function configure(Config $config, array $json)
     {
+        Util::validateJsonConfiguration($json);
+
         foreach ($json as $hook => $data) {
             $this->configureHook($config->getHookConfig($hook), $data);
         }
@@ -73,16 +75,15 @@ class Factory
      * Setup a hook configuration by json data.
      *
      * @param \sebastianfeldmann\CaptainHook\Config\Hook $config
-     * @param array                 $json
+     * @param array                                      $json
      */
     protected function configureHook(Config\Hook $config, array $json)
     {
         $config->setEnabled($json['enabled']);
         foreach ($json['actions'] as $actionJson) {
-            $type    = Util::getActionType($actionJson['action']);
-            $action  = $actionJson['action'];
-            $options = is_array($actionJson['options']) ? $actionJson['options'] : [];
-            $config->addAction(new Config\Action($type, $action, $options));
+            $type    = HookUtil::getActionType($actionJson['action']);
+            $options = isset($actionJson['options']) && is_array($actionJson['options']) ? $actionJson['options'] : [];
+            $config->addAction(new Config\Action($type, $actionJson['action'], $options));
         }
     }
 }
