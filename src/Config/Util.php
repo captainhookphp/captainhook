@@ -80,7 +80,7 @@ abstract class Util
      * @param  array $subject
      * @return bool
      */
-    private function keysExist(array $keys, array $subject)
+    private static function keysExist(array $keys, array $subject)
     {
         foreach ($keys as $key) {
             if (!isset($subject[$key])) {
