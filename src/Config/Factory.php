@@ -79,8 +79,10 @@ class Factory
     {
         $config->setEnabled($json['enabled']);
         foreach ($json['actions'] as $actionJson) {
-            $type = Util::getActionType($actionJson['action']);
-            $config->addAction(new Config\Action($type, $actionJson['action'], $actionJson['options']));
+            $type    = Util::getActionType($actionJson['action']);
+            $action  = $actionJson['action'];
+            $options = is_array($actionJson['options']) ? $actionJson['options'] : [];
+            $config->addAction(new Config\Action($type, $action, $options));
         }
     }
 }
