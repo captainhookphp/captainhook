@@ -7,7 +7,6 @@
     "enabled": true,
     "actions": [
       {
-        "type": "cli",
         "action": "phpunit --configuration=build/phpunit-hook.xml",
         "options": []
       }
