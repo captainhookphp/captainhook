@@ -29,7 +29,7 @@ abstract class Util
      */
     public static function validateJsonConfiguration(array $json)
     {
-        foreach($json as $hook => $config) {
+        foreach ($json as $hook => $config) {
             // check hook name
             if (!HookUtil::isValid($hook)) {
                 throw new \RuntimeException('Config error: invalid hook \'' . $hook . '\'');
