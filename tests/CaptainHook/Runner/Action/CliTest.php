@@ -23,7 +23,7 @@ class CliTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $cmd = HMU_PATH_FILES . '/bin/success';
+        $cmd = CH_PATH_FILES . '/bin/success';
 
         $io->expects($this->once())->method('write');
         $action->expects($this->once())->method('getAction')->willReturn($cmd);
@@ -44,7 +44,7 @@ class CliTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $cmd = HMU_PATH_FILES . '/bin/failure';
+        $cmd = CH_PATH_FILES . '/bin/failure';
 
         $action->expects($this->once())->method('getAction')->willReturn($cmd);
 

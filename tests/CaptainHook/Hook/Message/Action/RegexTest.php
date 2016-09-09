@@ -46,7 +46,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
     {
         $options = ['regex' => '#.*#'];
         $io      = new NullIO();
-        $config  = new Config(HMU_PATH_FILES . '/captainhook.json');
+        $config  = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo    = new Repository($this->repo->getPath());
         $action  = new Config\Action(
             'php',
@@ -67,7 +67,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
     public function testExecuteInvalidOption()
     {
         $io     = new NullIO();
-        $config = new Config(HMU_PATH_FILES . '/captainhook.json');
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action('php', '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Action\\Rulebook');
 
@@ -83,7 +83,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
     public function testExecuteNoMatch()
     {
         $io     = new NullIO();
-        $config = new Config(HMU_PATH_FILES . '/captainhook.json');
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
             'php',
             '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Rulebook',

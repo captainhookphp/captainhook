@@ -45,7 +45,7 @@ class RulesTest extends \PHPUnit_Framework_TestCase
     public function testExecuteEmptyRules()
     {
         $io     = new NullIO();
-        $config = new Config(HMU_PATH_FILES . '/captainhook.json');
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action('php', '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Action\\Rules');
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
@@ -62,7 +62,7 @@ class RulesTest extends \PHPUnit_Framework_TestCase
     public function testExecuteClassNotFound()
     {
         $io     = new NullIO();
-        $config = new Config(HMU_PATH_FILES . '/captainhook.json');
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
             'php',
@@ -82,7 +82,7 @@ class RulesTest extends \PHPUnit_Framework_TestCase
     public function testExecuteInvalidClass()
     {
         $io     = new NullIO();
-        $config = new Config(HMU_PATH_FILES . '/captainhook.json');
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
             'php',
             '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Action\\Rules',
@@ -100,7 +100,7 @@ class RulesTest extends \PHPUnit_Framework_TestCase
     public function testExecuteValidRule()
     {
         $io     = new NullIO();
-        $config = new Config(HMU_PATH_FILES . '/captainhook.json');
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
             'php',
             '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Action\\Rules',

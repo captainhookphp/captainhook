@@ -26,8 +26,8 @@ class RunTest extends \PHPUnit_Framework_TestCase
         $input  = new ArrayInput(
             [
                 'hook'            => 'pre-push',
-                '--configuration' => HMU_PATH_FILES . '/config/valid.json',
-                '--message'       => HMU_PATH_FILES . '/git/message/valid.txt'
+                '--configuration' => CH_PATH_FILES . '/config/valid.json',
+                '--message'       => CH_PATH_FILES . '/git/message/valid.txt'
             ]
         );
 

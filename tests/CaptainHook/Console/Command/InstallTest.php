@@ -46,7 +46,7 @@ class InstallTest extends \PHPUnit_Framework_TestCase
         $input   = new ArrayInput(
             [
                 'hook' => 'pre-commit',
-                '--configuration' => HMU_PATH_FILES . '/config/valid.json',
+                '--configuration' => CH_PATH_FILES . '/config/valid.json',
                 '--git-directory' => 'bar/.git'
             ]
         );
@@ -71,7 +71,7 @@ class InstallTest extends \PHPUnit_Framework_TestCase
         $input   = new ArrayInput(
             [
                 'hook' => 'pre-commit',
-                '--configuration' => HMU_PATH_FILES . '/config/valid.json',
+                '--configuration' => CH_PATH_FILES . '/config/valid.json',
                 '--git-directory' => $repo->getGitDir()
             ]
         );

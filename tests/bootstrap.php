@@ -8,8 +8,7 @@
  * file that was distributed with this source code.
  */
 
-define('HMU_PATH_FILES', realpath(__DIR__ . '/files'));
-define('HMU_TEST_RUN', true);
+define('CH_PATH_FILES', realpath(__DIR__ . '/files'));
 
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/CaptainHook/Git/DummyRepo.php';

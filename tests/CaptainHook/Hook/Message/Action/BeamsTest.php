@@ -45,7 +45,7 @@ class BeamsTest extends \PHPUnit_Framework_TestCase
     public function testExecute()
     {
         $io     = new NullIO();
-        $config = new Config(HMU_PATH_FILES . '/captainhook.json');
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action('php', '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Action\\Beams');
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
@@ -62,7 +62,7 @@ class BeamsTest extends \PHPUnit_Framework_TestCase
     public function testExecuteFail()
     {
         $io     = new NullIO();
-        $config = new Config(HMU_PATH_FILES . '/captainhook.json');
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action('php', '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Action\\Beams');
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('foo bar baz.'));

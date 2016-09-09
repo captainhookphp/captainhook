@@ -20,7 +20,7 @@ class MainTest extends \PHPUnit_Framework_TestCase
         $input  = new ArrayInput([
             'command'         => 'run',
             'hook'            => 'pre-push',
-            '--configuration' => HMU_PATH_FILES . DIRECTORY_SEPARATOR . 'config/valid.json'
+            '--configuration' => CH_PATH_FILES . DIRECTORY_SEPARATOR . 'config/valid.json'
         ]);
         $app = new Main();
         $app->setAutoExit(false);

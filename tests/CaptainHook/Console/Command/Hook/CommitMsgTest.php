@@ -24,11 +24,11 @@ class CommitMsgTest extends \PHPUnit_Framework_TestCase
         $repo = new DummyRepo();
         $repo->setup();
 
-        $cmd    = new CommitMsg(HMU_PATH_FILES . '/config/valid.json', $repo->getPath());
+        $cmd    = new CommitMsg(CH_PATH_FILES . '/config/valid.json', $repo->getPath());
         $output = new DummyOutput();
         $input  = new ArrayInput(
             [
-                'file' => HMU_PATH_FILES . '/git/message/valid.txt'
+                'file' => CH_PATH_FILES . '/git/message/valid.txt'
             ]
         );
 

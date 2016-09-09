@@ -45,12 +45,12 @@ class CheckLockFileTest extends \PHPUnit_Framework_TestCase
     public function testExecute()
     {
         $io     = new NullIO();
-        $config = new Config(HMU_PATH_FILES . '/captainhook.json');
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
             'php',
             '\\sebastianfeldmann\\CaptainHook\\Hook\\Composer\\Action\\CheckLockFile',
-            ['path' => HMU_PATH_FILES . '/composer/valid']
+            ['path' => CH_PATH_FILES . '/composer/valid']
         );
         $standard = new CheckLockFile();
         $standard->execute($config, $io, $repo, $action);
@@ -64,12 +64,12 @@ class CheckLockFileTest extends \PHPUnit_Framework_TestCase
     public function testExecuteFail()
     {
         $io     = new NullIO();
-        $config = new Config(HMU_PATH_FILES . '/captainhook.json');
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
             'php',
             '\\sebastianfeldmann\\CaptainHook\\Hook\\Composer\\Action\\CheckLockFile',
-            ['path' => HMU_PATH_FILES . '/composer/invalid']
+            ['path' => CH_PATH_FILES . '/composer/invalid']
         );
 
         $standard = new CheckLockFile();
@@ -84,12 +84,12 @@ class CheckLockFileTest extends \PHPUnit_Framework_TestCase
     public function testExecuteInvalidPath()
     {
         $io     = new NullIO();
-        $config = new Config(HMU_PATH_FILES . '/captainhook.json');
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
             'php',
             '\\sebastianfeldmann\\CaptainHook\\Hook\\Composer\\Action\\CheckLockFile',
-            ['path' => HMU_PATH_FILES . '/composer/not-there']
+            ['path' => CH_PATH_FILES . '/composer/not-there']
         );
         $standard = new CheckLockFile();
         $standard->execute($config, $io, $repo, $action);

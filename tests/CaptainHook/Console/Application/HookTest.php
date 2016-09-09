@@ -21,11 +21,11 @@ class HookTest extends \PHPUnit_Framework_TestCase
      */
     public function testRun()
     {
-        $config = new Config(HMU_PATH_FILES . '/config/valid.json');
+        $config = new Config(CH_PATH_FILES . '/config/valid.json');
         $repo   = new DummyRepo();
         $output = new NullOutput();
         $input  = new ArrayInput([
-            'file' => HMU_PATH_FILES . '/git/message/valid.txt',
+            'file' => CH_PATH_FILES . '/git/message/valid.txt',
         ]);
         $app = new Hook();
         $app->setConfigFile($config->getPath());

@@ -24,7 +24,7 @@ class PrePushTest extends \PHPUnit_Framework_TestCase
         $repo = new DummyRepo();
         $repo->setup();
 
-        $cmd    = new PrePush(HMU_PATH_FILES . '/config/empty.json', $repo->getPath());
+        $cmd    = new PrePush(CH_PATH_FILES . '/config/empty.json', $repo->getPath());
         $output = new DummyOutput();
         $input  = new ArrayInput([]);
 
