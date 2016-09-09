@@ -76,4 +76,15 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
         $repository = new Repository($this->repo->getPath());
         $repository->getCommitMsg();
     }
+
+    /**
+     * Tests Repository::getChangedFilesResolver
+     */
+    public function testGetChangedFilesResolver()
+    {
+        $repository = new Repository($this->repo->getPath());
+        $resolver   = $repository->getChangedFilesResolver();
+
+        $this->assertTrue(is_a($resolver, '\\sebastianfeldmann\\CaptainHook\\Git\\Resolver\\ChangedFiles'));
+    }
 }

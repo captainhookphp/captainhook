@@ -41,6 +41,13 @@ class Repository
     private $commitMsg;
 
     /**
+     * Resolver to get changed files
+     *
+     * @var \sebastianfeldmann\CaptainHook\Git\Resolver\ChangedFiles
+     */
+    private $changedFilesResolver;
+
+    /**
      * Repository constructor.
      *
      * @param string $root
@@ -97,6 +104,19 @@ class Repository
             throw new \RuntimeException('No commit message available');
         }
         return $this->commitMsg;
+    }
+
+    /**
+     * Get changed file resolver.
+     *
+     * @return \sebastianfeldmann\CaptainHook\Git\Resolver\ChangedFiles
+     */
+    public function getChangedFilesResolver()
+    {
+        if (null === $this->changedFilesResolver) {
+            $this->changedFilesResolver = new Resolver\ChangedFiles();
+        }
+        return $this->changedFilesResolver;
     }
 
     /**
