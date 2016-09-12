@@ -63,6 +63,16 @@ class Repository
     }
 
     /**
+     * Root path getter.
+     *
+     * @return string
+     */
+    public function getRoot()
+    {
+        return $this->root;
+    }
+
+    /**
      * Returns the path to the hooks directory.
      *
      * @return string
