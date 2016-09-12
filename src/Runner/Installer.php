@@ -101,12 +101,26 @@ class Installer extends HookHandler
         }
 
         if ($doIt) {
-            $code = Template::getCode($hook);
+            $code = $this->getHookSourceCode($hook);
             $file = new File($hookFile);
             $file->write($code);
             chmod($hookFile, 0755);
             $this->io->write('  <info>\'' . $hook . '\' hook installed successfully</info>');
         }
+    }
+
+    /**
+     * Return the source code for a given hook script.
+     *
+     * @param  string $hook
+     * @return string
+     */
+    protected function getHookSourceCode($hook)
+    {
+        $absRepoPath = realpath($this->repository->getRoot());
+        $vendorPath  = getcwd() . '/vendor';
+        $configPath  = realpath($this->config->getPath());
+        return Template::getCode($hook, $absRepoPath, $vendorPath, $configPath);
     }
 
     /**

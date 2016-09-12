@@ -9,6 +9,8 @@
  */
 namespace sebastianfeldmann\CaptainHook\Hook;
 
+use sebastianfeldmann\CaptainHook\Storage\Util;
+
 /**
  * Template class
  *
@@ -22,14 +24,20 @@ abstract class Template
     /**
      * Return the php code for the git hook scripts.
      *
-     * @param  string $hook
+     * @param  string $hook       Name of the hook to trigger.
+     * @param  string $repoPath   Absolute path to the repository root.
+     * @param  string $vendorPath Absolute path to the vendor folder.
+     * @param  string $configPath Absolute path to the configuration file.
      * @return string
      */
-    public static function getCode($hook)
+    public static function getCode($hook, $repoPath, $vendorPath, $configPath)
     {
+        $tplVendorPath = self::getTplTargetPath($repoPath, $vendorPath);
+        $tplConfigPath = self::getTplTargetPath($repoPath, $configPath);
+
         return '#!/usr/bin/env php' . PHP_EOL .
                '<?php' . PHP_EOL .
-               '$autoLoader = __DIR__ . \'/../../vendor/autoload.php\';' . PHP_EOL . PHP_EOL .
+               '$autoLoader = ' . $tplVendorPath . '/autoload.php\';' . PHP_EOL . PHP_EOL .
                'if (!file_exists($autoLoader)) {' . PHP_EOL .
                '    fwrite(STDERR,' . PHP_EOL .
                '        \'Composer autoload.php could not be found\' . PHP_EOL .' . PHP_EOL .
@@ -39,10 +47,30 @@ abstract class Template
                '    exit(1);' . PHP_EOL .
                '}' . PHP_EOL .
                'require $autoLoader;' . PHP_EOL .
-               '$config = realpath(__DIR__ . \'/../../captainhook.json\');' . PHP_EOL .
+               '$config = realpath(' . $tplConfigPath . '\');' . PHP_EOL .
                '$app    = new sebastianfeldmann\CaptainHook\Console\Application\Hook();' . PHP_EOL .
                '$app->setHook(\'' . $hook . '\');' . PHP_EOL .
                '$app->setConfigFile($config);' . PHP_EOL .
                '$app->run();' . PHP_EOL . PHP_EOL;
+    }
+
+    /**
+     * Return the path to the target path from inside the .git/hooks directory f.e. __DIR__ ../../vendor.
+     *
+     * @param  string $repoDir
+     * @param  string $targetPath
+     * @return string
+     * @throws \RuntimeException
+     */
+    public static function getTplTargetPath($repoDir, $targetPath)
+    {
+        $repo    = explode(DIRECTORY_SEPARATOR, ltrim($repoDir, DIRECTORY_SEPARATOR));
+        $target  = explode(DIRECTORY_SEPARATOR, ltrim($targetPath, DIRECTORY_SEPARATOR));
+
+        if (!Util::isSubDirectoryOf($target, $repo)) {
+            return '\'' . $targetPath;
+        }
+
+        return '__DIR__ . \'/../../' . Util::getSubPathOf($target, $repo);
     }
 }
