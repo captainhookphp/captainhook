@@ -9,7 +9,7 @@
  */
 namespace sebastianfeldmann\CaptainHook\Hook;
 
-use sebastianfeldmann\CaptainHook\Storage\Util;
+use sebastianfeldmann\CaptainHook\Storage\Util as StorageUtil;
 
 /**
  * Template class
@@ -67,10 +67,10 @@ abstract class Template
         $repo    = explode(DIRECTORY_SEPARATOR, ltrim($repoDir, DIRECTORY_SEPARATOR));
         $target  = explode(DIRECTORY_SEPARATOR, ltrim($targetPath, DIRECTORY_SEPARATOR));
 
-        if (!Util::isSubDirectoryOf($target, $repo)) {
+        if (!StorageUtil::isSubDirectoryOf($target, $repo)) {
             return '\'' . $targetPath;
         }
 
-        return '__DIR__ . \'/../../' . Util::getSubPathOf($target, $repo);
+        return '__DIR__ . \'/../../' . StorageUtil::getSubPathOf($target, $repo);
     }
 }
