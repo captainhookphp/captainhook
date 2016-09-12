@@ -43,4 +43,14 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(Util::isSubDirectoryOf(Util::pathToArray('/foo/bar/baz'), Util::pathToArray('/fiz/baz')));
         $this->assertFalse(Util::isSubDirectoryOf(Util::pathToArray('/foo'), Util::pathToArray('/bar')));
     }
+
+    /**
+     * Tests Util::isSubDirectoryOf
+     *
+     * @expectedException \Exception
+     */
+    public function testGetSubPathOfNoSubDirectory()
+    {
+        Util::getSubPathOf(Util::pathToArray('/foo/bar/baz'), Util::pathToArray('/fiz/baz'));
+    }
 }
