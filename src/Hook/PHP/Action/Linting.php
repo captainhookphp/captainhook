@@ -40,7 +40,9 @@ class Linting implements Action
     {
         $changedPHPFiles = $repository->getChangedFilesResolver()->getChangedFilesOfType('php');
 
+        $io->write('linting files:', true, IO::VERBOSE);
         foreach ($changedPHPFiles as $file) {
+            $io->write('  - ' . $file, true, IO::VERBOSE);
             if ($this->hasSyntaxErrors($file)) {
                 throw ActionFailed::withMessage('syntax errors in file: ' . $file);
             }
