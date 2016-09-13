@@ -47,6 +47,11 @@ class LimitSubjectLength extends Base
      */
     public function pass(CommitMessage $msg)
     {
-        return strlen(($msg->getSubject())) <= $this->maxLength;
+        $subjectLength = strlen($msg->getSubject());
+        if ($subjectLength > $this->maxLength) {
+            $this->hint .= ' (' . $subjectLength . ')';
+            return false;
+        }
+        return true;
     }
 }
