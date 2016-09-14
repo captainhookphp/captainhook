@@ -31,6 +31,7 @@ class UseImperativeMood extends Blacklist
                 'updated',
                 'added',
                 'created',
+                'removed'
             ]
         );
     }
