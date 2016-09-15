@@ -1,0 +1,7 @@
+#! /bin/bash
+echo " Summary:"
+echo "  Classes: 95.00% (100/95)"
+echo "  Methods: 95.00% (200/190)"
+echo "  Lines:   95.00% (1000/950)"
+
+exit 0
