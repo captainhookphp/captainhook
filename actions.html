@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>CaptainHook Documentation</title>
+
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/layout.css" rel="stylesheet">
+  <link href="css/atom-one-dark.css" rel="stylesheet">
+
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://github.com/sebastianfeldmann/captainhook">CaptainHook</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="install.html">Install</a></li>
+        <li class="active"><a href="configure.html">Configure</a></li>
+        <li><a href="extend.html">Extend</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container theme-showcase" role="main">
+
+  <h1>Actions</h1>
+
+  <h3 id="check-lock-file">Composer lock file check</h3>
+  <p>
+  </p>
+  <pre><code class="javascript">{
+  "action": "\sebastianfeldmann\CaptainHook\Hook\Composer\Action\CheckLockFile",
+  "options": []
+}</code></pre>
+
+  <h3 id="beams">Enforce Chris Beams commit message rules</h3>
+  <p>
+  </p>
+  <pre><code class="javascript">{
+  "action": "\sebastianfeldmann\CaptainHook\Hook\Message\Action\Beams",
+  "options": []
+}</code></pre>
+
+  <h3 id="regex">Commit message regex validation</h3>
+  <p>
+  </p>
+  <pre><code class="javascript">{
+  "action": "\sebastianfeldmann\CaptainHook\Hook\Message\Action\Regex",
+  "options": {
+    "regex": "#.*#i"
+  }
+}</code></pre>
+
+  <h3 id="rules">Define rules for your commit messages</h3>
+  <p>
+  </p>
+  <pre><code class="javascript">{
+  "action": "\sebastianfeldmann\CaptainHook\Hook\Message\Action\Rules",
+  "options": [
+    "\sebastianfeldmann\CaptainHook\Hook\Message\Rule\MsgNotEmpty"
+  ]
+}</code></pre>
+
+  <h3 id="linting">Lint all changed PHP files</h3>
+  <p>
+  </p>
+  <pre><code class="javascript">{
+  "action": "\sebastianfeldmann\CaptainHook\Hook\PHP\Action\Linting",
+  "options": []
+}</code></pre>
+
+  <h3 id="test-coverage">Monitor your unit test code coverage</h3>
+  <p></p>
+  <pre><code class="javascript">{
+  "action": "\sebastianfeldmann\CaptainHook\Hook\PHP\Action\TestCoverage",
+  "options": {
+    "minCoverage": 90,
+    "cloverXml": "build/logs/clover.xml"
+  }
+}</code></pre>
+
+
+  <footer class="footer">
+    <div class="container">
+      <p>
+        Found a typo or a bug?
+        Please open an <a href="https://github.com/sebastianfeldmann/captainhook/issues">issue</a>
+        or pull request for the <em>gp-pages</em>
+        branch of <a href="https://github.com/sebastianfeldmann/captainhook/tree/gh-pages">CaptainHook</a>
+      </p>
+      <p>
+        &copy; <a href="https://github.com/sebastianfeldmann">Sebastian Feldmann</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>

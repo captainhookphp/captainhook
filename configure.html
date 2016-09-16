@@ -121,10 +121,17 @@
         message doesn't match your regular expression your commit fails.
       </p>
       <p>Here's a list of all built-in actions</p>
+      <h5>Commit-Message</h5>
       <ul>
-        <li>\sebastianfeldmann\CaptainHook\Hook\Message\Action\Regex - Simple regex matching</li>
-        <li>\sebastianfeldmann\CaptainHook\Hook\Message\Action\Rules - Execute a list of <em>Rules</em></li>
-        <li>\sebastianfeldmann\CaptainHook\Hook\Message\Action\Beams - Enforces the Breams-Rules</li>
+        <li><a href="actions.html#regex">\sebastianfeldmann\CaptainHook\Hook\Message\Action\Regex</a><br>Simple regex matching</li>
+        <li><a href="actions.html#rules">\sebastianfeldmann\CaptainHook\Hook\Message\Action\Rules</a><br>Execute a list of <em>Rules</em></li>
+        <li><a href="actions.html#beams">\sebastianfeldmann\CaptainHook\Hook\Message\Action\Beams</a><br>Enforces the Breams-Rules</li>
+      </ul>
+      <h5>Pre-Commit</h5>
+      <ul>
+        <li><a href="actions.html#check-lock-file">\sebastianfeldmann\CaptainHook\Hook\Composer\Action\CheckLockFile</a><br>Make sure your composer.lock file is up to date</li>
+        <li><a href="actions.html#linting">\sebastianfeldmann\CaptainHook\Hook\PHP\Action\Linting</a><br>Check php files for syntax errors</li>
+        <li><a href="actions.html#test-coverage">\sebastianfeldmann\CaptainHook\Hook\PHP\Action\TestCoverage</a><br>Monitors your test coverage</li>
       </ul>
       <p>
         You can easily build your own action classes. Have a look on how to <a href="extend.html">extend</a> CaptainHook.
