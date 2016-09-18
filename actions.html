@@ -42,15 +42,9 @@
 <div class="container theme-showcase" role="main">
 
   <h1>Actions</h1>
+  <p>Here's a list of all <em>CaptainHook's</em> built-in <em>Actions</em>.</p>
 
-  <h3 id="check-lock-file">Composer lock file check</h3>
-  <p>
-    Make sure your <em>composer.lock</em> file ist up to date.
-  </p>
-  <pre><code class="javascript">{
-  "action": "\sebastianfeldmann\CaptainHook\Hook\Composer\Action\CheckLockFile",
-  "options": []
-}</code></pre>
+  <h2>Commit-Message validation</h2>
 
   <h3 id="beams">Enforce Chris Beams commit message rules</h3>
   <p>
@@ -89,6 +83,17 @@
   "options": [
     "\sebastianfeldmann\CaptainHook\Hook\Message\Rule\MsgNotEmpty"
   ]
+}</code></pre>
+
+  <h2>Pre-Commit / Pre-Push</h2>
+
+  <h3 id="check-lock-file">Composer lock file check</h3>
+  <p>
+    Make sure your <em>composer.lock</em> file ist up to date.
+  </p>
+  <pre><code class="javascript">{
+  "action": "\sebastianfeldmann\CaptainHook\Hook\Composer\Action\CheckLockFile",
+  "options": []
 }</code></pre>
 
   <h3 id="linting">Lint all changed PHP files</h3>
