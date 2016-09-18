@@ -94,10 +94,77 @@ class PHPTest extends BaseTestRunner
         $php = new PHP();
         $php->execute($config, $io, $repo, $action);
     }
+
+    /**
+     * Tests PHP::executeStatic
+     *
+     * @expectedException \Exception
+     */
+    public function testExecuteStaticClassNotFound()
+    {
+        $config = $this->getConfigMock();
+        $io     = $this->getIOMock();
+        $repo   = $this->getRepositoryMock();
+        $action = $this->getActionConfigMock();
+
+        $class = '\\Fiz::baz';
+
+        $action->expects($this->once())->method('getAction')->willReturn($class);
+
+        $php = new PHP();
+        $php->execute($config, $io, $repo, $action);
+    }
+
+    /**
+     * Tests PHP::executeStatic
+     *
+     * @expectedException \Exception
+     */
+    public function testExecuteStaticMethodNotFound()
+    {
+        $config = $this->getConfigMock();
+        $io     = $this->getIOMock();
+        $repo   = $this->getRepositoryMock();
+        $action = $this->getActionConfigMock();
+
+        $class = '\\sebastianfeldmann\\CaptainHook\\Runner\\Action\\DummyNoAction::foo';
+
+        $action->expects($this->once())->method('getAction')->willReturn($class);
+
+        $php = new PHP();
+        $php->execute($config, $io, $repo, $action);
+    }
+
+
+    /**
+     * Tests PHP::executeStatic
+     */
+    public function testExecuteStaticSuccess()
+    {
+        $config = $this->getConfigMock();
+        $io     = $this->getIOMock();
+        $repo   = $this->getRepositoryMock();
+        $action = $this->getActionConfigMock();
+
+        $class = '\\sebastianfeldmann\\CaptainHook\\Runner\\Action\\DummyPHPSuccess::executeStatic';
+
+        $action->expects($this->once())->method('getAction')->willReturn($class);
+
+        $php = new PHP();
+        $php->execute($config, $io, $repo, $action);
+    }
 }
 
 class DummyPHPSuccess implements ActionInterface
 {
+    /**
+     * Static action execution
+     */
+    public static function executeStatic()
+    {
+        // do something fooish statically
+    }
+
     /**
      * Execute the configured action.
      *

@@ -39,18 +39,65 @@ class PHP implements Action
         $class = $action->getAction();
 
         try {
-            /* @var \sebastianfeldmann\CaptainHook\Hook\Action $exe */
-            $exe = new $class();
-
-            if (!$exe instanceof Action) {
-                throw ActionFailed::withMessage('PHP class ' . $class . ' has to implement the \'Action\' interface');
+            if ($this->isStaticMethodCall($class)) {
+                $io->write($this->executeStatic($class));
+            } else {
+                $exe = $this->createAction($class);
+                $exe->execute($config, $io, $repository, $action);
             }
-            $exe->execute($config, $io, $repository, $action);
-
         } catch (\Exception $e) {
             throw ActionFailed::withMessage('Execution failed: ' . $e->getMessage());
         } catch (\Error $e) {
             throw ActionFailed::withMessage('PHP Error: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Execute static method call and return its output.
+     *
+     * @param  string $class
+     * @return string
+     */
+    protected function executeStatic($class)
+    {
+        list($class, $method) = explode('::', $class);
+        if (!class_exists($class)) {
+            throw new \RuntimeException('could not find class: ' . $class);
+        }
+        if (!method_exists($class, $method)) {
+            throw new \RuntimeException('could not find method in class: ' . $method);
+        }
+        ob_start();
+        $class::$method();
+        return ob_end_clean();
+    }
+
+    /**
+     * Create an action instance.
+     *
+     * @param  string $class
+     * @return \sebastianfeldmann\CaptainHook\Hook\Action
+     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionFailed
+     */
+    protected function createAction($class)
+    {
+        $action = new $class();
+        if (!$action instanceof Action) {
+            throw ActionFailed::withMessage(
+                'PHP class ' . $class . ' has to implement the \'Action\' interface'
+            );
+        }
+        return $action;
+    }
+
+    /**
+     * Is this a static method call.
+     *
+     * @param  string $class
+     * @return bool
+     */
+    protected function isStaticMethodCall($class)
+    {
+        return (bool)preg_match('#^\\\\.+::.+$#i', $class);
     }
 }
