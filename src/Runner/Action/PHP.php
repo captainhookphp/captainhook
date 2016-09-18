@@ -69,7 +69,7 @@ class PHP implements Action
         }
         ob_start();
         $class::$method();
-        return ob_end_clean();
+        return ob_get_clean();
     }
 
     /**
