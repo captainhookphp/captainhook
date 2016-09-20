@@ -191,7 +191,7 @@ class Configurator extends Runner
         $result = [];
         $answer = $this->io->askAndValidate(
             '  <info>Specify options key and value</info> <comment>[key:value]</comment> ',
-            function($value) {
+            function ($value) {
                 if (count(explode(':', $value)) !== 2) {
                     throw new \Exception('Invalid option, use "key:value"');
                 }
