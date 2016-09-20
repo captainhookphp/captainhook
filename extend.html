@@ -55,13 +55,13 @@
         But let's just look at an example.
       </p>
       <pre><code class="javascript">{
-'commit-msg': {
-  'enabled': true,
-  'actions': [
+"commit-msg": {
+  "enabled": true,
+  "actions": [
     {
-      'action': '\sebastianfeldmann\CaptainHook\Hook\Message\Action\Rules',
-      'options': [
-        '\sebastianfeldmann\CaptainHook\Hook\Message\Rule\SubjectStartsWithCapitalLetter'
+      "action": "\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Action\\Rules",
+      "options": [
+        "\\sebastianfeldmann\\CaptainHook\\Hook\Message\\Rule\\SubjectStartsWithCapitalLetter"
       ]
     }
   ]
@@ -113,7 +113,7 @@ class DoNotYell implements Rule
     "enabled": true,
     "actions": [
       {
-        "action': "\\MyName\\GitHook\\MyAction::execute"
+        "action": "\\MyName\\GitHook\\MyAction::execute"
       }
     ]
   }
