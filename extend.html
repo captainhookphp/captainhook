@@ -103,15 +103,32 @@ class DoNotYell implements Rule
         Custom <em>Actions</em> allow you to execute your own logic on any git hook you want.
         Just like the built-in actions, you can define a list or map of options you want to pass to your class.
       </p>
+      <p>
+        You can either use a static method, or a custom <em>Action</em> class implementing the <em>Action</em> interface.
+      </p>
+
+      <h4>Static Method Call</h4>
       <pre><code class="javascript">{
-  'commit-msg': {
-    'enabled': true,
-    'actions': [
+  "pre-commit": {
+    "enabled": true,
+    "actions": [
       {
-        'action': '\MyName\GitHook\MyValidator',
-        'options': {
-          'key': 'value',
-          'use': 'what you need'
+        "action': "\\MyName\\GitHook\\MyAction::execute"
+      }
+    ]
+  }
+}</code></pre>
+
+      <h4>Custom Action Class</h4>
+      <pre><code class="javascript">{
+  "commit-msg": {
+    "enabled": true,
+    "actions": [
+      {
+        "action": "\\MyName\\GitHook\\MyValidator",
+        "options": {
+          "key": "value",
+          "use": "what you need"
         }
       }
     ]
@@ -119,7 +136,7 @@ class DoNotYell implements Rule
 }</code></pre>
 
       <p>
-        The whole process is best explained by an "real-world" example.
+        The whole process is best explained with a "real-world" example.
         So let's assume you want to check if all ticket numbers in a commit message do exist in your issue tracker.
         All you have to do, is to create a PHP class like this.
       </p>
