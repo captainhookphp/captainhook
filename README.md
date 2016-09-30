@@ -6,7 +6,7 @@ It enables you to configure your git hook actions in a simple json file.
 You can use *CaptainHook* to validate your commit messages, ensure code quality or run unit tests before you
 commit or push changes to git.
 
-You can either run cli commands, use some build in validators, or write
+You can run cli commands, use some built in validators, or write
 your own PHP classes that get executed by *CaptainHook*. For more information have a look at the [documentation](https://sebastianfeldmann.github.io/captainhook/ "CaptainHook Documentation").
 
 
@@ -31,7 +31,7 @@ After installing CaptainHook you can use the *captainhook* executable to create 
 
 Now there should be a *captainhook.json* configuration file.
 To finally activate the hooks you have to install them to your local .git repository.
-You can do so by running the following command.
+You can install the .git hooks by running the following *captainhook* command.
 ```bash
     $ vendor/bin/captainhook install
 ```
