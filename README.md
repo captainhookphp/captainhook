@@ -21,9 +21,9 @@ your own PHP classes that get executed by *CaptainHook*. For more information ha
 
 Use Composer to install CaptainHook.
 ```bash
-    $ composer require --dev sebastianfeldmann/captainhook:~1
+    $ composer require --dev sebastianfeldmann/captainhook
 ```
-    
+
 After installing CaptainHook you can use the *captainhook* executable to create a configuration.
 ```bash
     $ vendor/bin/captainhook configure
