@@ -9,7 +9,7 @@
  */
 namespace sebastianfeldmann\CaptainHook\Git\Resolver;
 
-class Test extends \PHPUnit_Framework_TestCase
+class ChangedFilesTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * PHPUnit cwd
@@ -42,8 +42,8 @@ class Test extends \PHPUnit_Framework_TestCase
 
         $zipFileWithChanges    = CH_PATH_FILES . '/git/dummy-repo-with-changes.zip';
         $zipFileWithoutChanges = CH_PATH_FILES . '/git/dummy-repo-no-changes.zip';
-        self::$repoWithChanges = $tmpDir . '/' . sha1(mt_rand(0, 999));
-        self::$repoNoChanges   = $tmpDir . '/' . sha1(mt_rand(0, 999));
+        self::$repoWithChanges = $tmpDir . '/rwc' . sha1(mt_rand(0, 999));
+        self::$repoNoChanges   = $tmpDir . '/rnc' . sha1(mt_rand(0, 999));
 
         $zip = new \ZipArchive();
         if ($zip->open($zipFileWithChanges) === true) {
