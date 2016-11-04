@@ -77,7 +77,7 @@ class Repository
      *
      * @return string
      */
-    public function getHooksDir()
+    public function getHooksDir() : string
     {
         return $this->dotGitDir . DIRECTORY_SEPARATOR . 'hooks';
     }
@@ -88,7 +88,7 @@ class Repository
      * @param  string $hook
      * @return bool
      */
-    public function hookExists($hook)
+    public function hookExists(string $hook) : bool
     {
         return file_exists($this->getHooksDir() . DIRECTORY_SEPARATOR . $hook);
     }
@@ -108,7 +108,7 @@ class Repository
      *
      * @return \sebastianfeldmann\CaptainHook\Git\CommitMessage
      */
-    public function getCommitMsg()
+    public function getCommitMsg() : CommitMessage
     {
         if (null === $this->commitMsg) {
             throw new \RuntimeException('No commit message available');
@@ -121,7 +121,7 @@ class Repository
      *
      * @return \sebastianfeldmann\CaptainHook\Git\Resolver\ChangedFiles
      */
-    public function getChangedFilesResolver()
+    public function getChangedFilesResolver() : Resolver\ChangedFiles
     {
         if (null === $this->changedFilesResolver) {
             $this->changedFilesResolver = new Resolver\ChangedFiles();
@@ -134,7 +134,7 @@ class Repository
      *
      * @return bool
      */
-    public function isMerging()
+    public function isMerging() : bool
     {
         foreach (['MERGE_MSG', 'MERGE_HEAD', 'MERGE_MODE'] as $fileName) {
             if (file_exists($this->dotGitDir . DIRECTORY_SEPARATOR . $fileName)) {

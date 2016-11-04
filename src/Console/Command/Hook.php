@@ -52,7 +52,7 @@ abstract class Hook extends Base
      * @param string $configFile
      * @param string $repositoryPath
      */
-    public function __construct($configFile, $repositoryPath)
+    public function __construct(string $configFile, string $repositoryPath)
     {
         $this->configFile     = $configFile;
         $this->repositoryPath = $repositoryPath;
@@ -96,9 +96,8 @@ abstract class Hook extends Base
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \sebastianfeldmann\CaptainHook\Config                                  $config
-     * @param \sebastianfeldmann\CaptainHook\Git\Repository                          $repository
-     * @internal param \sebastianfeldmann\CaptainHook\Console\Command\IO $io
+     * @param \sebastianfeldmann\CaptainHook\Config             $config
+     * @param \sebastianfeldmann\CaptainHook\Git\Repository     $repository
      */
     protected function setup(InputInterface $input, OutputInterface $output, Config $config, Git\Repository $repository)
     {

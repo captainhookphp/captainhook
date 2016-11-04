@@ -35,7 +35,7 @@ class MsgNotEmpty extends Base
      * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
      * @return bool
      */
-    public function pass(CommitMessage $msg)
+    public function pass(CommitMessage $msg) : bool
     {
         return !$msg->isEmpty();
     }

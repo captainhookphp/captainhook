@@ -35,7 +35,7 @@ class SeparateSubjectFromBodyWithBlankLine extends Base
      * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
      * @return bool
      */
-    public function pass(CommitMessage $msg)
+    public function pass(CommitMessage $msg) : bool
     {
         return $msg->getLineCount() < 2 || empty($msg->getLine(1));
     }

@@ -30,7 +30,7 @@ abstract class Cmd
      * @param \Composer\Script\Event $event
      * @param string                 $config
      */
-    public static function configure(Event $event, $config = null)
+    public static function configure(Event $event, $config = '')
     {
         $app           = self::createApplication($event, $config);
         $configuration = new Configuration();
@@ -43,12 +43,12 @@ abstract class Cmd
     }
 
     /**
-     * Installs the hooks to your local repository
+     * Installs the hooks to your local repository.
      *
      * @param \Composer\Script\Event $event
      * @param string                 $config
      */
-    public static function install(Event $event, $config = null)
+    public static function install(Event $event, string $config = '')
     {
         $app     = self::createApplication($event, $config);
         $install = new Install();
@@ -65,7 +65,7 @@ abstract class Cmd
      * @param  string                 $config
      * @return \sebastianfeldmann\CaptainHook\Composer\Application
      */
-    private static function createApplication(Event $event, $config = null)
+    private static function createApplication(Event $event, string $config = '') : Application
     {
         $app = new Application();
         $app->setAutoExit(false);

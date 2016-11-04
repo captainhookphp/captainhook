@@ -30,7 +30,7 @@ abstract class Template
      * @param  string $configPath Absolute path to the configuration file.
      * @return string
      */
-    public static function getCode($hook, $repoPath, $vendorPath, $configPath)
+    public static function getCode(string $hook, string $repoPath, string $vendorPath, string $configPath) : string
     {
         $tplVendorPath = self::getTplTargetPath($repoPath, $vendorPath);
         $tplConfigPath = self::getTplTargetPath($repoPath, $configPath);
@@ -62,7 +62,7 @@ abstract class Template
      * @return string
      * @throws \RuntimeException
      */
-    public static function getTplTargetPath($repoDir, $targetPath)
+    public static function getTplTargetPath(string $repoDir, string $targetPath) : string
     {
         $repo    = explode(DIRECTORY_SEPARATOR, ltrim($repoDir, DIRECTORY_SEPARATOR));
         $target  = explode(DIRECTORY_SEPARATOR, ltrim($targetPath, DIRECTORY_SEPARATOR));

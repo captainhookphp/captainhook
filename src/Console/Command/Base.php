@@ -71,7 +71,7 @@ class Base extends Command
      * @param  bool   $failIfNotFound
      * @return \sebastianfeldmann\CaptainHook\Config
      */
-    protected function getConfig($path = null, $failIfNotFound = false)
+    protected function getConfig(string $path = '', bool $failIfNotFound = false)
     {
         $this->config = Config\Factory::create($path);
 

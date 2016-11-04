@@ -32,7 +32,7 @@ abstract class Util
      * @param  string $hook
      * @return bool
      */
-    public static function isValid($hook)
+    public static function isValid(string $hook) : bool
     {
         return isset(self::$validHooks[$hook]);
     }
@@ -42,7 +42,7 @@ abstract class Util
      *
      * @return array
      */
-    public static function getValidHooks()
+    public static function getValidHooks() : array
     {
         return self::$validHooks;
     }
@@ -52,7 +52,7 @@ abstract class Util
      *
      * @return array
      */
-    public static function getHooks()
+    public static function getHooks() : array
     {
         return array_keys(self::$validHooks);
     }
@@ -63,7 +63,7 @@ abstract class Util
      * @param  string $action
      * @return string
      */
-    public static function getActionType($action)
+    public static function getActionType(string $action) : string
     {
         return substr($action, 0, 1) === '\\' ? 'php' : 'cli';
     }

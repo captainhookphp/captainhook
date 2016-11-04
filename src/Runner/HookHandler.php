@@ -37,9 +37,9 @@ abstract class HookHandler extends Runner
      * @return \sebastianfeldmann\CaptainHook\Runner\HookHandler
      * @throws \sebastianfeldmann\CaptainHook\Exception\InvalidHookName
      */
-    public function setHook($hook)
+    public function setHook(string $hook) : HookHandler
     {
-        if (null !== $hook && !HookUtil::isValid($hook)) {
+        if (!empty($hook) && !HookUtil::isValid($hook)) {
             throw new Exception\InvalidHookName('Invalid hook name \'' . $hook . '\'');
         }
         $this->hookToHandle = $hook;

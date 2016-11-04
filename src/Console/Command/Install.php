@@ -67,7 +67,7 @@ class Install extends Base
 
         $installer = new Installer($io, $config, $repo);
         $installer->setForce($input->getOption('force'))
-                  ->setHook($input->getArgument('hook'));
+                  ->setHook((string) $input->getArgument('hook'));
 
         $installer->run();
     }

@@ -29,7 +29,7 @@ class Factory
      * @param  string $path
      * @return \sebastianfeldmann\CaptainHook\Config
      */
-    public static function create($path = null)
+    public static function create(string $path = '')
     {
         $factory = new static();
 
@@ -42,7 +42,7 @@ class Factory
      * @param  string $path
      * @return \sebastianfeldmann\CaptainHook\Config
      */
-    public function createConfig($path = null)
+    public function createConfig($path = '')
     {
         $path       = $path ?: getcwd() . DIRECTORY_SEPARATOR . 'captainhook.json';
         $json       = new Json($path);

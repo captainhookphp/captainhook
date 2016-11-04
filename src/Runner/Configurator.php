@@ -64,7 +64,7 @@ class Configurator extends Runner
      * @param  bool $force
      * @return \sebastianfeldmann\CaptainHook\Runner\Configurator
      */
-    public function force($force)
+    public function force(bool $force) : Configurator
     {
         $this->force = $force;
         return $this;
@@ -76,7 +76,7 @@ class Configurator extends Runner
      * @param  bool $extend
      * @return \sebastianfeldmann\CaptainHook\Runner\Configurator
      */
-    public function extend($extend)
+    public function extend(bool $extend) : Configurator
     {
         $this->mode = $extend ? 'extend' : 'create';
         return $this;
@@ -87,7 +87,7 @@ class Configurator extends Runner
      *
      * @return \sebastianfeldmann\CaptainHook\Config
      */
-    public function getConfigToManipulate()
+    public function getConfigToManipulate() : Config
     {
         // create mode, create blank configuration
         if ('extend' !== $this->mode) {
@@ -116,7 +116,7 @@ class Configurator extends Runner
      * @param \sebastianfeldmann\CaptainHook\Config $config
      * @param string           $hook
      */
-    public function configureHook(Config $config, $hook)
+    public function configureHook(Config $config, string $hook)
     {
         $answer = $this->io->ask('  <info>Enable \'' . $hook . '\' hook?</info> <comment>[y,n]</comment> ', 'n');
         $enable = IOUtil::answerToBool($answer);
@@ -144,7 +144,7 @@ class Configurator extends Runner
      *
      * @return \sebastianfeldmann\CaptainHook\Config\Action
      */
-    public function getActionConfig()
+    public function getActionConfig() : Config\Action
     {
         $call    = $this->io->ask('  <info>PHP class or shell command to execute?</info> ', '');
         $type    = Util::getActionType($call);
@@ -159,7 +159,7 @@ class Configurator extends Runner
      * @param  string $type
      * @return array
      */
-    public function getActionOptions($type)
+    public function getActionOptions(string $type) : array
     {
         return 'php' === $type ? $this->getPHPActionOptions() : [];
     }
@@ -169,7 +169,7 @@ class Configurator extends Runner
      *
      * @return array
      */
-    protected function getPHPActionOptions()
+    protected function getPHPActionOptions() : array
     {
         $options = [];
         $addOption = $this->io->ask('  <info>Add a validator option?</info> <comment>[y,n]</comment> ', 'n');
@@ -186,7 +186,7 @@ class Configurator extends Runner
      *
      * @return array
      */
-    protected function getPHPActionOption()
+    protected function getPHPActionOption() : array
     {
         $result = [];
         $answer = $this->io->askAndValidate(

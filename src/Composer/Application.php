@@ -45,7 +45,7 @@ class Application extends ConfigHandler
      *
      * @return \sebastianfeldmann\CaptainHook\Console\IO\ComposerIO
      */
-    public function getIO()
+    public function getIO() : ComposerIO
     {
         return $this->io;
     }

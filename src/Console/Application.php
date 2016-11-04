@@ -83,6 +83,8 @@ class Application extends SymfonyApplication
 ';
 
     /**
+     * Input output interface
+     *
      * @var \sebastianfeldmann\CaptainHook\Console\IO
      */
     protected $io;
@@ -104,7 +106,7 @@ class Application extends SymfonyApplication
      *
      * @return string
      */
-    public function getHelp()
+    public function getHelp() : string
     {
         return self::$logo . parent::getHelp();
     }

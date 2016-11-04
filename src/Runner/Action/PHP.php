@@ -58,7 +58,7 @@ class PHP implements Action
      * @param  string $class
      * @return string
      */
-    protected function executeStatic($class)
+    protected function executeStatic(string $class) : string
     {
         list($class, $method) = explode('::', $class);
         if (!class_exists($class)) {
@@ -79,7 +79,7 @@ class PHP implements Action
      * @return \sebastianfeldmann\CaptainHook\Hook\Action
      * @throws \sebastianfeldmann\CaptainHook\Exception\ActionFailed
      */
-    protected function createAction($class)
+    protected function createAction(string $class) : Action
     {
         $action = new $class();
         if (!$action instanceof Action) {
@@ -96,7 +96,7 @@ class PHP implements Action
      * @param  string $class
      * @return bool
      */
-    protected function isStaticMethodCall($class)
+    protected function isStaticMethodCall(string $class) : bool
     {
         return (bool)preg_match('#^\\\\.+::.+$#i', $class);
     }

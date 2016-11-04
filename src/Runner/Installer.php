@@ -35,7 +35,7 @@ class Installer extends HookHandler
      * @param  bool $force
      * @return \sebastianfeldmann\CaptainHook\Runner\Installer
      */
-    public function setForce($force)
+    public function setForce(bool $force)
     {
         $this->force = $force;
         return $this;
@@ -58,9 +58,9 @@ class Installer extends HookHandler
      *
      * @return array
      */
-    public function getHooksToInstall()
+    public function getHooksToInstall() : array
     {
-        return null === $this->hookToHandle ? Util::getValidHooks() : [$this->hookToHandle => false];
+        return empty($this->hookToHandle) ? Util::getValidHooks() : [$this->hookToHandle => false];
     }
 
     /**
@@ -69,7 +69,7 @@ class Installer extends HookHandler
      * @param string $hook
      * @param bool   $ask
      */
-    public function installHook($hook, $ask)
+    public function installHook(string $hook, bool $ask)
     {
         $doIt = true;
         if ($ask) {
@@ -87,7 +87,7 @@ class Installer extends HookHandler
      *
      * @param string $hook
      */
-    public function writeHookFile($hook)
+    public function writeHookFile(string $hook)
     {
         $hooksDir = $this->repository->getHooksDir();
         $hookFile = $hooksDir . DIRECTORY_SEPARATOR . $hook;
@@ -115,7 +115,7 @@ class Installer extends HookHandler
      * @param  string $hook
      * @return string
      */
-    protected function getHookSourceCode($hook)
+    protected function getHookSourceCode(string $hook) : string
     {
         $absRepoPath = realpath($this->repository->getRoot());
         $vendorPath  = getcwd() . '/vendor';
@@ -129,7 +129,7 @@ class Installer extends HookHandler
      * @param  string $hook The name of the hook to check
      * @return bool
      */
-    protected function needInstallConfirmation($hook)
+    protected function needInstallConfirmation(string $hook) : bool
     {
         return $this->repository->hookExists($hook) && !$this->force;
     }

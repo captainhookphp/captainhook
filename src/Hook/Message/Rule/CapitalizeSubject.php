@@ -35,7 +35,7 @@ class CapitalizeSubject extends Base
      * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
      * @return bool
      */
-    public function pass(CommitMessage $msg)
+    public function pass(CommitMessage $msg) : bool
     {
         if (!$msg->isEmpty()) {
             $firstLetter = substr($msg->getSubject(), 0, 1);

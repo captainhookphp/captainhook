@@ -25,7 +25,7 @@ class Util
      * @param  string $path
      * @return array
      */
-    public static function pathToArray($path)
+    public static function pathToArray(string $path) : array
     {
         return explode(DIRECTORY_SEPARATOR, ltrim($path, DIRECTORY_SEPARATOR));
     }
@@ -37,7 +37,7 @@ class Util
      * @param  array $parentDir
      * @return bool
      */
-    public static function isSubDirectoryOf(array $subDir, array $parentDir)
+    public static function isSubDirectoryOf(array $subDir, array $parentDir) : bool
     {
         foreach ($parentDir as $index => $dir) {
             if (!isset($subDir[$index]) || $dir !== $subDir[$index]) {
@@ -54,7 +54,7 @@ class Util
      * @param  array $parentDir
      * @return string
      */
-    public static function getSubPathOf(array $subDir, array $parentDir)
+    public static function getSubPathOf(array $subDir, array $parentDir) : string
     {
         if (!self::isSubDirectoryOf($subDir, $parentDir)) {
             throw new \RuntimeException('Invalid sub directory');

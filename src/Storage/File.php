@@ -31,7 +31,7 @@ class File
      *
      * @param string $path
      */
-    public function __construct($path)
+    public function __construct(string $path)
     {
         $this->path = $path;
     }
@@ -41,7 +41,7 @@ class File
      *
      * @return string
      */
-    public function getPath()
+    public function getPath() : string
     {
         return $this->path;
     }
@@ -51,7 +51,7 @@ class File
      *
      * @return bool
      */
-    public function exists()
+    public function exists() : bool
     {
         return is_file($this->path);
     }

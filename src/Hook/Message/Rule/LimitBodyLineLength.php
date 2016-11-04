@@ -45,7 +45,7 @@ class LimitBodyLineLength extends Base
      * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
      * @return bool
      */
-    public function pass(CommitMessage $msg)
+    public function pass(CommitMessage $msg) : bool
     {
         $lineNr = 1;
         foreach ($msg->getBodyLines() as $line) {

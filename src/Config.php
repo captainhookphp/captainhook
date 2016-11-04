@@ -46,7 +46,7 @@ class Config
      * @param string $path
      * @param bool   $fileExists
      */
-    public function __construct($path, $fileExists = false)
+    public function __construct(string $path, bool $fileExists = false)
     {
         $this->path                = $path;
         $this->fileExists          = $fileExists;
@@ -60,7 +60,7 @@ class Config
      *
      * @return bool
      */
-    public function isLoadedFromFile()
+    public function isLoadedFromFile() : bool
     {
         return $this->fileExists;
     }
@@ -70,7 +70,7 @@ class Config
      *
      * @return string
      */
-    public function getPath()
+    public function getPath() : string
     {
         return $this->path;
     }
@@ -82,7 +82,7 @@ class Config
      * @return \sebastianfeldmann\CaptainHook\Config\Hook
      * @throws \InvalidArgumentException
      */
-    public function getHookConfig($hook)
+    public function getHookConfig(string $hook) : Config\Hook
     {
         if (!Hook\Util::isValid($hook)) {
             throw new \InvalidArgumentException('Invalid hook name: ' . $hook);
@@ -95,7 +95,7 @@ class Config
      *
      * @return array
      */
-    public function getJsonData()
+    public function getJsonData() : array
     {
         return [
             'commit-msg' => $this->hooks['commit-msg']->getJsonData(),

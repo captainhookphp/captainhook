@@ -37,7 +37,7 @@ class ChangedFiles
      *
      * @return array
      */
-    public function getChangedFiles()
+    public function getChangedFiles() : array
     {
         if (null === $this->files) {
             $this->resolveFiles();
@@ -51,7 +51,7 @@ class ChangedFiles
      * @param  string $suffix
      * @return bool
      */
-    public function hasChangedFilesOfType($suffix)
+    public function hasChangedFilesOfType(string $suffix) : bool
     {
         return count($this->getChangedFilesOfType($suffix)) > 0;
     }
@@ -62,7 +62,7 @@ class ChangedFiles
      * @param  string $suffix
      * @return array
      */
-    public function getChangedFilesOfType($suffix)
+    public function getChangedFilesOfType(string $suffix) : array
     {
         if (!$this->typesResolved) {
             $this->resolveFileTypes();

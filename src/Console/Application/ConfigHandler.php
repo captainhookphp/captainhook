@@ -31,9 +31,9 @@ abstract class ConfigHandler extends Application
     /**
      * Set the configuration file to use.
      *
-     * @param  string $config
+     * @param string $config
      */
-    public function setConfigFile($config)
+    public function setConfigFile(string $config)
     {
         $this->configFile = $config;
     }
@@ -43,9 +43,9 @@ abstract class ConfigHandler extends Application
      *
      * @return string
      */
-    public function getConfigFile()
+    public function getConfigFile() : string
     {
-        if (null === $this->configFile) {
+        if (empty($this->configFile)) {
             $this->configFile = getcwd() . DIRECTORY_SEPARATOR . 'captainhook.json';
         }
         return $this->configFile;

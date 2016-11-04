@@ -35,7 +35,7 @@ class NoPeriodOnSubjectEnd extends Base
      * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
      * @return bool
      */
-    public function pass(CommitMessage $msg)
+    public function pass(CommitMessage $msg) : bool
     {
         return substr(trim($msg->getSubject()), -1) !== '.';
     }

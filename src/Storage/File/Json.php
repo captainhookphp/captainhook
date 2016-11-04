@@ -27,7 +27,7 @@ class Json extends File
      * @param  bool $assoc
      * @return \stdClass|array
      */
-    public function read($assoc = false)
+    public function read(bool $assoc = false)
     {
         return json_decode(parent::read(), $assoc);
     }
@@ -37,7 +37,7 @@ class Json extends File
      *
      * @return array
      */
-    public function readAssoc()
+    public function readAssoc() : array
     {
         return $this->read(true);
     }

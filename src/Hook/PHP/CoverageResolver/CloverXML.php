@@ -62,7 +62,7 @@ class CloverXML implements CoverageResolver
      *
      * @return float
      */
-    public function getCoverage()
+    public function getCoverage() : float
     {
         $statements = (string) $this->xml->project->metrics->attributes()->statements;
         $covered    = (string) $this->xml->project->metrics->attributes()->coveredstatements;

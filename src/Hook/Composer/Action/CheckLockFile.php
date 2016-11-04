@@ -52,7 +52,7 @@ class CheckLockFile implements Action
      * @param  string $path
      * @return string
      */
-    private function getLockFileHash($path)
+    private function getLockFileHash(string $path) : string
     {
         $lockFile = json_decode($this->loadFile($path . DIRECTORY_SEPARATOR . 'composer.lock'));
 
@@ -65,7 +65,7 @@ class CheckLockFile implements Action
      * @param  string $path
      * @return string
      */
-    private function getConfigFileHash($path)
+    private function getConfigFileHash(string $path) : string
     {
         return md5($this->loadFile($path . DIRECTORY_SEPARATOR . 'composer.json'));
     }
@@ -74,10 +74,10 @@ class CheckLockFile implements Action
      * Load a composer file.
      *
      * @param  string $file
-     * @return \stdClass
+     * @return string
      * @throws \Exception
      */
-    private function loadFile($file)
+    private function loadFile(string $file) : string
     {
         if (!file_exists($file)) {
             throw new \Exception($file . ' not found');

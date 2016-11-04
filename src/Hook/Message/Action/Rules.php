@@ -51,7 +51,7 @@ class Rules extends Book
      * @return \sebastianfeldmann\CaptainHook\Hook\Message\Rule
      * @throws \Exception
      */
-    protected function createRule($class)
+    protected function createRule(string $class) : Rule
     {
         // make sure the class is available
         if (!class_exists($class)) {

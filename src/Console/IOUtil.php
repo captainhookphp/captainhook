@@ -23,9 +23,9 @@ abstract class IOUtil
      * Convert a user answer to boolean.
      *
      * @param  string $answer
-     * @return string
+     * @return bool
      */
-    public static function answerToBool($answer)
+    public static function answerToBool($answer) : bool
     {
         return in_array($answer, ['y', 'yes', 'ok']);
     }

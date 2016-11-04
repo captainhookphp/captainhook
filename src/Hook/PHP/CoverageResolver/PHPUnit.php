@@ -47,7 +47,7 @@ class PHPUnit implements CoverageResolver
      * @author Pablo Braulio
      * @return float
      */
-    public function getCoverage()
+    public function getCoverage() : float
     {
         $process = new Process($this->phpUnit . ' --coverage-text|grep Classes|cut -d " " -f 4|cut -d "%" -f 1');
         $process->run();

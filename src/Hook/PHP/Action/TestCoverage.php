@@ -86,7 +86,7 @@ class TestCoverage implements Action
      *
      * @return \sebastianfeldmann\CaptainHook\Hook\PHP\CoverageResolver
      */
-    protected function getCoverageResolver()
+    protected function getCoverageResolver() : CoverageResolver
     {
         // if clover xml is configured use it to read coverage data
         if (null !== $this->cloverXmlFile) {

@@ -10,6 +10,7 @@
 namespace sebastianfeldmann\CaptainHook\Console\Application;
 
 use sebastianfeldmann\CaptainHook\Hook\Util;
+use sebastianfeldmann\CaptainHook\Console\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -53,17 +54,19 @@ class Hook extends ConfigHandler
      *
      * @param string $git
      */
-    public function setRepositoryPath($git)
+    public function setRepositoryPath(string $git)
     {
         $this->repositoryPath = $git;
     }
 
     /**
+     * Get the git repository root path.
+     *
      * @return string
      */
-    public function getRepositoryPath()
+    public function getRepositoryPath() : string
     {
-        if (null === $this->repositoryPath) {
+        if (empty($this->repositoryPath)) {
             $this->repositoryPath = getcwd();
         }
         return $this->repositoryPath;
@@ -75,7 +78,7 @@ class Hook extends ConfigHandler
      * @param  string $hook
      * @return \sebastianfeldmann\CaptainHook\Console\Application\Hook
      */
-    public function setHook($hook)
+    public function setHook(string $hook)
     {
         if (!Util::isValid($hook)) {
             throw new \RuntimeException('Invalid hook name');
@@ -104,7 +107,7 @@ class Hook extends ConfigHandler
      *
      * @return \sebastianfeldmann\CaptainHook\Console\Command\Hook
      */
-    private function createCommand()
+    private function createCommand() : Command\Hook
     {
         /* @var \sebastianfeldmann\CaptainHook\Console\Command\Hook $command */
         $class   = '\\sebastianfeldmann\\CaptainHook\\Console\\Command\\Hook\\' . $this->getHookCommand();
@@ -119,7 +122,7 @@ class Hook extends ConfigHandler
      *
      * @return string
      */
-    private function getHookCommand()
+    private function getHookCommand() : string
     {
         if (null === $this->hookToExecute) {
             throw new \RuntimeException('No hook to execute');

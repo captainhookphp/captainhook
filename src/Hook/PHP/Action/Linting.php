@@ -56,7 +56,7 @@ class Linting implements Action
      * @param  string $file
      * @return bool
      */
-    protected function hasSyntaxErrors($file)
+    protected function hasSyntaxErrors($file) : bool
     {
         $process = new Process('php -l ' . ProcessUtils::escapeArgument($file));
         $process->setTimeout(null);

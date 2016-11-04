@@ -38,7 +38,7 @@ class Hook
      *
      * @param bool $enabled
      */
-    public function __construct($enabled = false)
+    public function __construct(bool $enabled = false)
     {
         $this->isEnabled = $enabled;
     }
@@ -48,7 +48,7 @@ class Hook
      *
      * @param bool $enabled
      */
-    public function setEnabled($enabled)
+    public function setEnabled(bool $enabled)
     {
         $this->isEnabled = $enabled;
     }
@@ -58,7 +58,7 @@ class Hook
      *
      * @return bool
      */
-    public function isEnabled()
+    public function isEnabled() : bool
     {
         return $this->isEnabled;
     }
@@ -78,7 +78,7 @@ class Hook
      *
      * @return \sebastianfeldmann\CaptainHook\Config\Action[]
      */
-    public function getActions()
+    public function getActions() : array
     {
         return $this->actions;
     }
@@ -88,7 +88,7 @@ class Hook
      *
      * @return array
      */
-    public function getJsonData()
+    public function getJsonData() : array
     {
         $config = ['enabled' => $this->isEnabled, 'actions' => []];
         foreach ($this->actions as $action) {

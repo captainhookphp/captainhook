@@ -26,7 +26,7 @@ interface Rule
      *
      * @return string
      */
-    public function getHint();
+    public function getHint() : string;
 
     /**
      * Checks if a commit message passes the rule.
@@ -34,5 +34,5 @@ interface Rule
      * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
      * @return bool
      */
-    public function pass(CommitMessage $msg);
+    public function pass(CommitMessage $msg) : bool;
 }

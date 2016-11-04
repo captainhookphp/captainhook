@@ -43,7 +43,7 @@ class Options
      * @param  mixed  $default
      * @return mixed
      */
-    public function get($name, $default = null)
+    public function get(string $name, $default = null)
     {
         return isset($this->options[$name]) ? $this->options[$name] : $default;
     }
@@ -53,7 +53,7 @@ class Options
      *
      * @return array
      */
-    public function getAll()
+    public function getAll() : array
     {
         return $this->options;
     }

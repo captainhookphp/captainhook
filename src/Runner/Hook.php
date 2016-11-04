@@ -9,6 +9,8 @@
  */
 namespace sebastianfeldmann\CaptainHook\Runner;
 
+use sebastianfeldmann\CaptainHook\Hook\Action as ActionInterface;
+
 /**
  *  Hook
  *
@@ -52,7 +54,7 @@ class Hook extends HookHandler
      *
      * @return \sebastianfeldmann\CaptainHook\Config\Action[]
      */
-    protected function getActionsToRun()
+    protected function getActionsToRun() : array
     {
         return $this->hookConfig->getActions();
     }
@@ -64,7 +66,7 @@ class Hook extends HookHandler
      * @return \sebastianfeldmann\CaptainHook\Hook\Action
      * @throws \RuntimeException
      */
-    public function getActionRunner($type)
+    public function getActionRunner($type) : ActionInterface
     {
         switch ($type) {
             case 'php':

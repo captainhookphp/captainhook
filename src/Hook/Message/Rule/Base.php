@@ -32,7 +32,7 @@ abstract class Base implements Rule
     /**
      * @return string
      */
-    public function getHint()
+    public function getHint() : string
     {
         return $this->hint;
     }
@@ -41,5 +41,5 @@ abstract class Base implements Rule
      * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
      * @return bool
      */
-    abstract public function pass(CommitMessage $msg);
+    abstract public function pass(CommitMessage $msg) : bool;
 }

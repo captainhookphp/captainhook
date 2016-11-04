@@ -24,5 +24,5 @@ interface CoverageResolver
      *
      * @return float
      */
-    public function getCoverage();
+    public function getCoverage() : float;
 }

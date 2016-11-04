@@ -57,7 +57,7 @@ class CommitMessage
      *
      * @return bool
      */
-    public function isEmpty()
+    public function isEmpty() : bool
     {
         return empty($this->content);
     }
@@ -67,7 +67,7 @@ class CommitMessage
      *
      * @return string
      */
-    public function getContent()
+    public function getContent() : string
     {
         return $this->content;
     }
@@ -77,7 +77,7 @@ class CommitMessage
      *
      * @return array
      */
-    public function getLines()
+    public function getLines() : array
     {
         return $this->lines;
     }
@@ -87,7 +87,7 @@ class CommitMessage
      *
      * @return int
      */
-    public function getLineCount()
+    public function getLineCount() : int
     {
         return $this->lineCount;
     }
@@ -98,7 +98,7 @@ class CommitMessage
      * @param  int $index
      * @return string
      */
-    public function getLine($index)
+    public function getLine(int $index) : string
     {
         return isset($this->lines[$index]) ? $this->lines[$index] : '';
     }
@@ -108,7 +108,7 @@ class CommitMessage
      *
      * @return string
      */
-    public function getSubject()
+    public function getSubject() : string
     {
         return $this->lines[0];
     }
@@ -118,7 +118,7 @@ class CommitMessage
      *
      * @return string
      */
-    public function getBody()
+    public function getBody() : string
     {
         return implode(PHP_EOL, $this->getBodyLines());
     }
@@ -128,7 +128,7 @@ class CommitMessage
      *
      * @return array
      */
-    public function getBodyLines()
+    public function getBodyLines() : array
     {
         return $this->lineCount < 3 ? [] : array_slice($this->lines, 2);
     }
@@ -139,7 +139,7 @@ class CommitMessage
      * @param  string $path
      * @return \sebastianfeldmann\CaptainHook\Git\CommitMessage
      */
-    public static function createFromFile($path)
+    public static function createFromFile(string $path) : CommitMessage
     {
         if (!file_exists($path)) {
             throw new \RuntimeException('Commit message file not found');

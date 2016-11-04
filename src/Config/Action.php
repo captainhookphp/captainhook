@@ -55,7 +55,7 @@ class Action
      * @param  array  $options
      * @throws \Exception
      */
-    public function __construct($type, $action, $options = [])
+    public function __construct(string $type, string $action, array $options = [])
     {
         if (!isset(self::$validTypes[$type])) {
             throw new \Exception(sprintf('Invalid action type: %s', $type));
@@ -70,7 +70,7 @@ class Action
      *
      * @return string
      */
-    public function getType()
+    public function getType() : string
     {
         return $this->type;
     }
@@ -80,7 +80,7 @@ class Action
      *
      * @return string
      */
-    public function getAction()
+    public function getAction() : string
     {
         return $this->action;
     }
@@ -90,7 +90,7 @@ class Action
      *
      * @return \sebastianfeldmann\CaptainHook\Config\Options
      */
-    public function getOptions()
+    public function getOptions() : Options
     {
         return $this->options;
     }
@@ -100,7 +100,7 @@ class Action
      *
      * @return array
      */
-    public function getJsonData()
+    public function getJsonData() : array
     {
         return [
             'action'  => $this->action,
