@@ -110,7 +110,7 @@ class Blacklist extends Base
      */
     protected function isBodyValid(CommitMessage $msg)
     {
-        return !$this->containsBlacklistedWord($this->blacklist['subject'], $msg->getBody());
+        return !$this->containsBlacklistedWord($this->blacklist['body'], $msg->getBody());
     }
 
     /**
