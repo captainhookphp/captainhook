@@ -19,13 +19,11 @@
       "SebastianFeldmann\\CaptainHook\\": "src/"
     }
   },
-  "minimum-stability" : "dev",
-  "prefer-stable": true,
   "require": {
     "ext-json": "*",
     "ext-spl": "*",
-    "sebastianfeldmann/cli": "dev-master",
-    "sebastianfeldmann/git": "dev-master",
+    "sebastianfeldmann/cli": "^1.0.0",
+    "sebastianfeldmann/git": "^1.0.0",
     "symfony/console": ">=2.7 <4.0"
   },
   "require-dev": {
