@@ -7,14 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\PHP\Action;
+namespace SebastianFeldmann\CaptainHook\Hook\PHP\Action;
 
-use sebastianfeldmann\CaptainHook\Config;
-use sebastianfeldmann\CaptainHook\Console\IO;
-use sebastianfeldmann\CaptainHook\Exception\ActionFailed;
-use sebastianfeldmann\CaptainHook\Git\Repository;
-use sebastianfeldmann\CaptainHook\Hook\Action;
-use sebastianfeldmann\CaptainHook\Hook\PHP\CoverageResolver;
+use SebastianFeldmann\CaptainHook\Config;
+use SebastianFeldmann\CaptainHook\Console\IO;
+use SebastianFeldmann\CaptainHook\Exception\ActionFailed;
+use SebastianFeldmann\CaptainHook\Hook\Action;
+use SebastianFeldmann\CaptainHook\Hook\PHP\CoverageResolver;
+use SebastianFeldmann\Git\Repository;
 
 /**
  * Class TestCoverage
@@ -50,10 +50,10 @@ class TestCoverage implements Action
     /**
      * Executes the action.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Config         $config
-     * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
-     * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
-     * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
+     * @param  \SebastianFeldmann\CaptainHook\Config         $config
+     * @param  \SebastianFeldmann\CaptainHook\Console\IO     $io
+     * @param  \SebastianFeldmann\Git\Repository             $repository
+     * @param  \SebastianFeldmann\CaptainHook\Config\Action  $action
      * @throws \Exception
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
@@ -71,7 +71,7 @@ class TestCoverage implements Action
     /**
      * Setup local properties with given options.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Config\Options $options
+     * @param  \SebastianFeldmann\CaptainHook\Config\Options $options
      * @throws \RuntimeException
      */
     protected function handleOptions(Config\Options $options)
@@ -84,7 +84,7 @@ class TestCoverage implements Action
     /**
      * Return the adequate coverage resolver.
      *
-     * @return \sebastianfeldmann\CaptainHook\Hook\PHP\CoverageResolver
+     * @return \SebastianFeldmann\CaptainHook\Hook\PHP\CoverageResolver
      */
     protected function getCoverageResolver() : CoverageResolver
     {
@@ -101,7 +101,7 @@ class TestCoverage implements Action
      * Check if current coverage is high enough.
      *
      * @param  float $coverage
-     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionFailed
+     * @throws \SebastianFeldmann\CaptainHook\Exception\ActionFailed
      */
     protected function verifyCoverage($coverage)
     {

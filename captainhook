@@ -35,7 +35,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-use sebastianfeldmann\CaptainHook;
+use SebastianFeldmann\CaptainHook;
 
 // check installation [composer default, composer bin, git clone]
 foreach ([__DIR__ . '/../../autoload.php', __DIR__ . '/../autoload.php', __DIR__ . '/vendor/autoload.php'] as $file) {

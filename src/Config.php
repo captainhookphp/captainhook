@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook;
+namespace SebastianFeldmann\CaptainHook;
 
 /**
  * Class Config
@@ -36,7 +36,7 @@ class Config
     /**
      * List of hook configs
      *
-     * @var \sebastianfeldmann\CaptainHook\Config\Hook[]
+     * @var \SebastianFeldmann\CaptainHook\Config\Hook[]
      */
     private $hooks = [];
 
@@ -79,7 +79,7 @@ class Config
      * Return config for given hook.
      *
      * @param  string $hook
-     * @return \sebastianfeldmann\CaptainHook\Config\Hook
+     * @return \SebastianFeldmann\CaptainHook\Config\Hook
      * @throws \InvalidArgumentException
      */
     public function getHookConfig(string $hook) : Config\Hook

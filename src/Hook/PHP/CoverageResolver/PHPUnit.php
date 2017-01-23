@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\PHP\CoverageResolver;
+namespace SebastianFeldmann\CaptainHook\Hook\PHP\CoverageResolver;
 
 use RuntimeException;
-use sebastianfeldmann\CaptainHook\Hook\PHP\CoverageResolver;
-use Symfony\Component\Process\Process;
+use SebastianFeldmann\CaptainHook\Hook\PHP\CoverageResolver;
+use SebastianFeldmann\Cli\Processor\ProcOpen as Processor;
 
 /**
  * Class PHPUnit
@@ -35,7 +35,7 @@ class PHPUnit implements CoverageResolver
      *
      * @param string $pathToPHPUnit
      */
-    public function __construct($pathToPHPUnit)
+    public function __construct(string $pathToPHPUnit)
     {
         $this->phpUnit = $pathToPHPUnit;
     }
@@ -49,11 +49,11 @@ class PHPUnit implements CoverageResolver
      */
     public function getCoverage() : float
     {
-        $process = new Process($this->phpUnit . ' --coverage-text|grep Classes|cut -d " " -f 4|cut -d "%" -f 1');
-        $process->run();
-        $output = $process->getOutput();
-        if (!$process->isSuccessful() || empty($output)) {
-            throw new RuntimeException('error while executing PHPUnit: ' . $process->getErrorOutput());
+        $processor = new Processor();
+        $result    = $processor->run($this->phpUnit . ' --coverage-text|grep Classes|cut -d " " -f 4|cut -d "%" -f 1');
+        $output    = $result->getStdOut();
+        if (!$result->isSuccessful() || empty($output)) {
+            throw new RuntimeException('Error while executing PHPUnit: ' . $result->getStdErr());
         }
         return (float) $output;
     }

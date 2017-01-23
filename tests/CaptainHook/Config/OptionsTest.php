@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Config;
+namespace SebastianFeldmann\CaptainHook\Config;
 
 class OptionsTest extends \PHPUnit_Framework_TestCase
 {

@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Rule;
+namespace SebastianFeldmann\CaptainHook\Hook\Message\Rule;
 
-use sebastianfeldmann\CaptainHook\Git\CommitMessage;
-use sebastianfeldmann\CaptainHook\Hook\Message\Rule;
+use SebastianFeldmann\Git\CommitMessage;
+use SebastianFeldmann\CaptainHook\Hook\Message\Rule;
 
 /**
  * Class Base
@@ -38,7 +38,7 @@ abstract class Base implements Rule
     }
 
     /**
-     * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
+     * @param  \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool
      */
     abstract public function pass(CommitMessage $msg) : bool;

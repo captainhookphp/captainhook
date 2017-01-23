@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Console\Command;
+namespace SebastianFeldmann\CaptainHook\Console\Command;
 
-use sebastianfeldmann\CaptainHook\Config;
-use sebastianfeldmann\CaptainHook\Git;
-use sebastianfeldmann\CaptainHook\Runner;
+use SebastianFeldmann\CaptainHook\Config;
+use SebastianFeldmann\CaptainHook\Runner;
+use SebastianFeldmann\Git\Repository;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -80,7 +80,7 @@ abstract class Hook extends Base
     {
         $io         = $this->getIO($input, $output);
         $config     = $this->getConfig($this->configFile, true);
-        $repository = new Git\Repository($this->repositoryPath);
+        $repository = new Repository($this->repositoryPath);
 
         // handle command specific setup
         $this->setup($input, $output, $config, $repository);
@@ -96,10 +96,10 @@ abstract class Hook extends Base
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \sebastianfeldmann\CaptainHook\Config             $config
-     * @param \sebastianfeldmann\CaptainHook\Git\Repository     $repository
+     * @param \SebastianFeldmann\CaptainHook\Config             $config
+     * @param \SebastianFeldmann\Git\Repository                 $repository
      */
-    protected function setup(InputInterface $input, OutputInterface $output, Config $config, Git\Repository $repository)
+    protected function setup(InputInterface $input, OutputInterface $output, Config $config, Repository $repository)
     {
         // do something fooish
     }

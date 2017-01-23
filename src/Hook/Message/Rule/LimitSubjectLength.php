@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Rule;
+namespace SebastianFeldmann\CaptainHook\Hook\Message\Rule;
 
-use sebastianfeldmann\CaptainHook\Git\CommitMessage;
+use SebastianFeldmann\Git\CommitMessage;
 
 /**
  * Class LimitSubjectLength
@@ -33,7 +33,7 @@ class LimitSubjectLength extends Base
      *
      * @param int $length
      */
-    public function __construct($length = 50)
+    public function __construct(int $length = 50)
     {
         $this->hint      = 'Subject line should not exceed ' . $length . ' characters';
         $this->maxLength = $length;
@@ -42,7 +42,7 @@ class LimitSubjectLength extends Base
     /**
      * Check if commit message doesn't exceeed the max length.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
+     * @param  \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool
      */
     public function pass(CommitMessage $msg) : bool

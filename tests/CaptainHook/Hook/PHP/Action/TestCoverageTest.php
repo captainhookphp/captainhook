@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\PHP\Action;
+namespace SebastianFeldmann\CaptainHook\Hook\PHP\Action;
 
-use sebastianfeldmann\CaptainHook\Config;
-use sebastianfeldmann\CaptainHook\Console\IO\NullIO;
+use SebastianFeldmann\CaptainHook\Config;
+use SebastianFeldmann\CaptainHook\Console\IO\NullIO;
 
 class TestCoverageTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,7 +25,7 @@ class TestCoverageTest extends \PHPUnit_Framework_TestCase
         $standard = new TestCoverage();
         $action   = new Config\Action(
             'php',
-            '\\sebastianfeldmann\\CaptainHook\\Hook\\PHP\\Action\\TextCoverage',
+            '\\SebastianFeldmann\\CaptainHook\\Hook\\PHP\\Action\\TextCoverage',
             ['cloverXml' => CH_PATH_FILES . '/coverage/valid.xml']
         );
         $standard->execute($config, $io, $repo, $action);
@@ -44,7 +44,7 @@ class TestCoverageTest extends \PHPUnit_Framework_TestCase
         $standard = new TestCoverage();
         $action   = new Config\Action(
             'php',
-            '\\sebastianfeldmann\\CaptainHook\\Hook\\PHP\\Action\\TextCoverage',
+            '\\SebastianFeldmann\\CaptainHook\\Hook\\PHP\\Action\\TextCoverage',
             [
                 'cloverXml'   => CH_PATH_FILES . '/coverage/valid.xml',
                 'minCoverage' => 100
@@ -64,18 +64,18 @@ class TestCoverageTest extends \PHPUnit_Framework_TestCase
         $standard = new TestCoverage();
         $action   = new Config\Action(
             'php',
-            '\\sebastianfeldmann\\CaptainHook\\Hook\\PHP\\Action\\TextCoverage',
+            '\\SebastianFeldmann\\CaptainHook\\Hook\\PHP\\Action\\TextCoverage',
             ['phpUnit' => CH_PATH_FILES . '/bin/phpunit']
         );
         $standard->execute($config, $io, $repo, $action);
     }
 
     /**
-     * @return \sebastianfeldmann\CaptainHook\Git\Repository
+     * @return \SebastianFeldmann\Git\Repository
      */
     private function getRepoMock()
     {
-        return $this->getMockBuilder('\\sebastianfeldmann\\CaptainHook\\Git\\Repository')
+        return $this->getMockBuilder('\\SebastianFeldmann\\Git\\Repository')
                     ->disableOriginalConstructor()
                     ->getMock();
     }

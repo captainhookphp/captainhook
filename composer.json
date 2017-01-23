@@ -16,14 +16,17 @@
   },
   "autoload": {
     "psr-4": {
-      "sebastianfeldmann\\CaptainHook\\": "src/"
+      "SebastianFeldmann\\CaptainHook\\": "src/"
     }
   },
+  "minimum-stability" : "dev",
+  "prefer-stable": true,
   "require": {
     "ext-json": "*",
     "ext-spl": "*",
-    "symfony/console": ">=2.7 <4.0",
-    "symfony/process": ">=2.7 <4.0"
+    "sebastianfeldmann/cli": "dev-master",
+    "sebastianfeldmann/git": "dev-master",
+    "symfony/console": ">=2.7 <4.0"
   },
   "require-dev": {
     "composer/composer": "~1"
@@ -38,8 +41,8 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "\\sebastianfeldmann\\CaptainHook\\Composer\\Cmd::configure",
-      "\\sebastianfeldmann\\CaptainHook\\Composer\\Cmd::install"
+      "\\SebastianFeldmann\\CaptainHook\\Composer\\Cmd::configure",
+      "\\SebastianFeldmann\\CaptainHook\\Composer\\Cmd::install"
     ]
   },
   "suggest": {

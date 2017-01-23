@@ -7,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Runner\Action;
+namespace SebastianFeldmann\CaptainHook\Runner\Action;
 
-use sebastianfeldmann\CaptainHook\Config;
-use sebastianfeldmann\CaptainHook\Console\IO;
-use sebastianfeldmann\CaptainHook\Git\Repository;
-use sebastianfeldmann\CaptainHook\Hook\Action as ActionInterface;
-use sebastianfeldmann\CaptainHook\Runner\BaseTestRunner;
+use SebastianFeldmann\CaptainHook\Config;
+use SebastianFeldmann\CaptainHook\Console\IO;
+use SebastianFeldmann\CaptainHook\Hook\Action as ActionInterface;
+use SebastianFeldmann\CaptainHook\Runner\BaseTestRunner;
+use SebastianFeldmann\Git\Repository;
 
 class PHPTest extends BaseTestRunner
 {
@@ -27,7 +27,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\sebastianfeldmann\\CaptainHook\\Runner\\Action\\DummyPHPSuccess';
+        $class = '\\SebastianFeldmann\\CaptainHook\\Runner\\Action\\DummyPHPSuccess';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -47,7 +47,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\sebastianfeldmann\\CaptainHook\\Runner\\Action\\DummyPHPFailure';
+        $class = '\\SebastianFeldmann\\CaptainHook\\Runner\\Action\\DummyPHPFailure';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -67,7 +67,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\sebastianfeldmann\\CaptainHook\\Runner\\Action\\DummyPHPError';
+        $class = '\\SebastianFeldmann\\CaptainHook\\Runner\\Action\\DummyPHPError';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -87,7 +87,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\sebastianfeldmann\\CaptainHook\\Runner\\Action\\DummyNoAction';
+        $class = '\\SebastianFeldmann\\CaptainHook\\Runner\\Action\\DummyNoAction';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -127,7 +127,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\sebastianfeldmann\\CaptainHook\\Runner\\Action\\DummyNoAction::foo';
+        $class = '\\SebastianFeldmann\\CaptainHook\\Runner\\Action\\DummyNoAction::foo';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -146,7 +146,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\sebastianfeldmann\\CaptainHook\\Runner\\Action\\DummyPHPSuccess::executeStatic';
+        $class = '\\SebastianFeldmann\\CaptainHook\\Runner\\Action\\DummyPHPSuccess::executeStatic';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -168,11 +168,11 @@ class DummyPHPSuccess implements ActionInterface
     /**
      * Execute the configured action.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Config         $config
-     * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
-     * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
-     * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
-     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionFailed
+     * @param  \SebastianFeldmann\CaptainHook\Config         $config
+     * @param  \SebastianFeldmann\CaptainHook\Console\IO     $io
+     * @param  \SebastianFeldmann\Git\Repository             $repository
+     * @param  \SebastianFeldmann\CaptainHook\Config\Action  $action
+     * @throws \SebastianFeldmann\CaptainHook\Exception\ActionFailed
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
@@ -185,11 +185,11 @@ class DummyPHPFailure implements ActionInterface
     /**
      * Execute the configured action.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Config         $config
-     * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
-     * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
-     * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
-     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionFailed
+     * @param  \SebastianFeldmann\CaptainHook\Config         $config
+     * @param  \SebastianFeldmann\CaptainHook\Console\IO     $io
+     * @param  \SebastianFeldmann\Git\Repository             $repository
+     * @param  \SebastianFeldmann\CaptainHook\Config\Action  $action
+     * @throws \SebastianFeldmann\CaptainHook\Exception\ActionFailed
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
@@ -202,11 +202,11 @@ class DummyPHPError implements ActionInterface
     /**
      * Execute the configured action.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Config         $config
-     * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
-     * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
-     * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
-     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionFailed
+     * @param  \SebastianFeldmann\CaptainHook\Config         $config
+     * @param  \SebastianFeldmann\CaptainHook\Console\IO     $io
+     * @param  \SebastianFeldmann\Git\Repository             $repository
+     * @param  \SebastianFeldmann\CaptainHook\Config\Action  $action
+     * @throws \SebastianFeldmann\CaptainHook\Exception\ActionFailed
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {

@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Composer;
+namespace SebastianFeldmann\CaptainHook\Composer;
 
 use Composer\IO\NullIO;
-use sebastianfeldmann\CaptainHook\Git\DummyRepo;
+use SebastianFeldmann\CaptainHook\Git\DummyRepo;
 
 class CmdTest extends \PHPUnit_Framework_TestCase
 {

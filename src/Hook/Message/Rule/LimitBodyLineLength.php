@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Rule;
+namespace SebastianFeldmann\CaptainHook\Hook\Message\Rule;
 
-use sebastianfeldmann\CaptainHook\Git\CommitMessage;
+use SebastianFeldmann\Git\CommitMessage;
 
 /**
  * Class LimitBodyLineLength
@@ -42,7 +42,7 @@ class LimitBodyLineLength extends Base
     /**
      * Check if a body line doesn't exceed the max length limit.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
+     * @param  \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool
      */
     public function pass(CommitMessage $msg) : bool

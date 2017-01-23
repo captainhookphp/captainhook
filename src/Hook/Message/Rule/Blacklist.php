@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Rule;
+namespace SebastianFeldmann\CaptainHook\Hook\Message\Rule;
 
-use sebastianfeldmann\CaptainHook\Git\CommitMessage;
+use SebastianFeldmann\Git\CommitMessage;
 
 /**
  * Class UseImperativeMood
@@ -43,7 +43,7 @@ class Blacklist extends Base
      *
      * @param bool $caseSensitive
      */
-    public function __construct($caseSensitive = false)
+    public function __construct(bool $caseSensitive = false)
     {
         $this->isCaseSensitive = $caseSensitive;
         $this->hint            = 'Commit message should not contain blacklisted words';
@@ -83,7 +83,7 @@ class Blacklist extends Base
     /**
      * Check if the message contains blacklisted words.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
+     * @param  \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool
      */
     public function pass(CommitMessage $msg) : bool
@@ -94,7 +94,7 @@ class Blacklist extends Base
     /**
      * Check commit message subject for blacklisted words.
      *
-     * @param \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
+     * @param \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool
      */
     protected function isSubjectValid(CommitMessage $msg) : bool
@@ -105,7 +105,7 @@ class Blacklist extends Base
     /**
      * Check commit message body for blacklisted words.
      *
-     * @param \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
+     * @param \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool
      */
     protected function isBodyValid(CommitMessage $msg) : bool

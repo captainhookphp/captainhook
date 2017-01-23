@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Runner;
+namespace SebastianFeldmann\CaptainHook\Runner;
 
-use sebastianfeldmann\CaptainHook\Exception;
-use sebastianfeldmann\CaptainHook\Hook\Util as HookUtil;
-use sebastianfeldmann\CaptainHook\Runner;
+use SebastianFeldmann\CaptainHook\Exception;
+use SebastianFeldmann\CaptainHook\Hook\Util as HookUtil;
+use SebastianFeldmann\CaptainHook\Runner;
 
 /**
  * Class HookHandler
@@ -34,8 +34,8 @@ abstract class HookHandler extends Runner
      * Hook setter.
      *
      * @param  string $hook
-     * @return \sebastianfeldmann\CaptainHook\Runner\HookHandler
-     * @throws \sebastianfeldmann\CaptainHook\Exception\InvalidHookName
+     * @return \SebastianFeldmann\CaptainHook\Runner\HookHandler
+     * @throws \SebastianFeldmann\CaptainHook\Exception\InvalidHookName
      */
     public function setHook(string $hook) : HookHandler
     {

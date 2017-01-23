@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Exception;
+namespace SebastianFeldmann\CaptainHook\Exception;
 
 /**
  * Class ActionFailed
@@ -23,7 +23,7 @@ class ActionFailed extends \Exception
      * Return a Action Failed exception.
      *
      * @param string $msg
-     * @return \sebastianfeldmann\CaptainHook\Exception\ActionFailed
+     * @return \SebastianFeldmann\CaptainHook\Exception\ActionFailed
      */
     public static function withMessage($msg)
     {

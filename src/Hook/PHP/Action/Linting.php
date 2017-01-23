@@ -7,15 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\PHP\Action;
+namespace SebastianFeldmann\CaptainHook\Hook\PHP\Action;
 
-use sebastianfeldmann\CaptainHook\Config;
-use sebastianfeldmann\CaptainHook\Console\IO;
-use sebastianfeldmann\CaptainHook\Exception\ActionFailed;
-use sebastianfeldmann\CaptainHook\Git\Repository;
-use sebastianfeldmann\CaptainHook\Hook\Action;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessUtils;
+use SebastianFeldmann\CaptainHook\Config;
+use SebastianFeldmann\CaptainHook\Console\IO;
+use SebastianFeldmann\CaptainHook\Exception\ActionFailed;
+use SebastianFeldmann\CaptainHook\Hook\Action;
+use SebastianFeldmann\Cli\Processor\ProcOpen as Processor;
+use SebastianFeldmann\Git\Repository;
 
 /**
  * Class Linter
@@ -30,15 +29,15 @@ class Linting implements Action
     /**
      * Executes the action.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Config         $config
-     * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
-     * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
-     * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
+     * @param  \SebastianFeldmann\CaptainHook\Config         $config
+     * @param  \SebastianFeldmann\CaptainHook\Console\IO     $io
+     * @param  \SebastianFeldmann\Git\Repository             $repository
+     * @param  \SebastianFeldmann\CaptainHook\Config\Action  $action
      * @throws \Exception
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
-        $changedPHPFiles = $repository->getChangedFilesResolver()->getChangedFilesOfType('php');
+        $changedPHPFiles = $repository->getIndexOperator()->getStagedFilesOfType('php');
 
         $io->write('linting files:', true, IO::VERBOSE);
         foreach ($changedPHPFiles as $file) {
@@ -58,10 +57,9 @@ class Linting implements Action
      */
     protected function hasSyntaxErrors($file) : bool
     {
-        $process = new Process('php -l ' . ProcessUtils::escapeArgument($file));
-        $process->setTimeout(null);
-        $process->run();
+        $process = new Processor();
+        $result  = $process->run('php -l ' . escapeshellarg($file));
 
-        return !$process->isSuccessful();
+        return !$result->isSuccessful();
     }
 }

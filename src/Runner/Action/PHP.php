@@ -7,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Runner\Action;
+namespace SebastianFeldmann\CaptainHook\Runner\Action;
 
-use sebastianfeldmann\CaptainHook\Config;
-use sebastianfeldmann\CaptainHook\Console\IO;
-use sebastianfeldmann\CaptainHook\Exception\ActionFailed;
-use sebastianfeldmann\CaptainHook\Git\Repository;
-use sebastianfeldmann\CaptainHook\Hook\Action;
+use SebastianFeldmann\CaptainHook\Config;
+use SebastianFeldmann\CaptainHook\Console\IO;
+use SebastianFeldmann\CaptainHook\Exception\ActionFailed;
+use SebastianFeldmann\CaptainHook\Hook\Action;
+use SebastianFeldmann\Git\Repository;
 
 /**
  * Class PHP
@@ -28,11 +28,11 @@ class PHP implements Action
     /**
      * Execute the configured action.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Config         $config
-     * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
-     * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
-     * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
-     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionFailed
+     * @param  \SebastianFeldmann\CaptainHook\Config         $config
+     * @param  \SebastianFeldmann\CaptainHook\Console\IO     $io
+     * @param  \SebastianFeldmann\Git\Repository             $repository
+     * @param  \SebastianFeldmann\CaptainHook\Config\Action  $action
+     * @throws \SebastianFeldmann\CaptainHook\Exception\ActionFailed
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
@@ -76,8 +76,8 @@ class PHP implements Action
      * Create an action instance.
      *
      * @param  string $class
-     * @return \sebastianfeldmann\CaptainHook\Hook\Action
-     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionFailed
+     * @return \SebastianFeldmann\CaptainHook\Hook\Action
+     * @throws \SebastianFeldmann\CaptainHook\Exception\ActionFailed
      */
     protected function createAction(string $class) : Action
     {

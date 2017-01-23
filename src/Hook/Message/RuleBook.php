@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message;
+namespace SebastianFeldmann\CaptainHook\Hook\Message;
 
-use sebastianfeldmann\CaptainHook\Exception\ActionFailed;
-use sebastianfeldmann\CaptainHook\Git\CommitMessage;
+use SebastianFeldmann\CaptainHook\Exception\ActionFailed;
+use SebastianFeldmann\Git\CommitMessage;
 
 /**
  * Class RuleBook
@@ -25,15 +25,15 @@ class RuleBook
     /**
      * List of rules to check
      *
-     * @var \sebastianfeldmann\CaptainHook\Hook\Message\Rule[]
+     * @var \SebastianFeldmann\CaptainHook\Hook\Message\Rule[]
      */
     private $rules = [];
 
     /**
      * Set rules to check.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Hook\Message\Rule[] $rules
-     * @return \sebastianfeldmann\CaptainHook\Hook\Message\Rulebook
+     * @param  \SebastianFeldmann\CaptainHook\Hook\Message\Rule[] $rules
+     * @return \SebastianFeldmann\CaptainHook\Hook\Message\Rulebook
      */
     public function setRules(array $rules)
     {
@@ -44,8 +44,8 @@ class RuleBook
     /**
      * Add a rule to the list.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Hook\Message\Rule $rule
-     * @return \sebastianfeldmann\CaptainHook\Hook\Message\Rulebook
+     * @param  \SebastianFeldmann\CaptainHook\Hook\Message\Rule $rule
+     * @return \SebastianFeldmann\CaptainHook\Hook\Message\Rulebook
      */
     public function addRule(Rule $rule)
     {
@@ -56,8 +56,8 @@ class RuleBook
     /**
      * Validates all rules.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $msg
-     * @throws \sebastianfeldmann\CaptainHook\Exception\ActionFailed
+     * @param  \SebastianFeldmann\Git\CommitMessage $msg
+     * @throws \SebastianFeldmann\CaptainHook\Exception\ActionFailed
      */
     public function validate(CommitMessage $msg)
     {

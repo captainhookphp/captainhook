@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Console\Application;
+namespace SebastianFeldmann\CaptainHook\Console\Application;
 
-use sebastianfeldmann\CaptainHook\Hook\Util;
-use sebastianfeldmann\CaptainHook\Console\Command;
+use SebastianFeldmann\CaptainHook\Hook\Util;
+use SebastianFeldmann\CaptainHook\Console\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -76,7 +76,7 @@ class Hook extends ConfigHandler
      * Set the hook to execute.
      *
      * @param  string $hook
-     * @return \sebastianfeldmann\CaptainHook\Console\Application\Hook
+     * @return \SebastianFeldmann\CaptainHook\Console\Application\Hook
      */
     public function setHook(string $hook)
     {
@@ -105,12 +105,12 @@ class Hook extends ConfigHandler
     /**
      * Create the hook command.
      *
-     * @return \sebastianfeldmann\CaptainHook\Console\Command\Hook
+     * @return \SebastianFeldmann\CaptainHook\Console\Command\Hook
      */
     private function createCommand() : Command\Hook
     {
-        /* @var \sebastianfeldmann\CaptainHook\Console\Command\Hook $command */
-        $class   = '\\sebastianfeldmann\\CaptainHook\\Console\\Command\\Hook\\' . $this->getHookCommand();
+        /* @var \SebastianFeldmann\CaptainHook\Console\Command\Hook $command */
+        $class   = '\\SebastianFeldmann\\CaptainHook\\Console\\Command\\Hook\\' . $this->getHookCommand();
         $command = new $class($this->getConfigFile(), $this->getRepositoryPath());
         $command->setHelperSet($this->getHelperSet());
 

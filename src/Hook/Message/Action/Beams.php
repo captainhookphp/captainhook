@@ -7,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Action;
+namespace SebastianFeldmann\CaptainHook\Hook\Message\Action;
 
-use sebastianfeldmann\CaptainHook\Config;
-use sebastianfeldmann\CaptainHook\Console\IO;
-use sebastianfeldmann\CaptainHook\Git\Repository;
-use sebastianfeldmann\CaptainHook\Hook\Message\Rule;
-use sebastianfeldmann\CaptainHook\Hook\Message\RuleBook;
+use SebastianFeldmann\CaptainHook\Config;
+use SebastianFeldmann\CaptainHook\Console\IO;
+use SebastianFeldmann\CaptainHook\Hook\Message\Rule;
+use SebastianFeldmann\CaptainHook\Hook\Message\RuleBook;
+use SebastianFeldmann\Git\Repository;
 
 /**
  * Class Beams
@@ -28,10 +28,10 @@ class Beams extends Book
     /**
      * Execute the configured action.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Config         $config
-     * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
-     * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
-     * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
+     * @param  \SebastianFeldmann\CaptainHook\Config         $config
+     * @param  \SebastianFeldmann\CaptainHook\Console\IO     $io
+     * @param  \SebastianFeldmann\Git\Repository             $repository
+     * @param  \SebastianFeldmann\CaptainHook\Config\Action  $action
      * @throws \Exception
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)

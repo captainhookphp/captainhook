@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Config;
+namespace SebastianFeldmann\CaptainHook\Config;
 
 /**
  * Class Hook
@@ -29,7 +29,7 @@ class Hook
     /**
      * List of Actions
      *
-     * @var \sebastianfeldmann\CaptainHook\Config\Action[]
+     * @var \SebastianFeldmann\CaptainHook\Config\Action[]
      */
     private $actions = [];
 
@@ -66,7 +66,7 @@ class Hook
     /**
      * Add an action to the list.
      *
-     * @param \sebastianfeldmann\CaptainHook\Config\Action $action
+     * @param \SebastianFeldmann\CaptainHook\Config\Action $action
      */
     public function addAction(Action $action)
     {
@@ -76,7 +76,7 @@ class Hook
     /**
      * Return the action list.
      *
-     * @return \sebastianfeldmann\CaptainHook\Config\Action[]
+     * @return \SebastianFeldmann\CaptainHook\Config\Action[]
      */
     public function getActions() : array
     {

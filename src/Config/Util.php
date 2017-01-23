@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Config;
+namespace SebastianFeldmann\CaptainHook\Config;
 
-use sebastianfeldmann\CaptainHook\Hook\Util as HookUtil;
+use SebastianFeldmann\CaptainHook\Hook\Util as HookUtil;
 
 /**
  * Class Util

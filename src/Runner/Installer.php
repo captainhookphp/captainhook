@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Runner;
+namespace SebastianFeldmann\CaptainHook\Runner;
 
-use sebastianfeldmann\CaptainHook\Console\IOUtil;
-use sebastianfeldmann\CaptainHook\Hook\Template;
-use sebastianfeldmann\CaptainHook\Storage\File;
-use sebastianfeldmann\CaptainHook\Hook\Util;
+use SebastianFeldmann\CaptainHook\Console\IOUtil;
+use SebastianFeldmann\CaptainHook\Hook\Template;
+use SebastianFeldmann\CaptainHook\Storage\File;
+use SebastianFeldmann\CaptainHook\Hook\Util;
 
 /**
  * Class Installer
@@ -33,7 +33,7 @@ class Installer extends HookHandler
 
     /**
      * @param  bool $force
-     * @return \sebastianfeldmann\CaptainHook\Runner\Installer
+     * @return \SebastianFeldmann\CaptainHook\Runner\Installer
      */
     public function setForce(bool $force)
     {

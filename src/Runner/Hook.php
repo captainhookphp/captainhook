@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Runner;
+namespace SebastianFeldmann\CaptainHook\Runner;
 
-use sebastianfeldmann\CaptainHook\Hook\Action as ActionInterface;
+use SebastianFeldmann\CaptainHook\Hook\Action as ActionInterface;
 
 /**
  *  Hook
@@ -24,7 +24,7 @@ class Hook extends HookHandler
     /**
      * Hook config
      *
-     * @var \sebastianfeldmann\CaptainHook\Config\Hook
+     * @var \SebastianFeldmann\CaptainHook\Config\Hook
      */
     private $hookConfig;
 
@@ -33,7 +33,7 @@ class Hook extends HookHandler
      */
     public function run()
     {
-        /** @var \sebastianfeldmann\CaptainHook\Config\Hook $hookConfig */
+        /** @var \SebastianFeldmann\CaptainHook\Config\Hook $hookConfig */
         $this->hookConfig = $this->config->getHookConfig($this->hookToHandle);
 
         // execute hooks only if hook is enabled in captainhook.json
@@ -52,7 +52,7 @@ class Hook extends HookHandler
     /**
      * Return list of actions to run.
      *
-     * @return \sebastianfeldmann\CaptainHook\Config\Action[]
+     * @return \SebastianFeldmann\CaptainHook\Config\Action[]
      */
     protected function getActionsToRun() : array
     {
@@ -63,7 +63,7 @@ class Hook extends HookHandler
      * Return matching action runner.
      *
      * @param  string $type
-     * @return \sebastianfeldmann\CaptainHook\Hook\Action
+     * @return \SebastianFeldmann\CaptainHook\Hook\Action
      * @throws \RuntimeException
      */
     public function getActionRunner($type) : ActionInterface

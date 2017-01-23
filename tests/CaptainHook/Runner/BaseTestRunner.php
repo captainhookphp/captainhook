@@ -7,56 +7,56 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Runner;
+namespace SebastianFeldmann\CaptainHook\Runner;
 
 class BaseTestRunner extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @return \sebastianfeldmann\CaptainHook\Console\IO\DefaultIO
+     * @return \SebastianFeldmann\CaptainHook\Console\IO\DefaultIO
      */
     public function getIOMock()
     {
-        return $this->getMockBuilder('\\sebastianfeldmann\\CaptainHook\\Console\\IO\DefaultIO')
+        return $this->getMockBuilder('\\SebastianFeldmann\\CaptainHook\\Console\\IO\DefaultIO')
                     ->disableOriginalConstructor()
                     ->getMock();
     }
 
     /**
-     * @return \sebastianfeldmann\CaptainHook\Config
+     * @return \SebastianFeldmann\CaptainHook\Config
      */
     public function getConfigMock()
     {
-        return $this->getMockBuilder('\\sebastianfeldmann\\CaptainHook\\Config')
+        return $this->getMockBuilder('\\SebastianFeldmann\\CaptainHook\\Config')
                     ->disableOriginalConstructor()
                     ->getMock();
     }
 
     /**
-     * @return \sebastianfeldmann\CaptainHook\Config\Hook
+     * @return \SebastianFeldmann\CaptainHook\Config\Hook
      */
     public function getHookConfigMock()
     {
-        return $this->getMockBuilder('\\sebastianfeldmann\\CaptainHook\\Config\\Hook')
+        return $this->getMockBuilder('\\SebastianFeldmann\\CaptainHook\\Config\\Hook')
                     ->disableOriginalConstructor()
                     ->getMock();
     }
 
     /**
-     * @return \sebastianfeldmann\CaptainHook\Config\Action
+     * @return \SebastianFeldmann\CaptainHook\Config\Action
      */
     public function getActionConfigMock()
     {
-        return $this->getMockBuilder('\\sebastianfeldmann\\CaptainHook\\Config\\Action')
+        return $this->getMockBuilder('\\SebastianFeldmann\\CaptainHook\\Config\\Action')
                     ->disableOriginalConstructor()
                     ->getMock();
     }
 
     /**
-     * @return \sebastianfeldmann\CaptainHook\Git\Repository
+     * @return \SebastianFeldmann\Git\Repository
      */
     public function getRepositoryMock()
     {
-        return $this->getMockBuilder('\\sebastianfeldmann\\CaptainHook\\Git\\Repository')
+        return $this->getMockBuilder('\\SebastianFeldmann\\Git\\Repository')
                     ->disableOriginalConstructor()
                     ->getMock();
     }

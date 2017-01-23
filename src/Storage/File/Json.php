@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Storage\File;
+namespace SebastianFeldmann\CaptainHook\Storage\File;
 
-use sebastianfeldmann\CaptainHook\Storage\File;
+use SebastianFeldmann\CaptainHook\Storage\File;
 
 /**
  * Class Json

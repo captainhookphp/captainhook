@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message;
+namespace SebastianFeldmann\CaptainHook\Hook\Message;
 
-use sebastianfeldmann\CaptainHook\Git\CommitMessage;
-use sebastianfeldmann\CaptainHook\Hook\Message\Rule\CapitalizeSubject;
-use sebastianfeldmann\CaptainHook\Hook\Message\Rule\MsgNotEmpty;
+use SebastianFeldmann\CaptainHook\Hook\Message\Rule\CapitalizeSubject;
+use SebastianFeldmann\CaptainHook\Hook\Message\Rule\MsgNotEmpty;
+use SebastianFeldmann\Git\CommitMessage;
 
 class RuleBookTest extends \PHPUnit_Framework_TestCase
 {

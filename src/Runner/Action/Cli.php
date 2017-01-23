@@ -7,14 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Runner\Action;
+namespace SebastianFeldmann\CaptainHook\Runner\Action;
 
-use sebastianfeldmann\CaptainHook\Config;
-use sebastianfeldmann\CaptainHook\Console\IO;
-use sebastianfeldmann\CaptainHook\Exception;
-use sebastianfeldmann\CaptainHook\Git\Repository;
-use sebastianfeldmann\CaptainHook\Hook\Action;
-use Symfony\Component\Process\Process;
+use SebastianFeldmann\CaptainHook\Config;
+use SebastianFeldmann\CaptainHook\Console\IO;
+use SebastianFeldmann\CaptainHook\Exception;
+use SebastianFeldmann\CaptainHook\Hook\Action;
+use SebastianFeldmann\Cli\Processor\ProcOpen as Processor;
+use SebastianFeldmann\Git\Repository;
 
 /**
  * Class Cli
@@ -29,21 +29,21 @@ class Cli implements Action
     /**
      * Execute the configured action.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Config         $config
-     * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
-     * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
-     * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
+     * @param  \SebastianFeldmann\CaptainHook\Config         $config
+     * @param  \SebastianFeldmann\CaptainHook\Console\IO     $io
+     * @param  \SebastianFeldmann\Git\Repository             $repository
+     * @param  \SebastianFeldmann\CaptainHook\Config\Action  $action
      * @throws \Exception
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
-        $process = new Process($action->getAction());
-        $process->run();
+        $processor = new Processor();
+        $result    = $processor->run($action->getAction());
 
-        if (!$process->isSuccessful()) {
-            throw Exception\ActionFailed::withMessage($process->getOutput() . PHP_EOL . $process->getErrorOutput());
+        if (!$result->isSuccessful()) {
+            throw Exception\ActionFailed::withMessage($result->getStdOut() . PHP_EOL . $result->getStdErr());
         }
 
-        $io->write($process->getOutput());
+        $io->write($result->getStdOut());
     }
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace sebastianfeldmann\CaptainHook\Console\IO;
+namespace SebastianFeldmann\CaptainHook\Console\IO;
 
 class ComposerIOTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \sebastianfeldmann\CaptainHook\Console\IO;
+     * @var \SebastianFeldmann\CaptainHook\Console\IO;
      */
     private $io;
 

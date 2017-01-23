@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook;
+namespace SebastianFeldmann\CaptainHook;
 
 /**
  * Class CH
@@ -19,6 +19,6 @@ namespace sebastianfeldmann\CaptainHook;
  */
 class CH
 {
-    const VERSION      = '1.2.0';
-    const RELEASE_DATE = '2016/09/20';
+    const VERSION      = '2.0.0';
+    const RELEASE_DATE = '2017/02/01';
 }

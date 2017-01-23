@@ -7,18 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\Message\Action;
+namespace SebastianFeldmann\CaptainHook\Hook\Message\Action;
 
-use sebastianfeldmann\CaptainHook\Config;
-use sebastianfeldmann\CaptainHook\Console\IO\NullIO;
-use sebastianfeldmann\CaptainHook\Git\CommitMessage;
-use sebastianfeldmann\CaptainHook\Git\DummyRepo;
-use sebastianfeldmann\CaptainHook\Git\Repository;
+use SebastianFeldmann\CaptainHook\Config;
+use SebastianFeldmann\CaptainHook\Console\IO\NullIO;
+use SebastianFeldmann\CaptainHook\Git\DummyRepo;
+use SebastianFeldmann\Git\CommitMessage;
+use SebastianFeldmann\Git\Repository;
 
 class RulesTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \sebastianfeldmann\CaptainHook\Git\DummyRepo
+     * @var \SebastianFeldmann\CaptainHook\Git\DummyRepo
      */
     private $repo;
 
@@ -46,7 +46,7 @@ class RulesTest extends \PHPUnit_Framework_TestCase
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action('php', '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Action\\Rules');
+        $action = new Config\Action('php', '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\Rules');
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
@@ -66,8 +66,8 @@ class RulesTest extends \PHPUnit_Framework_TestCase
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
             'php',
-            '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Action\\Rules',
-            ['\\sebastianfeldmann\\CaptainHook\\Foo']
+            '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\Rules',
+            ['\\SebastianFeldmann\\CaptainHook\\Foo']
         );
 
         $standard = new Rules();
@@ -85,8 +85,8 @@ class RulesTest extends \PHPUnit_Framework_TestCase
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
             'php',
-            '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Action\\Rules',
-            ['\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Validator']
+            '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\Rules',
+            ['\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Validator']
         );
         $repo   = new Repository($this->repo->getPath());
 
@@ -103,8 +103,8 @@ class RulesTest extends \PHPUnit_Framework_TestCase
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
             'php',
-            '\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Action\\Rules',
-            ['\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Rule\\CapitalizeSubject']
+            '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\Rules',
+            ['\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Rule\\CapitalizeSubject']
         );
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));

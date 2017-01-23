@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Config;
+namespace SebastianFeldmann\CaptainHook\Config;
 
-use sebastianfeldmann\CaptainHook\Config;
-use sebastianfeldmann\CaptainHook\Hook\Util as HookUtil;
-use sebastianfeldmann\CaptainHook\Storage\File\Json;
+use SebastianFeldmann\CaptainHook\Config;
+use SebastianFeldmann\CaptainHook\Hook\Util as HookUtil;
+use SebastianFeldmann\CaptainHook\Storage\File\Json;
 
 /**
  * Class Factory
@@ -27,7 +27,7 @@ class Factory
      * Config factory method.
      *
      * @param  string $path
-     * @return \sebastianfeldmann\CaptainHook\Config
+     * @return \SebastianFeldmann\CaptainHook\Config
      */
     public static function create(string $path = '')
     {
@@ -40,7 +40,7 @@ class Factory
      * Create a CaptainHook configuration.
      *
      * @param  string $path
-     * @return \sebastianfeldmann\CaptainHook\Config
+     * @return \SebastianFeldmann\CaptainHook\Config
      */
     public function createConfig($path = '')
     {
@@ -59,7 +59,7 @@ class Factory
     /**
      * Initialize the configuration with data load from config file.
      *
-     * @param \sebastianfeldmann\CaptainHook\Config $config
+     * @param \SebastianFeldmann\CaptainHook\Config $config
      * @param array                                 $json
      */
     protected function configure(Config $config, array $json)
@@ -74,7 +74,7 @@ class Factory
     /**
      * Setup a hook configuration by json data.
      *
-     * @param \sebastianfeldmann\CaptainHook\Config\Hook $config
+     * @param \SebastianFeldmann\CaptainHook\Config\Hook $config
      * @param array                                      $json
      */
     protected function configureHook(Config\Hook $config, array $json)

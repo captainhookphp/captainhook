@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook\PHP\Action;
+namespace SebastianFeldmann\CaptainHook\Hook\PHP\Action;
 
-use sebastianfeldmann\CaptainHook\Config;
-use sebastianfeldmann\CaptainHook\Console\IO\NullIO;
+use SebastianFeldmann\CaptainHook\Config;
+use SebastianFeldmann\CaptainHook\Console\IO\NullIO;
 
 class LintingTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,12 +23,12 @@ class LintingTest extends \PHPUnit_Framework_TestCase
         $config   = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo     = $this->getRepoMock();
         $files    = [CH_PATH_FILES . '/php/valid.txt'];
-        $resolver = $this->getChangedFilesResolverMock();
-        $resolver->expects($this->once())->method('getChangedFilesOfType')->willReturn($files);
-        $repo->expects($this->once())->method('getChangedFilesResolver')->willReturn($resolver);
+        $resolver = $this->getIndexOperatorMock();
+        $resolver->expects($this->once())->method('getStagedFilesOfType')->willReturn($files);
+        $repo->expects($this->once())->method('getIndexOperator')->willReturn($resolver);
 
 
-        $action   = new Config\Action('php', '\\sebastianfeldmann\\CaptainHook\\Hook\\PHP\\Action\\Linter', []);
+        $action   = new Config\Action('php', '\\SebastianFeldmann\\CaptainHook\\Hook\\PHP\\Action\\Linter', []);
         $standard = new Linting();
         $standard->execute($config, $io, $repo, $action);
     }
@@ -44,32 +44,32 @@ class LintingTest extends \PHPUnit_Framework_TestCase
         $config   = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo     = $this->getRepoMock();
         $files    = [CH_PATH_FILES . '/php/invalid.txt'];
-        $resolver = $this->getChangedFilesResolverMock();
-        $resolver->expects($this->once())->method('getChangedFilesOfType')->willReturn($files);
-        $repo->expects($this->once())->method('getChangedFilesResolver')->willReturn($resolver);
+        $resolver = $this->getIndexOperatorMock();
+        $resolver->expects($this->once())->method('getStagedFilesOfType')->willReturn($files);
+        $repo->expects($this->once())->method('getIndexOperator')->willReturn($resolver);
 
 
-        $action   = new Config\Action('php', '\\sebastianfeldmann\\CaptainHook\\Hook\\PHP\\Action\\Linter', []);
+        $action   = new Config\Action('php', '\\SebastianFeldmann\\CaptainHook\\Hook\\PHP\\Action\\Linter', []);
         $standard = new Linting();
         $standard->execute($config, $io, $repo, $action);
     }
 
     /**
-     * @return \sebastianfeldmann\CaptainHook\Git\Repository
+     * @return \SebastianFeldmann\Git\Repository
      */
     private function getRepoMock()
     {
-        return $this->getMockBuilder('\\sebastianfeldmann\\CaptainHook\\Git\\Repository')
+        return $this->getMockBuilder('\\SebastianFeldmann\\Git\\Repository')
                     ->disableOriginalConstructor()
                     ->getMock();
     }
 
     /**
-     * @return \sebastianfeldmann\CaptainHook\Git\Resolver\ChangedFiles
+     * @return \SebastianFeldmann\Git\Operator\Index
      */
-    private function getChangedFilesResolverMock()
+    private function getIndexOperatorMock()
     {
-        return $this->getMockBuilder('\\sebastianfeldmann\\CaptainHook\\Git\\Resolver\\ChangedFiles')
+        return $this->getMockBuilder('\\SebastianFeldmann\\Git\\Operator\\Index')
                     ->disableOriginalConstructor()
                     ->getMock();
     }

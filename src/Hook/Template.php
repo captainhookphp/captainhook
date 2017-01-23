@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Hook;
+namespace SebastianFeldmann\CaptainHook\Hook;
 
-use sebastianfeldmann\CaptainHook\Storage\Util as StorageUtil;
+use SebastianFeldmann\CaptainHook\Storage\Util as StorageUtil;
 
 /**
  * Template class
@@ -48,7 +48,7 @@ abstract class Template
                '}' . PHP_EOL .
                'require $autoLoader;' . PHP_EOL .
                '$config = realpath(' . $tplConfigPath . '\');' . PHP_EOL .
-               '$app    = new sebastianfeldmann\CaptainHook\Console\Application\Hook();' . PHP_EOL .
+               '$app    = new SebastianFeldmann\CaptainHook\Console\Application\Hook();' . PHP_EOL .
                '$app->setHook(\'' . $hook . '\');' . PHP_EOL .
                '$app->setConfigFile($config);' . PHP_EOL .
                '$app->run();' . PHP_EOL . PHP_EOL;

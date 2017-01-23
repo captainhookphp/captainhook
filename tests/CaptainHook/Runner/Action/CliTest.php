@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace sebastianfeldmann\CaptainHook\Runner\Action;
+namespace SebastianFeldmann\CaptainHook\Runner\Action;
 
-use sebastianfeldmann\CaptainHook\Runner\BaseTestRunner;
+use SebastianFeldmann\CaptainHook\Runner\BaseTestRunner;
 
 class CliTest extends BaseTestRunner
 {
