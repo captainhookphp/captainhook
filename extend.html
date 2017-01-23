@@ -59,9 +59,9 @@
   "enabled": true,
   "actions": [
     {
-      "action": "\\sebastianfeldmann\\CaptainHook\\Hook\\Message\\Action\\Rules",
+      "action": "\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\Rules",
       "options": [
-        "\\sebastianfeldmann\\CaptainHook\\Hook\Message\\Rule\\SubjectStartsWithCapitalLetter"
+        "\\SebastianFeldmann\\CaptainHook\\Hook\Message\\Rule\\SubjectStartsWithCapitalLetter"
       ]
     }
   ]
@@ -69,21 +69,21 @@
       <p>
         The <em>Rules</em> action accepts a list of <em class="hl">Rule</em> classes and creates a <em>RuleBook</em>
         with all the given rules. You can write your own rules by implementing the
-        <em class="hl">sebastianfeldmann\CaptainHook\Hook\Message\Rule</em> interface. Here is an example.
+        <em class="hl">SebastianFeldmann\CaptainHook\Hook\Message\Rule</em> interface. Here is an example.
       </p>
 
       <pre><code class="php">&lt;?php
 namespace MyName\GitHook;
 
-use sebastianfeldmann\CaptainHook\Hooks\Message\Rule;
-use sebastianfeldmann\CaptainHook\Git\CommitMessage;
+use SebastianFeldmann\CaptainHook\Hooks\Message\Rule;
+use SebastianFeldmann\Git\CommitMessage;
 
 class DoNotYell implements Rule
 {
     /**
      * Make sure nobody yells in commit messages.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Git\CommitMessage $message
+     * @param  \SebastianFeldmann\Git\CommitMessage $message
      * @return bool
      */
     public function pass(CommitMessage $message)
@@ -144,20 +144,20 @@ class DoNotYell implements Rule
       <pre><code class="php">&lt;?php
 namespace MyName\GitHook;
 
-use sebastianfeldmann\CaptainHook\Config;
-use sebastianfeldmann\CaptainHook\Console\IO;
-use sebastianfeldmann\CaptainHook\Git\Repository;
-use sebastianfeldmann\CaptainHook\Hook\Action;
+use SebastianFeldmann\CaptainHook\Config;
+use SebastianFeldmann\CaptainHook\Console\IO;
+use SebastianFeldmann\CaptainHook\Hook\Action;
+use SebastianFeldmann\Git\Repository;
 
 class TicketIDValidator implements Action
 {
     /**
      * Execute the action.
      *
-     * @param  \sebastianfeldmann\CaptainHook\Config         $config
-     * @param  \sebastianfeldmann\CaptainHook\Console\IO     $io
-     * @param  \sebastianfeldmann\CaptainHook\Git\Repository $repository
-     * @param  \sebastianfeldmann\CaptainHook\Config\Action  $action
+     * @param  \SebastianFeldmann\CaptainHook\Config         $config
+     * @param  \SebastianFeldmann\CaptainHook\Console\IO     $io
+     * @param  \SebastianFeldmann\Git\Repository             $repository
+     * @param  \SebastianFeldmann\CaptainHook\Config\Action  $action
      * @throws \Exception
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
@@ -175,7 +175,7 @@ class TicketIDValidator implements Action
      * @param  string $text
      * @return array
      */
-    private function findTicketIdsIn($text)
+    private function findTicketIdsIn($text) : array
     {
         // put some logic here
     }
@@ -184,7 +184,7 @@ class TicketIDValidator implements Action
      * @param  string $id
      * @return bool
      */
-    private function isValidTicketId($id)
+    private function isValidTicketId($id) : bool
     {
         // put some logic here
     }

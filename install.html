@@ -44,10 +44,10 @@
       <h1>Installation</h1>
       <p>
         The easiest way to install <em>CaptainHook</em> is by using composer. You can either edit your
-        composer.json manually and put <em class="hl">"sebastianfeldmann/captainhook": "~1:0"</em> in your
+        composer.json manually and put <em class="hl">"sebastianfeldmann/captainhook": "~2:0"</em> in your
         <em class="hl">require-dev</em> package list, or run the following command.
       </p>
-      <pre><code class="bash">$ composer require --dev sebastianfeldmann/captainhook:~1.0</code></pre>
+      <pre><code class="bash">$ composer require --dev sebastianfeldmann/captainhook:~2.0</code></pre>
       <p>
         This will install the package itself and a bin-script to you composer bin directory, usually located under
         <em class="hl">vendor/bin</em>.<br>
@@ -62,6 +62,10 @@
         For each hook-event you get asked, if you want to enable it. If you choose to do so,
         <em>CaptainHook</em> will ask you to add one or more <a href="configure.html#actions">Actions</a> that should get
         executed for this hook.
+      </p>
+      <p>
+        If you are new to CaptainHook answer the activation question with yes (y) and for now don't add any actions.
+        This way you create an empty but valid configuration file.
       </p>
       <p>
         After creating the configuration file, there is only one step left to finish the installation.
