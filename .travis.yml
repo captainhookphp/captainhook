@@ -2,15 +2,19 @@ language: php
 
 php:
   - 7.0
-  - 5.6
-  - 5.5
+  - 7.1
 
 before_script:
   - composer self-update
   - composer install --no-interaction --prefer-source
 
 script:
-  - phpunit --configuration ./.travis.phpunit.xml
+  - phpunit
+
+after_success:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
 
 notifications:
   email: false
+

@@ -1,23 +1,10 @@
-build:
-  environment:
-    php: '7.0.8'
-
-  tests:
-    override:
-      -
-        command: 'phpunit --coverage-clover=clover.xml --bootstrap=tests/bootstrap.php tests/CaptainHook'
-        coverage:
-          file: 'clover.xml'
-          format: 'clover'
+tools:
+  external_code_coverage: true
 
 checks:
   php:
     code_rating: true
     duplication: true
-
-# language: php
-
-# tests: true
 
 filter:
     paths: ["src/*"]
