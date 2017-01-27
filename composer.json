@@ -20,6 +20,7 @@
     }
   },
   "require": {
+    "php": ">=7.0.0",
     "ext-json": "*",
     "ext-spl": "*",
     "sebastianfeldmann/cli": "^1.0.0",
