@@ -9,7 +9,7 @@
  */
 namespace SebastianFeldmann\CaptainHook\Hook;
 
-class TemplateTest extends \PHPUnit_Framework_TestCase
+class TemplateTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests Template::getCode

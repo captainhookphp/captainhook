@@ -9,7 +9,7 @@
  */
 namespace SebastianFeldmann\CaptainHook\Config;
 
-class ActionTest extends \PHPUnit_Framework_TestCase
+class ActionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests Action::getType

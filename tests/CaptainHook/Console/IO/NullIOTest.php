@@ -2,7 +2,7 @@
 
 namespace SebastianFeldmann\CaptainHook\Console\IO;
 
-class NullIOTest extends \PHPUnit_Framework_TestCase
+class NullIOTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests NullIO::isInteractive
@@ -47,6 +47,7 @@ class NullIOTest extends \PHPUnit_Framework_TestCase
     {
         $io = new NullIO();
         $io->writeError('foo');
+        $this->assertTrue(true);
     }
 
     /**

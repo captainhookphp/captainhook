@@ -11,7 +11,7 @@ namespace SebastianFeldmann\CaptainHook\Console\IO;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DefaultIOTest extends \PHPUnit_Framework_TestCase
+class DefaultIOTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @return \Symfony\Component\Console\Input\InputInterface

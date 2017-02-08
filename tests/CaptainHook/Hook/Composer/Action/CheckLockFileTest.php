@@ -15,7 +15,7 @@ use SebastianFeldmann\CaptainHook\Git\CommitMessage;
 use SebastianFeldmann\CaptainHook\Git\DummyRepo;
 use SebastianFeldmann\Git\Repository;
 
-class CheckLockFileTest extends \PHPUnit_Framework_TestCase
+class CheckLockFileTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \SebastianFeldmann\CaptainHook\Git\DummyRepo
@@ -54,6 +54,8 @@ class CheckLockFileTest extends \PHPUnit_Framework_TestCase
         );
         $standard = new CheckLockFile();
         $standard->execute($config, $io, $repo, $action);
+
+        $this->assertTrue(true);
     }
 
     /**

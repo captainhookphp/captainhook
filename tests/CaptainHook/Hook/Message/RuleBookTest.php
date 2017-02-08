@@ -13,7 +13,7 @@ use SebastianFeldmann\CaptainHook\Hook\Message\Rule\CapitalizeSubject;
 use SebastianFeldmann\CaptainHook\Hook\Message\Rule\MsgNotEmpty;
 use SebastianFeldmann\Git\CommitMessage;
 
-class RuleBookTest extends \PHPUnit_Framework_TestCase
+class RuleBookTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests Validator::validate

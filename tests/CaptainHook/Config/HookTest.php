@@ -9,7 +9,7 @@
  */
 namespace SebastianFeldmann\CaptainHook\Config;
 
-class HookTest extends \PHPUnit_Framework_TestCase
+class HookTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests Hook::__construct

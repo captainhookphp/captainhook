@@ -12,7 +12,7 @@ namespace SebastianFeldmann\CaptainHook\Composer;
 use Composer\IO\NullIO;
 use SebastianFeldmann\CaptainHook\Git\DummyRepo;
 
-class CmdTest extends \PHPUnit_Framework_TestCase
+class CmdTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests Cmd::configure

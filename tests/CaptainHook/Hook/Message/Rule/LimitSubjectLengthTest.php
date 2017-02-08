@@ -11,7 +11,7 @@ namespace SebastianFeldmann\CaptainHook\Hook\Message\Rule;
 
 use SebastianFeldmann\Git\CommitMessage;
 
-class LimitSubjectLengthTest extends \PHPUnit_Framework_TestCase
+class LimitSubjectLengthTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests LimitSubjectLength::pass

@@ -11,7 +11,7 @@ namespace SebastianFeldmann\CaptainHook\Hook\Message\Rule;
 
 use SebastianFeldmann\Git\CommitMessage;
 
-class NoPeriodOnSubjectEndTest extends \PHPUnit_Framework_TestCase
+class NoPeriodOnSubjectEndTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests NoPeriodOnSubjectEnd::pass

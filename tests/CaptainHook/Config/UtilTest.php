@@ -9,7 +9,7 @@
  */
 namespace SebastianFeldmann\CaptainHook\Config;
 
-class UtilTest extends \PHPUnit_Framework_TestCase
+class UtilTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests Util::validateJsonConfiguration
@@ -105,5 +105,6 @@ class UtilTest extends \PHPUnit_Framework_TestCase
                 ]
             ]
         );
+        $this->assertTrue(true);
     }
 }

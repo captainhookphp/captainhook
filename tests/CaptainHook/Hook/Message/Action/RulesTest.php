@@ -15,7 +15,7 @@ use SebastianFeldmann\CaptainHook\Git\DummyRepo;
 use SebastianFeldmann\Git\CommitMessage;
 use SebastianFeldmann\Git\Repository;
 
-class RulesTest extends \PHPUnit_Framework_TestCase
+class RulesTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \SebastianFeldmann\CaptainHook\Git\DummyRepo
@@ -52,6 +52,8 @@ class RulesTest extends \PHPUnit_Framework_TestCase
 
         $standard = new Rules();
         $standard->execute($config, $io, $repo, $action);
+
+        $this->assertTrue(true);
     }
 
     /**
@@ -111,5 +113,7 @@ class RulesTest extends \PHPUnit_Framework_TestCase
 
         $standard = new Rules();
         $standard->execute($config, $io, $repo, $action);
+
+        $this->assertTrue(true);
     }
 }

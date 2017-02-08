@@ -9,7 +9,7 @@
  */
 namespace SebastianFeldmann\CaptainHook\Config;
 
-class FactoryTest extends \PHPUnit_Framework_TestCase
+class FactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests Factory::create

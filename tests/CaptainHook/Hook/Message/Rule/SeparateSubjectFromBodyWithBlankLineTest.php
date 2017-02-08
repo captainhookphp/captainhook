@@ -11,7 +11,7 @@ namespace SebastianFeldmann\CaptainHook\Hook\Message\Rule;
 
 use SebastianFeldmann\Git\CommitMessage;
 
-class SeparateSubjectFromBodyWithBlankLineTest extends \PHPUnit_Framework_TestCase
+class SeparateSubjectFromBodyWithBlankLineTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests SeparateSubjectFromBodyWithBlankLine::pass

@@ -2,7 +2,7 @@
 
 namespace SebastianFeldmann\CaptainHook\Console\IO;
 
-class ComposerIOTest extends \PHPUnit_Framework_TestCase
+class ComposerIOTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \SebastianFeldmann\CaptainHook\Console\IO;
@@ -74,6 +74,7 @@ class ComposerIOTest extends \PHPUnit_Framework_TestCase
     public function testWrite()
     {
         $this->io->write('foo');
+        $this->assertTrue(true);
     }
 
     /**
@@ -82,6 +83,8 @@ class ComposerIOTest extends \PHPUnit_Framework_TestCase
     public function testWriteError()
     {
         $this->io->writeError('foo');
+        $this->assertTrue(true);
+
     }
 
     /**

@@ -11,7 +11,7 @@ namespace SebastianFeldmann\CaptainHook\Hook\Message\Rule;
 
 use SebastianFeldmann\Git\CommitMessage;
 
-class MsgNotEmptyTest extends \PHPUnit_Framework_TestCase
+class MsgNotEmptyTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests MsgNotEmpty::pass

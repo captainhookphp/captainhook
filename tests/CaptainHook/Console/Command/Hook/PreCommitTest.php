@@ -14,7 +14,7 @@ use SebastianFeldmann\CaptainHook\Git\DummyRepo;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 
-class PreCommitTest extends \PHPUnit_Framework_TestCase
+class PreCommitTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests CommitMsg::run
@@ -32,5 +32,7 @@ class PreCommitTest extends \PHPUnit_Framework_TestCase
         $cmd->run($input, $output);
 
         $repo->cleanup();
+
+        $this->assertTrue(true);
     }
 }

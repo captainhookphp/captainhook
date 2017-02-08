@@ -12,7 +12,7 @@ namespace SebastianFeldmann\CaptainHook\Hook\PHP\Action;
 use SebastianFeldmann\CaptainHook\Config;
 use SebastianFeldmann\CaptainHook\Console\IO\NullIO;
 
-class LintingTest extends \PHPUnit_Framework_TestCase
+class LintingTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests Linter::execute

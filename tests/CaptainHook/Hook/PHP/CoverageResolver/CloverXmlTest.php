@@ -9,7 +9,7 @@
  */
 namespace SebastianFeldmann\CaptainHook\Hook\PHP\CoverageResolver;
 
-class CloverXMLTest extends \PHPUnit_Framework_TestCase
+class CloverXMLTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests CloverXML::getCoverage

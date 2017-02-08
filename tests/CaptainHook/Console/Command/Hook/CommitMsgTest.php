@@ -14,7 +14,7 @@ use SebastianFeldmann\CaptainHook\Git\DummyRepo;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 
-class CommitMsgTest extends \PHPUnit_Framework_TestCase
+class CommitMsgTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests CommitMsg::run
@@ -36,5 +36,7 @@ class CommitMsgTest extends \PHPUnit_Framework_TestCase
         $cmd->run($input, $output);
 
         $repo->cleanup();
+
+        $this->assertTrue(true);
     }
 }

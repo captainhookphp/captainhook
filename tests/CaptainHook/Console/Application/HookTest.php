@@ -14,7 +14,7 @@ use SebastianFeldmann\CaptainHook\Git\DummyRepo;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 
-class HookTest extends \PHPUnit_Framework_TestCase
+class HookTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests Hook::run
@@ -35,6 +35,8 @@ class HookTest extends \PHPUnit_Framework_TestCase
         $app->run($input, $output);
 
         $repo->cleanup();
+
+        $this->assertTrue(true);
     }
 
     /**

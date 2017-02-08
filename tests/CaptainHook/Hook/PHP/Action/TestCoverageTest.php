@@ -12,7 +12,7 @@ namespace SebastianFeldmann\CaptainHook\Hook\PHP\Action;
 use SebastianFeldmann\CaptainHook\Config;
 use SebastianFeldmann\CaptainHook\Console\IO\NullIO;
 
-class TestCoverageTest extends \PHPUnit_Framework_TestCase
+class TestCoverageTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests TestCoverage::execute
@@ -29,6 +29,8 @@ class TestCoverageTest extends \PHPUnit_Framework_TestCase
             ['cloverXml' => CH_PATH_FILES . '/coverage/valid.xml']
         );
         $standard->execute($config, $io, $repo, $action);
+
+        $this->assertTrue(true);
     }
 
     /**
@@ -68,6 +70,8 @@ class TestCoverageTest extends \PHPUnit_Framework_TestCase
             ['phpUnit' => CH_PATH_FILES . '/bin/phpunit']
         );
         $standard->execute($config, $io, $repo, $action);
+
+        $this->assertTrue(true);
     }
 
     /**

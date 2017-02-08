@@ -9,7 +9,7 @@
  */
 namespace SebastianFeldmann\CaptainHook\Runner;
 
-class BaseTestRunner extends \PHPUnit_Framework_TestCase
+class BaseTestRunner extends \PHPUnit\Framework\TestCase
 {
     /**
      * @return \SebastianFeldmann\CaptainHook\Console\IO\DefaultIO

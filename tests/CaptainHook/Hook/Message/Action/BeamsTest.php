@@ -15,7 +15,7 @@ use SebastianFeldmann\CaptainHook\Git\DummyRepo;
 use SebastianFeldmann\Git\CommitMessage;
 use SebastianFeldmann\Git\Repository;
 
-class BeamsTest extends \PHPUnit_Framework_TestCase
+class BeamsTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \SebastianFeldmann\CaptainHook\Git\DummyRepo
@@ -52,6 +52,8 @@ class BeamsTest extends \PHPUnit_Framework_TestCase
 
         $standard = new Beams();
         $standard->execute($config, $io, $repo, $action);
+
+        $this->assertTrue(true);
     }
 
     /**

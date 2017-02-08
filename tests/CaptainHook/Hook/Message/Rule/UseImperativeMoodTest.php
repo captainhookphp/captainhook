@@ -11,7 +11,7 @@ namespace SebastianFeldmann\CaptainHook\Hook\Message\Rule;
 
 use SebastianFeldmann\Git\CommitMessage;
 
-class UseImperativeMoodTest extends \PHPUnit_Framework_TestCase
+class UseImperativeMoodTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests UseImperativeMood::pass

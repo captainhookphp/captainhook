@@ -11,7 +11,7 @@ namespace SebastianFeldmann\CaptainHook\Hook\Message\Rule;
 
 use SebastianFeldmann\Git\CommitMessage;
 
-class CapitalizeSubjectTest extends \PHPUnit_Framework_TestCase
+class CapitalizeSubjectTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests CapitalizeSubject::pass

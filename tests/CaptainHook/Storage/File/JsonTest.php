@@ -9,7 +9,7 @@
  */
 namespace SebastianFeldmann\CaptainHook\Storage\File;
 
-class JsonTest extends \PHPUnit_Framework_TestCase
+class JsonTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests Json::read

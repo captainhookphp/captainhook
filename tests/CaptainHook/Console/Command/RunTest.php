@@ -14,7 +14,7 @@ use SebastianFeldmann\CaptainHook\Git\DummyRepo;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 
-class RunTest extends \PHPUnit_Framework_TestCase
+class RunTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests Run::run
@@ -33,5 +33,7 @@ class RunTest extends \PHPUnit_Framework_TestCase
 
         $run->setIO(new NullIO());
         $run->run($input, $output);
+
+        $this->assertTrue(true);
     }
 }

@@ -11,7 +11,7 @@ namespace SebastianFeldmann\CaptainHook\Hook\Message\Rule;
 
 use SebastianFeldmann\Git\CommitMessage;
 
-class LimitBodyLineLengthTest extends \PHPUnit_Framework_TestCase
+class LimitBodyLineLengthTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests LimitBodyLineLength::pass

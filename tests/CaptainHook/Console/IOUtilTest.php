@@ -9,7 +9,7 @@
  */
 namespace SebastianFeldmann\CaptainHook\Console;
 
-class IOUtilTest extends \PHPUnit_Framework_TestCase
+class IOUtilTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests IOUtil::answerToBool

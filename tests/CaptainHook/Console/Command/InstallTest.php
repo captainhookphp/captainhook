@@ -14,7 +14,7 @@ use SebastianFeldmann\CaptainHook\Git\DummyRepo;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 
-class InstallTest extends \PHPUnit_Framework_TestCase
+class InstallTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests Install::run

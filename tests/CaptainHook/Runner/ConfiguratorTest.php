@@ -20,7 +20,7 @@ class ConfiguratorTest extends BaseTestRunner
         $config = $this->getConfigMock();
         $repo   = $this->getRepositoryMock();
         $runner = new Configurator($io, $config, $repo);
-        $config->method('getHookConfig')->willReturn($this->getHookConfigMock());
+        $config->expects($this->once())->method('getHookConfig')->willReturn($this->getHookConfigMock());
         $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', 'echo \'foo\'', 'n'));
         $runner->configureHook($config, 'pre-push', true);
     }

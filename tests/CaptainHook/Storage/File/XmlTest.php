@@ -9,7 +9,7 @@
  */
 namespace SebastianFeldmann\CaptainHook\Storage\File;
 
-class XmlTest extends \PHPUnit_Framework_TestCase
+class XmlTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests Xml::read
