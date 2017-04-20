@@ -29,4 +29,15 @@ class ActionFailed extends \Exception
     {
         return new self($msg);
     }
+
+    /**
+     * Create a new exception based on a previous exception.
+     *
+     * @param  \SebastianFeldmann\CaptainHook\Exception\ActionFailed $exception
+     * @return \SebastianFeldmann\CaptainHook\Exception\ActionFailed
+     */
+    public static function fromPrevious(ActionFailed $exception)
+    {
+        return new self($exception->getMessage(), $exception->getCode(), $exception);
+    }
 }
