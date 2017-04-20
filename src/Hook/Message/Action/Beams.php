@@ -53,15 +53,8 @@ class Beams extends Book
         try {
             $this->validate($book, $repository);
         } catch (ActionFailed $exception) {
-            $io->writeError(
-                [
-                    "Commit message does not match style",
-                    "",
-                    "Message was:",
-                ]
-            );
-            $io->writeError($repository->getCommitMsg()->getBodyLines());
-
+            $io->writeError(['Commit message does not match style', '', 'Message was:']);
+            $io->writeError($repository->getCommitMsg()->getLines());
             throw ActionFailed::fromPrevious($exception);
         }
     }
