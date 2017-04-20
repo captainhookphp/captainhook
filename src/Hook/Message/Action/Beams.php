@@ -11,6 +11,7 @@ namespace SebastianFeldmann\CaptainHook\Hook\Message\Action;
 
 use SebastianFeldmann\CaptainHook\Config;
 use SebastianFeldmann\CaptainHook\Console\IO;
+use SebastianFeldmann\CaptainHook\Exception\ActionFailed;
 use SebastianFeldmann\CaptainHook\Hook\Message\Rule;
 use SebastianFeldmann\CaptainHook\Hook\Message\RuleBook;
 use SebastianFeldmann\Git\Repository;
@@ -49,6 +50,19 @@ class Beams extends Book
             ]
         );
 
-        $this->validate($book, $repository);
+        try {
+            $this->validate($book, $repository);
+        } catch (ActionFailed $exception) {
+            $io->writeError(
+                [
+                    "Commit message does not match style",
+                    "",
+                    "Message was:",
+                ]
+            );
+            $io->writeError($repository->getCommitMsg()->getBodyLines());
+
+            throw ActionFailed::fromPrevious($exception);
+        }
     }
 }
