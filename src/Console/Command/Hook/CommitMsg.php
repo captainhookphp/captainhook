@@ -52,8 +52,8 @@ class CommitMsg extends Hook
      */
     protected function setup(InputInterface $input, OutputInterface $output, Config $config, Git\Repository $repository)
     {
-        $gitConfig = $repository->getConfigOperator();
-        $commentCharacter = $gitConfig->has('core.commentchar') ? $gitConfig->get('core.commentchar') : '#';
+        $gitConfig        = $repository->getConfigOperator();
+        $commentCharacter = $gitConfig->getSafely('core.commentchar', '#');
 
         $repository->setCommitMsg(Git\CommitMessage::createFromFile($input->getFirstArgument(), $commentCharacter));
     }
