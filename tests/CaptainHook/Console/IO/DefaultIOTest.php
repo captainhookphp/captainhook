@@ -19,8 +19,8 @@ class DefaultIOTest extends \PHPUnit\Framework\TestCase
     public function getInputMock()
     {
         return $this->getMockBuilder('\\Symfony\\Component\\Console\\Input\\InputInterface')
-                     ->disableOriginalConstructor()
-                     ->getMock();
+                    ->disableOriginalConstructor()
+                    ->getMock();
     }
 
     /**
@@ -49,8 +49,8 @@ class DefaultIOTest extends \PHPUnit\Framework\TestCase
     public function getHelperSetMock()
     {
         return $this->getMockBuilder('\\Symfony\\Component\\Console\\Helper\\HelperSet')
-                     ->disableOriginalConstructor()
-                     ->getMock();
+                    ->disableOriginalConstructor()
+                    ->getMock();
     }
 
     /**
@@ -59,8 +59,8 @@ class DefaultIOTest extends \PHPUnit\Framework\TestCase
     public function getQuestionHelper()
     {
         return $this->getMockBuilder('\\Symfony\\Component\\Console\\Helper\\QuestionHelper')
-                     ->disableOriginalConstructor()
-                     ->getMock();
+                    ->disableOriginalConstructor()
+                    ->getMock();
     }
 
     /**
