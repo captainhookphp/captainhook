@@ -43,7 +43,7 @@ class DefaultIO extends Base
     protected $helperSet;
 
     /**
-     * @var array<int, int>
+     * @var int[]
      */
     private $verbosityMap;
 
@@ -64,7 +64,7 @@ class DefaultIO extends Base
             self::NORMAL       => OutputInterface::VERBOSITY_NORMAL,
             self::VERBOSE      => OutputInterface::VERBOSITY_VERBOSE,
             self::VERY_VERBOSE => OutputInterface::VERBOSITY_VERY_VERBOSE,
-            self::DEBUG        => OutputInterface::VERBOSITY_DEBUG,
+            self::DEBUG        => OutputInterface::VERBOSITY_DEBUG
         ];
     }
 
