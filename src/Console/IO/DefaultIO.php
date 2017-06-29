@@ -44,7 +44,7 @@ class DefaultIO extends Base
     protected $helperSet;
 
     /**
-     * @var int[]
+     * @var array
      */
     private $verbosityMap;
 
