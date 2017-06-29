@@ -9,6 +9,7 @@
  */
 namespace SebastianFeldmann\CaptainHook\Console\IO;
 
+use SebastianFeldmann\CaptainHook\Console\IO;
 use SebastianFeldmann\CaptainHook\Console\IOUtil;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Helper\HelperSet;
@@ -60,11 +61,11 @@ class DefaultIO extends Base
         $this->output       = $output;
         $this->helperSet    = $helperSet;
         $this->verbosityMap = [
-            self::QUIET        => OutputInterface::VERBOSITY_QUIET,
-            self::NORMAL       => OutputInterface::VERBOSITY_NORMAL,
-            self::VERBOSE      => OutputInterface::VERBOSITY_VERBOSE,
-            self::VERY_VERBOSE => OutputInterface::VERBOSITY_VERY_VERBOSE,
-            self::DEBUG        => OutputInterface::VERBOSITY_DEBUG
+            IO::QUIET        => OutputInterface::VERBOSITY_QUIET,
+            IO::NORMAL       => OutputInterface::VERBOSITY_NORMAL,
+            IO::VERBOSE      => OutputInterface::VERBOSITY_VERBOSE,
+            IO::VERY_VERBOSE => OutputInterface::VERBOSITY_VERY_VERBOSE,
+            IO::DEBUG        => OutputInterface::VERBOSITY_DEBUG
         ];
     }
 
