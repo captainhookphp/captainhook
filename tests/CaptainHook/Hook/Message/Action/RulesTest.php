@@ -116,4 +116,29 @@ class RulesTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue(true);
     }
+
+    /**
+     * Tests Rule::execute
+     *
+     * @expectedException \Exception
+     */
+    public function testNoRule()
+    {
+        $io     = new NullIO();
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
+        $action = new Config\Action(
+            'php',
+            '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\Rules',
+            ['\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\NoRule']
+        );
+        $repo   = new Repository($this->repo->getPath());
+        $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
+
+        $standard = new Rules();
+        $standard->execute($config, $io, $repo, $action);
+    }
+}
+
+class NoRule
+{
 }

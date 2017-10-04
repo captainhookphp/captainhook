@@ -191,12 +191,7 @@ class Configurator extends Runner
         $result = [];
         $answer = $this->io->askAndValidate(
             '  <info>Specify options key and value</info> <comment>[key:value]</comment> ',
-            function ($value) {
-                if (count(explode(':', $value)) !== 2) {
-                    throw new \Exception('Invalid option, use "key:value"');
-                }
-                return $value;
-            },
+            ['\\SebastianFeldmann\\CaptainHook\\Runner\\Configurator', 'isPHPActionOptionValid'],
             3,
             null
         );
@@ -217,5 +212,20 @@ class Configurator extends Runner
         $filePath = $this->config->getPath();
         $file     = new Json($filePath);
         $file->write($config->getJsonData());
+    }
+
+    /**
+     * PHP action option validation.
+     *
+     * @param  $option
+     * @return string
+     * @throws \Exception
+     */
+    public static function isPHPActionOptionValid(string $option) : string
+    {
+        if (count(explode(':', $option)) !== 2) {
+            throw new \Exception('Invalid option, use "key:value"');
+        }
+        return $option;
     }
 }

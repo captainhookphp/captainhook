@@ -57,7 +57,6 @@ class ConfiguratorTest extends BaseTestRunner
 
     }
 
-
     /**
      * Tests Installer::installHook
      */
@@ -77,5 +76,23 @@ class ConfiguratorTest extends BaseTestRunner
 
         $this->assertTrue(file_exists($path));
         unlink($path);
+    }
+
+    /**
+     * Tests Configurator::isPHPActionOptionValid
+     */
+    public function testPHPActionOptionValidationValid()
+    {
+        $this->assertEquals('foo:bar', Configurator::isPHPActionOptionValid('foo:bar'));
+    }
+
+    /**
+     * Tests Configurator::isPHPActionOptionValid
+     *
+     * @expectedException \Exception
+     */
+    public function testPHPActionOptionValidationInvalid()
+    {
+        Configurator::isPHPActionOptionValid('foo-bar');
     }
 }
