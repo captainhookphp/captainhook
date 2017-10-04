@@ -51,23 +51,53 @@ class CheckLockFile implements Action
      *
      * @param  string $path
      * @return string
+     * @throws \Exception
      */
     private function getLockFileHash(string $path) : string
     {
         $lockFile = json_decode($this->loadFile($path . DIRECTORY_SEPARATOR . 'composer.lock'));
+        $hashKey  = 'content-hash';
 
-        return $lockFile->hash;
+        if (!isset($lockFile->$hashKey)) {
+            throw new \Exception('could not find content hash, please update composer to the latest version');
+        }
+
+        return $lockFile->$hashKey;
     }
 
     /**
-     * Read the composer.json file and create a md5 hash on its contents.
+     * Read the composer.json file and create a md5 hash on its relevant content.
      *
      * @param  string $path
      * @return string
      */
     private function getConfigFileHash(string $path) : string
     {
-        return md5($this->loadFile($path . DIRECTORY_SEPARATOR . 'composer.json'));
+        // this is composer internal code to generate the content-hash
+        $content      = json_decode($this->loadFile($path . DIRECTORY_SEPARATOR . 'composer.json'), true);
+        $relevantKeys = [
+            'name',
+            'version',
+            'require',
+            'require-dev',
+            'conflict',
+            'replace',
+            'provide',
+            'minimum-stability',
+            'prefer-stable',
+            'repositories',
+            'extra',
+        ];
+        $relevantContent = [];
+        foreach (array_intersect($relevantKeys, array_keys($content)) as $key) {
+            $relevantContent[$key] = $content[$key];
+        }
+        if (isset($content['config']['platform'])) {
+            $relevantContent['config']['platform'] = $content['config']['platform'];
+        }
+        ksort($relevantContent);
+
+        return md5(json_encode($relevantContent));
     }
 
     /**

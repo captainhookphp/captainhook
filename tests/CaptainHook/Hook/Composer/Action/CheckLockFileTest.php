@@ -71,7 +71,28 @@ class CheckLockFileTest extends \PHPUnit\Framework\TestCase
         $action = new Config\Action(
             'php',
             '\\SebastianFeldmann\\CaptainHook\\Hook\\Composer\\Action\\CheckLockFile',
-            ['path' => CH_PATH_FILES . '/composer/invalid']
+            ['path' => CH_PATH_FILES . '/composer/invalid-hash']
+        );
+
+        $standard = new CheckLockFile();
+        $standard->execute($config, $io, $repo, $action);
+    }
+
+
+    /**
+     * Tests CheckLockFile::execute
+     *
+     * @expectedException \Exception
+     */
+    public function testExecuteNoHash()
+    {
+        $io     = new NullIO();
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
+        $repo   = new Repository($this->repo->getPath());
+        $action = new Config\Action(
+            'php',
+            '\\SebastianFeldmann\\CaptainHook\\Hook\\Composer\\Action\\CheckLockFile',
+            ['path' => CH_PATH_FILES . '/composer/no-hash']
         );
 
         $standard = new CheckLockFile();
