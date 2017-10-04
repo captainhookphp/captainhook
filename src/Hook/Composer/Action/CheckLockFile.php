@@ -25,6 +25,25 @@ use SebastianFeldmann\Git\Repository;
 class CheckLockFile implements Action
 {
     /**
+     * Composer configuration keys that are relevant for the 'content-hash' creation.
+     *
+     * @var array
+     */
+    private $relevantKeys    = [
+        'name',
+        'version',
+        'require',
+        'require-dev',
+        'conflict',
+        'replace',
+        'provide',
+        'minimum-stability',
+        'prefer-stable',
+        'repositories',
+        'extra',
+    ];
+
+    /**
      * Executes the action.
      *
      * @param  \SebastianFeldmann\CaptainHook\Config         $config
@@ -67,29 +86,17 @@ class CheckLockFile implements Action
 
     /**
      * Read the composer.json file and create a md5 hash on its relevant content.
+     * This more or less is composer internal code to generate the content-hash
      *
      * @param  string $path
      * @return string
      */
     private function getConfigFileHash(string $path) : string
     {
-        // this is composer internal code to generate the content-hash
-        $content      = json_decode($this->loadFile($path . DIRECTORY_SEPARATOR . 'composer.json'), true);
-        $relevantKeys = [
-            'name',
-            'version',
-            'require',
-            'require-dev',
-            'conflict',
-            'replace',
-            'provide',
-            'minimum-stability',
-            'prefer-stable',
-            'repositories',
-            'extra',
-        ];
+        $content         = json_decode($this->loadFile($path . DIRECTORY_SEPARATOR . 'composer.json'), true);
         $relevantContent = [];
-        foreach (array_intersect($relevantKeys, array_keys($content)) as $key) {
+
+        foreach (array_intersect($this->relevantKeys, array_keys($content)) as $key) {
             $relevantContent[$key] = $content[$key];
         }
         if (isset($content['config']['platform'])) {
