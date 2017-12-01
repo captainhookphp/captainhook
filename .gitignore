@@ -1,6 +1,9 @@
 # Ignore PHPStorm project files
 .idea
 
+# Ignore MacOS cache files
+.DS_STORE
+
 # Ignore composer libs
 /vendor/
 /composer.lock
