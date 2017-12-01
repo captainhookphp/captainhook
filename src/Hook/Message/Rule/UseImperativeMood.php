@@ -27,11 +27,13 @@ class UseImperativeMood extends Blacklist
         $this->hint = 'Subject should be written in imperative mood';
         $this->setSubjectBlacklist(
             [
-                'uploaded',
-                'updated',
                 'added',
+                'changed',
                 'created',
-                'removed'
+                'fixed',
+                'removed',
+                'updated',
+                'uploaded',
             ]
         );
     }
