@@ -11,6 +11,7 @@ namespace SebastianFeldmann\CaptainHook\Hook\Message;
 
 use SebastianFeldmann\CaptainHook\Hook\Message\Rule\CapitalizeSubject;
 use SebastianFeldmann\CaptainHook\Hook\Message\Rule\MsgNotEmpty;
+use SebastianFeldmann\CaptainHook\Hook\Message\Rule\UseImperativeMood;
 use SebastianFeldmann\Git\CommitMessage;
 
 class RuleBookTest extends \PHPUnit\Framework\TestCase
@@ -65,6 +66,20 @@ class RuleBookTest extends \PHPUnit\Framework\TestCase
         $v   = new RuleBook();
         $v->setRules([new MsgNotEmpty()]);
         $v->addRule(new CapitalizeSubject());
+
+        $v->validate($msg);
+    }
+
+    /**
+     * Tests Validator::setRules
+     *
+     * @expectedException \Exception
+     */
+    public function testAddRuleInvalidMultiLineProblem()
+    {
+        $msg = new CommitMessage('fixed bar baz');
+        $v   = new RuleBook();
+        $v->setRules([new UseImperativeMood()]);
 
         $v->validate($msg);
     }
