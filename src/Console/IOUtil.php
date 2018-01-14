@@ -29,4 +29,15 @@ abstract class IOUtil
     {
         return in_array($answer, ['y', 'yes', 'ok']);
     }
+
+    /**
+     * Return cli line separator string.
+     *
+     * @param  int $length
+     * @return string
+     */
+    public static function getLineSeparator(int $length = 80)
+    {
+        return str_repeat('-', $length);
+    }
 }
