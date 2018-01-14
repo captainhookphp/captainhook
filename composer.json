@@ -23,7 +23,7 @@
     "php": ">=7.0.0",
     "ext-json": "*",
     "ext-spl": "*",
-    "sebastianfeldmann/cli": "^2.0",
+    "sebastianfeldmann/cli": "^2.1",
     "sebastianfeldmann/git": "^1.0.7",
     "symfony/console": ">=2.7 <4.0"
   },

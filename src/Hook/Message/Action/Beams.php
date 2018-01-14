@@ -11,9 +11,11 @@ namespace SebastianFeldmann\CaptainHook\Hook\Message\Action;
 
 use SebastianFeldmann\CaptainHook\Config;
 use SebastianFeldmann\CaptainHook\Console\IO;
+use SebastianFeldmann\CaptainHook\Console\IOUtil;
 use SebastianFeldmann\CaptainHook\Exception\ActionFailed;
 use SebastianFeldmann\CaptainHook\Hook\Message\Rule;
 use SebastianFeldmann\CaptainHook\Hook\Message\RuleBook;
+use SebastianFeldmann\Cli\Output\Util as OutputUtil;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -53,9 +55,26 @@ class Beams extends Book
         try {
             $this->validate($book, $repository);
         } catch (ActionFailed $exception) {
-            $io->writeError(['Commit message does not match style', '', 'Message was:']);
-            $io->writeError($repository->getCommitMsg()->getLines());
+            $this->writeError($io, $repository);
             throw ActionFailed::fromPrevious($exception);
         }
+    }
+
+    /**
+     * Write error to stdErr.
+     *
+     * @param \SebastianFeldmann\CaptainHook\Console\IO $io
+     * @param \SebastianFeldmann\Git\Repository         $repository
+     */
+    private function writeError(IO $io, Repository $repository)
+    {
+        $io->writeError(array_merge(
+            [
+                '<error>COMMIT MESSAGE DOES NOT MEET THE REQUIREMENTS</error>',
+                IOUtil::getLineSeparator(),
+            ],
+            OutputUtil::trimEmptyLines($repository->getCommitMsg()->getLines()),
+            [IOUtil::getLineSeparator()]
+        ));
     }
 }
