@@ -39,7 +39,7 @@ class HookTest extends BaseTestRunner
         $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
-        $io->expects($this->exactly(3))->method('write');
+        $io->expects($this->exactly(4))->method('write');
 
         $runner = new Hook($io, $config, $repo);
         $runner->setHook('pre-commit');

@@ -9,6 +9,7 @@
  */
 namespace SebastianFeldmann\CaptainHook\Runner;
 
+use SebastianFeldmann\CaptainHook\Console\IOUtil;
 use SebastianFeldmann\CaptainHook\Hook\Action as ActionInterface;
 
 /**
@@ -38,11 +39,16 @@ class Hook extends HookHandler
 
         // execute hooks only if hook is enabled in captainhook.json
         if ($this->hookConfig->isEnabled()) {
-            $this->io->write('<info>execute hook:</info> <comment>' . $this->hookToHandle . '</comment>');
+            $this->io->write(['', '<info>execute hook:</info> <comment>' . $this->hookToHandle . '</comment>']);
             foreach ($this->getActionsToRun() as $action) {
-                $this->io->write([str_repeat('#', 80), '# <comment>' . $action->getAction() . '</comment>', '']);
+                $this->io->write([
+                    '',
+                    'Action: <comment>' . $action->getAction() . '</comment>',
+                    IOUtil::getLineSeparator()
+                ]);
                 $runner = $this->getActionRunner($action->getType());
                 $runner->execute($this->config, $this->io, $this->repository, $action);
+                $this->io->write([str_repeat('-', 80)]);
             }
         } else {
             $this->io->write('<info>skip hook:</info> <comment>' . $this->hookToHandle . '</comment>');
