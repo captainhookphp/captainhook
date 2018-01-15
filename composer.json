@@ -25,7 +25,7 @@
     "ext-spl": "*",
     "sebastianfeldmann/cli": "^2.1",
     "sebastianfeldmann/git": "^1.0.7",
-    "symfony/console": ">=2.7 <4.0"
+    "symfony/console": ">=2.7"
   },
   "require-dev": {
     "composer/composer": "~1"
