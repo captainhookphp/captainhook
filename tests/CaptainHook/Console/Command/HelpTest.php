@@ -9,11 +9,10 @@
  */
 namespace SebastianFeldmann\CaptainHook\Console\Command;
 
+use SebastianFeldmann\CaptainHook\Console\Application\Setup;
 use SebastianFeldmann\CaptainHook\Console\IO\DefaultIO;
-use SebastianFeldmann\CaptainHook\Console\IO\NullIO;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 
 class HelpTest extends \PHPUnit\Framework\TestCase
 {
@@ -24,9 +23,11 @@ class HelpTest extends \PHPUnit\Framework\TestCase
     {
         $input  = new ArrayInput([]);
         $output = new BufferedOutput();
-        $help   = new Help();
         $io     = new DefaultIO($input, $output);
+        $app    = new Setup();
+        $help   = new Help();
         $help->setIO($io);
+        $help->setApplication($app);
         $help->run($input, $output);
 
         $logs = $output->fetch();
