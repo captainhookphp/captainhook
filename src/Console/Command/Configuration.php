@@ -40,7 +40,7 @@ class Configuration extends Base
                  'c',
                  InputOption::VALUE_OPTIONAL,
                  'Path to your json configuration',
-                 getcwd() . DIRECTORY_SEPARATOR . 'captainhook.json'
+                 './captainhook.json'
              );
     }
 
