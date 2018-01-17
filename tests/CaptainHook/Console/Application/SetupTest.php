@@ -22,7 +22,7 @@ class SetupTest extends \PHPUnit\Framework\TestCase
             'hook'            => 'pre-push',
             '--configuration' => CH_PATH_FILES . DIRECTORY_SEPARATOR . 'config/valid.json'
         ]);
-        $app = new Main();
+        $app = new Setup();
         $app->setAutoExit(false);
         $app->run($input, $output);
 
