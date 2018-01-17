@@ -1,4 +1,9 @@
 {
-    "name": "sebastianfeldmann/captainhook",
-    "description": "PHP git hook manager"
+  "name": "sebastianfeldmann/captainhook",
+  "description": "PHP git hook manager",
+  "config": {
+    "platform": {
+      "ext-something": "4.0"
+    }
+  }
 }
