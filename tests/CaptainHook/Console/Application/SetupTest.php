@@ -12,7 +12,7 @@ namespace SebastianFeldmann\CaptainHook\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 
-class MainTest extends \PHPUnit\Framework\TestCase
+class SetupTest extends \PHPUnit\Framework\TestCase
 {
     public function testRun()
     {

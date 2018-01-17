@@ -56,5 +56,5 @@ if (!defined('CAPTAINHOOK_COMPOSER_AUTOLOAD')) {
 
 require CAPTAINHOOK_COMPOSER_AUTOLOAD;
 
-$app = new CaptainHook\Console\Application\Main();
+$app = new CaptainHook\Console\Application\Setup();
 $app->run();

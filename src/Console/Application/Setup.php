@@ -13,14 +13,14 @@ use SebastianFeldmann\CaptainHook\Console\Application;
 use SebastianFeldmann\CaptainHook\Console\Command as Cmd;
 
 /**
- * Class Main
+ * Class Setup
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
-class Main extends Application
+class Setup extends Application
 {
     /**
      * Initializes all the CaptainHook commands.
@@ -29,14 +29,11 @@ class Main extends Application
      */
     protected function getDefaultCommands()
     {
-        $commands = array_merge(
-            parent::getDefaultCommands(),
-            [
-                new Cmd\Configuration(),
-                new Cmd\Install(),
-                new Cmd\Run(),
-            ]
-        );
-        return $commands;
+        return [
+            new Cmd\Help(),
+            new Cmd\Configuration(),
+            new Cmd\Install(),
+            new Cmd\Run(),
+        ];
     }
 }
