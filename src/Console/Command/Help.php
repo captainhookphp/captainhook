@@ -71,30 +71,62 @@ class Help extends Base
         }
 
         $io = $this->getIO($input, $output);
-        $io->write([
-                '<info>CaptainHook</info> version <comment>' . CH::VERSION . '</comment> ' . CH::RELEASE_DATE,
-                '',
-                '<comment>Usage:</comment>',
-                '  captainhook [command] [options]',
-                '',
-                '<comment>Available commands:</comment>',
-                '  <info>help</info>      Outputs this help message',
-                '  <info>configure</info> Create a CaptainHook configuration',
-                '  <info>install</info>   Install hooks to your .git/hooks directory',
-                '',
-                '<comment>Help:</comment>',
-                '  Use captainhook [command] --help for further instructions.',
-                '',
-                '<comment>Options:</comment>',
-                '  <info>-h, --help</info>             Display this help message',
-                '  <info>-q, --quiet</info>            Do not output any message',
-                '  <info>-V, --version</info>          Display this application version',
-                '  <info>-n, --no-interaction</info>   Do not ask any interactive question',
-                '      <info>--ansi</info>             Force ANSI output',
-                '      <info>--no-ansi</info>          Disable ANSI output',
-                '  <info>-v|vv|vvv, --verbose</info>   Increase the verbosity of messages',
-                '',
+        $io->write(array_merge(
+            $this->getVersion(),
+            $this->getCommandList(),
+            $this->getOptions()
+        ));
+    }
 
-        ]);
+    /**
+     * Return help rows for version and basic usage.
+     *
+     * @return array
+     */
+    private function getVersion() : array
+    {
+        return [
+            $this->getApplication()->getLongVersion(),
+            '',
+            '<comment>Usage:</comment>',
+            '  captainhook [command] [options]',
+            ''
+        ];
+    }
+
+    /**
+     * Return help rows listing all commands.
+     *
+     * @return array
+     */
+    private function getCommandList() : array
+    {
+        return [
+            '<comment>Available commands:</comment>',
+            '  <info>help</info>      Outputs this help message',
+            '  <info>configure</info> Create a CaptainHook configuration',
+            '  <info>install</info>   Install hooks to your .git/hooks directory',
+            ''
+        ];
+    }
+
+    /**
+     * Return help rows describing all options.
+     *
+     * @return array
+     */
+    private function getOptions() : array
+    {
+        return [
+            '<comment>Options:</comment>',
+            '  <info>-h, --help</info>             Display this help message',
+            '  <info>-q, --quiet</info>            Do not output any message',
+            '  <info>-V, --version</info>          Display this application version',
+            '  <info>-n, --no-interaction</info>   Do not ask any interactive question',
+            '      <info>--ansi</info>             Force ANSI output',
+            '      <info>--no-ansi</info>          Disable ANSI output',
+            '  <info>-v|vv|vvv, --verbose</info>   Increase the verbosity of messages',
+            ''
+        ];
     }
 }
