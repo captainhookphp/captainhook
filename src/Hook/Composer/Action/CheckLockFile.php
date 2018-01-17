@@ -90,6 +90,7 @@ class CheckLockFile implements Action
      *
      * @param  string $path
      * @return string
+     * @throws \Exception
      */
     private function getConfigFileHash(string $path) : string
     {
