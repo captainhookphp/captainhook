@@ -99,14 +99,31 @@ class Application extends SymfonyApplication
             ini_set('xdebug.scream', false);
         }
         parent::__construct('CaptainHook', CH::VERSION);
+
+        $this->setDefaultCommand('help');
     }
 
     /**
-     * Make default help message to include the logo.
+     * Append release date to version output.
      *
      * @return string
      */
-    public function getHelp() : string
+    public function getLongVersion()
+    {
+        return sprintf(
+            '<info>%s</info> version <comment>%s</comment> %s',
+            $this->getName(),
+            $this->getVersion(),
+            CH::RELEASE_DATE
+        );
+    }
+
+    /**
+     * Prepend help with logo.
+     *
+     * @return string
+     */
+    public function getHelp()
     {
         return self::$logo . parent::getHelp();
     }
