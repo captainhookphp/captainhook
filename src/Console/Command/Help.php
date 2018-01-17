@@ -9,11 +9,9 @@
  */
 namespace SebastianFeldmann\CaptainHook\Console\Command;
 
-use SebastianFeldmann\CaptainHook\CH;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\DescriptorHelper;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -39,7 +37,7 @@ class Help extends Base
     {
         $this->setName('help')
              ->setDescription('Shows this help message')
-             ->setHelp('Shows this help message')
+             ->setHelp('Shows command instructions')
              ->setDefinition([
                 new InputArgument('command_name', InputArgument::OPTIONAL, 'The command name', 'help')
              ]);
@@ -71,11 +69,17 @@ class Help extends Base
         }
 
         $io = $this->getIO($input, $output);
-        $io->write(array_merge(
-            $this->getVersion(),
-            $this->getCommandList(),
-            $this->getOptions()
-        ));
+        $io->write($this->getHelpLines());
+    }
+
+    /**
+     * Return all lines of hel message.
+     *
+     * @return array
+     */
+    private function getHelpLines() : array
+    {
+        return array_merge($this->getVersion(), $this->getCommandList(), $this->getOptions());
     }
 
     /**
