@@ -17,7 +17,7 @@ use SebastianFeldmann\Git\CommitMessage;
 class RuleBookTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * Tests Validator::validate
+     * Tests RuleBook::validate
      */
     public function testValidOnEmptyRuleList()
     {
@@ -30,7 +30,7 @@ class RuleBookTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Tests Validator::setRules
+     * Tests RuleBook::setRules
      */
     public function testSetRulesValid()
     {
@@ -43,7 +43,7 @@ class RuleBookTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Tests Validator::setRules
+     * Tests RuleBook::setRules
      *
      * @expectedException \Exception
      */
@@ -56,7 +56,7 @@ class RuleBookTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Tests Validator::setRules
+     * Tests RuleBook::setRules
      *
      * @expectedException \Exception
      */
@@ -71,7 +71,7 @@ class RuleBookTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Tests Validator::setRules
+     * Tests RuleBook::setRules
      *
      * @expectedException \Exception
      */
