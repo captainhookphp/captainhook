@@ -93,9 +93,11 @@ class Hook extends ConfigHandler
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
      * @return int
+     * @throws \Exception
      */
     public function doRun(InputInterface $input, OutputInterface $output)
     {
+        $output->setDecorated(false);
         $input->setInteractive(false);
 
         $command = $this->createCommand();
