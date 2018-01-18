@@ -39,8 +39,9 @@ abstract class Book implements Action
     /**
      * Validate the message.
      *
-     * @param \SebastianFeldmann\CaptainHook\Hook\Message\RuleBook $ruleBook
-     * @param \SebastianFeldmann\Git\Repository                    $repository
+     * @param  \SebastianFeldmann\CaptainHook\Hook\Message\RuleBook $ruleBook
+     * @param  \SebastianFeldmann\Git\Repository                    $repository
+     * @throws \SebastianFeldmann\CaptainHook\Exception\ActionFailed
      */
     protected function validate(RuleBook $ruleBook, Repository $repository)
     {
