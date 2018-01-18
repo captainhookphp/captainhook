@@ -13,7 +13,6 @@ use SebastianFeldmann\CaptainHook\Config;
 use SebastianFeldmann\CaptainHook\Console\IO;
 use SebastianFeldmann\CaptainHook\Console\IOUtil;
 use SebastianFeldmann\CaptainHook\Exception\ActionFailed;
-use SebastianFeldmann\CaptainHook\Hook\Message\Rule;
 use SebastianFeldmann\CaptainHook\Hook\Message\RuleBook;
 use SebastianFeldmann\Cli\Output\Util as OutputUtil;
 use SebastianFeldmann\Git\Repository;
@@ -41,16 +40,10 @@ class Beams extends Book
     {
         $options = $action->getOptions();
         $book    = new RuleBook();
-        $book->setRules(
-            [
-                new Rule\CapitalizeSubject(),
-                new Rule\LimitSubjectLength($options->get('subjectLength', 50)),
-                new Rule\NoPeriodOnSubjectEnd(),
-                new Rule\UseImperativeMood(),
-                new Rule\LimitBodyLineLength($options->get('bodyLineLength', 72)),
-                new Rule\SeparateSubjectFromBodyWithBlankLine(),
-            ]
-        );
+        $book->setRules(RuleBook\RuleSet::beams(
+            $options->get('subjectLength', 50),
+            $options->get('bodyLineLength', 72)
+        ));
 
         try {
             $this->validate($book, $repository);
