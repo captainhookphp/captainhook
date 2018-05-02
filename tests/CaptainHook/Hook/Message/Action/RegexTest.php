@@ -53,7 +53,7 @@ class RegexTest extends \PHPUnit\Framework\TestCase
         $repo    = new Repository($this->repo->getPath());
         $action  = new Config\Action(
             'php',
-            '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\RegexCheck',
+            '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\Regex',
             [
                 'regex' => '#.*#',
                 'success' => $successMessage
