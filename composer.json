@@ -28,7 +28,8 @@
     "symfony/console": ">=2.7"
   },
   "require-dev": {
-    "composer/composer": "~1"
+    "composer/composer": "~1",
+    "phpunit/phpunit": "^7.1"
   },
   "bin": [
     "captainhook"
