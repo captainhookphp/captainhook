@@ -44,14 +44,20 @@ class RegexTest extends \PHPUnit\Framework\TestCase
      */
     public function testExecute()
     {
-        $options = ['regex' => '#.*#'];
-        $io      = new NullIO();
+        $successMessage = 'Regex matched';
+        $io = $this->createPartialMock(NullIO::class, ['write']);
+        $io->expects($this->once())->method('write')->with($successMessage);
+        /** @var NullIO $io */
+
         $config  = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo    = new Repository($this->repo->getPath());
         $action  = new Config\Action(
             'php',
             '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\RegexCheck',
-            $options
+            [
+                'regex' => '#.*#',
+                'success' => $successMessage
+            ]
         );
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
@@ -81,6 +87,7 @@ class RegexTest extends \PHPUnit\Framework\TestCase
      * Tests RegexCheck::execute
      *
      * @expectedException \Exception
+     * @expectedExceptionMessage No match for #FooBarBaz#
      */
     public function testExecuteNoMatch()
     {
@@ -89,7 +96,10 @@ class RegexTest extends \PHPUnit\Framework\TestCase
         $action = new Config\Action(
             'php',
             '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Rulebook',
-            ['regex' => '#FooBarBaz#']
+            [
+                'regex' => '#FooBarBaz#',
+                'error' => 'No match for %s'
+            ]
         );
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));

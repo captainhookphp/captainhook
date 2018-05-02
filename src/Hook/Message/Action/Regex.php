@@ -25,6 +25,9 @@ use SebastianFeldmann\Git\Repository;
  */
 class Regex implements Action
 {
+    const MESSAGE_ERROR = 'error';
+    const MESSAGE_SUCCESS = 'success';
+
     /**
      * Execute the configured action.
      *
@@ -37,9 +40,16 @@ class Regex implements Action
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
         $regex = $this->getRegex($action->getOptions());
+        $messageSuccess = $this->getMessage($action->getOptions(), self::MESSAGE_SUCCESS);
+        $messageError = $this->getMessage($action->getOptions(), self::MESSAGE_ERROR);
 
         if (!preg_match($regex, $repository->getCommitMsg()->getContent())) {
-            throw ActionFailed::withMessage('Commit message did not match regex: ' . $regex);
+            throw ActionFailed::withMessage(sprintf(
+                $messageError ?? 'Commit message did not match regex: %s',
+                $regex
+            ));
+        } else if (!empty($messageSuccess)) {
+            $io->write(sprintf($messageSuccess, $regex));
         }
     }
 
@@ -57,5 +67,21 @@ class Regex implements Action
             throw ActionFailed::withMessage('No regex option');
         }
         return $regex;
+    }
+
+    /**
+     * Extract success/error message from options array.
+     *
+     * @param Config\Options $options
+     * @param string $type
+     * @return string|null
+     */
+    protected function getMessage(Config\Options $options, string $type)
+    {
+        $message = $options->get($type);
+        if (empty($message)) {
+            return null;
+        }
+        return $message;
     }
 }
