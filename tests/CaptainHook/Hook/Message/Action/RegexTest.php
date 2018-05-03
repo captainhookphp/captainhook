@@ -42,16 +42,48 @@ class RegexTest extends \PHPUnit\Framework\TestCase
     /**
      * Tests RegexCheck::execute
      */
-    public function testExecute()
+    public function testExecuteDefaultSuccess()
     {
-        $options = ['regex' => '#.*#'];
-        $io      = new NullIO();
+        $io = $this->createPartialMock(NullIO::class, ['write']);
+        $io->expects($this->once())->method('write')->with('Found matching pattern: bar');
+        /** @var NullIO $io */
+
         $config  = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo    = new Repository($this->repo->getPath());
         $action  = new Config\Action(
             'php',
-            '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\RegexCheck',
-            $options
+            '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\Regex',
+            [
+                'regex'   => '#bar#'
+            ]
+        );
+        $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
+
+        $standard = new Regex();
+        $standard->execute($config, $io, $repo, $action);
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * Tests RegexCheck::execute
+     */
+    public function testExecuteCustomSuccess()
+    {
+        $successMessage = 'Regex matched';
+        $io             = $this->createPartialMock(NullIO::class, ['write']);
+        $io->expects($this->once())->method('write')->with($successMessage);
+        /** @var NullIO $io */
+
+        $config  = new Config(CH_PATH_FILES . '/captainhook.json');
+        $repo    = new Repository($this->repo->getPath());
+        $action  = new Config\Action(
+            'php',
+            '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\Regex',
+            [
+                'regex'   => '#.*#',
+                'success' => $successMessage
+            ]
         );
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
@@ -81,15 +113,19 @@ class RegexTest extends \PHPUnit\Framework\TestCase
      * Tests RegexCheck::execute
      *
      * @expectedException \Exception
+     * @expectedExceptionMessage No match for #FooBarBaz#
      */
-    public function testExecuteNoMatch()
+    public function testExecuteNoMatchCustomErrorMessage()
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
             'php',
             '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Rulebook',
-            ['regex' => '#FooBarBaz#']
+            [
+                'regex' => '#FooBarBaz#',
+                'error' => 'No match for %s'
+            ]
         );
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));

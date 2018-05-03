@@ -8,10 +8,9 @@ php:
 before_script:
   - composer self-update
   - composer install --no-interaction --prefer-source
-  - wget -O phpunit.phar https://phar.phpunit.de/phpunit-6.5.8.phar
 
 script:
-  - php phpunit.phar
+  - php vendor/bin/phpunit
 
 after_success:
   - wget https://scrutinizer-ci.com/ocular.phar

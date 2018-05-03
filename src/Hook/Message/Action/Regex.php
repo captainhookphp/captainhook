@@ -36,11 +36,16 @@ class Regex implements Action
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
-        $regex = $this->getRegex($action->getOptions());
+        $regex      = $this->getRegex($action->getOptions());
+        $errorMsg   = $this->getErrorMessage($action->getOptions());
+        $successMsg = $this->getSuccessMessage($action->getOptions());
+        $matches    = [];
 
-        if (!preg_match($regex, $repository->getCommitMsg()->getContent())) {
-            throw ActionFailed::withMessage('Commit message did not match regex: ' . $regex);
+        if (!preg_match($regex, $repository->getCommitMsg()->getContent(), $matches)) {
+            throw ActionFailed::withMessage(sprintf($errorMsg, $regex));
         }
+
+        $io->write(sprintf($successMsg, $matches[0]));
     }
 
     /**
@@ -57,5 +62,27 @@ class Regex implements Action
             throw ActionFailed::withMessage('No regex option');
         }
         return $regex;
+    }
+
+    /**
+     * Determine the error message to use.
+     *
+     * @param  \SebastianFeldmann\CaptainHook\Config\Options $options
+     * @return string
+     */
+    protected function getErrorMessage(Config\Options $options)
+    {
+        return $options->get('error') ?? 'Commit message did not match regex: %s';
+    }
+
+    /**
+     * Determine the error message to use.
+     *
+     * @param  \SebastianFeldmann\CaptainHook\Config\Options $options
+     * @return string
+     */
+    protected function getSuccessMessage(Config\Options $options)
+    {
+        return $options->get('success') ?? 'Found matching pattern: %s';
     }
 }
