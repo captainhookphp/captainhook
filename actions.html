@@ -70,9 +70,12 @@
   <pre><code class="javascript">{
   "action": "\SebastianFeldmann\CaptainHook\Hook\Message\Action\Regex",
   "options": {
-    "regex": "#.*#i"
+    "regex": "#.*#i",
+    "error": "No match for: %s",
+    "success": "Found match: %s"
   }
 }</code></pre>
+  Options "error" and "success" are optional.
 
   <h3 id="rules">Define rules for your commit messages</h3>
   <p>
