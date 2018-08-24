@@ -27,8 +27,9 @@ abstract class Cmd
     /**
      * Gets called by composer after a successful package installation.
      *
-     * @param \Composer\Script\Event $event
-     * @param string                 $config
+     * @param  \Composer\Script\Event $event
+     * @param  string                 $config
+     * @throws \Exception
      */
     public static function configure(Event $event, $config = '')
     {
@@ -45,8 +46,9 @@ abstract class Cmd
     /**
      * Installs the hooks to your local repository.
      *
-     * @param \Composer\Script\Event $event
-     * @param string                 $config
+     * @param  \Composer\Script\Event $event
+     * @param  string                 $config
+     * @throws \Exception
      */
     public static function install(Event $event, string $config = '')
     {
