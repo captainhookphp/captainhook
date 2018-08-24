@@ -9,9 +9,12 @@
  */
 namespace SebastianFeldmann\CaptainHook\Runner;
 
+use SebastianFeldmann\CaptainHook\Config;
+use SebastianFeldmann\CaptainHook\Console\IO;
 use SebastianFeldmann\CaptainHook\Exception;
 use SebastianFeldmann\CaptainHook\Hook\Util as HookUtil;
 use SebastianFeldmann\CaptainHook\Runner;
+use SebastianFeldmann\Git\Repository;
 
 /**
  * Class HookHandler
@@ -24,12 +27,31 @@ use SebastianFeldmann\CaptainHook\Runner;
 abstract class HookHandler extends Runner
 {
     /**
-     * Hook that should be handled
+     * Git repository.
+     *
+     * @var \SebastianFeldmann\Git\Repository
+     */
+    protected $repository;
+
+    /**
+     * Hook that should be handled.
      *
      * @var string
      */
     protected $hookToHandle;
 
+    /**
+     * HookHandler constructor.
+     *
+     * @param \SebastianFeldmann\CaptainHook\Console\IO     $io
+     * @param \SebastianFeldmann\CaptainHook\Config         $config
+     * @param \SebastianFeldmann\Git\Repository $repository
+     */
+    public function __construct(IO $io, Config $config, Repository $repository)
+    {
+        parent::__construct($io, $config);
+        $this->repository = $repository;
+    }
     /**
      * Hook setter.
      *

@@ -10,7 +10,6 @@
 namespace SebastianFeldmann\CaptainHook;
 
 use SebastianFeldmann\CaptainHook\Console\IO;
-use SebastianFeldmann\Git\Repository;
 
 /**
  * Class Runner
@@ -33,22 +32,15 @@ abstract class Runner
     protected $config;
 
     /**
-     * @var \SebastianFeldmann\Git\Repository
-     */
-    protected $repository;
-
-    /**
      * Installer constructor.
      *
-     * @param \SebastianFeldmann\CaptainHook\Console\IO     $io
-     * @param \SebastianFeldmann\CaptainHook\Config         $config
-     * @param \SebastianFeldmann\Git\Repository $repository
+     * @param \SebastianFeldmann\CaptainHook\Console\IO $io
+     * @param \SebastianFeldmann\CaptainHook\Config     $config
      */
-    public function __construct(IO $io, Config $config, Repository $repository)
+    public function __construct(IO $io, Config $config)
     {
-        $this->io         = $io;
-        $this->config     = $config;
-        $this->repository = $repository;
+        $this->io     = $io;
+        $this->config = $config;
     }
 
     /**
