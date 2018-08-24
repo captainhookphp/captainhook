@@ -41,8 +41,9 @@ class Factory
      *
      * @param  string $path
      * @return \SebastianFeldmann\CaptainHook\Config
+     * @throws \Exception
      */
-    public function createConfig($path = '')
+    public function createConfig($path = '') : Config
     {
         $path       = $path ?: getcwd() . DIRECTORY_SEPARATOR . 'captainhook.json';
         $json       = new Json($path);
@@ -59,8 +60,9 @@ class Factory
     /**
      * Initialize the configuration with data load from config file.
      *
-     * @param \SebastianFeldmann\CaptainHook\Config $config
-     * @param array                                 $json
+     * @param  \SebastianFeldmann\CaptainHook\Config $config
+     * @param  array                                 $json
+     * @throws \Exception
      */
     protected function configure(Config $config, array $json)
     {
@@ -74,8 +76,9 @@ class Factory
     /**
      * Setup a hook configuration by json data.
      *
-     * @param \SebastianFeldmann\CaptainHook\Config\Hook $config
-     * @param array                                      $json
+     * @param  \SebastianFeldmann\CaptainHook\Config\Hook $config
+     * @param  array                                      $json
+     * @throws \Exception
      */
     protected function configureHook(Config\Hook $config, array $json)
     {
