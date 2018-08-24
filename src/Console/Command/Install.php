@@ -57,6 +57,7 @@ class Install extends Base
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
      * @return void
+     * @throws \SebastianFeldmann\CaptainHook\Exception\InvalidHookName
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
