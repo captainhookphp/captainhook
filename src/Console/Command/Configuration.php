@@ -55,9 +55,8 @@ class Configuration extends Base
     {
         $io     = $this->getIO($input, $output);
         $config = $this->getConfig($input->getOption('configuration'));
-        $repo   = new Repository();
 
-        $configurator = new Configurator($io, $config, $repo);
+        $configurator = new Configurator($io, $config);
         $configurator->force($input->getOption('force'))
                      ->extend($input->getOption('extend'))
                      ->run();
