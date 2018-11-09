@@ -67,7 +67,7 @@ class Hook extends ConfigHandler
     public function getRepositoryPath() : string
     {
         if (empty($this->repositoryPath)) {
-            $this->repositoryPath = getcwd();
+            $this->repositoryPath = (string) getcwd();
         }
         return $this->repositoryPath;
     }
