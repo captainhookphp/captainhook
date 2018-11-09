@@ -24,6 +24,7 @@ class UseImperativeMood extends Blacklist
      */
     public function __construct()
     {
+        parent::__construct(false);
         $this->hint = 'Subject should be written in imperative mood';
         $this->setSubjectBlacklist(
             [
