@@ -35,6 +35,7 @@ class Configuration extends Base
              ->setHelp('This command creates or updates your captainhook configuration')
              ->addOption('extend', 'e', InputOption::VALUE_NONE, 'Extend existing configuration file')
              ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing configuration file')
+             ->addOption('advanced', 'a', InputOption::VALUE_NONE, 'More options, but more to type')
              ->addOption(
                  'configuration',
                  'c',
@@ -59,6 +60,7 @@ class Configuration extends Base
         $configurator = new Configurator($io, $config);
         $configurator->force($input->getOption('force'))
                      ->extend($input->getOption('extend'))
+                     ->advanced($input->getOption('advanced'))
                      ->run();
     }
 }

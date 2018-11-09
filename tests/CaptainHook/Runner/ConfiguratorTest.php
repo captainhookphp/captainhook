@@ -12,36 +12,7 @@ namespace SebastianFeldmann\CaptainHook\Runner;
 class ConfiguratorTest extends BaseTestRunner
 {
     /**
-     * Tests Installer::installHook
-     */
-    public function testConfigureCliHook()
-    {
-        $io     = $this->getIOMock();
-        $config = $this->getConfigMock();
-        $repo   = $this->getRepositoryMock();
-        $runner = new Configurator($io, $config, $repo);
-        $config->expects($this->once())->method('getHookConfig')->willReturn($this->getHookConfigMock());
-        $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', 'echo \'foo\'', 'n'));
-        $runner->configureHook($config, 'pre-push', true);
-    }
-
-    /**
-     * Tests Installer::installHook
-     */
-    public function testConfigurePHPHook()
-    {
-        $io     = $this->getIOMock();
-        $config = $this->getConfigMock();
-        $repo   = $this->getRepositoryMock();
-        $runner = new Configurator($io, $config, $repo);
-        $config->method('getHookConfig')->willReturn($this->getHookConfigMock());
-        $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', '\\Foo\\Bar', 'y', 'n'));
-        $io->expects($this->once())->method('askAndValidate')->willReturn('foo:bar');
-        $runner->configureHook($config, 'pre-push', true);
-    }
-
-    /**
-     * Tests Installer::installHook
+     * Tests Configurator::run
      *
      * @expectedException \Exception
      */
@@ -53,12 +24,13 @@ class ConfiguratorTest extends BaseTestRunner
         $runner = new Configurator($io, $config, $repo);
         $config->expects($this->once())->method('isLoadedFromFile')->willReturn(true);
         $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', '\\Foo\\Bar', 'y', 'n'));
-        $runner->run();
+        $runner->advanced(true)
+               ->run();
 
     }
 
     /**
-     * Tests Installer::installHook
+     * Tests Configurator::run
      */
     public function testConfigureFileExtend()
     {
@@ -71,28 +43,11 @@ class ConfiguratorTest extends BaseTestRunner
         $config->method('getPath')->willReturn($path);
         $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', '\\Foo\\Bar', 'y', 'n'));
         $io->expects($this->once())->method('askAndValidate')->willReturn('foo:bar');
-        $runner->extend(true);
-        $runner->run();
+        $runner->extend(true)
+               ->advanced(true)
+               ->run();
 
         $this->assertTrue(file_exists($path));
         unlink($path);
-    }
-
-    /**
-     * Tests Configurator::isPHPActionOptionValid
-     */
-    public function testPHPActionOptionValidationValid()
-    {
-        $this->assertEquals('foo:bar', Configurator::isPHPActionOptionValid('foo:bar'));
-    }
-
-    /**
-     * Tests Configurator::isPHPActionOptionValid
-     *
-     * @expectedException \Exception
-     */
-    public function testPHPActionOptionValidationInvalid()
-    {
-        Configurator::isPHPActionOptionValid('foo-bar');
     }
 }

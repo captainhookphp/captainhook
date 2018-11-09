@@ -40,14 +40,21 @@ class Configurator extends Runner
     private $mode;
 
     /**
-     * Execute the configurator.
+     * Use express setup mode
+     *
+     * @var bool
+     */
+    private $advanced;
+
+    /**
+     * Execute the configurator
      */
     public function run()
     {
         $config = $this->getConfigToManipulate();
-        foreach (Util::getHooks() as $hook) {
-            $this->configureHook($config, $hook);
-        }
+        $setup  = $this->getHookSetup();
+
+        $setup->configureHooks($config);
         $this->writeConfig($config);
 
         $this->io->write(
@@ -59,7 +66,7 @@ class Configurator extends Runner
     }
 
     /**
-     * Force mode setter.
+     * Force mode setter
      *
      * @param  bool $force
      * @return \SebastianFeldmann\CaptainHook\Runner\Configurator
@@ -71,7 +78,7 @@ class Configurator extends Runner
     }
 
     /**
-     * Set configuration mode.
+     * Set configuration mode
      *
      * @param  bool $extend
      * @return \SebastianFeldmann\CaptainHook\Runner\Configurator
@@ -83,7 +90,19 @@ class Configurator extends Runner
     }
 
     /**
-     * Return config to handle.
+     * Set configuration speed
+     *
+     * @param  bool $advanced
+     * @return \SebastianFeldmann\CaptainHook\Runner\Configurator
+     */
+    public function advanced(bool $advanced) : Configurator
+    {
+        $this->advanced = $advanced;
+        return $this;
+    }
+
+    /**
+     * Return config to handle
      *
      * @return \SebastianFeldmann\CaptainHook\Config
      */
@@ -99,7 +118,19 @@ class Configurator extends Runner
     }
 
     /**
-     * Make sure force mode is set if config file exists.
+     * Return the setup handler to ask the user questions
+     *
+     * @return \SebastianFeldmann\CaptainHook\Runner\Configurator\Setup
+     */
+    private function getHookSetup()
+    {
+        return $this->advanced
+            ? new Configurator\Setup\Advanced($this->io)
+            : new Configurator\Setup\Express($this->io);
+    }
+
+    /**
+     * Make sure force mode is set if config file exists
      *
      * @throws \RuntimeException
      */
@@ -111,99 +142,7 @@ class Configurator extends Runner
     }
 
     /**
-     * Configure a hook.
-     *
-     * @param \SebastianFeldmann\CaptainHook\Config $config
-     * @param string           $hook
-     */
-    public function configureHook(Config $config, string $hook)
-    {
-        $answer = $this->io->ask('  <info>Enable \'' . $hook . '\' hook?</info> <comment>[y,n]</comment> ', 'n');
-        $enable = IOUtil::answerToBool($answer);
-
-        /** @var \SebastianFeldmann\CaptainHook\Config\Hook $hookConfig */
-        $hookConfig = $config->getHookConfig($hook);
-        $hookConfig->setEnabled($enable);
-
-        if ($enable) {
-            $addAction = $this->io->ask('  <info>Add a validation action?</info> <comment>[y,n]</comment> ', 'n');
-
-            while (IOUtil::answerToBool($addAction)) {
-                $hookConfig->addAction($this->getActionConfig());
-                // add another action?
-                $addAction = $this->io->ask(
-                    '  <info>Add another validation action?</info> <comment>[y,n]</comment> ',
-                    'n'
-                );
-            }
-        }
-    }
-
-    /**
-     * Setup a action config with user input.
-     *
-     * @return \SebastianFeldmann\CaptainHook\Config\Action
-     */
-    public function getActionConfig() : Config\Action
-    {
-        $call    = $this->io->ask('  <info>PHP class or shell command to execute?</info> ', '');
-        $type    = Util::getActionType($call);
-        $options = $this->getActionOptions($type);
-
-        return new Config\Action($type, $call, $options);
-    }
-
-    /**
-     * Ask the user for any action options.
-     *
-     * @param  string $type
-     * @return array
-     */
-    public function getActionOptions(string $type) : array
-    {
-        return 'php' === $type ? $this->getPHPActionOptions() : [];
-    }
-
-    /**
-     * Get the php action options.
-     *
-     * @return array
-     */
-    protected function getPHPActionOptions() : array
-    {
-        $options = [];
-        $addOption = $this->io->ask('  <info>Add a validator option?</info> <comment>[y,n]</comment> ', 'n');
-        while (IOUtil::answerToBool($addOption)) {
-            $options = array_merge($options, $this->getPHPActionOption());
-            // add another action?
-            $addOption = $this->io->ask('  <info>Add another validator option?</info> <comment>[y,n]</comment> ', 'n');
-        }
-        return $options;
-    }
-
-    /**
-     * Ask the user for a php action option.
-     *
-     * @return array
-     */
-    protected function getPHPActionOption() : array
-    {
-        $result = [];
-        $answer = $this->io->askAndValidate(
-            '  <info>Specify options key and value</info> <comment>[key:value]</comment> ',
-            ['\\SebastianFeldmann\\CaptainHook\\Runner\\Configurator', 'isPHPActionOptionValid'],
-            3,
-            null
-        );
-        if (null !== $answer) {
-            list($key, $value) = explode(':', $answer);
-            $result = [$key => $value];
-        }
-        return $result;
-    }
-
-    /**
-     * Write config to project root.
+     * Write config to project root
      *
      * @param \SebastianFeldmann\CaptainHook\Config $config
      */
@@ -212,20 +151,5 @@ class Configurator extends Runner
         $filePath = $this->config->getPath();
         $file     = new Json($filePath);
         $file->write($config->getJsonData());
-    }
-
-    /**
-     * PHP action option validation.
-     *
-     * @param  $option
-     * @return string
-     * @throws \Exception
-     */
-    public static function isPHPActionOptionValid(string $option) : string
-    {
-        if (count(explode(':', $option)) !== 2) {
-            throw new \Exception('Invalid option, use "key:value"');
-        }
-        return $option;
     }
 }
