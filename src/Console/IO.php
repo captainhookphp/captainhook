@@ -102,7 +102,7 @@ interface IO
      * otherwise.
      *
      * @param  string   $question  The question to ask
-     * @param  callback $validator A PHP callback
+     * @param  callable $validator A PHP callback
      * @param  int      $attempts  Max number of times to ask before giving up (default of null means infinite)
      * @param  mixed    $default   The default answer if none is given by the user
      * @throws \Exception When any of the validators return an error
