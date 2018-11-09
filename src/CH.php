@@ -20,6 +20,6 @@ namespace SebastianFeldmann\CaptainHook;
  */
 final class CH
 {
-    const VERSION      = '2.1.2';
-    const RELEASE_DATE = '2018-08-27';
+    const VERSION      = '2.2.0';
+    const RELEASE_DATE = '2018-11-09';
 }
