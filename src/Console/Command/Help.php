@@ -62,7 +62,7 @@ class Help extends Base
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($this->command) {
+        if ($this->command !== null) {
             $helper = new DescriptorHelper();
             $helper->describe($output, $this->command);
             return;
