@@ -33,7 +33,7 @@ class RuleBook
      * Set rules to check.
      *
      * @param  \SebastianFeldmann\CaptainHook\Hook\Message\Rule[] $rules
-     * @return \SebastianFeldmann\CaptainHook\Hook\Message\Rulebook
+     * @return \SebastianFeldmann\CaptainHook\Hook\Message\RuleBook
      */
     public function setRules(array $rules)
     {
@@ -45,7 +45,7 @@ class RuleBook
      * Add a rule to the list.
      *
      * @param  \SebastianFeldmann\CaptainHook\Hook\Message\Rule $rule
-     * @return \SebastianFeldmann\CaptainHook\Hook\Message\Rulebook
+     * @return \SebastianFeldmann\CaptainHook\Hook\Message\RuleBook
      */
     public function addRule(Rule $rule)
     {
