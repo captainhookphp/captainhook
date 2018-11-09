@@ -16,9 +16,10 @@ namespace SebastianFeldmann\CaptainHook;
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
+ * @internal
  */
-class CH
+final class CH
 {
-    const VERSION      = '2.1.0';
-    const RELEASE_DATE = '2018-01-18';
+    const VERSION      = '2.1.2';
+    const RELEASE_DATE = '2018-08-27';
 }
