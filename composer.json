@@ -47,5 +47,8 @@
   },
   "suggest": {
     "your git hooks": "run 'vendor/bin/captainhook configure' to set up your hook configuration"
+  },
+  "replace" : {
+    "sebastianfeldmann/captainhook" : "*"
   }
 }
