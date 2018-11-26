@@ -26,7 +26,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="https://github.com/sebastianfeldmann/captainhook">CaptainHook</a>
+          <a class="navbar-brand" href="https://github.com/captainhookphp/captainhook">CaptainHook</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -43,14 +43,29 @@
 
       <h1>Composer integration</h1>
       <p>
-        If you provide a <em class="hl">captainhook.json</em> file in your project you can make sure CaptainHook will
-        install the hooks to every developers local repository.
-        Just add the following lines to your projects <em class="hl">composer.json</em> file.
+        If you want to make sure everybody installs the git hooks to their local repository you have to options.
+      </p>
+
+      <h2>1. Composer plugin</h2>
+      <p>
+        Instead of requiring <em>captainhook/captainhook</em> in your <em>composer.json</em> file you can require <em>captainhook/plugin-composer</em>.
+        This will install <em>CaptainHook</em> and a composer plugin, that makes sure the hooks get installed into everyone's local repository.
+      </p>
+
+      <pre><code class="javascript">{
+  "require-dev": {
+    "captainhook/plugin-composer": "^1.0"
+  }
+}</code></pre>
+
+      <H2>2. Post install command</H2>
+      <p>
+        To use the post install command just add the following lines to your projects <em class="hl">composer.json</em> file.
       </p>
 
       <pre><code class="javascript">{
   "scripts": {
-    "post-install-cmd": "\\SebastianFeldmann\\CaptainHook\\Composer\\Cmd::install"
+    "post-install-cmd": "\\CaptainHook\\App\\Composer\\Cmd::install"
   }
 }</code></pre>
 
@@ -59,13 +74,18 @@
         <em class="hl">composer install</em> is executed.
       </p>
 
+      <h2>A word of warning</h2>
+      <p>
+        It is still possible to commit without invoking the hooks. So make sure you run appropriate backend-sanity checks on your code!
+      </p>
+
     <footer class="footer">
       <div class="container">
         <p>
           Found a typo or a bug?
-          Please open an <a href="https://github.com/sebastianfeldmann/captainhook/issues">issue</a>
+          Please open an <a href="https://github.com/captainhookphp/captainhook/issues">issue</a>
           or pull request for the <em>gp-pages</em>
-          branch of <a href="https://github.com/sebastianfeldmann/captainhook/tree/gh-pages">CaptainHook</a>
+          branch of <a href="https://github.com/captainhookphp/captainhook/tree/gh-pages">CaptainHook</a>
         </p>
         <p>
           &copy; <a href="https://github.com/sebastianfeldmann">Sebastian Feldmann</a>

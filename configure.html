@@ -26,7 +26,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="https://github.com/sebastianfeldmann/captainhook">CaptainHook</a>
+          <a class="navbar-brand" href="https://github.com/captainhookphp/captainhook">CaptainHook</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -97,7 +97,7 @@
       <h4>PHP scripts</h4>
       <p>
         Secondly you can execute any PHP class implementing an interfaces defined by <em>CaptainHook</em>.
-        The interface you have to implement is <em class="hl">\SebastianFeldmann\CaptainHook\Hook\Action</em>.
+        The interface you have to implement is <em class="hl">\CaptainHook\App\Hook\Action</em>.
         CaptainHook comes with some built-in, basic validation classes. So let's have a look at how to configure
         those.
       </p>
@@ -107,7 +107,7 @@
     'enabled': true,
     'actions': [
       {
-        'action': '\SebastianFeldmann\CaptainHook\Hook\Message\Action\Regex',
+        'action': '\CaptainHook\App\Hook\Message\Action\Regex',
         'options': {
           'regex': '#.*#'
         }
@@ -123,15 +123,15 @@
       <p>Here's a list of all built-in actions</p>
       <h5>Commit-Message</h5>
       <ul>
-        <li><a href="actions.html#regex">\SebastianFeldmann\CaptainHook\Hook\Message\Action\Regex</a><br>Simple regex matching</li>
-        <li><a href="actions.html#rules">\SebastianFeldmann\CaptainHook\Hook\Message\Action\Rules</a><br>Execute a list of <em>Rules</em></li>
-        <li><a href="actions.html#beams">\SebastianFeldmann\CaptainHook\Hook\Message\Action\Beams</a><br>Enforces the <a href="http://chris.beams.io/posts/git-commit/" target="_blank">Beams-Rules</a></li>
+        <li><a href="actions.html#regex">\CaptainHook\App\Hook\Message\Action\Regex</a><br>Simple regex matching</li>
+        <li><a href="actions.html#rules">\CaptainHook\App\Hook\Message\Action\Rules</a><br>Execute a list of <em>Rules</em></li>
+        <li><a href="actions.html#beams">\CaptainHook\App\Hook\Message\Action\Beams</a><br>Enforces the <a href="http://chris.beams.io/posts/git-commit/" target="_blank">Beams-Rules</a></li>
       </ul>
       <h5>Pre-Commit</h5>
       <ul>
-        <li><a href="actions.html#check-lock-file">\SebastianFeldmann\CaptainHook\Hook\Composer\Action\CheckLockFile</a><br>Make sure your composer.lock file is up to date</li>
-        <li><a href="actions.html#linting">\SebastianFeldmann\CaptainHook\Hook\PHP\Action\Linting</a><br>Check php files for syntax errors</li>
-        <li><a href="actions.html#test-coverage">\SebastianFeldmann\CaptainHook\Hook\PHP\Action\TestCoverage</a><br>Monitors your test coverage</li>
+        <li><a href="actions.html#check-lock-file">\CaptainHook\App\Hook\Composer\Action\CheckLockFile</a><br>Make sure your composer.lock file is up to date</li>
+        <li><a href="actions.html#linting">\CaptainHook\App\Hook\PHP\Action\Linting</a><br>Check php files for syntax errors</li>
+        <li><a href="actions.html#test-coverage">\CaptainHook\App\Hook\PHP\Action\TestCoverage</a><br>Monitors your test coverage</li>
       </ul>
       <p>
         You can easily build your own action classes. Have a look on how to <a href="extend.html">extend</a> CaptainHook.
@@ -143,9 +143,9 @@
       <div class="container">
         <p>
           Found a typo or a bug?
-          Please open an <a href="https://github.com/sebastianfeldmann/captainhook/issues">issue</a>
+          Please open an <a href="https://github.com/captainhookphp/captainhook/issues">issue</a>
           or pull request for the <em>gp-pages</em>
-          branch of <a href="https://github.com/sebastianfeldmann/captainhook/tree/gh-pages">CaptainHook</a>
+          branch of <a href="https://github.com/captainhookphp/captainhook/tree/gh-pages">CaptainHook</a>
         </p>
         <p>
           &copy; <a href="https://github.com/sebastianfeldmann">Sebastian Feldmann</a>

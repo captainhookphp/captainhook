@@ -26,7 +26,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="https://github.com/sebastianfeldmann/captainhook">CaptainHook</a>
+      <a class="navbar-brand" href="https://github.com/captainhookphp/captainhook">CaptainHook</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
@@ -59,7 +59,7 @@
     <li>Use imperative mood</li>
   </ul>
   <pre><code class="javascript">{
-  "action": "\SebastianFeldmann\CaptainHook\Hook\Message\Action\Beams",
+  "action": "\CaptainHook\App\Hook\Message\Action\Beams",
   "options": []
 }</code></pre>
 
@@ -68,7 +68,7 @@
     Use a regex to validate your commit messages.
   </p>
   <pre><code class="javascript">{
-  "action": "\SebastianFeldmann\CaptainHook\Hook\Message\Action\Regex",
+  "action": "\CaptainHook\App\Hook\Message\Action\Regex",
   "options": {
     "regex": "#.*#i",
     "error": "No match for: %s",
@@ -82,9 +82,9 @@
     Use <em>CaptainHooks</em> built in rules, or write <a href="extend.html">your own</a> ones.
   </p>
   <pre><code class="javascript">{
-  "action": "\SebastianFeldmann\CaptainHook\Hook\Message\Action\Rules",
+  "action": "\CaptainHook\App\Hook\Message\Action\Rules",
   "options": [
-    "\SebastianFeldmann\CaptainHook\Hook\Message\Rule\MsgNotEmpty"
+    "\CaptainHook\App\Hook\Message\Rule\MsgNotEmpty"
   ]
 }</code></pre>
 
@@ -95,7 +95,7 @@
     Make sure your <em>composer.lock</em> file ist up to date.
   </p>
   <pre><code class="javascript">{
-  "action": "\SebastianFeldmann\CaptainHook\Hook\Composer\Action\CheckLockFile",
+  "action": "\CaptainHook\App\Hook\Composer\Action\CheckLockFile",
   "options": []
 }</code></pre>
 
@@ -104,7 +104,7 @@
     Make sure your PHP code doesn't contain any syntax errors.
   </p>
   <pre><code class="javascript">{
-  "action": "\SebastianFeldmann\CaptainHook\Hook\PHP\Action\Linting",
+  "action": "\CaptainHook\App\Hook\PHP\Action\Linting",
   "options": []
 }</code></pre>
 
@@ -113,7 +113,7 @@
     Make sure you code coverage doesn't decrease beyond a given percent value.
   </p>
   <pre><code class="javascript">{
-  "action": "\SebastianFeldmann\CaptainHook\Hook\PHP\Action\TestCoverage",
+  "action": "\CaptainHook\App\Hook\PHP\Action\TestCoverage",
   "options": {
     "minCoverage": 90,
     "cloverXml": "build/logs/clover.xml"
@@ -125,9 +125,9 @@
     <div class="container">
       <p>
         Found a typo or a bug?
-        Please open an <a href="https://github.com/sebastianfeldmann/captainhook/issues">issue</a>
+        Please open an <a href="https://github.com/captainhookphp/captainhook/issues">issue</a>
         or pull request for the <em>gp-pages</em>
-        branch of <a href="https://github.com/sebastianfeldmann/captainhook/tree/gh-pages">CaptainHook</a>
+        branch of <a href="https://github.com/captainhookphp/captainhook/tree/gh-pages">CaptainHook</a>
       </p>
       <p>
         &copy; <a href="https://github.com/sebastianfeldmann">Sebastian Feldmann</a>

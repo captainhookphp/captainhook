@@ -26,7 +26,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="https://github.com/sebastianfeldmann/captainhook">CaptainHook</a>
+          <a class="navbar-brand" href="https://github.com/captainhookphp/captainhook">CaptainHook</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -59,9 +59,9 @@
   "enabled": true,
   "actions": [
     {
-      "action": "\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\Rules",
+      "action": "\\CaptainHook\\App\\Hook\\Message\\Action\\Rules",
       "options": [
-        "\\SebastianFeldmann\\CaptainHook\\Hook\Message\\Rule\\SubjectStartsWithCapitalLetter"
+        "\\CaptainHook\\App\\Hook\Message\\Rule\\SubjectStartsWithCapitalLetter"
       ]
     }
   ]
@@ -69,13 +69,13 @@
       <p>
         The <em>Rules</em> action accepts a list of <em class="hl">Rule</em> classes and creates a <em>RuleBook</em>
         with all the given rules. You can write your own rules by implementing the
-        <em class="hl">SebastianFeldmann\CaptainHook\Hook\Message\Rule</em> interface. Here is an example.
+        <em class="hl">CaptainHook\App\Hook\Message\Rule</em> interface. Here is an example.
       </p>
 
       <pre><code class="php">&lt;?php
 namespace MyName\GitHook;
 
-use SebastianFeldmann\CaptainHook\Hooks\Message\Rule;
+use CaptainHook\App\Hooks\Message\Rule;
 use SebastianFeldmann\Git\CommitMessage;
 
 class DoNotYell implements Rule
@@ -144,9 +144,9 @@ class DoNotYell implements Rule
       <pre><code class="php">&lt;?php
 namespace MyName\GitHook;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\IO;
-use SebastianFeldmann\CaptainHook\Hook\Action;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO;
+use CaptainHook\App\Hook\Action;
 use SebastianFeldmann\Git\Repository;
 
 class TicketIDValidator implements Action
@@ -154,10 +154,10 @@ class TicketIDValidator implements Action
     /**
      * Execute the action.
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config         $config
-     * @param  \SebastianFeldmann\CaptainHook\Console\IO     $io
-     * @param  \SebastianFeldmann\Git\Repository             $repository
-     * @param  \SebastianFeldmann\CaptainHook\Config\Action  $action
+     * @param  \CaptainHook\App\Config           $config
+     * @param  \CaptainHook\App\Console\IO       $io
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @param  \CaptainHook\App\Config\Action    $action
      * @throws \Exception
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
@@ -196,9 +196,9 @@ class TicketIDValidator implements Action
       <div class="container">
         <p>
           Found a typo or a bug?
-          Please open an <a href="https://github.com/sebastianfeldmann/captainhook/issues">issue</a>
+          Please open an <a href="https://github.com/captainhookphp/captainhook/issues">issue</a>
           or pull request for the <em>gp-pages</em>
-          branch of <a href="https://github.com/sebastianfeldmann/captainhook/tree/gh-pages">CaptainHook</a>
+          branch of <a href="https://github.com/captainhookphp/captainhook/tree/gh-pages">CaptainHook</a>
         </p>
         <p>
           &copy; <a href="https://github.com/sebastianfeldmann">Sebastian Feldmann</a>
