@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Runner\Action;
+namespace CaptainHook\App\Runner\Action;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\IO;
-use SebastianFeldmann\CaptainHook\Hook\Action as ActionInterface;
-use SebastianFeldmann\CaptainHook\Runner\BaseTestRunner;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO;
+use CaptainHook\App\Hook\Action as ActionInterface;
+use CaptainHook\App\Runner\BaseTestRunner;
 use SebastianFeldmann\Git\Repository;
 
 class PHPTest extends BaseTestRunner
@@ -27,7 +27,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\SebastianFeldmann\\CaptainHook\\Runner\\Action\\DummyPHPSuccess';
+        $class = '\\CaptainHook\\App\\Runner\\Action\\DummyPHPSuccess';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -47,7 +47,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\SebastianFeldmann\\CaptainHook\\Runner\\Action\\DummyPHPFailure';
+        $class = '\\CaptainHook\\App\\Runner\\Action\\DummyPHPFailure';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -67,7 +67,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\SebastianFeldmann\\CaptainHook\\Runner\\Action\\DummyPHPError';
+        $class = '\\CaptainHook\\App\\Runner\\Action\\DummyPHPError';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -87,7 +87,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\SebastianFeldmann\\CaptainHook\\Runner\\Action\\DummyNoAction';
+        $class = '\\CaptainHook\\App\\Runner\\Action\\DummyNoAction';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -127,7 +127,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\SebastianFeldmann\\CaptainHook\\Runner\\Action\\DummyNoAction::foo';
+        $class = '\\CaptainHook\\App\\Runner\\Action\\DummyNoAction::foo';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -146,7 +146,7 @@ class PHPTest extends BaseTestRunner
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
 
-        $class = '\\SebastianFeldmann\\CaptainHook\\Runner\\Action\\DummyPHPSuccess::executeStatic';
+        $class = '\\CaptainHook\\App\\Runner\\Action\\DummyPHPSuccess::executeStatic';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -168,11 +168,11 @@ class DummyPHPSuccess implements ActionInterface
     /**
      * Execute the configured action.
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config         $config
-     * @param  \SebastianFeldmann\CaptainHook\Console\IO     $io
+     * @param  \CaptainHook\App\Config         $config
+     * @param  \CaptainHook\App\Console\IO     $io
      * @param  \SebastianFeldmann\Git\Repository             $repository
-     * @param  \SebastianFeldmann\CaptainHook\Config\Action  $action
-     * @throws \SebastianFeldmann\CaptainHook\Exception\ActionFailed
+     * @param  \CaptainHook\App\Config\Action  $action
+     * @throws \CaptainHook\App\Exception\ActionFailed
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
@@ -185,11 +185,11 @@ class DummyPHPFailure implements ActionInterface
     /**
      * Execute the configured action.
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config         $config
-     * @param  \SebastianFeldmann\CaptainHook\Console\IO     $io
+     * @param  \CaptainHook\App\Config         $config
+     * @param  \CaptainHook\App\Console\IO     $io
      * @param  \SebastianFeldmann\Git\Repository             $repository
-     * @param  \SebastianFeldmann\CaptainHook\Config\Action  $action
-     * @throws \SebastianFeldmann\CaptainHook\Exception\ActionFailed
+     * @param  \CaptainHook\App\Config\Action  $action
+     * @throws \CaptainHook\App\Exception\ActionFailed
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
@@ -202,11 +202,11 @@ class DummyPHPError implements ActionInterface
     /**
      * Execute the configured action.
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config         $config
-     * @param  \SebastianFeldmann\CaptainHook\Console\IO     $io
+     * @param  \CaptainHook\App\Config         $config
+     * @param  \CaptainHook\App\Console\IO     $io
      * @param  \SebastianFeldmann\Git\Repository             $repository
-     * @param  \SebastianFeldmann\CaptainHook\Config\Action  $action
-     * @throws \SebastianFeldmann\CaptainHook\Exception\ActionFailed
+     * @param  \CaptainHook\App\Config\Action  $action
+     * @throws \CaptainHook\App\Exception\ActionFailed
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {

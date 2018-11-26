@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Hook\Message\Rule;
+namespace CaptainHook\App\Hook\Message\Rule;
 
 use SebastianFeldmann\Git\CommitMessage;
-use SebastianFeldmann\CaptainHook\Hook\Message\Rule;
+use CaptainHook\App\Hook\Message\Rule;
 
 /**
  * Class Base

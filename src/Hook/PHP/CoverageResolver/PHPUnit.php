@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Hook\PHP\CoverageResolver;
+namespace CaptainHook\App\Hook\PHP\CoverageResolver;
 
 use RuntimeException;
-use SebastianFeldmann\CaptainHook\Hook\PHP\CoverageResolver;
+use CaptainHook\App\Hook\PHP\CoverageResolver;
 use SebastianFeldmann\Cli\Processor\ProcOpen as Processor;
 
 /**

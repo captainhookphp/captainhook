@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Console\Command;
+namespace CaptainHook\App\Console\Command;
 
-use SebastianFeldmann\CaptainHook\Console\Application\Setup;
-use SebastianFeldmann\CaptainHook\Console\IO\DefaultIO;
+use CaptainHook\App\Console\Application\Setup;
+use CaptainHook\App\Console\IO\DefaultIO;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 

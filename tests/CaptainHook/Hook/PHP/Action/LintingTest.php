@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Hook\PHP\Action;
+namespace CaptainHook\App\Hook\PHP\Action;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\IO\NullIO;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO\NullIO;
 
 class LintingTest extends \PHPUnit\Framework\TestCase
 {
@@ -28,7 +28,7 @@ class LintingTest extends \PHPUnit\Framework\TestCase
         $repo->expects($this->once())->method('getIndexOperator')->willReturn($resolver);
 
 
-        $action   = new Config\Action('php', '\\SebastianFeldmann\\CaptainHook\\Hook\\PHP\\Action\\Linter', []);
+        $action   = new Config\Action('php', '\\CaptainHook\\App\\Hook\\PHP\\Action\\Linter', []);
         $standard = new Linting();
         $standard->execute($config, $io, $repo, $action);
     }
@@ -49,7 +49,7 @@ class LintingTest extends \PHPUnit\Framework\TestCase
         $repo->expects($this->once())->method('getIndexOperator')->willReturn($resolver);
 
 
-        $action   = new Config\Action('php', '\\SebastianFeldmann\\CaptainHook\\Hook\\PHP\\Action\\Linter', []);
+        $action   = new Config\Action('php', '\\CaptainHook\\App\\Hook\\PHP\\Action\\Linter', []);
         $standard = new Linting();
         $standard->execute($config, $io, $repo, $action);
     }

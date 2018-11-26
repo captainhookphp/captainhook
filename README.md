@@ -7,14 +7,14 @@ You can use *CaptainHook* to validate your commit messages, ensure code quality 
 commit or push changes to git.
 
 You can run cli commands, use some built in validators, or write
-your own PHP classes that get executed by *CaptainHook*. For more information have a look at the [documentation](https://sebastianfeldmann.github.io/captainhook/ "CaptainHook Documentation").
+your own PHP classes that get executed by *CaptainHook*. For more information have a look at the [documentation](https://captainhookphp.github.io/captainhook/ "CaptainHook Documentation").
 
 
-[![Latest Stable Version](https://poser.pugx.org/sebastianfeldmann/captainhook/v/stable.svg?v=1)](https://packagist.org/packages/sebastianfeldmann/captainhook)
+[![Latest Stable Version](https://poser.pugx.org/captainhook/captainhook/v/stable.svg?v=1)](https://packagist.org/packages/captainhook/captainhook)
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.0-8892BF.svg)](https://php.net/)
-[![Downloads](https://img.shields.io/packagist/dt/sebastianfeldmann/captainhook.svg?v1)](https://packagist.org/packages/sebastianfeldmann/captainhook)
-[![License](https://poser.pugx.org/sebastianfeldmann/captainhook/license.svg?v=1)](https://packagist.org/packages/sebastianfeldmann/captainhook)
-[![Build Status](https://travis-ci.org/sebastianfeldmann/captainhook.svg?branch=master)](https://travis-ci.org/sebastianfeldmann/captainhook)
+[![Downloads](https://img.shields.io/packagist/dt/captainhook/captainhook.svg?v1)](https://packagist.org/packages/captainhook/captainhook)
+[![License](https://poser.pugx.org/captainhookphp/captainhook/license.svg?v=1)](https://packagist.org/packages/captainhook/captainhook)
+[![Build Status](https://travis-ci.org/sebastianfeldmann/captainhook.svg?branch=master)](https://travis-ci.org/captainhook/captainhook)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sebastianfeldmann/captainhook/badges/quality-score.png?b=master&v=1)](https://scrutinizer-ci.com/g/sebastianfeldmann/captainhook/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/sebastianfeldmann/captainhook/badges/coverage.png?b=master&v=1)](https://scrutinizer-ci.com/g/sebastianfeldmann/captainhook/?branch=master)
 
@@ -22,7 +22,7 @@ your own PHP classes that get executed by *CaptainHook*. For more information ha
 
 Use Composer to install CaptainHook.
 ```bash
-    $ composer require --dev sebastianfeldmann/captainhook
+    $ composer require --dev captainhook/captainhook
 ```
 
 After installing CaptainHook you can use the *captainhook* executable to create a configuration.
@@ -50,7 +50,7 @@ Here's an example *captainhook.json* configuration file.
     "enabled": true,
     "actions": [
       {
-        "action": "\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\Beams",
+        "action": "\\CaptainHook\\App\\Hook\\Message\\Action\\Beams",
         "options": []
       }
     ]

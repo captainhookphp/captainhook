@@ -7,18 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Hook\Message\Action;
+namespace CaptainHook\App\Hook\Message\Action;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\IO\NullIO;
-use SebastianFeldmann\CaptainHook\Git\DummyRepo;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO\NullIO;
+use CaptainHook\App\Git\DummyRepo;
 use SebastianFeldmann\Git\CommitMessage;
 use SebastianFeldmann\Git\Repository;
 
 class RegexTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \SebastianFeldmann\CaptainHook\Git\DummyRepo
+     * @var \CaptainHook\App\Git\DummyRepo
      */
     private $repo;
 
@@ -52,7 +52,7 @@ class RegexTest extends \PHPUnit\Framework\TestCase
         $repo    = new Repository($this->repo->getPath());
         $action  = new Config\Action(
             'php',
-            '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\Regex',
+            '\\CaptainHook\\App\\Hook\\Message\\Action\\Regex',
             [
                 'regex'   => '#bar#'
             ]
@@ -79,7 +79,7 @@ class RegexTest extends \PHPUnit\Framework\TestCase
         $repo    = new Repository($this->repo->getPath());
         $action  = new Config\Action(
             'php',
-            '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\Regex',
+            '\\CaptainHook\\App\\Hook\\Message\\Action\\Regex',
             [
                 'regex'   => '#.*#',
                 'success' => $successMessage
@@ -103,7 +103,7 @@ class RegexTest extends \PHPUnit\Framework\TestCase
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
-        $action = new Config\Action('php', '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\Rulebook');
+        $action = new Config\Action('php', '\\CaptainHook\\App\\Hook\\Message\\Action\\Rulebook');
 
         $standard = new Regex();
         $standard->execute($config, $io, $repo, $action);
@@ -121,7 +121,7 @@ class RegexTest extends \PHPUnit\Framework\TestCase
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
             'php',
-            '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Rulebook',
+            '\\CaptainHook\\App\\Hook\\Message\\Rulebook',
             [
                 'regex' => '#FooBarBaz#',
                 'error' => 'No match for %s'

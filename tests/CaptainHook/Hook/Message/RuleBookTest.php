@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Hook\Message;
+namespace CaptainHook\App\Hook\Message;
 
-use SebastianFeldmann\CaptainHook\Hook\Message\Rule\CapitalizeSubject;
-use SebastianFeldmann\CaptainHook\Hook\Message\Rule\MsgNotEmpty;
-use SebastianFeldmann\CaptainHook\Hook\Message\Rule\UseImperativeMood;
+use CaptainHook\App\Hook\Message\Rule\CapitalizeSubject;
+use CaptainHook\App\Hook\Message\Rule\MsgNotEmpty;
+use CaptainHook\App\Hook\Message\Rule\UseImperativeMood;
 use SebastianFeldmann\Git\CommitMessage;
 
 class RuleBookTest extends \PHPUnit\Framework\TestCase

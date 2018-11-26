@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Runner\Configurator\Setup;
+namespace CaptainHook\App\Runner\Configurator\Setup;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\IOUtil;
-use SebastianFeldmann\CaptainHook\Runner\Configurator\Setup;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IOUtil;
+use CaptainHook\App\Runner\Configurator\Setup;
 
 /**
  * Class Express
@@ -26,7 +26,7 @@ class Express extends Guided implements Setup
     /**
      * Setup hooks by asking some basic questions
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config $config
+     * @param  \CaptainHook\App\Config $config
      * @throws \Exception
      */
     public function configureHooks(Config $config)
@@ -45,7 +45,7 @@ class Express extends Guided implements Setup
     /**
      * Setup the commit message hook
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config\Hook $config
+     * @param  \CaptainHook\App\Config\Hook $config
      * @throws \Exception
      */
     private function setupMessageHook(Config\Hook $config)
@@ -57,7 +57,7 @@ class Express extends Guided implements Setup
 
         if (IOUtil::answerToBool($answer)) {
             $type    = 'php';
-            $call    = '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\Beams';
+            $call    = '\\CaptainHook\\App\\Hook\\Message\\Action\\Beams';
             $options = ['subjectLength' => 50, 'bodyLineLength' => 72];
             $config->addAction(new Config\Action($type, $call, $options));
         }
@@ -66,7 +66,7 @@ class Express extends Guided implements Setup
     /**
      * Setup the linting hook
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config\Hook $config
+     * @param  \CaptainHook\App\Config\Hook $config
      * @throws \Exception
      */
     private function setupPHPLintingHook(Config\Hook $config)
@@ -78,7 +78,7 @@ class Express extends Guided implements Setup
 
         if (IOUtil::answerToBool($answer)) {
             $type    = 'php';
-            $call    = '\\SebastianFeldmann\\CaptainHook\\Hook\\PHP\\Action\\Linting';
+            $call    = '\\CaptainHook\\App\\Hook\\PHP\\Action\\Linting';
             $config->addAction(new Config\Action($type, $call));
         }
     }
@@ -86,7 +86,7 @@ class Express extends Guided implements Setup
     /**
      * Setup the phpunit hook
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config\Hook $config
+     * @param  \CaptainHook\App\Config\Hook $config
      * @throws \Exception
      */
     private function setupPHPUnitHook(Config\Hook $config)
@@ -108,7 +108,7 @@ class Express extends Guided implements Setup
     /**
      * Setup the code sniffer hook
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config\Hook $config
+     * @param  \CaptainHook\App\Config\Hook $config
      * @throws \Exception
      */
     private function setupPHPCodesnifferHook(Config\Hook $config)

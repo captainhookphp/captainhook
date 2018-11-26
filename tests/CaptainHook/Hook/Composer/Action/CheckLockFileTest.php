@@ -7,18 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Hook\Composer\Action;
+namespace CaptainHook\App\Hook\Composer\Action;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\IO\NullIO;
-use SebastianFeldmann\CaptainHook\Git\CommitMessage;
-use SebastianFeldmann\CaptainHook\Git\DummyRepo;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO\NullIO;
+use CaptainHook\App\Git\CommitMessage;
+use CaptainHook\App\Git\DummyRepo;
 use SebastianFeldmann\Git\Repository;
 
 class CheckLockFileTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \SebastianFeldmann\CaptainHook\Git\DummyRepo
+     * @var \CaptainHook\App\Git\DummyRepo
      */
     private $repo;
 
@@ -49,7 +49,7 @@ class CheckLockFileTest extends \PHPUnit\Framework\TestCase
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
             'php',
-            '\\SebastianFeldmann\\CaptainHook\\Hook\\Composer\\Action\\CheckLockFile',
+            '\\CaptainHook\\App\\Hook\\Composer\\Action\\CheckLockFile',
             ['path' => CH_PATH_FILES . '/composer/valid']
         );
         $standard = new CheckLockFile();
@@ -70,7 +70,7 @@ class CheckLockFileTest extends \PHPUnit\Framework\TestCase
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
             'php',
-            '\\SebastianFeldmann\\CaptainHook\\Hook\\Composer\\Action\\CheckLockFile',
+            '\\CaptainHook\\App\\Hook\\Composer\\Action\\CheckLockFile',
             ['path' => CH_PATH_FILES . '/composer/invalid-hash']
         );
 
@@ -91,7 +91,7 @@ class CheckLockFileTest extends \PHPUnit\Framework\TestCase
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
             'php',
-            '\\SebastianFeldmann\\CaptainHook\\Hook\\Composer\\Action\\CheckLockFile',
+            '\\CaptainHook\\App\\Hook\\Composer\\Action\\CheckLockFile',
             ['path' => CH_PATH_FILES . '/composer/no-hash']
         );
 
@@ -111,7 +111,7 @@ class CheckLockFileTest extends \PHPUnit\Framework\TestCase
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
             'php',
-            '\\SebastianFeldmann\\CaptainHook\\Hook\\Composer\\Action\\CheckLockFile',
+            '\\CaptainHook\\App\\Hook\\Composer\\Action\\CheckLockFile',
             ['path' => CH_PATH_FILES . '/composer/not-there']
         );
         $standard = new CheckLockFile();

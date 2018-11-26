@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Console\Command\Hook;
+namespace CaptainHook\App\Console\Command\Hook;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\Command\Hook;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\Command\Hook;
 use SebastianFeldmann\Git;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -47,7 +47,7 @@ class CommitMsg extends Hook
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \SebastianFeldmann\CaptainHook\Config             $config
+     * @param \CaptainHook\App\Config             $config
      * @param \SebastianFeldmann\Git\Repository                 $repository
      */
     protected function setup(InputInterface $input, OutputInterface $output, Config $config, Git\Repository $repository)

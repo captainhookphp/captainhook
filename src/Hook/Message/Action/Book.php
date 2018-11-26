@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Hook\Message\Action;
+namespace CaptainHook\App\Hook\Message\Action;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\IO;
-use SebastianFeldmann\CaptainHook\Hook\Action;
-use SebastianFeldmann\CaptainHook\Hook\Message\RuleBook;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO;
+use CaptainHook\App\Hook\Action;
+use CaptainHook\App\Hook\Message\RuleBook;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -28,10 +28,10 @@ abstract class Book implements Action
     /**
      * Execute the configured action.
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config         $config
-     * @param  \SebastianFeldmann\CaptainHook\Console\IO     $io
+     * @param  \CaptainHook\App\Config         $config
+     * @param  \CaptainHook\App\Console\IO     $io
      * @param  \SebastianFeldmann\Git\Repository             $repository
-     * @param  \SebastianFeldmann\CaptainHook\Config\Action  $action
+     * @param  \CaptainHook\App\Config\Action  $action
      * @throws \Exception
      */
     abstract public function execute(Config $config, IO $io, Repository $repository, Config\Action $action);
@@ -39,9 +39,9 @@ abstract class Book implements Action
     /**
      * Validate the message.
      *
-     * @param  \SebastianFeldmann\CaptainHook\Hook\Message\RuleBook $ruleBook
+     * @param  \CaptainHook\App\Hook\Message\RuleBook $ruleBook
      * @param  \SebastianFeldmann\Git\Repository                    $repository
-     * @throws \SebastianFeldmann\CaptainHook\Exception\ActionFailed
+     * @throws \CaptainHook\App\Exception\ActionFailed
      */
     protected function validate(RuleBook $ruleBook, Repository $repository)
     {

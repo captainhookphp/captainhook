@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Runner\Configurator\Setup;
+namespace CaptainHook\App\Runner\Configurator\Setup;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\IOUtil;
-use SebastianFeldmann\CaptainHook\Hook\Util;
-use SebastianFeldmann\CaptainHook\Runner\Configurator\Setup;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IOUtil;
+use CaptainHook\App\Hook\Util;
+use CaptainHook\App\Runner\Configurator\Setup;
 
 /**
  * Class Advanced
@@ -27,7 +27,7 @@ class Advanced extends Guided implements Setup
     /**
      * Setup hook configurations by asking some questions
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config $config
+     * @param  \CaptainHook\App\Config $config
      * @return void
      * @throws \Exception
      */
@@ -40,7 +40,7 @@ class Advanced extends Guided implements Setup
     /**
      * Configure a hook by asking some questions
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config\Hook $config
+     * @param  \CaptainHook\App\Config\Hook $config
      * @param  string                                     $name
      * @throws \Exception
      */
@@ -68,7 +68,7 @@ class Advanced extends Guided implements Setup
     /**
      * Setup a action config with user input
      *
-     * @return \SebastianFeldmann\CaptainHook\Config\Action
+     * @return \CaptainHook\App\Config\Action
      * @throws \Exception
      */
     public function getActionConfig() : Config\Action
@@ -121,7 +121,7 @@ class Advanced extends Guided implements Setup
         $result = [];
         $answer = $this->io->askAndValidate(
             '  <info>Specify options key and value</info> <comment>[key:value]</comment> ',
-            ['\\SebastianFeldmann\\CaptainHook\\Runner\\Configurator\\Setup\\Guided', 'isPHPActionOptionValid'],
+            ['\\CaptainHook\\App\\Runner\\Configurator\\Setup\\Guided', 'isPHPActionOptionValid'],
             3,
             null
         );

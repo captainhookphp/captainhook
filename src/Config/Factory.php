@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Config;
+namespace CaptainHook\App\Config;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Hook\Util as HookUtil;
-use SebastianFeldmann\CaptainHook\Storage\File\Json;
+use CaptainHook\App\Config;
+use CaptainHook\App\Hook\Util as HookUtil;
+use CaptainHook\App\Storage\File\Json;
 
 /**
  * Class Factory
@@ -27,7 +27,7 @@ class Factory
      * Config factory method.
      *
      * @param  string $path
-     * @return \SebastianFeldmann\CaptainHook\Config
+     * @return \CaptainHook\App\Config
      */
     public static function create(string $path = '')
     {
@@ -40,7 +40,7 @@ class Factory
      * Create a CaptainHook configuration.
      *
      * @param  string $path
-     * @return \SebastianFeldmann\CaptainHook\Config
+     * @return \CaptainHook\App\Config
      * @throws \Exception
      */
     public function createConfig($path = '') : Config
@@ -60,7 +60,7 @@ class Factory
     /**
      * Initialize the configuration with data load from config file.
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config $config
+     * @param  \CaptainHook\App\Config $config
      * @param  array                                 $json
      * @throws \Exception
      */
@@ -76,7 +76,7 @@ class Factory
     /**
      * Setup a hook configuration by json data.
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config\Hook $config
+     * @param  \CaptainHook\App\Config\Hook $config
      * @param  array                                      $json
      * @throws \Exception
      */

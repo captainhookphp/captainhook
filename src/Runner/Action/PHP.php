@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Runner\Action;
+namespace CaptainHook\App\Runner\Action;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\IO;
-use SebastianFeldmann\CaptainHook\Exception\ActionFailed;
-use SebastianFeldmann\CaptainHook\Hook\Action;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO;
+use CaptainHook\App\Exception\ActionFailed;
+use CaptainHook\App\Hook\Action;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -28,11 +28,11 @@ class PHP implements Action
     /**
      * Execute the configured action.
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config         $config
-     * @param  \SebastianFeldmann\CaptainHook\Console\IO     $io
+     * @param  \CaptainHook\App\Config         $config
+     * @param  \CaptainHook\App\Console\IO     $io
      * @param  \SebastianFeldmann\Git\Repository             $repository
-     * @param  \SebastianFeldmann\CaptainHook\Config\Action  $action
-     * @throws \SebastianFeldmann\CaptainHook\Exception\ActionFailed
+     * @param  \CaptainHook\App\Config\Action  $action
+     * @throws \CaptainHook\App\Exception\ActionFailed
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
     {
@@ -76,8 +76,8 @@ class PHP implements Action
      * Create an action instance.
      *
      * @param  string $class
-     * @return \SebastianFeldmann\CaptainHook\Hook\Action
-     * @throws \SebastianFeldmann\CaptainHook\Exception\ActionFailed
+     * @return \CaptainHook\App\Hook\Action
+     * @throws \CaptainHook\App\Exception\ActionFailed
      */
     protected function createAction(string $class) : Action
     {

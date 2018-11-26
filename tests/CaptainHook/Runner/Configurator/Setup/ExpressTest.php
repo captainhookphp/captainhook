@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Runner\Configurator\Setup;
+namespace CaptainHook\App\Runner\Configurator\Setup;
 
-use SebastianFeldmann\CaptainHook\Runner\BaseTestRunner;
+use CaptainHook\App\Runner\BaseTestRunner;
 
 class ExpressTest extends BaseTestRunner
 {

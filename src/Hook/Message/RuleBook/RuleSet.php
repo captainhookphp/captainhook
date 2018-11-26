@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Hook\Message\RuleBook;
+namespace CaptainHook\App\Hook\Message\RuleBook;
 
-use SebastianFeldmann\CaptainHook\Hook\Message\Rule;
+use CaptainHook\App\Hook\Message\Rule;
 
 /**
  * Class RuleSet
@@ -26,7 +26,7 @@ abstract class RuleSet
      *
      * @param  int $subjectLength
      * @param  int $bodyLineLength
-     * @return \SebastianFeldmann\CaptainHook\Hook\Message\Rule[]
+     * @return \CaptainHook\App\Hook\Message\Rule[]
      */
     public static function beams(int $subjectLength = 50, int $bodyLineLength = 72) : array
     {

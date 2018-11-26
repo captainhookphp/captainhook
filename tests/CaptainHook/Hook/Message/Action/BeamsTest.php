@@ -7,18 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Hook\Message\Action;
+namespace CaptainHook\App\Hook\Message\Action;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\IO\NullIO;
-use SebastianFeldmann\CaptainHook\Git\DummyRepo;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO\NullIO;
+use CaptainHook\App\Git\DummyRepo;
 use SebastianFeldmann\Git\CommitMessage;
 use SebastianFeldmann\Git\Repository;
 
 class BeamsTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \SebastianFeldmann\CaptainHook\Git\DummyRepo
+     * @var \CaptainHook\App\Git\DummyRepo
      */
     private $repo;
 
@@ -46,7 +46,7 @@ class BeamsTest extends \PHPUnit\Framework\TestCase
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action('php', '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\Beams');
+        $action = new Config\Action('php', '\\CaptainHook\\App\\Hook\\Message\\Action\\Beams');
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
@@ -65,7 +65,7 @@ class BeamsTest extends \PHPUnit\Framework\TestCase
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action('php', '\\SebastianFeldmann\\CaptainHook\\Hook\\Message\\Action\\Beams');
+        $action = new Config\Action('php', '\\CaptainHook\\App\\Hook\\Message\\Action\\Beams');
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('foo bar baz.'));
 

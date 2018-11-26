@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Exception;
+namespace CaptainHook\App\Exception;
 
 /**
  * Class ActionFailed
@@ -23,7 +23,7 @@ class ActionFailed extends \Exception
      * Return a Action Failed exception.
      *
      * @param string $msg
-     * @return \SebastianFeldmann\CaptainHook\Exception\ActionFailed
+     * @return \CaptainHook\App\Exception\ActionFailed
      */
     public static function withMessage($msg)
     {
@@ -33,8 +33,8 @@ class ActionFailed extends \Exception
     /**
      * Create a new exception based on a previous exception.
      *
-     * @param  \SebastianFeldmann\CaptainHook\Exception\ActionFailed $exception
-     * @return \SebastianFeldmann\CaptainHook\Exception\ActionFailed
+     * @param  \CaptainHook\App\Exception\ActionFailed $exception
+     * @return \CaptainHook\App\Exception\ActionFailed
      */
     public static function fromPrevious(ActionFailed $exception)
     {

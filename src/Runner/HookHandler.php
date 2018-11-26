@@ -7,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Runner;
+namespace CaptainHook\App\Runner;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\IO;
-use SebastianFeldmann\CaptainHook\Exception;
-use SebastianFeldmann\CaptainHook\Hook\Util as HookUtil;
-use SebastianFeldmann\CaptainHook\Runner;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO;
+use CaptainHook\App\Exception;
+use CaptainHook\App\Hook\Util as HookUtil;
+use CaptainHook\App\Runner;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -43,8 +43,8 @@ abstract class HookHandler extends Runner
     /**
      * HookHandler constructor.
      *
-     * @param \SebastianFeldmann\CaptainHook\Console\IO     $io
-     * @param \SebastianFeldmann\CaptainHook\Config         $config
+     * @param \CaptainHook\App\Console\IO     $io
+     * @param \CaptainHook\App\Config         $config
      * @param \SebastianFeldmann\Git\Repository $repository
      */
     public function __construct(IO $io, Config $config, Repository $repository)
@@ -56,8 +56,8 @@ abstract class HookHandler extends Runner
      * Hook setter.
      *
      * @param  string $hook
-     * @return \SebastianFeldmann\CaptainHook\Runner\HookHandler
-     * @throws \SebastianFeldmann\CaptainHook\Exception\InvalidHookName
+     * @return \CaptainHook\App\Runner\HookHandler
+     * @throws \CaptainHook\App\Exception\InvalidHookName
      */
     public function setHook(string $hook) : HookHandler
     {

@@ -7,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Runner;
+namespace CaptainHook\App\Runner;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\IOUtil;
-use SebastianFeldmann\CaptainHook\Hook\Util;
-use SebastianFeldmann\CaptainHook\Runner;
-use SebastianFeldmann\CaptainHook\Storage\File\Json;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IOUtil;
+use CaptainHook\App\Hook\Util;
+use CaptainHook\App\Runner;
+use CaptainHook\App\Storage\File\Json;
 
 /**
  * Class Configurator
@@ -69,7 +69,7 @@ class Configurator extends Runner
      * Force mode setter
      *
      * @param  bool $force
-     * @return \SebastianFeldmann\CaptainHook\Runner\Configurator
+     * @return \CaptainHook\App\Runner\Configurator
      */
     public function force(bool $force) : Configurator
     {
@@ -81,7 +81,7 @@ class Configurator extends Runner
      * Set configuration mode
      *
      * @param  bool $extend
-     * @return \SebastianFeldmann\CaptainHook\Runner\Configurator
+     * @return \CaptainHook\App\Runner\Configurator
      */
     public function extend(bool $extend) : Configurator
     {
@@ -93,7 +93,7 @@ class Configurator extends Runner
      * Set configuration speed
      *
      * @param  bool $advanced
-     * @return \SebastianFeldmann\CaptainHook\Runner\Configurator
+     * @return \CaptainHook\App\Runner\Configurator
      */
     public function advanced(bool $advanced) : Configurator
     {
@@ -104,7 +104,7 @@ class Configurator extends Runner
     /**
      * Return config to handle
      *
-     * @return \SebastianFeldmann\CaptainHook\Config
+     * @return \CaptainHook\App\Config
      */
     public function getConfigToManipulate() : Config
     {
@@ -120,7 +120,7 @@ class Configurator extends Runner
     /**
      * Return the setup handler to ask the user questions
      *
-     * @return \SebastianFeldmann\CaptainHook\Runner\Configurator\Setup
+     * @return \CaptainHook\App\Runner\Configurator\Setup
      */
     private function getHookSetup()
     {
@@ -144,7 +144,7 @@ class Configurator extends Runner
     /**
      * Write config to project root
      *
-     * @param \SebastianFeldmann\CaptainHook\Config $config
+     * @param \CaptainHook\App\Config $config
      */
     public function writeConfig(Config $config)
     {

@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Hook\PHP\Action;
+namespace CaptainHook\App\Hook\PHP\Action;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\IO\NullIO;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO\NullIO;
 
 class TestCoverageTest extends \PHPUnit\Framework\TestCase
 {
@@ -25,7 +25,7 @@ class TestCoverageTest extends \PHPUnit\Framework\TestCase
         $standard = new TestCoverage();
         $action   = new Config\Action(
             'php',
-            '\\SebastianFeldmann\\CaptainHook\\Hook\\PHP\\Action\\TextCoverage',
+            '\\CaptainHook\\App\\Hook\\PHP\\Action\\TextCoverage',
             ['cloverXml' => CH_PATH_FILES . '/coverage/valid.xml']
         );
         $standard->execute($config, $io, $repo, $action);
@@ -46,7 +46,7 @@ class TestCoverageTest extends \PHPUnit\Framework\TestCase
         $standard = new TestCoverage();
         $action   = new Config\Action(
             'php',
-            '\\SebastianFeldmann\\CaptainHook\\Hook\\PHP\\Action\\TextCoverage',
+            '\\CaptainHook\\App\\Hook\\PHP\\Action\\TextCoverage',
             [
                 'cloverXml'   => CH_PATH_FILES . '/coverage/valid.xml',
                 'minCoverage' => 100
@@ -66,7 +66,7 @@ class TestCoverageTest extends \PHPUnit\Framework\TestCase
         $standard = new TestCoverage();
         $action   = new Config\Action(
             'php',
-            '\\SebastianFeldmann\\CaptainHook\\Hook\\PHP\\Action\\TextCoverage',
+            '\\CaptainHook\\App\\Hook\\PHP\\Action\\TextCoverage',
             ['phpUnit' => CH_PATH_FILES . '/bin/phpunit']
         );
         $standard->execute($config, $io, $repo, $action);

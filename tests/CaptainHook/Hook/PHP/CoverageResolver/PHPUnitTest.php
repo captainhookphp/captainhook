@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Hook\PHP\CoverageResolver;
+namespace CaptainHook\App\Hook\PHP\CoverageResolver;
 
 class PHPUnitTest extends \PHPUnit\Framework\TestCase
 {

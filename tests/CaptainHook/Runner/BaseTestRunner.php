@@ -7,46 +7,46 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Runner;
+namespace CaptainHook\App\Runner;
 
 class BaseTestRunner extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @return \SebastianFeldmann\CaptainHook\Console\IO\DefaultIO
+     * @return \CaptainHook\App\Console\IO\DefaultIO
      */
     public function getIOMock()
     {
-        return $this->getMockBuilder('\\SebastianFeldmann\\CaptainHook\\Console\\IO\DefaultIO')
+        return $this->getMockBuilder('\\CaptainHook\\App\\Console\\IO\DefaultIO')
                     ->disableOriginalConstructor()
                     ->getMock();
     }
 
     /**
-     * @return \SebastianFeldmann\CaptainHook\Config
+     * @return \CaptainHook\App\Config
      */
     public function getConfigMock()
     {
-        return $this->getMockBuilder('\\SebastianFeldmann\\CaptainHook\\Config')
+        return $this->getMockBuilder('\\CaptainHook\\App\\Config')
                     ->disableOriginalConstructor()
                     ->getMock();
     }
 
     /**
-     * @return \SebastianFeldmann\CaptainHook\Config\Hook
+     * @return \CaptainHook\App\Config\Hook
      */
     public function getHookConfigMock()
     {
-        return $this->getMockBuilder('\\SebastianFeldmann\\CaptainHook\\Config\\Hook')
+        return $this->getMockBuilder('\\CaptainHook\\App\\Config\\Hook')
                     ->disableOriginalConstructor()
                     ->getMock();
     }
 
     /**
-     * @return \SebastianFeldmann\CaptainHook\Config\Action
+     * @return \CaptainHook\App\Config\Action
      */
     public function getActionConfigMock()
     {
-        return $this->getMockBuilder('\\SebastianFeldmann\\CaptainHook\\Config\\Action')
+        return $this->getMockBuilder('\\CaptainHook\\App\\Config\\Action')
                     ->disableOriginalConstructor()
                     ->getMock();
     }

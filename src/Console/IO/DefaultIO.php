@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Console\IO;
+namespace CaptainHook\App\Console\IO;
 
-use SebastianFeldmann\CaptainHook\Console\IO;
-use SebastianFeldmann\CaptainHook\Console\IOUtil;
+use CaptainHook\App\Console\IO;
+use CaptainHook\App\Console\IOUtil;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;

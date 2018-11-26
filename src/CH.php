@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook;
+namespace CaptainHook\App;
 
 /**
  * Class CH
@@ -20,6 +20,6 @@ namespace SebastianFeldmann\CaptainHook;
  */
 final class CH
 {
-    const VERSION      = '2.2.0';
-    const RELEASE_DATE = '2018-11-09';
+    const VERSION      = '3.0.0';
+    const RELEASE_DATE = '2018-11-27';
 }

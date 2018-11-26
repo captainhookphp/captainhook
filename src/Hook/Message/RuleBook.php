@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Hook\Message;
+namespace CaptainHook\App\Hook\Message;
 
-use SebastianFeldmann\CaptainHook\Exception\ActionFailed;
+use CaptainHook\App\Exception\ActionFailed;
 use SebastianFeldmann\Git\CommitMessage;
 
 /**
@@ -25,15 +25,15 @@ class RuleBook
     /**
      * List of rules to check
      *
-     * @var \SebastianFeldmann\CaptainHook\Hook\Message\Rule[]
+     * @var \CaptainHook\App\Hook\Message\Rule[]
      */
     private $rules = [];
 
     /**
      * Set rules to check.
      *
-     * @param  \SebastianFeldmann\CaptainHook\Hook\Message\Rule[] $rules
-     * @return \SebastianFeldmann\CaptainHook\Hook\Message\RuleBook
+     * @param  \CaptainHook\App\Hook\Message\Rule[] $rules
+     * @return \CaptainHook\App\Hook\Message\RuleBook
      */
     public function setRules(array $rules)
     {
@@ -44,8 +44,8 @@ class RuleBook
     /**
      * Add a rule to the list.
      *
-     * @param  \SebastianFeldmann\CaptainHook\Hook\Message\Rule $rule
-     * @return \SebastianFeldmann\CaptainHook\Hook\Message\RuleBook
+     * @param  \CaptainHook\App\Hook\Message\Rule $rule
+     * @return \CaptainHook\App\Hook\Message\RuleBook
      */
     public function addRule(Rule $rule)
     {
@@ -57,7 +57,7 @@ class RuleBook
      * Validates all rules.
      *
      * @param  \SebastianFeldmann\Git\CommitMessage $msg
-     * @throws \SebastianFeldmann\CaptainHook\Exception\ActionFailed
+     * @throws \CaptainHook\App\Exception\ActionFailed
      */
     public function validate(CommitMessage $msg)
     {

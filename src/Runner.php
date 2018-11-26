@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook;
+namespace CaptainHook\App;
 
-use SebastianFeldmann\CaptainHook\Console\IO;
+use CaptainHook\App\Console\IO;
 
 /**
  * Class Runner
@@ -22,20 +22,20 @@ use SebastianFeldmann\CaptainHook\Console\IO;
 abstract class Runner
 {
     /**
-     * @var \SebastianFeldmann\CaptainHook\Console\IO
+     * @var \CaptainHook\App\Console\IO
      */
     protected $io;
 
     /**
-     * @var \SebastianFeldmann\CaptainHook\Config
+     * @var \CaptainHook\App\Config
      */
     protected $config;
 
     /**
      * Installer constructor.
      *
-     * @param \SebastianFeldmann\CaptainHook\Console\IO $io
-     * @param \SebastianFeldmann\CaptainHook\Config     $config
+     * @param \CaptainHook\App\Console\IO $io
+     * @param \CaptainHook\App\Config     $config
      */
     public function __construct(IO $io, Config $config)
     {

@@ -7,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Runner\Configurator\Setup;
+namespace CaptainHook\App\Runner\Configurator\Setup;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\IO;
-use SebastianFeldmann\CaptainHook\Console\IOUtil;
-use SebastianFeldmann\CaptainHook\Hook\Util;
-use SebastianFeldmann\CaptainHook\Runner\Configurator\Setup;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO;
+use CaptainHook\App\Console\IOUtil;
+use CaptainHook\App\Hook\Util;
+use CaptainHook\App\Runner\Configurator\Setup;
 
 /**
  * Class Guided
@@ -26,14 +26,14 @@ use SebastianFeldmann\CaptainHook\Runner\Configurator\Setup;
 abstract class Guided
 {
     /**
-     * @var \SebastianFeldmann\CaptainHook\Console\IO
+     * @var \CaptainHook\App\Console\IO
      */
     protected $io;
 
     /**
      * Guided constructor.
      *
-     * @param \SebastianFeldmann\CaptainHook\Console\IO $io
+     * @param \CaptainHook\App\Console\IO $io
      */
     public function __construct(IO $io)
     {

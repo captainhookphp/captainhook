@@ -7,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Hook\Message\Action;
+namespace CaptainHook\App\Hook\Message\Action;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\IO;
-use SebastianFeldmann\CaptainHook\Console\IOUtil;
-use SebastianFeldmann\CaptainHook\Exception\ActionFailed;
-use SebastianFeldmann\CaptainHook\Hook\Message\RuleBook;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO;
+use CaptainHook\App\Console\IOUtil;
+use CaptainHook\App\Exception\ActionFailed;
+use CaptainHook\App\Hook\Message\RuleBook;
 use SebastianFeldmann\Cli\Output\Util as OutputUtil;
 use SebastianFeldmann\Git\Repository;
 
@@ -30,10 +30,10 @@ class Beams extends Book
     /**
      * Execute the configured action.
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config         $config
-     * @param  \SebastianFeldmann\CaptainHook\Console\IO     $io
+     * @param  \CaptainHook\App\Config         $config
+     * @param  \CaptainHook\App\Console\IO     $io
      * @param  \SebastianFeldmann\Git\Repository             $repository
-     * @param  \SebastianFeldmann\CaptainHook\Config\Action  $action
+     * @param  \CaptainHook\App\Config\Action  $action
      * @throws \Exception
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
@@ -56,7 +56,7 @@ class Beams extends Book
     /**
      * Write error to stdErr.
      *
-     * @param \SebastianFeldmann\CaptainHook\Console\IO $io
+     * @param \CaptainHook\App\Console\IO $io
      * @param \SebastianFeldmann\Git\Repository         $repository
      */
     private function writeError(IO $io, Repository $repository)

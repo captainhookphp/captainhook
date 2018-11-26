@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Console\Command;
+namespace CaptainHook\App\Console\Command;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\IO;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,21 +28,21 @@ class Base extends Command
     /**
      * Input output handler.
      *
-     * @var \SebastianFeldmann\CaptainHook\Console\IO
+     * @var \CaptainHook\App\Console\IO
      */
     private $io;
 
     /**
      * CaptainHook configuration
      *
-     * @var \SebastianFeldmann\CaptainHook\Config
+     * @var \CaptainHook\App\Config
      */
     private $config;
 
     /**
      * IO setter.
      *
-     * @param \SebastianFeldmann\CaptainHook\Console\IO $io
+     * @param \CaptainHook\App\Console\IO $io
      */
     public function setIO(IO $io)
     {
@@ -54,7 +54,7 @@ class Base extends Command
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return \SebastianFeldmann\CaptainHook\Console\IO
+     * @return \CaptainHook\App\Console\IO
      */
     public function getIO(InputInterface $input, OutputInterface $output)
     {
@@ -69,7 +69,7 @@ class Base extends Command
      *
      * @param  string $path
      * @param  bool   $failIfNotFound
-     * @return \SebastianFeldmann\CaptainHook\Config
+     * @return \CaptainHook\App\Config
      */
     protected function getConfig(string $path = '', bool $failIfNotFound = false)
     {

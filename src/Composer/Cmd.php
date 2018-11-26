@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Composer;
+namespace CaptainHook\App\Composer;
 
 use Composer\Script\Event;
-use SebastianFeldmann\CaptainHook\Console\Command\Configuration;
-use SebastianFeldmann\CaptainHook\Console\Command\Install;
+use CaptainHook\App\Console\Command\Configuration;
+use CaptainHook\App\Console\Command\Install;
 use Symfony\Component\Console\Input\ArrayInput;
 
 /**
@@ -65,7 +65,7 @@ abstract class Cmd
      *
      * @param  \Composer\Script\Event $event
      * @param  string                 $config
-     * @return \SebastianFeldmann\CaptainHook\Composer\Application
+     * @return \CaptainHook\App\Composer\Application
      */
     private static function createApplication(Event $event, string $config = '') : Application
     {

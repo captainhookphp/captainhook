@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Console\Command;
+namespace CaptainHook\App\Console\Command;
 
-use SebastianFeldmann\CaptainHook\Runner;
+use CaptainHook\App\Runner;
 use SebastianFeldmann\Git\CommitMessage;
 use SebastianFeldmann\Git\Repository;
 use Symfony\Component\Console\Input\InputArgument;

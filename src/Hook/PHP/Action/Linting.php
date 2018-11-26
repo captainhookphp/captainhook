@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Hook\PHP\Action;
+namespace CaptainHook\App\Hook\PHP\Action;
 
-use SebastianFeldmann\CaptainHook\Config;
-use SebastianFeldmann\CaptainHook\Console\IO;
-use SebastianFeldmann\CaptainHook\Exception\ActionFailed;
-use SebastianFeldmann\CaptainHook\Hook\Action;
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO;
+use CaptainHook\App\Exception\ActionFailed;
+use CaptainHook\App\Hook\Action;
 use SebastianFeldmann\Cli\Processor\ProcOpen as Processor;
 use SebastianFeldmann\Git\Repository;
 
@@ -29,10 +29,10 @@ class Linting implements Action
     /**
      * Executes the action.
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config         $config
-     * @param  \SebastianFeldmann\CaptainHook\Console\IO     $io
+     * @param  \CaptainHook\App\Config         $config
+     * @param  \CaptainHook\App\Console\IO     $io
      * @param  \SebastianFeldmann\Git\Repository             $repository
-     * @param  \SebastianFeldmann\CaptainHook\Config\Action  $action
+     * @param  \CaptainHook\App\Config\Action  $action
      * @throws \Exception
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)

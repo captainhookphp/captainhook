@@ -1,9 +1,9 @@
 {
-  "name": "sebastianfeldmann/captainhook",
+  "name": "captainhook/captainhook",
   "description": "PHP git hook manager",
   "type": "library",
   "keywords": ["git", "hooks", "pre-commit", "pre-push", "commit-msg"],
-  "homepage": "https://github.com/sebastianfeldmann/captainhook",
+  "homepage": "https://github.com/captainhookphp/captainhook",
   "license": "MIT",
   "authors": [
     {
@@ -12,11 +12,11 @@
     }
   ],
   "support": {
-    "issues": "https://github.com/sebastianfeldmann/captainhook/issues"
+    "issues": "https://github.com/captainhookphp/captainhook/issues"
   },
   "autoload": {
     "psr-4": {
-      "SebastianFeldmann\\CaptainHook\\": "src/"
+      "CaptainHook\\App\\": "src/"
     }
   },
   "require": {
@@ -41,8 +41,8 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "\\SebastianFeldmann\\CaptainHook\\Composer\\Cmd::configure",
-      "\\SebastianFeldmann\\CaptainHook\\Composer\\Cmd::install"
+      "\\CaptainHook\\App\\Composer\\Cmd::configure",
+      "\\CaptainHook\\App\\Composer\\Cmd::install"
     ]
   },
   "suggest": {

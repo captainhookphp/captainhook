@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Runner\Configurator;
+namespace CaptainHook\App\Runner\Configurator;
 
-use SebastianFeldmann\CaptainHook\Config;
+use CaptainHook\App\Config;
 
 /**
  * Interface Setup
@@ -24,7 +24,7 @@ interface Setup
     /**
      * Setup hook configurations by asking some questions
      *
-     * @param  \SebastianFeldmann\CaptainHook\Config $config
+     * @param  \CaptainHook\App\Config $config
      * @return void
      */
     public function configureHooks(Config $config);

@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianFeldmann\CaptainHook\Config;
+namespace CaptainHook\App\Config;
 
 /**
  * Class Action
@@ -36,7 +36,7 @@ class Action
     /**
      * Map of options name => value
      *
-     * @var \SebastianFeldmann\CaptainHook\Config\Options
+     * @var \CaptainHook\App\Config\Options
      */
     private $options;
 
@@ -88,7 +88,7 @@ class Action
     /**
      * Return option map.
      *
-     * @return \SebastianFeldmann\CaptainHook\Config\Options
+     * @return \CaptainHook\App\Config\Options
      */
     public function getOptions() : Options
     {
