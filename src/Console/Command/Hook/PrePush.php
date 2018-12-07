@@ -10,6 +10,7 @@
 namespace CaptainHook\App\Console\Command\Hook;
 
 use CaptainHook\App\Console\Command\Hook;
+use CaptainHook\App\Hooks;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
@@ -27,7 +28,7 @@ class PrePush extends Hook
      *
      * @var string
      */
-    protected $hookName = 'pre-push';
+    protected $hookName = Hooks::PRE_PUSH;
 
     /**
      * Configure the command.

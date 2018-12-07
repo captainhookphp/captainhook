@@ -50,9 +50,10 @@ class Config
     {
         $this->path                = $path;
         $this->fileExists          = $fileExists;
-        $this->hooks['commit-msg'] = new Config\Hook();
-        $this->hooks['pre-commit'] = new Config\Hook();
-        $this->hooks['pre-push']   = new Config\Hook();
+
+        foreach (Hooks::getValidHooks() as $hook => $value) {
+            $this->hooks[$hook] = new Config\Hook();
+        }
     }
 
     /**
@@ -97,10 +98,12 @@ class Config
      */
     public function getJsonData() : array
     {
-        return [
-            'commit-msg' => $this->hooks['commit-msg']->getJsonData(),
-            'pre-commit' => $this->hooks['pre-commit']->getJsonData(),
-            'pre-push'   => $this->hooks['pre-push']->getJsonData()
-        ];
+        $return = [];
+
+        foreach (Hooks::getValidHooks() as $hook => $value) {
+            $return[$hook] = $this->hooks[$hook]->getJsonData();
+        }
+
+        return $return;
     }
 }

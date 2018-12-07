@@ -11,6 +11,7 @@ namespace CaptainHook\App\Console\Command\Hook;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\Command\Hook;
+use CaptainHook\App\Hooks;
 use SebastianFeldmann\Git;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,7 +32,7 @@ class CommitMsg extends Hook
      *
      * @var string
      */
-    protected $hookName = 'commit-msg';
+    protected $hookName = Hooks::COMMIT_MSG;
 
     /**
      * Configure the command.
