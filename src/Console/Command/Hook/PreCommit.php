@@ -10,6 +10,7 @@
 namespace CaptainHook\App\Console\Command\Hook;
 
 use CaptainHook\App\Console\Command\Hook;
+use CaptainHook\App\Hooks;
 
 /**
  * Class PreCommit
@@ -26,5 +27,5 @@ class PreCommit extends Hook
      *
      * @var string
      */
-    protected $hookName = 'pre-commit';
+    protected $hookName = Hooks::PRE_COMMIT;
 }

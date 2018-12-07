@@ -9,6 +9,8 @@
  */
 namespace CaptainHook\App\Hook;
 
+use CaptainHook\App\Hooks;
+
 /**
  * Class Util
  *
@@ -20,13 +22,6 @@ namespace CaptainHook\App\Hook;
 abstract class Util
 {
     /**
-     * All valid hooks
-     *
-     * @var array
-     */
-    private static $validHooks = ['commit-msg' => 1, 'pre-commit' => 1, 'pre-push' => 1];
-
-    /**
      * Checks if a hook name is valid.
      *
      * @param  string $hook
@@ -34,7 +29,7 @@ abstract class Util
      */
     public static function isValid(string $hook) : bool
     {
-        return isset(self::$validHooks[$hook]);
+        return isset(Hooks::getValidHooks()[$hook]);
     }
 
     /**
@@ -44,7 +39,7 @@ abstract class Util
      */
     public static function getValidHooks() : array
     {
-        return self::$validHooks;
+        return Hooks::getValidHooks();
     }
 
     /**
@@ -54,7 +49,7 @@ abstract class Util
      */
     public static function getHooks() : array
     {
-        return array_keys(self::$validHooks);
+        return array_keys(Hooks::getValidHooks());
     }
 
     /**

@@ -11,6 +11,7 @@ namespace CaptainHook\App\Runner\Configurator\Setup;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IOUtil;
+use CaptainHook\App\Hooks;
 use CaptainHook\App\Runner\Configurator\Setup;
 
 /**
@@ -31,8 +32,8 @@ class Express extends Guided implements Setup
      */
     public function configureHooks(Config $config)
     {
-        $msgHook = $config->getHookConfig('commit-msg');
-        $preHook = $config->getHookConfig('pre-commit');
+        $msgHook = $config->getHookConfig(Hooks::COMMIT_MSG);
+        $preHook = $config->getHookConfig(Hooks::PRE_COMMIT);
         $msgHook->setEnabled(true);
         $preHook->setEnabled(true);
 

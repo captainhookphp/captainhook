@@ -11,6 +11,7 @@ namespace CaptainHook\App\Console\Application;
 
 use CaptainHook\App\Hook\Util;
 use CaptainHook\App\Console\Command;
+use CaptainHook\App\Hooks;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -44,9 +45,9 @@ class Hook extends ConfigHandler
      * @var array
      */
     protected $hookCommandMap = [
-        'pre-commit' => 'PreCommit',
-        'commit-msg' => 'CommitMsg',
-        'pre-push'   => 'PrePush'
+        Hooks::PRE_COMMIT => 'PreCommit',
+        Hooks::COMMIT_MSG => 'CommitMsg',
+        Hooks::PRE_PUSH   => 'PrePush'
     ];
 
     /**
