@@ -14,7 +14,7 @@ your own PHP classes that get executed by *CaptainHook*. For more information ha
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.0-8892BF.svg)](https://php.net/)
 [![Downloads](https://img.shields.io/packagist/dt/captainhook/captainhook.svg?v1)](https://packagist.org/packages/captainhook/captainhook)
 [![License](https://poser.pugx.org/captainhook/captainhook/license.svg?v=1)](https://packagist.org/packages/captainhook/captainhook)
-[![Build Status](https://travis-ci.org/captainhookphp/captainhook.svg?branch=master)](https://travis-ci.org/captainhookphp/captainhook)
+[![Build Status](https://travis-ci.org/CaptainHookPhp/captainhook.svg?branch=master)](https://travis-ci.org/CaptainHookPhp/captainhook)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/captainhookphp/captainhook/badges/quality-score.png?b=master&v=1)](https://scrutinizer-ci.com/g/captainhookphp/captainhook/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/captainhookphp/captainhook/badges/coverage.png?b=master&v=1)](https://scrutinizer-ci.com/g/captainhookphp/captainhook/?branch=master)
 
