@@ -19,12 +19,15 @@ final class Hooks
 
     const COMMIT_MSG = 'commit-msg';
 
+    const PREPARE_COMMIT_MSG = 'prepare-commit-msg';
+
     public static function getValidHooks() : array
     {
         return [
             self::COMMIT_MSG => 1,
             self::PRE_PUSH   => 1,
             self::PRE_COMMIT => 1,
+            self::PREPARE_COMMIT_MSG => 1,
         ];
     }
 }
