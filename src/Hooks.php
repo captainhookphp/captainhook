@@ -1,16 +1,24 @@
-<?php
-
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 /**
- * Copyright Andrea Heigl <andreas@heigl.org>
+ * This file is part of CaptainHook.
  *
- * Licenses under the MIT-license. For details see the included file LICENSE.md
+ * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
-
 namespace CaptainHook\App;
 
-
+/**
+ * Class Hooks
+ *
+ * Defines the list of hooks that can be handled with captainhook and provides some name constants.
+ *
+ * @package CaptainHook
+ * @author  Andrea Heigl <andreas@heigl.org>
+ * @link    https://github.com/sebastianfeldmann/captainhook
+ * @since   Class available since Release 3.0.1
+ */
 final class Hooks
 {
     const PRE_COMMIT = 'pre-commit';
@@ -21,12 +29,17 @@ final class Hooks
 
     const PREPARE_COMMIT_MSG = 'prepare-commit-msg';
 
+    /**
+     * Returns the list of valid hooks
+     *
+     * @return array
+     */
     public static function getValidHooks() : array
     {
         return [
-            self::COMMIT_MSG => 1,
-            self::PRE_PUSH   => 1,
-            self::PRE_COMMIT => 1,
+            self::COMMIT_MSG         => 1,
+            self::PRE_PUSH           => 1,
+            self::PRE_COMMIT         => 1,
             self::PREPARE_COMMIT_MSG => 1,
         ];
     }
