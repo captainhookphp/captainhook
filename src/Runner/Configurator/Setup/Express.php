@@ -100,8 +100,9 @@ class Express extends Guided implements Setup
         if (IOUtil::answerToBool($answer)) {
             $type = 'cli';
             $call = $this->io->ask(
-                '  <info>Enter the phpunit command you want to execute.</info> '
-              . '<comment>[phpunit]</comment> ', 'phpunit');
+                '  <info>Enter the phpunit command you want to execute.</info> <comment>[phpunit]</comment> ',
+                'phpunit'
+            );
             $config->addAction(new Config\Action($type, $call));
         }
     }
@@ -123,7 +124,7 @@ class Express extends Guided implements Setup
             $type    = 'cli';
             $call    = $this->io->ask(
                 '  <info>Enter the phpcs command you want to execute.</info> '
-              . '<comment>[phpcs --standard=psr2 src]</comment> ',
+                . '<comment>[phpcs --standard=psr2 src]</comment> ',
                 'phpcs --standard=psr2 src'
             );
             $config->addAction(new Config\Action($type, $call));

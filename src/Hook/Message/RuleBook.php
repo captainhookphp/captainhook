@@ -113,7 +113,5 @@ class RuleBook
         }
 
         return implode(PHP_EOL, $lines);
-
-
     }
 }
