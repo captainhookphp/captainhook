@@ -75,6 +75,7 @@ abstract class Hook extends Base
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
      * @return void
+     * @throws \CaptainHook\App\Exception\InvalidHookName
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -96,7 +97,7 @@ abstract class Hook extends Base
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \CaptainHook\App\Config             $config
+     * @param \CaptainHook\App\Config                           $config
      * @param \SebastianFeldmann\Git\Repository                 $repository
      */
     protected function setup(InputInterface $input, OutputInterface $output, Config $config, Repository $repository)
