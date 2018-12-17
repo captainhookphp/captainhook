@@ -19,7 +19,6 @@ use CaptainHook\App\Hook\Action as ActionInterface;
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
- * @internal
  */
 class Hook extends HookHandler
 {
