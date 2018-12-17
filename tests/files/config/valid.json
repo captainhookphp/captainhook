@@ -1,4 +1,8 @@
 {
+  "prepare-commit-msg": {
+    "enabled": true,
+    "actions": []
+  },
   "commit-msg": {
     "enabled": true,
     "actions": []

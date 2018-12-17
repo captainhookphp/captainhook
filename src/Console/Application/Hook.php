@@ -45,9 +45,10 @@ class Hook extends ConfigHandler
      * @var array
      */
     protected $hookCommandMap = [
-        Hooks::PRE_COMMIT => 'PreCommit',
-        Hooks::COMMIT_MSG => 'CommitMsg',
-        Hooks::PRE_PUSH   => 'PrePush'
+        Hooks::PRE_COMMIT         => 'PreCommit',
+        Hooks::COMMIT_MSG         => 'CommitMsg',
+        Hooks::PRE_PUSH           => 'PrePush',
+        Hooks::PREPARE_COMMIT_MSG => 'PrepareCommitMsg'
     ];
 
     /**
