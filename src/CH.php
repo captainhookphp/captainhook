@@ -20,6 +20,6 @@ namespace CaptainHook\App;
  */
 final class CH
 {
-    const VERSION      = '3.0.0';
-    const RELEASE_DATE = '2018-11-27';
+    const VERSION      = '3.0.2';
+    const RELEASE_DATE = '2018-12-18';
 }
