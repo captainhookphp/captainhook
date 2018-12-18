@@ -36,21 +36,51 @@ class UtilTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Tests Util::getHookCommand
+     *
+     * @dataProvider providerValidCommands
      */
-    public function testGetHookCommandValid()
+    public function testGetHookCommandValid(string $class, string $hook)
     {
-        $this->assertEquals('CommitMsg', Util::getHookCommand('commit-msg'));
+        $this->assertEquals($class, Util::getHookCommand($hook));
         $this->assertEquals('PreCommit', Util::getHookCommand('pre-commit'));
+        $this->assertEquals('PrepareCommitMsg', Util::getHookCommand('prepare-commit-msg'));
+        $this->assertEquals('PrePush', Util::getHookCommand('pre-push'));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerValidCommands() : array
+    {
+        return [
+            ['CommitMsg', 'commit-msg'],
+            ['PreCommit', 'pre-commit'],
+            ['PrepareCommitMsg', 'prepare-commit-msg'],
+            ['PrePush', 'pre-push'],
+        ];
     }
 
     /**
      * Tests Util::getHookCommand
+     *
+     * @dataProvider providerInvalidCommands
      */
-    public function testGetHookCommandInvalid()
+    public function testGetHookCommandInvalid(string $hook)
     {
         $this->expectException(RuntimeException::class);
 
-        $this->assertEquals('CommitMsg',Util::getHookCommand(''));
+        $this->assertEquals('',Util::getHookCommand($hook));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerInvalidCommands() : array
+    {
+        return [
+            [''],
+            ['foo'],
+        ];
     }
 
     /**
