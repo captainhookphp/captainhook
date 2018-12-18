@@ -11,6 +11,7 @@ namespace CaptainHook\App\Console\Command;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Runner;
+use CaptainHook\App\Console\IO;
 use SebastianFeldmann\Git\Repository;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -104,4 +105,10 @@ abstract class Hook extends Base
     {
         // do something fooish
     }
+
+    protected function tearDown(IO $io, Config $config, Repository $repository)
+    {
+        // do some more foolish things.
+    }
+
 }
