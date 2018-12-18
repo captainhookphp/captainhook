@@ -43,7 +43,7 @@ class PrepareCommitMsg extends Hook
     private $file;
 
     /**
-     * Commit mode [null|message|template|merge|squash|commit]
+     * Commit mode, empty or [message|template|merge|squash|commit]
      *
      * @var string
      */
