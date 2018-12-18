@@ -76,9 +76,9 @@ class PrepareCommitMsg extends Hook
      */
     protected function setup(InputInterface $input, OutputInterface $output, Config $config, Repository $repository)
     {
-        $this->file       = $input->getArgument('file');
-        $this->mode       = $input->getArgument('mode');
-        $this->hash       = $input->getArgument('hash');
+        $this->file       = (string)$input->getArgument('file');
+        $this->mode       = (string)$input->getArgument('mode');
+        $this->hash       = (string)$input->getArgument('hash');
         $gitConfig        = $repository->getConfigOperator();
         $commentCharacter = $gitConfig->getSafely('core.commentchar', '#');
 
