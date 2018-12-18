@@ -9,6 +9,8 @@
  */
 namespace CaptainHook\App\Hook;
 
+use RuntimeException;
+
 class UtilTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -30,6 +32,25 @@ class UtilTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(array_key_exists('pre-commit', Util::getValidHooks()));
         $this->assertTrue(array_key_exists('pre-push', Util::getValidHooks()));
         $this->assertTrue(array_key_exists('commit-msg', Util::getValidHooks()));
+    }
+
+    /**
+     * Tests Util::getHookCommand
+     */
+    public function testGetHookCommandValid()
+    {
+        $this->assertEquals('CommitMsg', Util::getHookCommand('commit-msg'));
+        $this->assertEquals('PreCommit', Util::getHookCommand('pre-commit'));
+    }
+
+    /**
+     * Tests Util::getHookCommand
+     */
+    public function testGetHookCommandInvalid()
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->assertEquals('CommitMsg',Util::getHookCommand(''));
     }
 
     /**

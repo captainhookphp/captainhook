@@ -10,6 +10,7 @@
 namespace CaptainHook\App\Hook;
 
 use CaptainHook\App\Hooks;
+use RuntimeException;
 
 /**
  * Class Util
@@ -22,7 +23,7 @@ use CaptainHook\App\Hooks;
 abstract class Util
 {
     /**
-     * Checks if a hook name is valid.
+     * Checks if a hook name is valid
      *
      * @param  string $hook
      * @return bool
@@ -33,7 +34,7 @@ abstract class Util
     }
 
     /**
-     * Return valid hooks.
+     * Returns list of valid hooks
      *
      * @return array
      */
@@ -43,7 +44,21 @@ abstract class Util
     }
 
     /**
-     * Get a list of all hooks.
+     * Returns hooks command class
+     *
+     * @param  string $hook
+     * @return string
+     */
+    public static function getHookCommand(string $hook) : string
+    {
+        if (!self::isValid($hook)) {
+            throw new RuntimeException(sprintf('Hook \'%s\' is not supported', $hook));
+        }
+        return Hooks::getValidHooks()[$hook];
+    }
+
+    /**
+     * Get a list of all supported hooks
      *
      * @return array
      */
@@ -53,7 +68,7 @@ abstract class Util
     }
 
     /**
-     * Return action type.
+     * Return action type
      *
      * @param  string $action
      * @return string
