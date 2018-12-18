@@ -31,17 +31,17 @@ class Hook extends ConfigHandler
      *
      * @var string
      */
-    protected $repositoryPath;
+    protected $repositoryPath = '';
 
     /**
-     * Hook that gets executed.
+     * Hook that gets executed
      *
      * @var string
      */
-    protected $hookToExecute;
+    protected $hookToExecute  = '';
 
     /**
-     * Repository path setter.
+     * Repository path setter
      *
      * @param string $git
      */
@@ -51,7 +51,7 @@ class Hook extends ConfigHandler
     }
 
     /**
-     * Get the git repository root path.
+     * Get the git repository root path
      *
      * @return string
      */
@@ -64,7 +64,7 @@ class Hook extends ConfigHandler
     }
 
     /**
-     * Set the hook to execute.
+     * Set the hook to execute
      *
      * @param  string $hook
      * @return \CaptainHook\App\Console\Application\Hook
@@ -79,7 +79,7 @@ class Hook extends ConfigHandler
     }
 
     /**
-     * Execute hook.
+     * Execute hook
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
@@ -96,36 +96,17 @@ class Hook extends ConfigHandler
     }
 
     /**
-     * Create the hook command.
+     * Create the hook command
      *
      * @return \CaptainHook\App\Console\Command\Hook
      */
     private function createCommand() : Command\Hook
     {
         /* @var \CaptainHook\App\Console\Command\Hook $command */
-        $class   = '\\CaptainHook\\App\\Console\\Command\\Hook\\' . $this->getHookCommand();
+        $class   = '\\CaptainHook\\App\\Console\\Command\\Hook\\' . Util::getHookCommand($this->hookToExecute);
         $command = new $class($this->getConfigFile(), $this->getRepositoryPath());
         $command->setHelperSet($this->getHelperSet());
 
         return $command;
-    }
-
-    /**
-     * Get the command class name to execute.
-     *
-     * @return string
-     */
-    private function getHookCommand() : string
-    {
-        if (null === $this->hookToExecute) {
-            throw new RuntimeException('No hook to execute');
-        }
-
-        $validHooks = Hooks::getValidHooks();
-        if (! isset($validHooks[$this->hookToExecute])) {
-            throw new RuntimeException('No hook set to execute');
-        }
-
-        return $validHooks[$this->hookToExecute];
     }
 }
