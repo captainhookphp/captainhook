@@ -11,6 +11,7 @@ namespace CaptainHook\App\Console\Command\Hook;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\Command\Hook;
+use CaptainHook\App\Console\IO;
 use CaptainHook\App\Hooks;
 use SebastianFeldmann\Git;
 use Symfony\Component\Console\Input\InputArgument;
@@ -34,6 +35,8 @@ class PrepareCommitMsg extends Hook
      */
     protected $hookName = Hooks::PREPARE_COMMIT_MSG;
 
+    private $file;
+
     /**
      * Configure the command.
      */
@@ -54,6 +57,19 @@ class PrepareCommitMsg extends Hook
      */
     protected function setup(InputInterface $input, OutputInterface $output, Config $config, Git\Repository $repository)
     {
-        // TODO: the message preparation settings have to be stored in the repository object
+        $this->file = $input->getArgument('file');
+
+        $gitConfig        = $repository->getConfigOperator();
+        $commentCharacter = $gitConfig->getSafely('core.commentchar', '#');
+
+        $repository->setCommitMsg(Git\CommitMessage::createFromFile($this->file, $commentCharacter));
+
+        parent::setup($input, $output, $config, $repository);
     }
+
+    protected function teardown(IO $io, Config $config, Git\Repository $repository)
+    {
+        file_put_contents($this->file, $repository->getCommitMsg()->getRawContent());
+    }
+
 }
