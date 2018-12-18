@@ -12,6 +12,7 @@ namespace CaptainHook\App\Console\Application;
 use CaptainHook\App\Hook\Util;
 use CaptainHook\App\Console\Command;
 use CaptainHook\App\Hooks;
+use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -38,18 +39,6 @@ class Hook extends ConfigHandler
      * @var string
      */
     protected $hookToExecute;
-
-    /**
-     * Hook to command map
-     *
-     * @var array
-     */
-    protected $hookCommandMap = [
-        Hooks::PRE_COMMIT         => 'PreCommit',
-        Hooks::COMMIT_MSG         => 'CommitMsg',
-        Hooks::PRE_PUSH           => 'PrePush',
-        Hooks::PREPARE_COMMIT_MSG => 'PrepareCommitMsg'
-    ];
 
     /**
      * Repository path setter.
@@ -129,8 +118,14 @@ class Hook extends ConfigHandler
     private function getHookCommand() : string
     {
         if (null === $this->hookToExecute) {
-            throw new \RuntimeException('No hook to execute');
+            throw new RuntimeException('No hook to execute');
         }
-        return $this->hookCommandMap[$this->hookToExecute];
+
+        $validHooks = Hooks::getValidHooks();
+        if (! isset($validHooks[$this->hookToExecute])) {
+            throw new RuntimeException('No hook set to execute');
+        }
+
+        return $validHooks[$this->hookToExecute];
     }
 }

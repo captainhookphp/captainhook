@@ -37,10 +37,10 @@ final class Hooks
     public static function getValidHooks() : array
     {
         return [
-            self::COMMIT_MSG         => 1,
-            self::PRE_PUSH           => 1,
-            self::PRE_COMMIT         => 1,
-            self::PREPARE_COMMIT_MSG => 1,
+            self::COMMIT_MSG         => 'PreCommit',
+            self::PRE_PUSH           => 'PrePush',
+            self::PRE_COMMIT         => 'PreCommit',
+            self::PREPARE_COMMIT_MSG => 'PrepareCommitMessage',
         ];
     }
 }
