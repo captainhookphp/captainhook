@@ -12,7 +12,6 @@ namespace CaptainHook\App\Console\Application;
 use CaptainHook\App\Hook\Util;
 use CaptainHook\App\Console\Command;
 use CaptainHook\App\Hooks;
-use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -130,11 +129,7 @@ class Hook extends ConfigHandler
     private function getHookCommand() : string
     {
         if (null === $this->hookToExecute) {
-            throw new RuntimeException('No hook to execute');
-        }
-
-        if (! isset($this->hookCommandMap[$this->hookToExecute])) {
-            throw new RuntimeException('No hook set to execute');
+            throw new \RuntimeException('No hook to execute');
         }
         return $this->hookCommandMap[$this->hookToExecute];
     }
