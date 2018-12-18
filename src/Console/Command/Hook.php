@@ -11,7 +11,6 @@ namespace CaptainHook\App\Console\Command;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Runner;
-use CaptainHook\App\Console\IO;
 use SebastianFeldmann\Git\Repository;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,7 +33,7 @@ abstract class Hook extends Base
     protected $hookName;
 
     /**
-     * Path to the configuration file to use.
+     * Path to the configuration file to use
      *
      * @var string
      */
@@ -48,7 +47,7 @@ abstract class Hook extends Base
     protected $repositoryPath;
 
     /**
-     * Hook constructor.
+     * Hook constructor
      *
      * @param string $configFile
      * @param string $repositoryPath
@@ -61,7 +60,7 @@ abstract class Hook extends Base
     }
 
     /**
-     * Configure the command.
+     * Configure the command
      */
     protected function configure()
     {
@@ -71,7 +70,7 @@ abstract class Hook extends Base
     }
 
     /**
-     * Execute the command.
+     * Execute the command
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
@@ -84,17 +83,22 @@ abstract class Hook extends Base
         $config     = $this->getConfig($this->configFile, true);
         $repository = new Repository($this->repositoryPath);
 
-        // handle command specific setup
+        // handle hook specific bootstrap
+        // for example load the commit message for validation
         $this->setup($input, $output, $config, $repository);
 
-        // execute the hook
+        // execute the hook and all its actions
         $hook = new Runner\Hook($io, $config, $repository);
         $hook->setHook($this->hookName);
         $hook->run();
+
+        // handle hook specific post actions
+        // for example writing a prepared commit message to disk
+        $this->tearDown($input, $output, $config, $repository);
     }
 
     /**
-     * Setup the command.
+     * Hook specific bootstrapping
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
@@ -106,9 +110,16 @@ abstract class Hook extends Base
         // do something fooish
     }
 
-    protected function tearDown(IO $io, Config $config, Repository $repository)
+    /**
+     * Post action after all the configured actions are executed
+     *
+     * @param \Symfony\Component\Console\Input\InputInterface   $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param \CaptainHook\App\Config                           $config
+     * @param \SebastianFeldmann\Git\Repository                 $repository
+     */
+    protected function tearDown(InputInterface $input, OutputInterface $output, Config $config, Repository $repository)
     {
         // do some more foolish things.
     }
-
 }

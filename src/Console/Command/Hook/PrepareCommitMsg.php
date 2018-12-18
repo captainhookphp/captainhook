@@ -11,9 +11,9 @@ namespace CaptainHook\App\Console\Command\Hook;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\Command\Hook;
-use CaptainHook\App\Console\IO;
 use CaptainHook\App\Hooks;
-use SebastianFeldmann\Git;
+use SebastianFeldmann\Git\CommitMessage;
+use SebastianFeldmann\Git\Repository;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -35,10 +35,29 @@ class PrepareCommitMsg extends Hook
      */
     protected $hookName = Hooks::PREPARE_COMMIT_MSG;
 
+    /**
+     * File to read/write the commit message from/to
+     *
+     * @var string
+     */
     private $file;
 
     /**
-     * Configure the command.
+     * Commit mode [null|message|template|merge|squash|commit]
+     *
+     * @var string
+     */
+    private $mode;
+
+    /**
+     * Commit hash if mode is commit during -c or --amend
+     *
+     * @var string
+     */
+    private $hash;
+
+    /**
+     * Configure the command
      */
     protected function configure()
     {
@@ -48,28 +67,36 @@ class PrepareCommitMsg extends Hook
         $this->addArgument('hash', InputArgument::OPTIONAL, 'Given commit hash');
     }
     /**
-     * Read the commit message from file.
+     * Read the commit message from file
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      * @param \CaptainHook\App\Config                           $config
      * @param \SebastianFeldmann\Git\Repository                 $repository
      */
-    protected function setup(InputInterface $input, OutputInterface $output, Config $config, Git\Repository $repository)
+    protected function setup(InputInterface $input, OutputInterface $output, Config $config, Repository $repository)
     {
-        $this->file = $input->getArgument('file');
-
+        $this->file       = $input->getArgument('file');
+        $this->mode       = $input->getArgument('mode');
+        $this->hash       = $input->getArgument('hash');
         $gitConfig        = $repository->getConfigOperator();
         $commentCharacter = $gitConfig->getSafely('core.commentchar', '#');
 
-        $repository->setCommitMsg(Git\CommitMessage::createFromFile($this->file, $commentCharacter));
+        $repository->setCommitMsg(CommitMessage::createFromFile($this->file, $commentCharacter));
 
         parent::setup($input, $output, $config, $repository);
     }
 
-    protected function teardown(IO $io, Config $config, Git\Repository $repository)
+    /**
+     * Post action after all the configured actions are executed
+     *
+     * @param \Symfony\Component\Console\Input\InputInterface   $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param \CaptainHook\App\Config                           $config
+     * @param \SebastianFeldmann\Git\Repository                 $repository
+     */
+    protected function tearDown(InputInterface $input, OutputInterface $output, Config $config, Repository $repository)
     {
         file_put_contents($this->file, $repository->getCommitMsg()->getRawContent());
     }
-
 }
