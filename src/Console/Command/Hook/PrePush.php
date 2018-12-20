@@ -28,7 +28,7 @@ class PrePush extends Hook
      *
      * @var string
      */
-    protected $hookName = Hooks::PRE_PUSH;
+    protected $name = Hooks::PRE_PUSH;
 
     /**
      * Configure the command.

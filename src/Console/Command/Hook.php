@@ -26,11 +26,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 abstract class Hook extends Base
 {
     /**
-     * Hook to execute
+     * Hook name [pre-commit|pre-push|...]
      *
      * @var string
      */
-    protected $hookName;
+    protected $name;
 
     /**
      * Path to the configuration file to use
@@ -64,9 +64,9 @@ abstract class Hook extends Base
      */
     protected function configure()
     {
-        $this->setName($this->hookName)
-             ->setDescription('Run git ' . $this->hookName . ' hook.')
-             ->setHelp('This command executes the ' . $this->hookName . ' hook.');
+        $this->setName($this->name)
+             ->setDescription('Run git ' . $this->name . ' hook.')
+             ->setHelp('This command executes the ' . $this->name . ' hook.');
     }
 
     /**
@@ -85,7 +85,7 @@ abstract class Hook extends Base
         $arguments  = new Config\Options($input->getArguments());
 
         /** @var \CaptainHook\App\Runner\Hook $hook */
-        $class = '\\CaptainHook\\App\\Runner\\Hook\\' . Util::getHookCommand($this->hookName);
+        $class = '\\CaptainHook\\App\\Runner\\Hook\\' . Util::getHookCommand($this->name);
         $hook  = new $class($io, $config, $repository, $arguments);
         $hook->run();
     }

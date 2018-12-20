@@ -28,7 +28,7 @@ class CommitMsg extends Hook
      *
      * @var string
      */
-    protected $hookName = Hooks::COMMIT_MSG;
+    protected $name = Hooks::COMMIT_MSG;
 
     /**
      * Configure the command.
