@@ -11,8 +11,12 @@ namespace CaptainHook\App\Hook\PHP\Action;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
+use CaptainHook\App\Hook\PHP\Action\Linter;
+use SebastianFeldmann\Git\Operator\Index;
+use SebastianFeldmann\Git\Repository;
+use PHPUnit\Framework\TestCase;
 
-class LintingTest extends \PHPUnit\Framework\TestCase
+class LintingTest extends TestCase
 {
     /**
      * Tests Linter::execute
@@ -28,7 +32,7 @@ class LintingTest extends \PHPUnit\Framework\TestCase
         $repo->expects($this->once())->method('getIndexOperator')->willReturn($resolver);
 
 
-        $action   = new Config\Action('php', '\\CaptainHook\\App\\Hook\\PHP\\Action\\Linter', []);
+        $action   = new Config\Action('php', Linter::class, []);
         $standard = new Linting();
         $standard->execute($config, $io, $repo, $action);
     }
@@ -49,7 +53,7 @@ class LintingTest extends \PHPUnit\Framework\TestCase
         $repo->expects($this->once())->method('getIndexOperator')->willReturn($resolver);
 
 
-        $action   = new Config\Action('php', '\\CaptainHook\\App\\Hook\\PHP\\Action\\Linter', []);
+        $action   = new Config\Action('php', Linter::class, []);
         $standard = new Linting();
         $standard->execute($config, $io, $repo, $action);
     }
@@ -59,7 +63,7 @@ class LintingTest extends \PHPUnit\Framework\TestCase
      */
     private function getRepoMock()
     {
-        return $this->getMockBuilder('\\SebastianFeldmann\\Git\\Repository')
+        return $this->getMockBuilder(Repository::class)
                     ->disableOriginalConstructor()
                     ->getMock();
     }
@@ -69,7 +73,7 @@ class LintingTest extends \PHPUnit\Framework\TestCase
      */
     private function getIndexOperatorMock()
     {
-        return $this->getMockBuilder('\\SebastianFeldmann\\Git\\Operator\\Index')
+        return $this->getMockBuilder(Index::class)
                     ->disableOriginalConstructor()
                     ->getMock();
     }

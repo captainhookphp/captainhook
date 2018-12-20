@@ -10,8 +10,9 @@
 namespace CaptainHook\App\Hook\Message\Rule;
 
 use SebastianFeldmann\Git\CommitMessage;
+use PHPUnit\Framework\TestCase;
 
-class LimitSubjectLengthTest extends \PHPUnit\Framework\TestCase
+class LimitSubjectLengthTest extends TestCase
 {
     /**
      * Tests LimitSubjectLength::pass
@@ -20,6 +21,7 @@ class LimitSubjectLengthTest extends \PHPUnit\Framework\TestCase
     {
         $msg  = new CommitMessage('Foo Bar');
         $rule = new LimitSubjectLength(10);
+
         $this->assertTrue($rule->pass($msg));
     }
 
@@ -30,6 +32,7 @@ class LimitSubjectLengthTest extends \PHPUnit\Framework\TestCase
     {
         $msg  = new CommitMessage('Foo Bar Baz Fiz Baz');
         $rule = new LimitSubjectLength(10);
+
         $this->assertFalse($rule->pass($msg));
     }
 }

@@ -11,8 +11,11 @@ namespace CaptainHook\App\Hook\PHP\Action;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
+use CaptainHook\App\Hook\PHP\Action\TextCoverage;
+use SebastianFeldmann\Git\Repository;
+use PHPUnit\Framework\TestCase;
 
-class TestCoverageTest extends \PHPUnit\Framework\TestCase
+class TestCoverageTest extends TestCase
 {
     /**
      * Tests TestCoverage::execute
@@ -25,7 +28,7 @@ class TestCoverageTest extends \PHPUnit\Framework\TestCase
         $standard = new TestCoverage();
         $action   = new Config\Action(
             'php',
-            '\\CaptainHook\\App\\Hook\\PHP\\Action\\TextCoverage',
+            TextCoverage::class,
             ['cloverXml' => CH_PATH_FILES . '/coverage/valid.xml']
         );
         $standard->execute($config, $io, $repo, $action);
@@ -46,7 +49,7 @@ class TestCoverageTest extends \PHPUnit\Framework\TestCase
         $standard = new TestCoverage();
         $action   = new Config\Action(
             'php',
-            '\\CaptainHook\\App\\Hook\\PHP\\Action\\TextCoverage',
+            TextCoverage::class,
             [
                 'cloverXml'   => CH_PATH_FILES . '/coverage/valid.xml',
                 'minCoverage' => 100
@@ -66,7 +69,7 @@ class TestCoverageTest extends \PHPUnit\Framework\TestCase
         $standard = new TestCoverage();
         $action   = new Config\Action(
             'php',
-            '\\CaptainHook\\App\\Hook\\PHP\\Action\\TextCoverage',
+            TextCoverage::class,
             ['phpUnit' => CH_PATH_FILES . '/bin/phpunit']
         );
         $standard->execute($config, $io, $repo, $action);
@@ -79,7 +82,7 @@ class TestCoverageTest extends \PHPUnit\Framework\TestCase
      */
     private function getRepoMock()
     {
-        return $this->getMockBuilder('\\SebastianFeldmann\\Git\\Repository')
+        return $this->getMockBuilder(Repository::class)
                     ->disableOriginalConstructor()
                     ->getMock();
     }

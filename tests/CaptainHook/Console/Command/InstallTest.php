@@ -13,8 +13,9 @@ use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Git\DummyRepo;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
+use PHPUnit\Framework\TestCase;
 
-class InstallTest extends \PHPUnit\Framework\TestCase
+class InstallTest extends TestCase
 {
     /**
      * Tests Install::run
@@ -80,11 +81,7 @@ class InstallTest extends \PHPUnit\Framework\TestCase
         $install->run($input, $output);
 
         // make sure the file is installed
-        $this->assertTrue(
-            file_exists(
-                $repo->getGitDir() . DIRECTORY_SEPARATOR . 'hooks' . DIRECTORY_SEPARATOR . 'pre-commit'
-            )
-        );
+        $this->assertFileExists($repo->getGitDir() . DIRECTORY_SEPARATOR . 'hooks' . DIRECTORY_SEPARATOR . 'pre-commit');
 
         $repo->cleanup();
     }

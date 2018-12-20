@@ -9,7 +9,9 @@
  */
 namespace CaptainHook\App\Storage\File;
 
-class JsonTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class JsonTest extends TestCase
 {
     /**
      * Tests Json::read

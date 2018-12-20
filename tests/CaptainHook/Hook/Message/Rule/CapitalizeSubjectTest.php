@@ -10,8 +10,9 @@
 namespace CaptainHook\App\Hook\Message\Rule;
 
 use SebastianFeldmann\Git\CommitMessage;
+use PHPUnit\Framework\TestCase;
 
-class CapitalizeSubjectTest extends \PHPUnit\Framework\TestCase
+class CapitalizeSubjectTest extends TestCase
 {
     /**
      * Tests CapitalizeSubject::pass
@@ -20,6 +21,7 @@ class CapitalizeSubjectTest extends \PHPUnit\Framework\TestCase
     {
         $msg  = new CommitMessage('Foo');
         $rule = new CapitalizeSubject();
+
         $this->assertTrue($rule->pass($msg));
     }
 
@@ -30,6 +32,7 @@ class CapitalizeSubjectTest extends \PHPUnit\Framework\TestCase
     {
         $msg  = new CommitMessage('foo');
         $rule = new CapitalizeSubject();
+
         $this->assertFalse($rule->pass($msg));
     }
 
@@ -40,6 +43,7 @@ class CapitalizeSubjectTest extends \PHPUnit\Framework\TestCase
     {
         $msg  = new CommitMessage('');
         $rule = new CapitalizeSubject();
+
         $this->assertFalse($rule->pass($msg));
     }
 }

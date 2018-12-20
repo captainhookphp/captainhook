@@ -9,7 +9,9 @@
  */
 namespace CaptainHook\App\Config;
 
-class ActionTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class ActionTest extends TestCase
 {
     /**
      * Tests Action::getType
@@ -27,6 +29,7 @@ class ActionTest extends \PHPUnit\Framework\TestCase
     public function testGetAction()
     {
         $action = new Action('php', '\\Foo\\Bar');
+
         $this->assertEquals('\\Foo\\Bar', $action->getAction());
     }
 
@@ -36,6 +39,7 @@ class ActionTest extends \PHPUnit\Framework\TestCase
     public function testGetOptions()
     {
         $action = new Action('php', '\\Foo\\Bar');
+
         $this->assertEquals([], $action->getOptions()->getAll());
     }
 
@@ -47,7 +51,7 @@ class ActionTest extends \PHPUnit\Framework\TestCase
         $action = new Action('php', '\\Foo\\Bar');
         $config = $action->getJsonData();
 
-        $this->assertEquals(0, count($config['options']));
+        $this->assertCount(0, $config['options']);
     }
 
     /**

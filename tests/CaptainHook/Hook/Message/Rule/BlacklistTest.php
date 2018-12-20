@@ -10,8 +10,9 @@
 namespace CaptainHook\App\Hook\Message\Rule;
 
 use SebastianFeldmann\Git\CommitMessage;
+use PHPUnit\Framework\TestCase;
 
-class BlacklistTest extends \PHPUnit\Framework\TestCase
+class BlacklistTest extends TestCase
 {
     /**
      * Tests Blacklist::pass

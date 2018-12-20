@@ -9,14 +9,21 @@
  */
 namespace CaptainHook\App\Runner;
 
-class BaseTestRunner extends \PHPUnit\Framework\TestCase
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO\DefaultIO;
+use CaptainHook\App\Config\Hook;
+use CaptainHook\App\Config\Action;
+use SebastianFeldmann\Git\Repository;
+use PHPUnit\Framework\TestCase;
+
+class BaseTestRunner extends TestCase
 {
     /**
      * @return \CaptainHook\App\Console\IO\DefaultIO
      */
     public function getIOMock()
     {
-        return $this->getMockBuilder('\\CaptainHook\\App\\Console\\IO\DefaultIO')
+        return $this->getMockBuilder(DefaultIO::class)
                     ->disableOriginalConstructor()
                     ->getMock();
     }
@@ -26,7 +33,7 @@ class BaseTestRunner extends \PHPUnit\Framework\TestCase
      */
     public function getConfigMock()
     {
-        return $this->getMockBuilder('\\CaptainHook\\App\\Config')
+        return $this->getMockBuilder(Config::class)
                     ->disableOriginalConstructor()
                     ->getMock();
     }
@@ -36,7 +43,7 @@ class BaseTestRunner extends \PHPUnit\Framework\TestCase
      */
     public function getHookConfigMock()
     {
-        return $this->getMockBuilder('\\CaptainHook\\App\\Config\\Hook')
+        return $this->getMockBuilder(Hook::class)
                     ->disableOriginalConstructor()
                     ->getMock();
     }
@@ -46,7 +53,7 @@ class BaseTestRunner extends \PHPUnit\Framework\TestCase
      */
     public function getActionConfigMock()
     {
-        return $this->getMockBuilder('\\CaptainHook\\App\\Config\\Action')
+        return $this->getMockBuilder(Action::class)
                     ->disableOriginalConstructor()
                     ->getMock();
     }
@@ -56,7 +63,7 @@ class BaseTestRunner extends \PHPUnit\Framework\TestCase
      */
     public function getRepositoryMock()
     {
-        return $this->getMockBuilder('\\SebastianFeldmann\\Git\\Repository')
+        return $this->getMockBuilder(Repository::class)
                     ->disableOriginalConstructor()
                     ->getMock();
     }

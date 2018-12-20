@@ -10,23 +10,25 @@
 namespace CaptainHook\App\Composer;
 
 use Composer\IO\NullIO;
+use Composer\Script\Event;
 use CaptainHook\App\Git\DummyRepo;
+use PHPUnit\Framework\TestCase;
 
-class CmdTest extends \PHPUnit\Framework\TestCase
+class CmdTest extends TestCase
 {
     /**
      * Tests Cmd::configure
      */
     public function testConfigure()
     {
-        $event = $this->getMockBuilder('\\Composer\\Script\\Event')
+        $event = $this->getMockBuilder(Event::class)
                       ->disableOriginalConstructor()
                       ->getMock();
         $event->expects($this->once())->method('getIO')->willReturn(new NullIO());
         $config = sys_get_temp_dir() . DIRECTORY_SEPARATOR . md5(__FILE__);
         Cmd::configure($event, $config);
 
-        $this->assertTrue(file_exists($config));
+        $this->assertFileExists($config);
 
         unlink($config);
     }
@@ -51,9 +53,9 @@ class CmdTest extends \PHPUnit\Framework\TestCase
 
         Cmd::install($event);
 
-        $this->assertTrue(file_exists($repo->getHookDir() . DIRECTORY_SEPARATOR . 'pre-commit'), 'pre-commit');
-        $this->assertTrue(file_exists($repo->getHookDir() . DIRECTORY_SEPARATOR . 'pre-push'), 'pre-push');
-        $this->assertTrue(file_exists($repo->getHookDir() . DIRECTORY_SEPARATOR . 'commit-msg'), 'commit-msg');
+        $this->assertFileExists($repo->getHookDir() . DIRECTORY_SEPARATOR . 'pre-commit', 'pre-commit');
+        $this->assertFileExists($repo->getHookDir() . DIRECTORY_SEPARATOR . 'pre-push', 'pre-push');
+        $this->assertFileExists($repo->getHookDir() . DIRECTORY_SEPARATOR . 'commit-msg', 'commit-msg');
 
         $repo->cleanup();
         chdir($old);

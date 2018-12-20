@@ -9,7 +9,9 @@
  */
 namespace CaptainHook\App\Storage;
 
-class UtilTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class UtilTest extends TestCase
 {
     /**
      * Tests Util::pathToArray
@@ -18,7 +20,7 @@ class UtilTest extends \PHPUnit\Framework\TestCase
     {
         $path = Util::pathToArray('/foo/bar/baz');
 
-        $this->assertEquals(3, count($path));
+        $this->assertCount(3, $path);
         $this->assertEquals('bar', $path[1]);
     }
 
@@ -29,7 +31,7 @@ class UtilTest extends \PHPUnit\Framework\TestCase
     {
         $path = Util::pathToArray('foo/bar/baz');
 
-        $this->assertEquals(3, count($path));
+        $this->assertCount(3, $path);
         $this->assertEquals('bar', $path[1]);
     }
 

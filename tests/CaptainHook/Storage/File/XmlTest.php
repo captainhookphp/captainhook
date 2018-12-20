@@ -9,7 +9,9 @@
  */
 namespace CaptainHook\App\Storage\File;
 
-class XmlTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class XmlTest extends TestCase
 {
     /**
      * Tests Xml::read

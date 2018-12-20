@@ -9,7 +9,9 @@
  */
 namespace CaptainHook\App\Hook\PHP\CoverageResolver;
 
-class PHPUnitTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class PHPUnitTest extends TestCase
 {
     /**
      * Tests PHPUnit::getCoverage

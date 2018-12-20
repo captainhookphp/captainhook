@@ -9,7 +9,9 @@
  */
 namespace CaptainHook\App\Hook;
 
-class TemplateTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class TemplateTest extends TestCase
 {
     /**
      * Tests Template::getCode
@@ -18,11 +20,11 @@ class TemplateTest extends \PHPUnit\Framework\TestCase
     {
         $code = Template::getCode('commit-msg', '/foo/bar', '/foo/bar/vendor', '/foo/bar/captainhook.json');
 
-        $this->assertTrue(strpos($code, '#!/usr/bin/env php') !== false);
-        $this->assertTrue(strpos($code, '$app->setHook(\'commit-msg\');') !== false);
-        $this->assertTrue(strpos($code, '$app->run();') !== false);
-        $this->assertTrue(strpos($code, '__DIR__ . \'/../../captain') !== false);
-        $this->assertTrue(strpos($code, '__DIR__ . \'/../../vendor') !== false);
+        $this->assertContains('#!/usr/bin/env php', $code);
+        $this->assertContains('$app->setHook(\'commit-msg\');', $code);
+        $this->assertContains('$app->run();', $code);
+        $this->assertContains('__DIR__ . \'/../../captain', $code);
+        $this->assertContains('__DIR__ . \'/../../vendor', $code);
     }
 
     /**
@@ -31,15 +33,19 @@ class TemplateTest extends \PHPUnit\Framework\TestCase
     public function testGetTplTargetPath()
     {
         $path = Template::getTplTargetPath('/foo/bar', '/foo/bar/baz/vendor');
+
         $this->assertEquals('__DIR__ . \'/../../baz/vendor', $path);
 
         $path = Template::getTplTargetPath('/foo/bar', '/foo/bar/vendor');
+
         $this->assertEquals('__DIR__ . \'/../../vendor', $path);
 
         $path = Template::getTplTargetPath('/foo/bar', '/foo/bar/captainhook.json');
+
         $this->assertEquals('__DIR__ . \'/../../captainhook.json', $path);
 
         $path = Template::getTplTargetPath('/foo/bar', '/fiz/baz/captainhook.json');
+
         $this->assertEquals('\'/fiz/baz/captainhook.json', $path);
     }
 }

@@ -10,8 +10,9 @@
 namespace CaptainHook\App\Hook\Message\Rule;
 
 use SebastianFeldmann\Git\CommitMessage;
+use PHPUnit\Framework\TestCase;
 
-class NoPeriodOnSubjectEndTest extends \PHPUnit\Framework\TestCase
+class NoPeriodOnSubjectEndTest extends TestCase
 {
     /**
      * Tests NoPeriodOnSubjectEnd::pass
@@ -20,6 +21,7 @@ class NoPeriodOnSubjectEndTest extends \PHPUnit\Framework\TestCase
     {
         $msg  = new CommitMessage('Foo bar');
         $rule = new NoPeriodOnSubjectEnd();
+
         $this->assertTrue($rule->pass($msg));
     }
 
@@ -30,6 +32,7 @@ class NoPeriodOnSubjectEndTest extends \PHPUnit\Framework\TestCase
     {
         $msg  = new CommitMessage('Foo bar.');
         $rule = new NoPeriodOnSubjectEnd();
+
         $this->assertFalse($rule->pass($msg));
     }
 }

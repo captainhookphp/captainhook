@@ -13,8 +13,9 @@ use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Git\DummyRepo;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
+use PHPUnit\Framework\TestCase;
 
-class RunTest extends \PHPUnit\Framework\TestCase
+class RunTest extends TestCase
 {
     /**
      * Tests Run::run

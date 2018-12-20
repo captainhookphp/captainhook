@@ -9,7 +9,9 @@
  */
 namespace CaptainHook\App\Config;
 
-class HookTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class HookTest extends TestCase
 {
     /**
      * Tests Hook::__construct
@@ -19,8 +21,8 @@ class HookTest extends \PHPUnit\Framework\TestCase
         $hook   = new Hook();
         $config = $hook->getJsonData();
 
-        $this->assertEquals(false, $hook->isEnabled());
-        $this->assertEquals(false, $config['enabled']);
+        $this->assertFalse($hook->isEnabled());
+        $this->assertFalse($config['enabled']);
     }
 
     /**
@@ -32,8 +34,8 @@ class HookTest extends \PHPUnit\Framework\TestCase
         $hook->setEnabled(true);
         $config = $hook->getJsonData();
 
-        $this->assertEquals(true, $hook->isEnabled());
-        $this->assertEquals(true, $config['enabled']);
+        $this->assertTrue($hook->isEnabled());
+        $this->assertTrue($config['enabled']);
     }
 
     /**
@@ -44,8 +46,8 @@ class HookTest extends \PHPUnit\Framework\TestCase
         $hook   = new Hook();
         $config = $hook->getJsonData();
 
-        $this->assertEquals(0, count($hook->getActions()));
-        $this->assertEquals(0, count($config['actions']));
+        $this->assertCount(0, $hook->getActions());
+        $this->assertCount(0, $config['actions']);
     }
 
     /**
@@ -57,7 +59,7 @@ class HookTest extends \PHPUnit\Framework\TestCase
         $hook->addAction(new Action('php', '\\Foo\\Bar'));
         $config = $hook->getJsonData();
 
-        $this->assertEquals(1, count($hook->getActions()));
-        $this->assertEquals(1, count($config['actions']));
+        $this->assertCount(1, $hook->getActions());
+        $this->assertCount(1, $config['actions']);
     }
 }

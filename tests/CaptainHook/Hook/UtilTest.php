@@ -10,8 +10,9 @@
 namespace CaptainHook\App\Hook;
 
 use RuntimeException;
+use PHPUnit\Framework\TestCase;
 
-class UtilTest extends \PHPUnit\Framework\TestCase
+class UtilTest extends TestCase
 {
     /**
      * Tests Util::isValid
@@ -29,9 +30,9 @@ class UtilTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetValidHooks()
     {
-        $this->assertTrue(array_key_exists('pre-commit', Util::getValidHooks()));
-        $this->assertTrue(array_key_exists('pre-push', Util::getValidHooks()));
-        $this->assertTrue(array_key_exists('commit-msg', Util::getValidHooks()));
+        $this->assertArrayHasKey('pre-commit', Util::getValidHooks());
+        $this->assertArrayHasKey('pre-push', Util::getValidHooks());
+        $this->assertArrayHasKey('commit-msg', Util::getValidHooks());
     }
 
     /**
@@ -88,9 +89,9 @@ class UtilTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetHooks()
     {
-        $this->assertTrue(in_array('pre-commit', Util::getHooks()));
-        $this->assertTrue(in_array('pre-push', Util::getHooks()));
-        $this->assertTrue(in_array('commit-msg', Util::getHooks()));
+        $this->assertContains('pre-commit', Util::getHooks());
+        $this->assertContains('pre-push', Util::getHooks());
+        $this->assertContains('commit-msg', Util::getHooks());
     }
 
     /**

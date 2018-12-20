@@ -2,7 +2,10 @@
 
 namespace CaptainHook\App\Console\IO;
 
-class ComposerIOTest extends \PHPUnit\Framework\TestCase
+use Composer\IO\IOInterface;
+use PHPUnit\Framework\TestCase;
+
+class ComposerIOTest extends TestCase
 {
     /**
      * @var \CaptainHook\App\Console\IO;
@@ -14,7 +17,7 @@ class ComposerIOTest extends \PHPUnit\Framework\TestCase
      */
     public function setUp()
     {
-        $mock = $this->getMockBuilder('\\Composer\\IO\\IOInterface')
+        $mock = $this->getMockBuilder(IOInterface::class)
                      ->disableOriginalConstructor()
                      ->getMock();
         $mock->method('isInteractive')->willReturn(false);
@@ -74,6 +77,7 @@ class ComposerIOTest extends \PHPUnit\Framework\TestCase
     public function testWrite()
     {
         $this->io->write('foo');
+
         $this->assertTrue(true);
     }
 
@@ -83,6 +87,7 @@ class ComposerIOTest extends \PHPUnit\Framework\TestCase
     public function testWriteError()
     {
         $this->io->writeError('foo');
+
         $this->assertTrue(true);
 
     }

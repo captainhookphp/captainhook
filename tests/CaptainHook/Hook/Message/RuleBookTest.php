@@ -13,8 +13,9 @@ use CaptainHook\App\Hook\Message\Rule\CapitalizeSubject;
 use CaptainHook\App\Hook\Message\Rule\MsgNotEmpty;
 use CaptainHook\App\Hook\Message\Rule\UseImperativeMood;
 use SebastianFeldmann\Git\CommitMessage;
+use PHPUnit\Framework\TestCase;
 
-class RuleBookTest extends \PHPUnit\Framework\TestCase
+class RuleBookTest extends TestCase
 {
     /**
      * Tests RuleBook::validate

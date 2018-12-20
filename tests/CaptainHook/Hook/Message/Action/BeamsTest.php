@@ -14,8 +14,9 @@ use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Git\DummyRepo;
 use SebastianFeldmann\Git\CommitMessage;
 use SebastianFeldmann\Git\Repository;
+use PHPUnit\Framework\TestCase;
 
-class BeamsTest extends \PHPUnit\Framework\TestCase
+class BeamsTest extends TestCase
 {
     /**
      * @var \CaptainHook\App\Git\DummyRepo
@@ -46,7 +47,7 @@ class BeamsTest extends \PHPUnit\Framework\TestCase
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action('php', '\\CaptainHook\\App\\Hook\\Message\\Action\\Beams');
+        $action = new Config\Action('php', Beams::class);
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
@@ -65,7 +66,7 @@ class BeamsTest extends \PHPUnit\Framework\TestCase
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action('php', '\\CaptainHook\\App\\Hook\\Message\\Action\\Beams');
+        $action = new Config\Action('php', Beams::class);
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('foo bar baz.'));
 

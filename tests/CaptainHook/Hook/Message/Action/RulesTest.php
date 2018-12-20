@@ -10,12 +10,16 @@
 namespace CaptainHook\App\Hook\Message\Action;
 
 use CaptainHook\App\Config;
+use CaptainHook\App\Foo;
 use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Git\DummyRepo;
+use CaptainHook\App\Hook\Message\Rule\CapitalizeSubject;
+use CaptainHook\App\Hook\Message\Validator;
 use SebastianFeldmann\Git\CommitMessage;
 use SebastianFeldmann\Git\Repository;
+use PHPUnit\Framework\TestCase;
 
-class RulesTest extends \PHPUnit\Framework\TestCase
+class RulesTest extends TestCase
 {
     /**
      * @var \CaptainHook\App\Git\DummyRepo
@@ -46,7 +50,7 @@ class RulesTest extends \PHPUnit\Framework\TestCase
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action('php', '\\CaptainHook\\App\\Hook\\Message\\Action\\Rules');
+        $action = new Config\Action('php', Rules::class);
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
@@ -68,8 +72,8 @@ class RulesTest extends \PHPUnit\Framework\TestCase
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
             'php',
-            '\\CaptainHook\\App\\Hook\\Message\\Action\\Rules',
-            ['\\CaptainHook\\App\\Foo']
+            Rules::class,
+            [Foo::class]
         );
 
         $standard = new Rules();
@@ -87,8 +91,8 @@ class RulesTest extends \PHPUnit\Framework\TestCase
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
             'php',
-            '\\CaptainHook\\App\\Hook\\Message\\Action\\Rules',
-            ['\\CaptainHook\\App\\Hook\\Message\\Validator']
+            Rules::class,
+            [Validator::class]
         );
         $repo   = new Repository($this->repo->getPath());
 
@@ -105,8 +109,8 @@ class RulesTest extends \PHPUnit\Framework\TestCase
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
             'php',
-            '\\CaptainHook\\App\\Hook\\Message\\Action\\Rules',
-            ['\\CaptainHook\\App\\Hook\\Message\\Rule\\CapitalizeSubject']
+            Rules::class,
+            [CapitalizeSubject::class]
         );
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
@@ -128,8 +132,8 @@ class RulesTest extends \PHPUnit\Framework\TestCase
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
             'php',
-            '\\CaptainHook\\App\\Hook\\Message\\Action\\Rules',
-            ['\\CaptainHook\\App\\Hook\\Message\\Action\\NoRule']
+            Rules::class,
+            [NoRule::class]
         );
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));

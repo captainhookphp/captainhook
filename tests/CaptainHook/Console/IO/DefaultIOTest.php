@@ -10,15 +10,20 @@
 namespace CaptainHook\App\Console\IO;
 
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Helper\QuestionHelper;
+use PHPUnit\Framework\TestCase;
 
-class DefaultIOTest extends \PHPUnit\Framework\TestCase
+class DefaultIOTest extends TestCase
 {
     /**
      * @return \Symfony\Component\Console\Input\InputInterface
      */
     public function getInputMock()
     {
-        return $this->getMockBuilder('\\Symfony\\Component\\Console\\Input\\InputInterface')
+        return $this->getMockBuilder(InputInterface::class)
                     ->disableOriginalConstructor()
                     ->getMock();
     }
@@ -28,7 +33,7 @@ class DefaultIOTest extends \PHPUnit\Framework\TestCase
      */
     public function getConsoleOutputMock()
     {
-        return $this->getMockBuilder('\\Symfony\\Component\\Console\\Output\\ConsoleOutputInterface')
+        return $this->getMockBuilder(ConsoleOutputInterface::class)
                     ->disableOriginalConstructor()
                     ->getMock();
     }
@@ -38,7 +43,7 @@ class DefaultIOTest extends \PHPUnit\Framework\TestCase
      */
     public function getOutputMock()
     {
-        return $this->getMockBuilder('\\Symfony\\Component\\Console\\Output\\OutputInterface')
+        return $this->getMockBuilder(OutputInterface::class)
                      ->disableOriginalConstructor()
                      ->getMock();
     }
@@ -48,7 +53,7 @@ class DefaultIOTest extends \PHPUnit\Framework\TestCase
      */
     public function getHelperSetMock()
     {
-        return $this->getMockBuilder('\\Symfony\\Component\\Console\\Helper\\HelperSet')
+        return $this->getMockBuilder(HelperSet::class)
                     ->disableOriginalConstructor()
                     ->getMock();
     }
@@ -58,7 +63,7 @@ class DefaultIOTest extends \PHPUnit\Framework\TestCase
      */
     public function getQuestionHelper()
     {
-        return $this->getMockBuilder('\\Symfony\\Component\\Console\\Helper\\QuestionHelper')
+        return $this->getMockBuilder(QuestionHelper::class)
                     ->disableOriginalConstructor()
                     ->getMock();
     }
