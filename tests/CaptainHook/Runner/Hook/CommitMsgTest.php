@@ -19,9 +19,14 @@ class CommitMsgTest extends BaseTestRunner
      */
     public function testRunHookEnabled()
     {
-        $io           = $this->getIOMock();
-        $config       = $this->getConfigMock();
-        $repo         = $this->getRepositoryMock();
+        $io       = $this->getIOMock();
+        $config   = $this->getConfigMock();
+        $configOp = $this->createMock(\SebastianFeldmann\Git\Operator\Config::class);
+        $configOp->expects($this->once())->method('getSafely')->willReturn('#');
+
+        $repo = $this->getRepositoryMock();
+        $repo->expects($this->once())->method('getConfigOperator')->willReturn($configOp);
+
         $hookConfig   = $this->getHookConfigMock();
         $actionConfig = $this->getActionConfigMock();
         $actionConfig->method('getType')->willReturn('cli');

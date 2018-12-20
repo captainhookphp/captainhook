@@ -35,10 +35,10 @@ class CommitMsg extends Hook
      */
     public function beforeHook()
     {
-        $commentChar   = $this->repository->getConfigOperator()->getSafely('core.commentchar', '#');
-        $commitMessage = Git\CommitMessage::createFromFile((string)$this->arguments->get('file'), $commentChar);
+        $commentChar = $this->repository->getConfigOperator()->getSafely('core.commentchar', '#');
+        $commitMsg   = Git\CommitMessage::createFromFile($this->arguments->get('file', ''), $commentChar);
 
-        $this->repository->setCommitMsg($commitMessage);
+        $this->repository->setCommitMsg($commitMsg);
 
         parent::beforeHook();
     }
