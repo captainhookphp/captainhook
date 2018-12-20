@@ -28,7 +28,7 @@ class CommitMsg extends Hook
      *
      * @var string
      */
-    protected $hookName = Hooks::COMMIT_MSG;
+    protected $hook = Hooks::COMMIT_MSG;
 
     /**
      * Read the commit message from file.

@@ -31,7 +31,7 @@ abstract class Hook extends RepositoryAware
      *
      * @var string
      */
-    protected $hookName;
+    protected $hook;
 
     /**
      * List of original hook arguments
@@ -103,15 +103,15 @@ abstract class Hook extends RepositoryAware
     {
         $this->beforeHook();
         /** @var \CaptainHook\App\Config\Hook $hookConfig */
-        $hookConfig = $this->config->getHookConfig($this->hookName);
+        $hookConfig = $this->config->getHookConfig($this->hook);
 
         // if hook is not enabled in captainhook.json skip action execution
         if (!$hookConfig->isEnabled()) {
-            $this->io->write('<info>skip hook:</info> <comment>' . $this->hookName . '</comment>');
+            $this->io->write('<info>skip hook:</info> <comment>' . $this->hook . '</comment>');
             return;
         }
 
-        $this->io->write(['', '<info>execute hook:</info> <comment>' . $this->hookName . '</comment>']);
+        $this->io->write(['', '<info>execute hook:</info> <comment>' . $this->hook . '</comment>']);
         foreach ($hookConfig->getActions() as $action) {
             $this->executeAction($action);
         }
