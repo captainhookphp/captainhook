@@ -9,60 +9,142 @@
  */
 namespace CaptainHook\App\Runner;
 
+use CaptainHook\App\Config;
+use CaptainHook\App\Config\Options;
+use CaptainHook\App\Console\IO;
 use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Hook\Action as ActionInterface;
+use SebastianFeldmann\Git\Repository;
 
 /**
- *  Hook
+ * Hook
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
-class Hook extends HookHandler
+abstract class Hook extends RepositoryAware
 {
     /**
-     * Hook config
+     * Hook that should be handled.
      *
-     * @var \CaptainHook\App\Config\Hook
+     * @var string
      */
-    private $hookConfig;
+    protected $hookName;
 
     /**
-     * Execute installation.
+     * List of original hook arguments
+     *
+     * @var \CaptainHook\App\Config\Options
      */
-    public function run()
-    {
-        /** @var \CaptainHook\App\Config\Hook $hookConfig */
-        $this->hookConfig = $this->config->getHookConfig($this->hookToHandle);
+    protected $arguments;
 
-        // execute hooks only if hook is enabled in captainhook.json
-        if ($this->hookConfig->isEnabled()) {
-            $this->io->write(['', '<info>execute hook:</info> <comment>' . $this->hookToHandle . '</comment>']);
-            foreach ($this->getActionsToRun() as $action) {
-                $this->io->write([
-                    '',
-                    'Action: <comment>' . $action->getAction() . '</comment>',
-                    IOUtil::getLineSeparator()
-                ]);
-                $runner = $this->getActionRunner($action->getType());
-                $runner->execute($this->config, $this->io, $this->repository, $action);
-                $this->io->write([str_repeat('-', 80)]);
-            }
-        } else {
-            $this->io->write('<info>skip hook:</info> <comment>' . $this->hookToHandle . '</comment>');
-        }
+    /**
+     * HookHandler constructor.
+     *
+     * @param \CaptainHook\App\Console\IO       $io
+     * @param \CaptainHook\App\Config           $config
+     * @param \SebastianFeldmann\Git\Repository $repository
+     * @param \CaptainHook\App\Config\Options   $arguments
+     */
+    public function __construct(IO $io, Config $config, Repository $repository, Options $arguments)
+    {
+        parent::__construct($io, $config, $repository);
+        $this->arguments = $arguments;
     }
 
     /**
-     * Return list of actions to run.
+     * Execute stuff before executing any actions
      *
-     * @return \CaptainHook\App\Config\Action[]
+     * @return void
      */
-    protected function getActionsToRun() : array
+    public function beforeHook()
     {
-        return $this->hookConfig->getActions();
+        // empty template method
+    }
+
+    /**
+     * Execute stuff before every actions
+     *
+     * @return void
+     */
+    public function beforeAction()
+    {
+        // empty template method
+    }
+
+    /**
+     * Execute stuff after every actions
+     *
+     * @return void
+     */
+    public function afterAction()
+    {
+        //empty template method
+    }
+
+    /**
+     * Execute stuff after all actions
+     *
+     * @return void
+     */
+    public function afterHook()
+    {
+        // empty template method
+    }
+
+    /**
+     * Execute installation.
+     *
+     * @throws \Exception
+     */
+    public function run()
+    {
+        $this->beforeHook();
+        /** @var \CaptainHook\App\Config\Hook $hookConfig */
+        $hookConfig = $this->config->getHookConfig($this->hookName);
+
+        // if hook is not enabled in captainhook.json skip action execution
+        if (!$hookConfig->isEnabled()) {
+            $this->io->write('<info>skip hook:</info> <comment>' . $this->hookName . '</comment>');
+            return;
+        }
+
+        $this->io->write(['', '<info>execute hook:</info> <comment>' . $this->hookName . '</comment>']);
+        foreach ($hookConfig->getActions() as $action) {
+            $this->executeAction($action);
+        }
+        $this->afterHook();
+    }
+
+    /**
+     * Executes a configured hook action
+     *
+     * @param  \CaptainHook\App\Config\Action $action
+     * @throws \Exception
+     */
+    protected function executeAction(Config\Action $action)
+    {
+        $this->io->write([
+            '',
+            'Action: <comment>' . $action->getAction() . '</comment>',
+            IOUtil::getLineSeparator()
+        ]);
+
+        $type   = $action->getType();
+        $runner = self::getActionRunner($type);
+
+        $this->beforeAction();
+        $runner->execute($this->config, $this->io, $this->repository, $action);
+
+        // execute post handling only for php actions
+        // cli actions should do post actions them self
+        if ($type === 'php') {
+            $this->afterAction();
+        }
+
+        $this->io->write([str_repeat('-', 80)]);
     }
 
     /**
@@ -72,7 +154,7 @@ class Hook extends HookHandler
      * @return \CaptainHook\App\Hook\Action
      * @throws \RuntimeException
      */
-    public function getActionRunner($type) : ActionInterface
+    public static function getActionRunner($type) : ActionInterface
     {
         switch ($type) {
             case 'php':

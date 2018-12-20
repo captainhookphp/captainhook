@@ -9,7 +9,8 @@
  */
 namespace CaptainHook\App\Console\Command;
 
-use CaptainHook\App\Runner;
+use CaptainHook\App\Config;
+use CaptainHook\App\Hook\Util;
 use SebastianFeldmann\Git\CommitMessage;
 use SebastianFeldmann\Git\Repository;
 use Symfony\Component\Console\Input\InputArgument;
@@ -55,16 +56,15 @@ class Run extends Base
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io      = $this->getIO($input, $output);
-        $config  = $this->getConfig($input->getOption('configuration'), true);
-        $repo    = new Repository();
-        $msgFile = $input->getOption('message');
-        if (!empty($msgFile)) {
-            $repo->setCommitMsg(CommitMessage::createFromFile($msgFile));
-        }
+        $io     = $this->getIO($input, $output);
+        $config = $this->getConfig($input->getOption('configuration'), true);
+        $repo   = new Repository();
+        $args   = new Config\Options(['file' => $input->getOption('message')]);
+        $name   = $input->getArgument('hook');
+        $class  = '\\CaptainHook\\App\\Runner\\Hook\\' . Util::getHookCommand($name);
 
-        $hook = new Runner\Hook($io, $config, $repo);
-        $hook->setHook($input->getArgument('hook'));
+        /** @var \CaptainHook\App\Runner\Hook $hook */
+        $hook = new $class($io, $config, $repo, $args);
         $hook->run();
     }
 }

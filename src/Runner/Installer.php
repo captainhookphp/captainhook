@@ -10,9 +10,10 @@
 namespace CaptainHook\App\Runner;
 
 use CaptainHook\App\Console\IOUtil;
+use CaptainHook\App\Exception;
 use CaptainHook\App\Hook\Template;
-use CaptainHook\App\Storage\File;
 use CaptainHook\App\Hook\Util;
+use CaptainHook\App\Storage\File;
 
 /**
  * Class Installer
@@ -21,9 +22,8 @@ use CaptainHook\App\Hook\Util;
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
- * @internal
  */
-class Installer extends HookHandler
+class Installer extends RepositoryAware
 {
     /**
      * Overwrite hook
@@ -33,12 +33,35 @@ class Installer extends HookHandler
     private $force;
 
     /**
+     * Hook that should be handled.
+     *
+     * @var string
+     */
+    protected $hookToHandle;
+
+    /**
      * @param  bool $force
      * @return \CaptainHook\App\Runner\Installer
      */
     public function setForce(bool $force)
     {
         $this->force = $force;
+        return $this;
+    }
+
+    /**
+     * Hook setter.
+     *
+     * @param  string $hook
+     * @return \CaptainHook\App\Runner\RepositoryAware
+     * @throws \CaptainHook\App\Exception\InvalidHookName
+     */
+    public function setHook(string $hook) : RepositoryAware
+    {
+        if (!empty($hook) && !Util::isValid($hook)) {
+            throw new Exception\InvalidHookName('Invalid hook name \'' . $hook . '\'');
+        }
+        $this->hookToHandle = $hook;
         return $this;
     }
 

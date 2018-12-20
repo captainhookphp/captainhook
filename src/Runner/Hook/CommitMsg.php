@@ -7,35 +7,39 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Console\Command\Hook;
+namespace CaptainHook\App\Runner\Hook;
 
-use CaptainHook\App\Console\Command\Hook;
 use CaptainHook\App\Hooks;
-use Symfony\Component\Console\Input\InputArgument;
+use CaptainHook\App\Runner\Hook;
+use SebastianFeldmann\Git;
 
 /**
- * Class CommitMessage
+ * CommitMsg
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/sebastianfeldmann/captainhook
- * @since   Class available since Release 0.9.0
+ * @since   Class available since Release 3.1.0
  */
 class CommitMsg extends Hook
 {
     /**
-     * Hook to execute.
+     * Hook to execute
      *
      * @var string
      */
     protected $hookName = Hooks::COMMIT_MSG;
 
     /**
-     * Configure the command.
+     * Read the commit message from file.
      */
-    protected function configure()
+    public function beforeHook()
     {
-        parent::configure();
-        $this->addArgument('file', InputArgument::REQUIRED, 'File containing the commit message.');
+        $commentChar   = $this->repository->getConfigOperator()->getSafely('core.commentchar', '#');
+        $commitMessage = Git\CommitMessage::createFromFile((string)$this->arguments->get('file'), $commentChar);
+
+        $this->repository->setCommitMsg($commitMessage);
+
+        parent::beforeHook();
     }
 }

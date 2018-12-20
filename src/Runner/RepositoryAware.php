@@ -11,8 +11,6 @@ namespace CaptainHook\App\Runner;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
-use CaptainHook\App\Exception;
-use CaptainHook\App\Hook\Util as HookUtil;
 use CaptainHook\App\Runner;
 use SebastianFeldmann\Git\Repository;
 
@@ -24,7 +22,7 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
-abstract class HookHandler extends Runner
+abstract class RepositoryAware extends Runner
 {
     /**
      * Git repository.
@@ -32,13 +30,6 @@ abstract class HookHandler extends Runner
      * @var \SebastianFeldmann\Git\Repository
      */
     protected $repository;
-
-    /**
-     * Hook that should be handled.
-     *
-     * @var string
-     */
-    protected $hookToHandle;
 
     /**
      * HookHandler constructor.
@@ -51,20 +42,5 @@ abstract class HookHandler extends Runner
     {
         parent::__construct($io, $config);
         $this->repository = $repository;
-    }
-    /**
-     * Hook setter.
-     *
-     * @param  string $hook
-     * @return \CaptainHook\App\Runner\HookHandler
-     * @throws \CaptainHook\App\Exception\InvalidHookName
-     */
-    public function setHook(string $hook) : HookHandler
-    {
-        if (!empty($hook) && !HookUtil::isValid($hook)) {
-            throw new Exception\InvalidHookName('Invalid hook name \'' . $hook . '\'');
-        }
-        $this->hookToHandle = $hook;
-        return $this;
     }
 }
