@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>CaptainHook Documentation</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/layout.css" rel="stylesheet">
+    <link href="css/darcula.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="https://github.com/captainhookphp/captainhook">CaptainHook</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="install.html">Install</a></li>
+            <li><a href="configure.html">Configure</a></li>
+            <li class="active"><a href="hooks.html">Hooks</a></li>
+            <li><a href="extend.html">Extend</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container" role="main">
+
+      <h1>Hooks</h1>
+
+      <ul>
+        <li><a href="#pre-commit">pre-commit</a></li>
+        <li><a href="#prepare-commit-msg">prepare-commit-msg</a></li>
+        <li><a href="#commit-msg">commit-message</a></li>
+        <li><a href="#pre-push">pre-push</a></li>
+      </ul>
+
+      <h3 id="pre-commit">pre-commit</h3>
+      <p>
+        This hook will run before git executes a commit. Failing during this commit aborts the current commit.
+        You can run unit tests, style checker or linter during this hook to make sure nobody commits 'broken' code.
+      </p>
+      <pre><code class="javascript">"pre-commit": {
+  "enabled": true,
+  "actions": [
+    {
+      "action": "vendor/bin/phpunit"
+    }
+  ]
+}</code></pre>
+
+      <h3 id="prepare-commit-msg">prepare-commit-msg</h3>
+      <p>
+        This hook will run before git executes a commit. Failing during this commit aborts the current commit.
+        Here you get access to the provided git commit message to change it.
+        This hook will not be skipped with <em>--no-verify</em> so you should not use it for validation.
+      </p>
+      <p>
+        This can be used if you want to include details into your commit messages that you can gather automatically.
+      </p>
+
+      <pre><code class="javascript">"prepare-commit-msg": {
+  "enabled": true,
+  "actions": [
+    {
+      "action": "\\MyName\\GitHook\\PrepareCommitMessage",
+      "options": []
+    }
+  ]
+}</code></pre>
+      <h4>Custom Implementation</h4>
+
+      <pre><code class="php">&lt;?php
+namespace MyName\GitHook;
+
+use CaptainHook\App\Config\Action;
+use CaptainHook\App\Console\IO;
+use CaptainHook\App\Hook\Action as HookAction;
+use SebastianFeldmann\Git\CommitMessage;
+use SebastianFeldmann\Git\Repository as Repo;
+
+class PrepareCommitMessage implements HookAction
+{
+    /**
+     * Execute the action.
+     *
+     * @param  \CaptainHook\App\Config           $config
+     * @param  \CaptainHook\App\Console\IO       $io
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @param  \CaptainHook\App\Config\Action    $action
+     * @throws \Exception
+     */
+    public function execute(Config $config, IO $io, Repo $repository, Action $action)
+    {
+        $message         = $repository->getCommitMsg();
+        $text            = 'This will be your commit message';
+        $preparedMessage = new CommitMessage($text, $oldMessage->getCommentCharacter());
+        $repository->setCommitMsg($preparedMessage);
+    }
+}</code></pre>
+
+      <h3 id="commit-msg">commit-msg</h3>
+      <p>
+        This hook will run before git executes a commit. Failing during this commit aborts the current commit.
+        Here you get access to the provided git commit message to validate it.
+      </p>
+      <pre><code class="javascript">"commit-msg": {
+  "enabled": true,
+  "actions": [
+    {
+      "action": "\\MyName\\GitHook\\NoEmptyCommitMessages",
+      "options": []
+    }
+  ]
+}</code></pre>
+      <h4>Custom Implementation</h4>
+
+      <pre><code class="php">&lt;?php
+namespace MyName\GitHook;
+
+use CaptainHook\App\Config\Action;
+use CaptainHook\App\Console\IO;
+use CaptainHook\App\Hook\Action as HookAction;
+use SebastianFeldmann\Git\Repository as Repo;
+
+class NoEmptyCommitMessages implements HookAction
+{
+    /**
+     * Execute the action.
+     *
+     * @param  \CaptainHook\App\Config           $config
+     * @param  \CaptainHook\App\Console\IO       $io
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @param  \CaptainHook\App\Config\Action    $action
+     * @throws \Exception
+     */
+    public function execute(Config $config, IO $io, Repo $repository, Action $action)
+    {
+        $message = $repository->getCommitMsg();
+        if (empty($message->getContent()) {
+            throw new \Exception('Empty commit message is not allowed');
+        }
+    }
+}</code></pre>
+
+      <h3 id="pre-push">pre-push</h3>
+      <p>
+        This hook will run before git executes a push. Failing during this commit aborts the current push.
+        You can run unit tests, style checker or linter during this hook to make sure nobody pushes 'broken' code.
+      </p>
+      <pre><code class="javascript">"pre-push": {
+  "enabled": true,
+  "actions": [
+    {
+      "action": "vendor/bin/phpunit"
+    }
+  ]
+}</code></pre>
+
+
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          Found a typo or a bug?
+          Please open an <a href="https://github.com/captainhookphp/captainhook/issues">issue</a>
+          or pull request for the <em>gp-pages</em>
+          branch of <a href="https://github.com/captainhookphp/captainhook/tree/gh-pages">CaptainHook</a>
+        </p>
+        <p>
+          &copy; <a href="https://github.com/sebastianfeldmann">Sebastian Feldmann</a>
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>
