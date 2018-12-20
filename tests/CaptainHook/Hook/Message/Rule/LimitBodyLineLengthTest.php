@@ -10,8 +10,9 @@
 namespace CaptainHook\App\Hook\Message\Rule;
 
 use SebastianFeldmann\Git\CommitMessage;
+use PHPUnit\Framework\TestCase;
 
-class LimitBodyLineLengthTest extends \PHPUnit\Framework\TestCase
+class LimitBodyLineLengthTest extends TestCase
 {
     /**
      * Tests LimitBodyLineLength::pass
@@ -20,6 +21,7 @@ class LimitBodyLineLengthTest extends \PHPUnit\Framework\TestCase
     {
         $msg  = new CommitMessage('Foo' . PHP_EOL . PHP_EOL . 'Bar');
         $rule = new LimitBodyLineLength(10);
+
         $this->assertTrue($rule->pass($msg));
     }
 
@@ -30,6 +32,7 @@ class LimitBodyLineLengthTest extends \PHPUnit\Framework\TestCase
     {
         $msg  = new CommitMessage('Foo' . PHP_EOL . PHP_EOL . 'Bar Baz Fiz Baz');
         $rule = new LimitBodyLineLength(10);
+
         $this->assertFalse($rule->pass($msg));
     }
 
@@ -40,6 +43,7 @@ class LimitBodyLineLengthTest extends \PHPUnit\Framework\TestCase
     {
         $msg  = new CommitMessage('Foo' . PHP_EOL . PHP_EOL . 'Fooish' . PHP_EOL . 'Bar Baz Fiz Baz');
         $rule = new LimitBodyLineLength(10);
+
         $this->assertFalse($rule->pass($msg));
     }
 }

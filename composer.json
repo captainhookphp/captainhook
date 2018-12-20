@@ -19,6 +19,11 @@
       "CaptainHook\\App\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "CaptainHook\\App\\": "tests/CaptainHook/"
+    }
+  },
   "require": {
     "php": ">=7.0.0",
     "ext-json": "*",

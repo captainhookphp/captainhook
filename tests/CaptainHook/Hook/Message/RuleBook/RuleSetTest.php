@@ -10,8 +10,9 @@
 namespace CaptainHook\App\Hook\Message\RuleBook;
 
 use SebastianFeldmann\Git\CommitMessage;
+use PHPUnit\Framework\TestCase;
 
-class RuleSetTest extends \PHPUnit\Framework\TestCase
+class RuleSetTest extends TestCase
 {
     /**
      * Tests RuleSet::beams
@@ -21,7 +22,7 @@ class RuleSetTest extends \PHPUnit\Framework\TestCase
         $msg   = new CommitMessage('Foo bar baz' . PHP_EOL . PHP_EOL . 'This is a longer body line.');
         $rules = RuleSet::beams();
 
-        $this->assertEquals(6, count($rules));
+        $this->assertCount(6, $rules);
 
         foreach ($rules as $rule) {
             $this->assertTrue($rule->pass($msg));

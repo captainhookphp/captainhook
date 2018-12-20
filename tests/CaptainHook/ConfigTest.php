@@ -9,7 +9,10 @@
  */
 namespace CaptainHook\App;
 
-class ConfigTest extends \PHPUnit\Framework\TestCase
+use CaptainHook\App\Config\Hook;
+use PHPUnit\Framework\TestCase;
+
+class ConfigTest extends TestCase
 {
     /**
      * Tests Config::__construct
@@ -18,9 +21,9 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     {
         $config = new Config('./no-config.json');
 
-        $this->assertTrue($config->getHookConfig('commit-msg') instanceof Config\Hook);
-        $this->assertTrue($config->getHookConfig('pre-commit') instanceof Config\Hook);
-        $this->assertTrue($config->getHookConfig('pre-push') instanceof Config\Hook);
+        $this->assertInstanceOf(Hook::class, $config->getHookConfig('commit-msg'));
+        $this->assertInstanceOf(Hook::class, $config->getHookConfig('pre-commit'));
+        $this->assertInstanceOf(Hook::class, $config->getHookConfig('pre-push'));
 
         $this->assertFalse($config->isLoadedFromFile());
     }
@@ -66,9 +69,9 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $config = new Config('./no-config.json');
         $json   = $config->getJsonData();
 
-        $this->assertTrue(is_array($json));
-        $this->assertTrue(is_array($json['pre-commit']));
-        $this->assertTrue(is_array($json['commit-msg']));
-        $this->assertTrue(is_array($json['pre-push']));
+        $this->assertInternalType('array', $json);
+        $this->assertInternalType('array', $json['pre-commit']);
+        $this->assertInternalType('array', $json['commit-msg']);
+        $this->assertInternalType('array', $json['pre-push']);
     }
 }

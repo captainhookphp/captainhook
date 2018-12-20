@@ -9,7 +9,10 @@
  */
 namespace CaptainHook\App\Config;
 
-class FactoryTest extends \PHPUnit\Framework\TestCase
+use CaptainHook\App\Config;
+use PHPUnit\Framework\TestCase;
+
+class FactoryTest extends TestCase
 {
     /**
      * Tests Factory::create
@@ -18,8 +21,8 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
     {
         $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid.json'));
 
-        $this->assertTrue($config instanceof \CaptainHook\App\Config);
+        $this->assertInstanceOf(Config::class, $config);
         $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
-        $this->assertEquals(1, count($config->getHookConfig('pre-commit')->getActions()));
+        $this->assertCount(1, $config->getHookConfig('pre-commit')->getActions());
     }
 }

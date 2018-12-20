@@ -9,6 +9,9 @@
  */
 namespace CaptainHook\App\Runner;
 
+use CaptainHook\App\Runner\Action\PHP;
+use CaptainHook\App\Runner\Action\Cli;
+
 class HookTest extends BaseTestRunner
 {
     /**
@@ -79,8 +82,8 @@ class HookTest extends BaseTestRunner
         $php    = $hook->getActionRunner('php');
         $cli    = $hook->getActionRunner('cli');
 
-        $this->assertTrue(is_a($php, '\\CaptainHook\\App\\Runner\\Action\\PHP'));
-        $this->assertTrue(is_a($cli, '\\CaptainHook\\App\\Runner\\Action\\Cli'));
+        $this->assertTrue(is_a($php, PHP::class));
+        $this->assertTrue(is_a($cli, Cli::class));
     }
 
     /**

@@ -2,7 +2,9 @@
 
 namespace CaptainHook\App\Console\IO;
 
-class NullIOTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class NullIOTest extends TestCase
 {
     /**
      * Tests NullIO::isInteractive

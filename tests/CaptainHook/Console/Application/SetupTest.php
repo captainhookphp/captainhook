@@ -11,8 +11,9 @@ namespace CaptainHook\App\Console\Application;
 
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
+use PHPUnit\Framework\TestCase;
 
-class SetupTest extends \PHPUnit\Framework\TestCase
+class SetupTest extends TestCase
 {
     public function testRun()
     {

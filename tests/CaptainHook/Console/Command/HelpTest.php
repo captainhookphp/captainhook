@@ -13,8 +13,9 @@ use CaptainHook\App\Console\Application\Setup;
 use CaptainHook\App\Console\IO\DefaultIO;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use PHPUnit\Framework\TestCase;
 
-class HelpTest extends \PHPUnit\Framework\TestCase
+class HelpTest extends TestCase
 {
     /**
      * Tests Help::run
@@ -32,7 +33,7 @@ class HelpTest extends \PHPUnit\Framework\TestCase
 
         $logs = $output->fetch();
 
-        $this->assertTrue(strpos($logs, 'help') > 0);
+        $this->assertContains('help', $logs);
     }
 
     /**
@@ -52,8 +53,8 @@ class HelpTest extends \PHPUnit\Framework\TestCase
 
         $logs = $output->fetch();
 
-        $this->assertTrue(strpos($logs, '-e') > 0);
-        $this->assertTrue(strpos($logs, '-f') > 0);
-        $this->assertTrue(strpos($logs, '-c') > 0);
+        $this->assertContains('-e', $logs);
+        $this->assertContains('-f', $logs);
+        $this->assertContains('-c', $logs);
     }
 }

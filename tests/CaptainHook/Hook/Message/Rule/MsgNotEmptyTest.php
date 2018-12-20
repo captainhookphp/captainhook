@@ -10,8 +10,9 @@
 namespace CaptainHook\App\Hook\Message\Rule;
 
 use SebastianFeldmann\Git\CommitMessage;
+use PHPUnit\Framework\TestCase;
 
-class MsgNotEmptyTest extends \PHPUnit\Framework\TestCase
+class MsgNotEmptyTest extends TestCase
 {
     /**
      * Tests MsgNotEmpty::pass
@@ -20,6 +21,7 @@ class MsgNotEmptyTest extends \PHPUnit\Framework\TestCase
     {
         $msg  = new CommitMessage('Foo bar');
         $rule = new MsgNotEmpty();
+
         $this->assertTrue($rule->pass($msg));
     }
 
@@ -30,6 +32,7 @@ class MsgNotEmptyTest extends \PHPUnit\Framework\TestCase
     {
         $msg  = new CommitMessage('');
         $rule = new MsgNotEmpty();
+
         $this->assertFalse($rule->pass($msg));
     }
 }

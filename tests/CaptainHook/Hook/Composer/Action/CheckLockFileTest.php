@@ -14,8 +14,9 @@ use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Git\CommitMessage;
 use CaptainHook\App\Git\DummyRepo;
 use SebastianFeldmann\Git\Repository;
+use PHPUnit\Framework\TestCase;
 
-class CheckLockFileTest extends \PHPUnit\Framework\TestCase
+class CheckLockFileTest extends TestCase
 {
     /**
      * @var \CaptainHook\App\Git\DummyRepo
@@ -49,7 +50,7 @@ class CheckLockFileTest extends \PHPUnit\Framework\TestCase
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
             'php',
-            '\\CaptainHook\\App\\Hook\\Composer\\Action\\CheckLockFile',
+            CheckLockFile::class,
             ['path' => CH_PATH_FILES . '/composer/valid']
         );
         $standard = new CheckLockFile();
@@ -70,7 +71,7 @@ class CheckLockFileTest extends \PHPUnit\Framework\TestCase
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
             'php',
-            '\\CaptainHook\\App\\Hook\\Composer\\Action\\CheckLockFile',
+            CheckLockFile::class,
             ['path' => CH_PATH_FILES . '/composer/invalid-hash']
         );
 
@@ -91,7 +92,7 @@ class CheckLockFileTest extends \PHPUnit\Framework\TestCase
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
             'php',
-            '\\CaptainHook\\App\\Hook\\Composer\\Action\\CheckLockFile',
+            CheckLockFile::class,
             ['path' => CH_PATH_FILES . '/composer/no-hash']
         );
 
@@ -111,7 +112,7 @@ class CheckLockFileTest extends \PHPUnit\Framework\TestCase
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
             'php',
-            '\\CaptainHook\\App\\Hook\\Composer\\Action\\CheckLockFile',
+            CheckLockFile::class,
             ['path' => CH_PATH_FILES . '/composer/not-there']
         );
         $standard = new CheckLockFile();

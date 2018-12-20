@@ -9,7 +9,9 @@
  */
 namespace CaptainHook\App\Storage;
 
-class FileTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class FileTest extends TestCase
 {
     /**
      * Tests File::getPath
@@ -17,6 +19,7 @@ class FileTest extends \PHPUnit\Framework\TestCase
     public function testGetPath()
     {
         $file = new File(__FILE__);
+
         $this->assertEquals(__FILE__, $file->getPath());
     }
 
@@ -28,7 +31,7 @@ class FileTest extends \PHPUnit\Framework\TestCase
         $file    = new File(__FILE__);
         $content = $file->read();
 
-        $this->assertTrue((bool)strstr($content, '<?php'));
+        $this->assertContains('<?php', $content);
     }
 
     /**

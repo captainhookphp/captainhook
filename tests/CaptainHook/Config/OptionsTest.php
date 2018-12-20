@@ -9,7 +9,9 @@
  */
 namespace CaptainHook\App\Config;
 
-class OptionsTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class OptionsTest extends TestCase
 {
     /**
      * Tests Options::get
@@ -17,6 +19,7 @@ class OptionsTest extends \PHPUnit\Framework\TestCase
     public function testGet()
     {
         $options = new Options(['foo' => 'bar']);
+
         $this->assertEquals('bar', $options->get('foo'));
     }
 
@@ -26,6 +29,7 @@ class OptionsTest extends \PHPUnit\Framework\TestCase
     public function testGetAll()
     {
         $options = new Options(['foo']);
+
         $this->assertEquals(['foo'], $options->getAll());
     }
 }

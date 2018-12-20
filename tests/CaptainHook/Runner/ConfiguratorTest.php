@@ -47,7 +47,7 @@ class ConfiguratorTest extends BaseTestRunner
                ->advanced(true)
                ->run();
 
-        $this->assertTrue(file_exists($path));
+        $this->assertFileExists($path);
         unlink($path);
     }
 }

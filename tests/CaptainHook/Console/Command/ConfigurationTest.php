@@ -13,8 +13,9 @@ use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Git\DummyRepo;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
+use PHPUnit\Framework\TestCase;
 
-class ConfigurationTest extends \PHPUnit\Framework\TestCase
+class ConfigurationTest extends TestCase
 {
     /**
      * Tests Configure::run
@@ -29,7 +30,7 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
         $configure->setIO(new NullIO());
         $configure->run($input, $output);
 
-        $this->assertTrue(file_exists($config));
+        $this->assertFileExists($config);
 
         unlink($config);
     }

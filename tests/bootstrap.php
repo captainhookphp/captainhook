@@ -11,5 +11,3 @@
 define('CH_PATH_FILES', realpath(__DIR__ . '/files'));
 
 require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/CaptainHook/Git/DummyRepo.php';
-require __DIR__ . '/CaptainHook/Runner/BaseTestRunner.php';

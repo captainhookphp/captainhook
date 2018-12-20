@@ -9,7 +9,9 @@
  */
 namespace CaptainHook\App\Config;
 
-class UtilTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class UtilTest extends TestCase
 {
     /**
      * Tests Util::validateJsonConfiguration
@@ -68,6 +70,7 @@ class UtilTest extends \PHPUnit\Framework\TestCase
                 ]
             ]
         );
+
         $this->assertTrue(true);
     }
 
@@ -105,6 +108,7 @@ class UtilTest extends \PHPUnit\Framework\TestCase
                 ]
             ]
         );
+
         $this->assertTrue(true);
     }
 }

@@ -9,7 +9,9 @@
  */
 namespace CaptainHook\App\Console;
 
-class IOUtilTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class IOUtilTest extends TestCase
 {
     /**
      * Tests IOUtil::answerToBool

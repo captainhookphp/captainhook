@@ -9,7 +9,9 @@
  */
 namespace CaptainHook\App\Hook\PHP\CoverageResolver;
 
-class CloverXMLTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class CloverXMLTest extends TestCase
 {
     /**
      * Tests CloverXML::getCoverage

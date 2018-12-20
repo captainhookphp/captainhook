@@ -12,10 +12,14 @@ namespace CaptainHook\App\Hook\Message\Action;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Git\DummyRepo;
+use CaptainHook\App\Hook\Message\Action\Regex;
+use CaptainHook\App\Hook\Message\Action\Rulebook;
+use CaptainHook\App\Hook\Message\Rulebook as MessageRuleBook;
 use SebastianFeldmann\Git\CommitMessage;
 use SebastianFeldmann\Git\Repository;
+use PHPUnit\Framework\TestCase;
 
-class RegexTest extends \PHPUnit\Framework\TestCase
+class RegexTest extends TestCase
 {
     /**
      * @var \CaptainHook\App\Git\DummyRepo
@@ -52,7 +56,7 @@ class RegexTest extends \PHPUnit\Framework\TestCase
         $repo    = new Repository($this->repo->getPath());
         $action  = new Config\Action(
             'php',
-            '\\CaptainHook\\App\\Hook\\Message\\Action\\Regex',
+            Regex::class,
             [
                 'regex'   => '#bar#'
             ]
@@ -79,7 +83,7 @@ class RegexTest extends \PHPUnit\Framework\TestCase
         $repo    = new Repository($this->repo->getPath());
         $action  = new Config\Action(
             'php',
-            '\\CaptainHook\\App\\Hook\\Message\\Action\\Regex',
+            Regex::class,
             [
                 'regex'   => '#.*#',
                 'success' => $successMessage
@@ -103,7 +107,7 @@ class RegexTest extends \PHPUnit\Framework\TestCase
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
-        $action = new Config\Action('php', '\\CaptainHook\\App\\Hook\\Message\\Action\\Rulebook');
+        $action = new Config\Action('php', Rulebook::class);
 
         $standard = new Regex();
         $standard->execute($config, $io, $repo, $action);
@@ -121,7 +125,7 @@ class RegexTest extends \PHPUnit\Framework\TestCase
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
             'php',
-            '\\CaptainHook\\App\\Hook\\Message\\Rulebook',
+            MessageRuleBook::class,
             [
                 'regex' => '#FooBarBaz#',
                 'error' => 'No match for %s'

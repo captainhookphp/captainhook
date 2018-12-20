@@ -13,8 +13,9 @@ use CaptainHook\App\Config;
 use CaptainHook\App\Git\DummyRepo;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
+use PHPUnit\Framework\TestCase;
 
-class HookTest extends \PHPUnit\Framework\TestCase
+class HookTest extends TestCase
 {
     /**
      * Tests Hook::run
@@ -70,6 +71,7 @@ class HookTest extends \PHPUnit\Framework\TestCase
     public function testGetRepositoryPath()
     {
         $app = new Hook();
+
         $this->assertEquals(getcwd(), $app->getRepositoryPath());
     }
 
@@ -79,6 +81,7 @@ class HookTest extends \PHPUnit\Framework\TestCase
     public function testGetConfigFile()
     {
         $app = new Hook();
+
         $this->assertEquals(getcwd()  . '/captainhook.json', $app->getConfigFile());
     }
 
@@ -90,11 +93,6 @@ class HookTest extends \PHPUnit\Framework\TestCase
         $hook = new Hook();
         $help = $hook->getHelp();
 
-        $this->assertTrue(
-            (bool)strpos(
-                $help,
-                '$$$$b ^ceeeee.  4$$ECL.F*$$$$$$$'
-            )
-        );
+        $this->assertContains('$$$$b ^ceeeee.  4$$ECL.F*$$$$$$$', $help);
     }
 }
