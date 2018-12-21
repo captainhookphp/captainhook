@@ -29,7 +29,7 @@ class LimitSubjectLength extends Base
     protected $maxLength;
 
     /**
-     * Constructor.
+     * Constructor
      *
      * @param int $length
      */
@@ -40,7 +40,7 @@ class LimitSubjectLength extends Base
     }
 
     /**
-     * Check if commit message doesn't exceeed the max length.
+     * Check if commit message doesn't exceeed the max length
      *
      * @param  \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool

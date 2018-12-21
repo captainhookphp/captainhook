@@ -17,15 +17,16 @@ use SebastianFeldmann\Git\Repository;
 class DummyPHPFailure implements ActionInterface
 {
     /**
-     * Execute the configured action.
+     * Execute action throwing an exception
      *
      * @param  \CaptainHook\App\Config         $config
      * @param  \CaptainHook\App\Console\IO     $io
      * @param  \SebastianFeldmann\Git\Repository             $repository
      * @param  \CaptainHook\App\Config\Action  $action
-     * @throws \CaptainHook\App\Exception\ActionFailed
+     * @return void
+     * @throws \RuntimeException
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
+    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action) : void
     {
         throw new \RuntimeException('Execution failed');
     }

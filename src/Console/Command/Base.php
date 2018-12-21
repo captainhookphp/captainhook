@@ -26,7 +26,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Base extends Command
 {
     /**
-     * Input output handler.
+     * Input output handler
      *
      * @var \CaptainHook\App\Console\IO
      */
@@ -40,23 +40,23 @@ class Base extends Command
     private $config;
 
     /**
-     * IO setter.
+     * IO setter
      *
      * @param \CaptainHook\App\Console\IO $io
      */
-    public function setIO(IO $io)
+    public function setIO(IO $io) : void
     {
         $this->io = $io;
     }
 
     /**
-     * IO interface getter.
+     * IO interface getter
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
      * @return \CaptainHook\App\Console\IO
      */
-    public function getIO(InputInterface $input, OutputInterface $output)
+    public function getIO(InputInterface $input, OutputInterface $output) : IO
     {
         if (null === $this->io) {
             $this->io = new IO\DefaultIO($input, $output, $this->getHelperSet());
@@ -65,13 +65,13 @@ class Base extends Command
     }
 
     /**
-     * CaptainHook config getter.
+     * CaptainHook config getter
      *
      * @param  string $path
      * @param  bool   $failIfNotFound
      * @return \CaptainHook\App\Config
      */
-    protected function getConfig(string $path = '', bool $failIfNotFound = false)
+    protected function getConfig(string $path = '', bool $failIfNotFound = false) : Config
     {
         $this->config = Config\Factory::create($path);
 

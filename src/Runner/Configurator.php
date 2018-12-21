@@ -48,8 +48,10 @@ class Configurator extends Runner
 
     /**
      * Execute the configurator
+     *
+     * @return void
      */
-    public function run()
+    public function run() : void
     {
         $config = $this->getConfigToManipulate();
         $setup  = $this->getHookSetup();
@@ -122,7 +124,7 @@ class Configurator extends Runner
      *
      * @return \CaptainHook\App\Runner\Configurator\Setup
      */
-    private function getHookSetup()
+    private function getHookSetup() : Configurator\Setup
     {
         return $this->advanced
             ? new Configurator\Setup\Advanced($this->io)
@@ -132,9 +134,10 @@ class Configurator extends Runner
     /**
      * Make sure force mode is set if config file exists
      *
+     * @return void
      * @throws \RuntimeException
      */
-    private function ensureForce()
+    private function ensureForce() : void
     {
         if ($this->config->isLoadedFromFile() && !$this->force) {
             throw new \RuntimeException('Configuration file exists, use -f to overwrite, or -e to extend');
@@ -144,9 +147,10 @@ class Configurator extends Runner
     /**
      * Write config to project root
      *
+     * @return void
      * @param \CaptainHook\App\Config $config
      */
-    public function writeConfig(Config $config)
+    public function writeConfig(Config $config) : void
     {
         $filePath = $this->config->getPath();
         $file     = new Json($filePath);

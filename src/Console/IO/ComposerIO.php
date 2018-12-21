@@ -27,7 +27,7 @@ class ComposerIO extends Base
     private $io;
 
     /**
-     * ComposerIO constructor.
+     * ComposerIO constructor
      *
      * @param \Composer\IO\IOInterface $io
      */

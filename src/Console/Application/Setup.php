@@ -27,7 +27,7 @@ class Setup extends Application
      *
      * @return \Symfony\Component\Console\Command\Command[]
      */
-    protected function getDefaultCommands()
+    protected function getDefaultCommands() : array
     {
         return [
             new Cmd\Help(),

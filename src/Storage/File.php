@@ -60,7 +60,6 @@ class File
      * Reads json file.
      *
      * @throws \RuntimeException
-     * @return string
      */
     public function read()
     {
@@ -76,7 +75,7 @@ class File
      * @param  string $content
      * @throws \RuntimeException
      */
-    public function write($content)
+    public function write($content) : void
     {
         $this->checkFile();
         $this->checkDir();
@@ -90,7 +89,7 @@ class File
      * @return void
      * @throws \RuntimeException
      */
-    private function checkFile()
+    private function checkFile() : void
     {
         if (file_exists($this->path) && !is_writable($this->path)) {
             throw new \RuntimeException('File exists and is not writable');
@@ -100,9 +99,10 @@ class File
     /**
      * Create directory if necessary
      *
+     * @return void
      * @throws \RuntimeException
      */
-    private function checkDir()
+    private function checkDir() : void
     {
         $dir = dirname($this->path);
         if (!is_dir($dir)) {

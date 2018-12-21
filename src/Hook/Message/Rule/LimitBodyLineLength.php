@@ -29,7 +29,7 @@ class LimitBodyLineLength extends Base
     protected $maxLength;
 
     /**
-     * Constructor.
+     * Constructor
      *
      * @param int $length
      */
@@ -40,7 +40,7 @@ class LimitBodyLineLength extends Base
     }
 
     /**
-     * Check if a body line doesn't exceed the max length limit.
+     * Check if a body line doesn't exceed the max length limit
      *
      * @param  \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool

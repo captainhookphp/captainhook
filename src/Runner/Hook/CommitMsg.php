@@ -31,9 +31,9 @@ class CommitMsg extends Hook
     protected $hook = Hooks::COMMIT_MSG;
 
     /**
-     * Read the commit message from file.
+     * Read the commit message from file
      */
-    public function beforeHook()
+    public function beforeHook() : void
     {
         $commentChar = $this->repository->getConfigOperator()->getSafely('core.commentchar', '#');
         $commitMsg   = Git\CommitMessage::createFromFile($this->arguments->get('file', ''), $commentChar);

@@ -26,15 +26,16 @@ use SebastianFeldmann\Git\Repository;
 class Prepare implements Action
 {
     /**
-     * Executes the action.
+     * Executes the action
      *
      * @param  \CaptainHook\App\Config           $config
      * @param  \CaptainHook\App\Console\IO       $io
      * @param  \SebastianFeldmann\Git\Repository $repository
      * @param  \CaptainHook\App\Config\Action    $action
+     * @return void
      * @throws \Exception
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
+    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action) : void
     {
         $options = $action->getOptions();
         $oldMsg  = $repository->getCommitMsg();

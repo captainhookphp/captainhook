@@ -27,7 +27,7 @@ class Options
     private $options;
 
     /**
-     * Options constructor.
+     * Options constructor
      *
      * @param array $options
      */
@@ -37,7 +37,7 @@ class Options
     }
 
     /**
-     * Return a option value.
+     * Return a option value
      *
      * @param  string $name
      * @param  mixed  $default
@@ -49,7 +49,7 @@ class Options
     }
 
     /**
-     * Return all options.
+     * Return all options
      *
      * @return array
      */

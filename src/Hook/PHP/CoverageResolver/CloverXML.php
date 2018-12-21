@@ -48,9 +48,10 @@ class CloverXML implements CoverageResolver
     /**
      * Make sure you have a valid xml structure
      *
+     * @return void
      * @throws \RuntimeException
      */
-    private function validateXml()
+    private function validateXml() : void
     {
         if (!isset($this->xml->project) || !isset($this->xml->project->metrics)) {
             throw new RuntimeException('invalid clover xml file');

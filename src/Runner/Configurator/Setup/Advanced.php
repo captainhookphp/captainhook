@@ -31,20 +31,22 @@ class Advanced extends Guided implements Setup
      * @return void
      * @throws \Exception
      */
-    public function configureHooks(Config $config)
+    public function configureHooks(Config $config) : void
     {
         foreach (Util::getHooks() as $hook) {
             $this->configureHook($config->getHookConfig($hook), $hook);
         }
     }
+
     /**
      * Configure a hook by asking some questions
      *
      * @param  \CaptainHook\App\Config\Hook $config
-     * @param  string                                     $name
+     * @param  string                       $name
+     * @return void
      * @throws \Exception
      */
-    public function configureHook(Config\Hook $config, string $name)
+    public function configureHook(Config\Hook $config, string $name) : void
     {
         $answer = $this->io->ask('  <info>Enable \'' . $name . '\' hook?</info> <comment>[y,n]</comment> ', 'n');
         $enable = IOUtil::answerToBool($answer);

@@ -48,7 +48,7 @@ class Action
     protected static $validTypes = ['php' => true, 'cli' => true];
 
     /**
-     * Action constructor.
+     * Action constructor
      *
      * @param  string $type
      * @param  string $action
@@ -66,7 +66,7 @@ class Action
     }
 
     /**
-     * Type getter.
+     * Type getter
      *
      * @return string
      */
@@ -76,7 +76,7 @@ class Action
     }
 
     /**
-     * Action getter.
+     * Action getter
      *
      * @return string
      */
@@ -86,7 +86,7 @@ class Action
     }
 
     /**
-     * Return option map.
+     * Return option map
      *
      * @return \CaptainHook\App\Config\Options
      */
@@ -96,7 +96,7 @@ class Action
     }
 
     /**
-     * Return config data.
+     * Return config data
      *
      * @return array
      */

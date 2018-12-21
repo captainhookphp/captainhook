@@ -31,9 +31,11 @@ class Help extends Base
     private $command;
 
     /**
-     * Configure the command.
+     * Configure the command
+     *
+     * @return void
      */
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('help')
              ->setDescription('Shows this help message')
@@ -44,23 +46,24 @@ class Help extends Base
     }
 
     /**
-     * Set command to get help for.
+     * Set command to get help for
      *
-     * @param \Symfony\Component\Console\Command\Command $command
+     * @param  \Symfony\Component\Console\Command\Command $command
+     * @return void
      */
-    public function setCommand(SymfonyCommand $command)
+    public function setCommand(SymfonyCommand $command) : void
     {
         $this->command = $command;
     }
 
     /**
-     * Execute the command.
+     * Execute the command
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
      * @return void
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : void
     {
         if ($this->command !== null) {
             $helper = new DescriptorHelper();
@@ -73,7 +76,7 @@ class Help extends Base
     }
 
     /**
-     * Return all lines of hel message.
+     * Return all lines of hel message
      *
      * @return array
      */
@@ -83,7 +86,7 @@ class Help extends Base
     }
 
     /**
-     * Return help rows for version and basic usage.
+     * Return help rows for version and basic usage
      *
      * @return array
      */
@@ -99,7 +102,7 @@ class Help extends Base
     }
 
     /**
-     * Return help rows listing all commands.
+     * Return help rows listing all commands
      *
      * @return array
      */
@@ -115,7 +118,7 @@ class Help extends Base
     }
 
     /**
-     * Return help rows describing all options.
+     * Return help rows describing all options
      *
      * @return array
      */

@@ -12,7 +12,7 @@ namespace CaptainHook\App\Hook\Message\Rule;
 use SebastianFeldmann\Git\CommitMessage;
 
 /**
- * Class CapitdalizeSubject
+ * Class CapitalizeSubject
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
@@ -22,7 +22,7 @@ use SebastianFeldmann\Git\CommitMessage;
 class CapitalizeSubject extends Base
 {
     /**
-     * Constructor.
+     * Constructor
      */
     public function __construct()
     {
@@ -30,7 +30,7 @@ class CapitalizeSubject extends Base
     }
 
     /**
-     * Check if commit message starts with upper case letter.
+     * Check if commit message starts with upper case letter
      *
      * @param  \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool

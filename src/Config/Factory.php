@@ -24,12 +24,12 @@ use CaptainHook\App\Storage\File\Json;
 class Factory
 {
     /**
-     * Config factory method.
+     * Config factory method
      *
      * @param  string $path
      * @return \CaptainHook\App\Config
      */
-    public static function create(string $path = '')
+    public static function create(string $path = '') : Config
     {
         $factory = new static();
 
@@ -37,7 +37,7 @@ class Factory
     }
 
     /**
-     * Create a CaptainHook configuration.
+     * Create a CaptainHook configuration
      *
      * @param  string $path
      * @return \CaptainHook\App\Config
@@ -58,13 +58,14 @@ class Factory
     }
 
     /**
-     * Initialize the configuration with data load from config file.
+     * Initialize the configuration with data load from config file
      *
      * @param  \CaptainHook\App\Config $config
-     * @param  array                                 $json
+     * @param  array                   $json
+     * @return void
      * @throws \Exception
      */
-    protected function configure(Config $config, array $json)
+    protected function configure(Config $config, array $json) : void
     {
         Util::validateJsonConfiguration($json);
 
@@ -74,13 +75,14 @@ class Factory
     }
 
     /**
-     * Setup a hook configuration by json data.
+     * Setup a hook configuration by json data
      *
      * @param  \CaptainHook\App\Config\Hook $config
-     * @param  array                                      $json
+     * @param  array                        $json
+     * @return void
      * @throws \Exception
      */
-    protected function configureHook(Config\Hook $config, array $json)
+    protected function configureHook(Config\Hook $config, array $json) : void
     {
         $config->setEnabled($json['enabled']);
         foreach ($json['actions'] as $actionJson) {

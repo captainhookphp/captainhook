@@ -22,7 +22,7 @@ use SebastianFeldmann\Git\CommitMessage;
 class NoPeriodOnSubjectEnd extends Base
 {
     /**
-     * Constructor.
+     * Constructor
      */
     public function __construct()
     {
@@ -30,7 +30,7 @@ class NoPeriodOnSubjectEnd extends Base
     }
 
     /**
-     * Check if commit message doesn't end with a period.
+     * Check if commit message doesn't end with a period
      *
      * @param  \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool

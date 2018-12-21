@@ -9,11 +9,7 @@
  */
 namespace CaptainHook\App\Runner\Action;
 
-use CaptainHook\App\Config;
-use CaptainHook\App\Console\IO;
-use CaptainHook\App\Hook\Action as ActionInterface;
 use CaptainHook\App\Runner\BaseTestRunner;
-use SebastianFeldmann\Git\Repository;
 
 class PHPTest extends BaseTestRunner
 {

@@ -31,9 +31,11 @@ class PrePush extends Hook
     protected $name = Hooks::PRE_PUSH;
 
     /**
-     * Configure the command.
+     * Configure the command
+     *
+     * @return void
      */
-    protected function configure()
+    protected function configure() : void
     {
         parent::configure();
         $this->addArgument('target', InputArgument::OPTIONAL, 'Target repository name');

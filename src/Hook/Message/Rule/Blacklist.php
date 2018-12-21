@@ -39,7 +39,7 @@ class Blacklist extends Base
     ];
 
     /**
-     * Constructor.
+     * Constructor
      *
      * @param bool $caseSensitive
      */
@@ -50,38 +50,41 @@ class Blacklist extends Base
     }
 
     /**
-     * Set body blacklist.
+     * Set body blacklist
      *
-     * @param array $list
+     * @param  array $list
+     * @return void
      */
-    public function setBodyBlacklist(array $list)
+    public function setBodyBlacklist(array $list) : void
     {
         $this->setBlacklist($list, 'body');
     }
 
     /**
-     * Set subject blacklist.
+     * Set subject blacklist
      *
-     * @param array $list
+     * @param  array $list
+     * @return void
      */
-    public function setSubjectBlacklist(array $list)
+    public function setSubjectBlacklist(array $list) : void
     {
         $this->setBlacklist($list, 'subject');
     }
 
     /**
-     * Blacklist setter.
+     * Blacklist setter
      *
-     * @param array  $list
-     * @param string $type
+     * @param  array  $list
+     * @param  string $type
+     * @return void
      */
-    protected function setBlacklist(array $list, string $type)
+    protected function setBlacklist(array $list, string $type) : void
     {
         $this->blacklist[$type] = $list;
     }
 
     /**
-     * Check if the message contains blacklisted words.
+     * Check if the message contains blacklisted words
      *
      * @param  \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool
@@ -92,7 +95,7 @@ class Blacklist extends Base
     }
 
     /**
-     * Check commit message subject for blacklisted words.
+     * Check commit message subject for blacklisted words
      *
      * @param \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool
@@ -103,7 +106,7 @@ class Blacklist extends Base
     }
 
     /**
-     * Check commit message body for blacklisted words.
+     * Check commit message body for blacklisted words
      *
      * @param \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool
@@ -114,7 +117,7 @@ class Blacklist extends Base
     }
 
     /**
-     * Contains blacklisted word.
+     * Contains blacklisted word
      *
      * @param  array  $list
      * @param  string $content

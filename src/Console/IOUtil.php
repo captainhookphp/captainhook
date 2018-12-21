@@ -20,7 +20,7 @@ namespace CaptainHook\App\Console;
 abstract class IOUtil
 {
     /**
-     * Convert a user answer to boolean.
+     * Convert a user answer to boolean
      *
      * @param  string $answer
      * @return bool
@@ -31,12 +31,12 @@ abstract class IOUtil
     }
 
     /**
-     * Return cli line separator string.
+     * Return cli line separator string
      *
      * @param  int $length
      * @return string
      */
-    public static function getLineSeparator(int $length = 80)
+    public static function getLineSeparator(int $length = 80) : string
     {
         return str_repeat('-', $length);
     }

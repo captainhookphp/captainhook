@@ -30,36 +30,37 @@ class RuleBook
     private $rules = [];
 
     /**
-     * Set rules to check.
+     * Set rules to check
      *
      * @param  \CaptainHook\App\Hook\Message\Rule[] $rules
      * @return \CaptainHook\App\Hook\Message\RuleBook
      */
-    public function setRules(array $rules)
+    public function setRules(array $rules) : RuleBook
     {
         $this->rules = $rules;
         return $this;
     }
 
     /**
-     * Add a rule to the list.
+     * Add a rule to the list
      *
      * @param  \CaptainHook\App\Hook\Message\Rule $rule
      * @return \CaptainHook\App\Hook\Message\RuleBook
      */
-    public function addRule(Rule $rule)
+    public function addRule(Rule $rule) : RuleBook
     {
         $this->rules[] = $rule;
         return $this;
     }
 
     /**
-     * Validates all rules.
+     * Validates all rules
      *
      * @param  \SebastianFeldmann\Git\CommitMessage $msg
+     * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    public function validate(CommitMessage $msg)
+    public function validate(CommitMessage $msg) : void
     {
         $problems = [];
         // collect problems for all rules
@@ -76,7 +77,7 @@ class RuleBook
     }
 
     /**
-     * Format the error output.
+     * Format the error output
      *
      * @param  array $problems
      * @return string
@@ -98,7 +99,7 @@ class RuleBook
     }
 
     /**
-     * Indent multi line problems so the lines after the first one are indented for better readability.
+     * Indent multi line problems so the lines after the first one are indented for better readability
      *
      * @param  string $problem
      * @return string

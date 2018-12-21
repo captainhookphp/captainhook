@@ -25,13 +25,14 @@ use Symfony\Component\Console\Input\ArrayInput;
 abstract class Cmd
 {
     /**
-     * Gets called by composer after a successful package installation.
+     * Gets called by composer after a successful package installation
      *
      * @param  \Composer\Script\Event $event
      * @param  string                 $config
+     * @return void
      * @throws \Exception
      */
-    public static function configure(Event $event, $config = '')
+    public static function configure(Event $event, $config = '') : void
     {
         $app           = self::createApplication($event, $config);
         $configuration = new Configuration();
@@ -44,13 +45,14 @@ abstract class Cmd
     }
 
     /**
-     * Installs the hooks to your local repository.
+     * Installs the hooks to your local repository
      *
      * @param  \Composer\Script\Event $event
      * @param  string                 $config
+     * @return void
      * @throws \Exception
      */
-    public static function install(Event $event, string $config = '')
+    public static function install(Event $event, string $config = '') : void
     {
         $app     = self::createApplication($event, $config);
         $install = new Install();
@@ -61,7 +63,7 @@ abstract class Cmd
     }
 
     /**
-     * Create a CaptainHook Composer application.
+     * Create a CaptainHook Composer application
      *
      * @param  \Composer\Script\Event $event
      * @param  string                 $config

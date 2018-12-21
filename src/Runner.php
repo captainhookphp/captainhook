@@ -46,5 +46,5 @@ abstract class Runner
     /**
      * Executes the Runner.
      */
-    abstract public function run();
+    abstract public function run() : void;
 }

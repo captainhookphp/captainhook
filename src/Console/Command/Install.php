@@ -27,9 +27,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Install extends Base
 {
     /**
-     * Configure the command.
+     * Configure the command
+     *
+     * @return void
      */
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('install')
              ->setDescription('Install git hooks')
@@ -52,14 +54,14 @@ class Install extends Base
     }
 
     /**
-     * Execute the command.
+     * Execute the command
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
      * @return void
      * @throws \CaptainHook\App\Exception\InvalidHookName
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : void
     {
 
         $io     = $this->getIO($input, $output);

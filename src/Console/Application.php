@@ -90,7 +90,7 @@ class Application extends SymfonyApplication
     protected $io;
 
     /**
-     * Application constructor.
+     * Application constructor
      */
     public function __construct()
     {
@@ -104,11 +104,11 @@ class Application extends SymfonyApplication
     }
 
     /**
-     * Append release date to version output.
+     * Append release date to version output
      *
      * @return string
      */
-    public function getLongVersion()
+    public function getLongVersion() : string
     {
         return sprintf(
             '<info>%s</info> version <comment>%s</comment> %s',
@@ -123,7 +123,7 @@ class Application extends SymfonyApplication
      *
      * @return string
      */
-    public function getHelp()
+    public function getHelp() : string
     {
         return self::$logo . parent::getHelp();
     }

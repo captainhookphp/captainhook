@@ -40,7 +40,7 @@ abstract class Hook extends Base
     protected $configFile;
 
     /**
-     * Path to the git repository to use.
+     * Path to the git repository to use
      *
      * @var string
      */
@@ -61,8 +61,10 @@ abstract class Hook extends Base
 
     /**
      * Configure the command
+     *
+     * @return void
      */
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName($this->name)
              ->setDescription('Run git ' . $this->name . ' hook.')
@@ -77,7 +79,7 @@ abstract class Hook extends Base
      * @return void
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : void
     {
         $io         = $this->getIO($input, $output);
         $config     = $this->getConfig($this->configFile, true);

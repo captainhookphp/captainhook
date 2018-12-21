@@ -2,7 +2,7 @@
   "name": "captainhook/captainhook",
   "description": "PHP git hook manager",
   "type": "library",
-  "keywords": ["git", "hooks", "pre-commit", "pre-push", "commit-msg"],
+  "keywords": ["git", "hooks", "pre-commit", "pre-push", "commit-msg", "prepare-commit-msg"],
   "homepage": "https://github.com/captainhookphp/captainhook",
   "license": "MIT",
   "authors": [
@@ -25,7 +25,7 @@
     }
   },
   "require": {
-    "php": ">=7.0.0",
+    "php": ">=7.1.0",
     "ext-json": "*",
     "ext-spl": "*",
     "sebastianfeldmann/cli": "^2.1",
@@ -41,7 +41,7 @@
   ],
   "extra": {
     "branch-alias": {
-      "dev-master": "0.9.x-dev"
+      "dev-master": "4.0.x-dev"
     }
   },
   "scripts": {

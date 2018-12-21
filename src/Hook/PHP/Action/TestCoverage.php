@@ -50,13 +50,14 @@ class TestCoverage implements Action
     /**
      * Executes the action.
      *
-     * @param  \CaptainHook\App\Config         $config
-     * @param  \CaptainHook\App\Console\IO     $io
-     * @param  \SebastianFeldmann\Git\Repository             $repository
-     * @param  \CaptainHook\App\Config\Action  $action
+     * @param  \CaptainHook\App\Config           $config
+     * @param  \CaptainHook\App\Console\IO       $io
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @param  \CaptainHook\App\Config\Action    $action
+     * @return void
      * @throws \Exception
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
+    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action) : void
     {
         $io->write('checking coverage:', true, IO::VERBOSE);
         $this->handleOptions($action->getOptions());
@@ -72,9 +73,10 @@ class TestCoverage implements Action
      * Setup local properties with given options.
      *
      * @param  \CaptainHook\App\Config\Options $options
+     * @return void
      * @throws \RuntimeException
      */
-    protected function handleOptions(Config\Options $options)
+    protected function handleOptions(Config\Options $options) : void
     {
         $this->cloverXmlFile = $options->get('cloverXml');
         $this->phpUnit       = $options->get('phpUnit', 'phpunit');
@@ -101,9 +103,10 @@ class TestCoverage implements Action
      * Check if current coverage is high enough.
      *
      * @param  float $coverage
+     * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    protected function verifyCoverage($coverage)
+    protected function verifyCoverage($coverage) : void
     {
         if ($coverage < $this->minCoverage) {
             throw ActionFailed::withMessage(

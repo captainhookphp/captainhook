@@ -27,15 +27,16 @@ use SebastianFeldmann\Git\Repository;
 class Linting implements Action
 {
     /**
-     * Executes the action.
+     * Executes the action
      *
-     * @param  \CaptainHook\App\Config         $config
-     * @param  \CaptainHook\App\Console\IO     $io
-     * @param  \SebastianFeldmann\Git\Repository             $repository
-     * @param  \CaptainHook\App\Config\Action  $action
+     * @param  \CaptainHook\App\Config           $config
+     * @param  \CaptainHook\App\Console\IO       $io
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @param  \CaptainHook\App\Config\Action    $action
+     * @return void
      * @throws \Exception
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
+    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action) : void
     {
         $changedPHPFiles = $repository->getIndexOperator()->getStagedFilesOfType('php');
 
@@ -50,7 +51,7 @@ class Linting implements Action
     }
 
     /**
-     * Lint a php file.
+     * Lint a php file
      *
      * @param  string $file
      * @return bool

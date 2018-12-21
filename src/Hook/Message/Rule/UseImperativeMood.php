@@ -20,7 +20,7 @@ namespace CaptainHook\App\Hook\Message\Rule;
 class UseImperativeMood extends Blacklist
 {
     /**
-     * Constructor.
+     * Constructor
      */
     public function __construct()
     {

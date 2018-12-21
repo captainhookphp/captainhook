@@ -24,16 +24,18 @@ use Symfony\Component\Console\Input\InputArgument;
 class CommitMsg extends Hook
 {
     /**
-     * Hook to execute.
+     * Hook to execute
      *
      * @var string
      */
     protected $name = Hooks::COMMIT_MSG;
 
     /**
-     * Configure the command.
+     * Configure the command
+     *
+     * @return void
      */
-    protected function configure()
+    protected function configure() : void
     {
         parent::configure();
         $this->addArgument('file', InputArgument::REQUIRED, 'File containing the commit message.');

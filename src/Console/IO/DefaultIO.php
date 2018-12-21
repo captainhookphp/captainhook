@@ -49,7 +49,7 @@ class DefaultIO extends Base
     private $verbosityMap;
 
     /**
-     * Constructor.
+     * Constructor
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
@@ -118,7 +118,7 @@ class DefaultIO extends Base
     }
 
     /**
-     * Write to the appropriate user output.
+     * Write to the appropriate user output
      *
      * @param array|string $messages
      * @param bool         $newline
@@ -174,7 +174,7 @@ class DefaultIO extends Base
     }
 
     /**
-     * Return the output to write to.
+     * Return the output to write to
      *
      * @param  bool $stdErr
      * @return \Symfony\Component\Console\Output\OutputInterface

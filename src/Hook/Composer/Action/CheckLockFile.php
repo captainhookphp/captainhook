@@ -25,11 +25,11 @@ use SebastianFeldmann\Git\Repository;
 class CheckLockFile implements Action
 {
     /**
-     * Composer configuration keys that are relevant for the 'content-hash' creation.
+     * Composer configuration keys that are relevant for the 'content-hash' creation
      *
      * @var array
      */
-    private $relevantKeys    = [
+    private $relevantKeys = [
         'name',
         'version',
         'require',
@@ -44,15 +44,15 @@ class CheckLockFile implements Action
     ];
 
     /**
-     * Executes the action.
+     * Executes the action
      *
-     * @param  \CaptainHook\App\Config         $config
-     * @param  \CaptainHook\App\Console\IO     $io
-     * @param  \SebastianFeldmann\Git\Repository             $repository
-     * @param  \CaptainHook\App\Config\Action  $action
+     * @param  \CaptainHook\App\Config           $config
+     * @param  \CaptainHook\App\Console\IO       $io
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @param  \CaptainHook\App\Config\Action    $action
      * @throws \Exception
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
+    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action) : void
     {
         $path           = $action->getOptions()->get('path', getcwd());
         $lockFileHash   = $this->getLockFileHash($path);
@@ -66,7 +66,7 @@ class CheckLockFile implements Action
     }
 
     /**
-     * Read the composer.lock file and extract the composer.json hash.
+     * Read the composer.lock file and extract the composer.json hash
      *
      * @param  string $path
      * @return string
@@ -85,8 +85,10 @@ class CheckLockFile implements Action
     }
 
     /**
-     * Read the composer.json file and create a md5 hash on its relevant content.
-     * This more or less is composer internal code to generate the content-hash
+     * Read the composer.json file and create a md5 hash on its relevant content
+     *
+     * This more or less is composer internal code to generate the content-hash so this might not be the best idea
+     * and will be removed in the future.
      *
      * @param  string $path
      * @return string
@@ -109,7 +111,7 @@ class CheckLockFile implements Action
     }
 
     /**
-     * Load a composer file.
+     * Load a composer file
      *
      * @param  string $file
      * @return string

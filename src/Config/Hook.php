@@ -34,7 +34,7 @@ class Hook
     private $actions = [];
 
     /**
-     * Hook constructor.
+     * Hook constructor
      *
      * @param bool $enabled
      */
@@ -44,17 +44,18 @@ class Hook
     }
 
     /**
-     * Enable or disable the hook.
+     * Enable or disable the hook
      *
-     * @param bool $enabled
+     * @param  bool $enabled
+     * @return void
      */
-    public function setEnabled(bool $enabled)
+    public function setEnabled(bool $enabled) : void
     {
         $this->isEnabled = $enabled;
     }
 
     /**
-     * Is this hook enabled.
+     * Is this hook enabled
      *
      * @return bool
      */
@@ -64,17 +65,18 @@ class Hook
     }
 
     /**
-     * Add an action to the list.
+     * Add an action to the list
      *
-     * @param \CaptainHook\App\Config\Action $action
+     * @param  \CaptainHook\App\Config\Action $action
+     * @return void
      */
-    public function addAction(Action $action)
+    public function addAction(Action $action) : void
     {
         $this->actions[] = $action;
     }
 
     /**
-     * Return the action list.
+     * Return the action list
      *
      * @return \CaptainHook\App\Config\Action[]
      */
@@ -84,7 +86,7 @@ class Hook
     }
 
     /**
-     * Return config data.
+     * Return config data
      *
      * @return array
      */

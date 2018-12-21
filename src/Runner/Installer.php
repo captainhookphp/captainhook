@@ -9,6 +9,7 @@
  */
 namespace CaptainHook\App\Runner;
 
+use CaptainHook\App\Console\Command\Install;
 use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Exception;
 use CaptainHook\App\Hook\Template;
@@ -43,20 +44,20 @@ class Installer extends RepositoryAware
      * @param  bool $force
      * @return \CaptainHook\App\Runner\Installer
      */
-    public function setForce(bool $force)
+    public function setForce(bool $force) : Installer
     {
         $this->force = $force;
         return $this;
     }
 
     /**
-     * Hook setter.
+     * Hook setter
      *
      * @param  string $hook
-     * @return \CaptainHook\App\Runner\RepositoryAware
+     * @return \CaptainHook\App\Runner\Installer
      * @throws \CaptainHook\App\Exception\InvalidHookName
      */
-    public function setHook(string $hook) : RepositoryAware
+    public function setHook(string $hook) : Installer
     {
         if (!empty($hook) && !Util::isValid($hook)) {
             throw new Exception\InvalidHookName('Invalid hook name \'' . $hook . '\'');
@@ -66,9 +67,11 @@ class Installer extends RepositoryAware
     }
 
     /**
-     * Execute installation.
+     * Execute installation
+     *
+     * @return void
      */
-    public function run()
+    public function run() : void
     {
         $hooks = $this->getHooksToInstall();
 
@@ -78,7 +81,7 @@ class Installer extends RepositoryAware
     }
 
     /**
-     * Return list of hooks to install.
+     * Return list of hooks to install
      *
      * @return array
      */
@@ -88,7 +91,7 @@ class Installer extends RepositoryAware
     }
 
     /**
-     * Install given hook.
+     * Install given hook
      *
      * @param string $hook
      * @param bool   $ask
@@ -109,9 +112,10 @@ class Installer extends RepositoryAware
     /**
      * Write given hook to .git/hooks directory
      *
-     * @param string $hook
+     * @param  string $hook
+     * @return void
      */
-    public function writeHookFile(string $hook)
+    public function writeHookFile(string $hook) : void
     {
         $hooksDir = $this->repository->getHooksDir();
         $hookFile = $hooksDir . DIRECTORY_SEPARATOR . $hook;
@@ -134,7 +138,7 @@ class Installer extends RepositoryAware
     }
 
     /**
-     * Return the source code for a given hook script.
+     * Return the source code for a given hook script
      *
      * @param  string $hook
      * @return string
@@ -148,7 +152,7 @@ class Installer extends RepositoryAware
     }
 
     /**
-     * If the hook already exists the user has to confirm the installation.
+     * If the hook already exists the user has to confirm the installation
      *
      * @param  string $hook The name of the hook to check
      * @return bool

@@ -31,7 +31,7 @@ abstract class Guided
     protected $io;
 
     /**
-     * Guided constructor.
+     * Guided constructor
      *
      * @param \CaptainHook\App\Console\IO $io
      */
@@ -47,7 +47,7 @@ abstract class Guided
      * @return string
      * @throws \Exception
      */
-    public static function isPHPActionOptionValid(string $option): string
+    public static function isPHPActionOptionValid(string $option) : string
     {
         if (count(explode(':', $option)) !== 2) {
             throw new \Exception('Invalid option, use "key:value"');

@@ -28,15 +28,16 @@ use SebastianFeldmann\Git\Repository;
 class Beams extends Book
 {
     /**
-     * Execute the configured action.
+     * Execute the configured action
      *
-     * @param  \CaptainHook\App\Config         $config
-     * @param  \CaptainHook\App\Console\IO     $io
-     * @param  \SebastianFeldmann\Git\Repository             $repository
-     * @param  \CaptainHook\App\Config\Action  $action
+     * @param  \CaptainHook\App\Config           $config
+     * @param  \CaptainHook\App\Console\IO       $io
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @param  \CaptainHook\App\Config\Action    $action
+     * @return void
      * @throws \Exception
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
+    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action) : void
     {
         $options = $action->getOptions();
         $book    = new RuleBook();
@@ -54,12 +55,13 @@ class Beams extends Book
     }
 
     /**
-     * Write error to stdErr.
+     * Write error to stdErr
      *
-     * @param \CaptainHook\App\Console\IO $io
-     * @param \SebastianFeldmann\Git\Repository         $repository
+     * @param \CaptainHook\App\Console\IO       $io
+     * @param \SebastianFeldmann\Git\Repository $repository
+     * @param void
      */
-    private function writeError(IO $io, Repository $repository)
+    private function writeError(IO $io, Repository $repository) : void
     {
         $io->writeError(array_merge(
             [

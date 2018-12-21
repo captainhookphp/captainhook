@@ -32,9 +32,10 @@ class PHP
      * @param  \CaptainHook\App\Console\IO       $io
      * @param  \SebastianFeldmann\Git\Repository $repository
      * @param  \CaptainHook\App\Config\Action    $action
+     * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
+    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action) : void
     {
         $class = $action->getAction();
 

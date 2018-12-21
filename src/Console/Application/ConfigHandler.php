@@ -29,11 +29,12 @@ abstract class ConfigHandler extends Application
     protected $configFile;
 
     /**
-     * Set the configuration file to use.
+     * Set the configuration file to use
      *
-     * @param string $config
+     * @param  string $config
+     * @return void
      */
-    public function setConfigFile(string $config)
+    public function setConfigFile(string $config) : void
     {
         $this->configFile = $config;
     }

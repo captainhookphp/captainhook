@@ -43,9 +43,10 @@ class Hook extends ConfigHandler
     /**
      * Repository path setter
      *
-     * @param string $git
+     * @param  string $git
+     * @return void
      */
-    public function setRepositoryPath(string $git)
+    public function setRepositoryPath(string $git) : void
     {
         $this->repositoryPath = $git;
     }
@@ -69,7 +70,7 @@ class Hook extends ConfigHandler
      * @param  string $hook
      * @return \CaptainHook\App\Console\Application\Hook
      */
-    public function setHook(string $hook)
+    public function setHook(string $hook) : Hook
     {
         if (!Util::isValid($hook)) {
             throw new \RuntimeException('Invalid hook name');
@@ -86,7 +87,7 @@ class Hook extends ConfigHandler
      * @return int
      * @throws \Exception
      */
-    public function doRun(InputInterface $input, OutputInterface $output)
+    public function doRun(InputInterface $input, OutputInterface $output) : int
     {
         $output->setDecorated(false);
         $input->setInteractive(false);

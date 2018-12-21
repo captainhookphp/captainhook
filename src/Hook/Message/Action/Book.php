@@ -26,24 +26,26 @@ use SebastianFeldmann\Git\Repository;
 abstract class Book implements Action
 {
     /**
-     * Execute the configured action.
+     * Execute the configured action
      *
-     * @param  \CaptainHook\App\Config         $config
-     * @param  \CaptainHook\App\Console\IO     $io
-     * @param  \SebastianFeldmann\Git\Repository             $repository
-     * @param  \CaptainHook\App\Config\Action  $action
+     * @param  \CaptainHook\App\Config           $config
+     * @param  \CaptainHook\App\Console\IO       $io
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @param  \CaptainHook\App\Config\Action    $action
+     * @return void
      * @throws \Exception
      */
-    abstract public function execute(Config $config, IO $io, Repository $repository, Config\Action $action);
+    abstract public function execute(Config $config, IO $io, Repository $repository, Config\Action $action) : void;
 
     /**
-     * Validate the message.
+     * Validate the message
      *
      * @param  \CaptainHook\App\Hook\Message\RuleBook $ruleBook
-     * @param  \SebastianFeldmann\Git\Repository                    $repository
+     * @param  \SebastianFeldmann\Git\Repository      $repository
+     * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    protected function validate(RuleBook $ruleBook, Repository $repository)
+    protected function validate(RuleBook $ruleBook, Repository $repository) : void
     {
         // if this is no merge commit enforce message rules
         if (!$repository->isMerging()) {

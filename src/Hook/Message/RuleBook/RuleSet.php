@@ -22,7 +22,7 @@ use CaptainHook\App\Hook\Message\Rule;
 abstract class RuleSet
 {
     /**
-     * Return Beams rule set.
+     * Return Beams rule set
      *
      * @param  int $subjectLength
      * @param  int $bodyLineLength

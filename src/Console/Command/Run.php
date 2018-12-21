@@ -11,7 +11,6 @@ namespace CaptainHook\App\Console\Command;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Hook\Util;
-use SebastianFeldmann\Git\CommitMessage;
 use SebastianFeldmann\Git\Repository;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,9 +28,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Run extends Base
 {
     /**
-     * Configure the command.
+     * Configure the command
+     *
+     * @return void
      */
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('run')
              ->setDescription('Run a git hook')
@@ -48,13 +49,14 @@ class Run extends Base
     }
 
     /**
-     * Execute the command.
+     * Execute the command
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
      * @return void
+     * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : void
     {
         $io     = $this->getIO($input, $output);
         $config = $this->getConfig($input->getOption('configuration'), true);

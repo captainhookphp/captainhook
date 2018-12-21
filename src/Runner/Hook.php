@@ -13,7 +13,6 @@ use CaptainHook\App\Config;
 use CaptainHook\App\Config\Options;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Console\IOUtil;
-use CaptainHook\App\Hook\Action as ActionInterface;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -59,7 +58,7 @@ abstract class Hook extends RepositoryAware
      *
      * @return void
      */
-    public function beforeHook()
+    public function beforeHook() : void
     {
         // empty template method
     }
@@ -69,7 +68,7 @@ abstract class Hook extends RepositoryAware
      *
      * @return void
      */
-    public function beforeAction()
+    public function beforeAction() : void
     {
         // empty template method
     }
@@ -79,7 +78,7 @@ abstract class Hook extends RepositoryAware
      *
      * @return void
      */
-    public function afterAction()
+    public function afterAction() : void
     {
         //empty template method
     }
@@ -89,17 +88,18 @@ abstract class Hook extends RepositoryAware
      *
      * @return void
      */
-    public function afterHook()
+    public function afterHook() : void
     {
         // empty template method
     }
 
     /**
-     * Execute installation.
+     * Execute the hook and all its actions
      *
+     * @return void
      * @throws \Exception
      */
-    public function run()
+    public function run() : void
     {
         $this->beforeHook();
         /** @var \CaptainHook\App\Config\Hook $hookConfig */
@@ -122,9 +122,10 @@ abstract class Hook extends RepositoryAware
      * Executes a configured hook action
      *
      * @param  \CaptainHook\App\Config\Action $action
+     * @return void
      * @throws \Exception
      */
-    protected function handleAction(Config\Action $action)
+    protected function handleAction(Config\Action $action) : void
     {
         $this->io->write([
             '',
@@ -142,9 +143,10 @@ abstract class Hook extends RepositoryAware
      * Execute a php hook action
      *
      * @param  \CaptainHook\App\Config\Action $action
+     * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    protected function executePhpAction(Config\Action $action)
+    protected function executePhpAction(Config\Action $action) : void
     {
         $this->beforeAction();
         $runner = new Action\PHP();
@@ -156,9 +158,10 @@ abstract class Hook extends RepositoryAware
      * Execute a cli hook action
      *
      * @param  \CaptainHook\App\Config\Action $action
+     * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    protected function executeCliAction(Config\Action $action)
+    protected function executeCliAction(Config\Action $action) : void
     {
         // since the cli has no straight way to communicate back to php
         // cli hooks have to handle sync stuff by them self

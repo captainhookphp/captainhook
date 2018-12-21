@@ -26,15 +26,16 @@ use SebastianFeldmann\Git\Repository;
 class Regex implements Action
 {
     /**
-     * Execute the configured action.
+     * Execute the configured action
      *
-     * @param  \CaptainHook\App\Config         $config
-     * @param  \CaptainHook\App\Console\IO     $io
-     * @param  \SebastianFeldmann\Git\Repository             $repository
-     * @param  \CaptainHook\App\Config\Action  $action
+     * @param  \CaptainHook\App\Config           $config
+     * @param  \CaptainHook\App\Console\IO       $io
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @param  \CaptainHook\App\Config\Action    $action
+     * @return void
      * @throws \Exception
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
+    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action) : void
     {
         $regex      = $this->getRegex($action->getOptions());
         $errorMsg   = $this->getErrorMessage($action->getOptions());
@@ -49,13 +50,13 @@ class Regex implements Action
     }
 
     /**
-     * Extract regex from options array.
+     * Extract regex from options array
      *
      * @param  \CaptainHook\App\Config\Options $options
      * @return string
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    protected function getRegex(Config\Options $options)
+    protected function getRegex(Config\Options $options) : string
     {
         $regex = $options->get('regex');
         if (empty($regex)) {
@@ -65,23 +66,23 @@ class Regex implements Action
     }
 
     /**
-     * Determine the error message to use.
+     * Determine the error message to use
      *
      * @param  \CaptainHook\App\Config\Options $options
      * @return string
      */
-    protected function getErrorMessage(Config\Options $options)
+    protected function getErrorMessage(Config\Options $options) : string
     {
         return $options->get('error') ?? 'Commit message did not match regex: %s';
     }
 
     /**
-     * Determine the error message to use.
+     * Determine the error message to use
      *
      * @param  \CaptainHook\App\Config\Options $options
      * @return string
      */
-    protected function getSuccessMessage(Config\Options $options)
+    protected function getSuccessMessage(Config\Options $options) : string
     {
         return $options->get('success') ?? 'Found matching pattern: %s';
     }

@@ -22,7 +22,7 @@ use SebastianFeldmann\Git\CommitMessage;
 class MsgNotEmpty extends Base
 {
     /**
-     * SubjectStartsUpperCase constructor.
+     * SubjectStartsUpperCase constructor
      */
     public function __construct()
     {
@@ -30,7 +30,7 @@ class MsgNotEmpty extends Base
     }
 
     /**
-     * Check if commit message is not empty.
+     * Check if commit message is not empty
      *
      * @param  \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool

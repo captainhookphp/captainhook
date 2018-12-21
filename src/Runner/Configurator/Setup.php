@@ -27,5 +27,5 @@ interface Setup
      * @param  \CaptainHook\App\Config $config
      * @return void
      */
-    public function configureHooks(Config $config);
+    public function configureHooks(Config $config) : void;
 }

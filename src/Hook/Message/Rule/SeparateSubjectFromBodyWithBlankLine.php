@@ -22,7 +22,7 @@ use SebastianFeldmann\Git\CommitMessage;
 class SeparateSubjectFromBodyWithBlankLine extends Base
 {
     /**
-     * Constructor.
+     * Constructor
      */
     public function __construct()
     {
@@ -30,7 +30,7 @@ class SeparateSubjectFromBodyWithBlankLine extends Base
     }
 
     /**
-     * Check if subject and body are separated by a blank line.
+     * Check if subject and body are separated by a blank line
      *
      * @param  \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool

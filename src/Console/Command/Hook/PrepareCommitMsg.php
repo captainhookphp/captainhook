@@ -32,8 +32,10 @@ class PrepareCommitMsg extends Hook
 
     /**
      * Configure the command
+     *
+     * @return void
      */
-    protected function configure()
+    protected function configure() : void
     {
         parent::configure();
         $this->addArgument('file', InputArgument::REQUIRED, 'File containing the commit log message');

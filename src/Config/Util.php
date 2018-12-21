@@ -22,12 +22,13 @@ use CaptainHook\App\Hook\Util as HookUtil;
 abstract class Util
 {
     /**
-     * Validate a configuration.
+     * Validate a configuration
      *
      * @param  array $json
+     * @return void
      * @throws \RuntimeException
      */
-    public static function validateJsonConfiguration(array $json)
+    public static function validateJsonConfiguration(array $json) : void
     {
         foreach ($json as $hook => $config) {
             // check hook name
@@ -39,12 +40,13 @@ abstract class Util
     }
 
     /**
-     * Validate a hook configuration.
+     * Validate a hook configuration
      *
      * @param  array $json
+     * @return void
      * @throws \RuntimeException
      */
-    public static function validateHookConfig(array $json)
+    public static function validateHookConfig(array $json) : void
     {
         if (!self::keysExist(['enabled', 'actions'], $json)) {
             throw new \RuntimeException('Config error: invalid hook configuration');
@@ -56,12 +58,13 @@ abstract class Util
     }
 
     /**
-     * Validate a list of action configurations.
+     * Validate a list of action configurations
      *
      * @param  array $json
+     * @return void
      * @throws \RuntimeException
      */
-    public static function validateActionsConfig(array $json)
+    public static function validateActionsConfig(array $json) : void
     {
         foreach ($json as $action) {
             if (!self::keysExist(['action'], $action)) {
@@ -74,7 +77,7 @@ abstract class Util
     }
 
     /**
-     * Does an array have the expected keys.
+     * Does an array have the expected keys
      *
      * @param  array $keys
      * @param  array $subject

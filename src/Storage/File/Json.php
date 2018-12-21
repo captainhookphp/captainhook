@@ -22,7 +22,7 @@ use CaptainHook\App\Storage\File;
 class Json extends File
 {
     /**
-     * Read and decode the json file.
+     * Read and decode the json file
      *
      * @param  bool $assoc
      * @return \stdClass|array
@@ -33,7 +33,7 @@ class Json extends File
     }
 
     /**
-     * Read the file and decode to assoc array.
+     * Read the file and decode to assoc array
      *
      * @return array
      */
@@ -43,12 +43,13 @@ class Json extends File
     }
 
     /**
-     * Encode content to json and write to disk.
+     * Encode content to json and write to disk
      *
-     * @param mixed $content
-     * @param int   $options
+     * @param  mixed $content
+     * @param  int   $options
+     * @return void
      */
-    public function write($content, $options = 448)
+    public function write($content, $options = 448) : void
     {
         $json = json_encode($content, $options) . ($options & JSON_PRETTY_PRINT ? "\n" : '');
         parent::write($json);

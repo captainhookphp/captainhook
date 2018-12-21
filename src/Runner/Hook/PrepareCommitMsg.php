@@ -62,7 +62,7 @@ class PrepareCommitMsg extends Hook
      *
      * @return void
      */
-    public function beforeHook()
+    public function beforeHook() : void
     {
         $this->commentChar = $this->repository->getConfigOperator()->getSafely('core.commentchar', '#');
         $this->file        = (string)$this->arguments->get('file');
@@ -81,7 +81,7 @@ class PrepareCommitMsg extends Hook
      *
      * @return void
      */
-    public function beforeAction()
+    public function beforeAction() : void
     {
         $this->repository->setCommitMsg(Git\CommitMessage::createFromFile($this->file, $this->commentChar));
         parent::beforeAction();
@@ -92,7 +92,7 @@ class PrepareCommitMsg extends Hook
      *
      * @return void
      */
-    public function afterAction()
+    public function afterAction() : void
     {
         file_put_contents($this->file, $this->repository->getCommitMsg()->getRawContent());
         parent::afterAction();

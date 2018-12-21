@@ -30,7 +30,8 @@ interface Action
      * @param  \CaptainHook\App\Console\IO       $io
      * @param  \SebastianFeldmann\Git\Repository $repository
      * @param  \CaptainHook\App\Config\Action    $action
+     * @return void
      * @throws \Exception
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action);
+    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action) : void;
 }

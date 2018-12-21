@@ -25,14 +25,15 @@ use SebastianFeldmann\Cli\Processor\ProcOpen as Processor;
 class Cli
 {
     /**
-     * Execute the configured action.
+     * Execute the configured action
      *
      * @param  \CaptainHook\App\Console\IO     $io
      * @param  \CaptainHook\App\Config\Action  $action
      * @param  \CaptainHook\App\Config\Options $arguments
+     * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    public function execute(IO $io, Config\Action $action, Config\Options $arguments)
+    public function execute(IO $io, Config\Action $action, Config\Options $arguments) : void
     {
         $processor = new Processor();
         $result    = $processor->run($this->formatCommand($action->getAction(), $arguments->getAll()));
@@ -50,14 +51,14 @@ class Cli
      * This replaces the hook argument placeholder.
      *  - prepare-commit-msg => FILE, MODE, HASH
      *  - commit-msg         => FILE
-     *  - pre-push           => NAME, URL
+     *  - pre-push           => TARGET, URL
      *  - pre-commit         => -
      *
      * @param  string $command
      * @param  array  $args
      * @return string
      */
-    protected function formatCommand(string $command, array $args)
+    protected function formatCommand(string $command, array $args) : string
     {
         foreach ($args as $key => $value) {
             $command = str_replace('{' . strtoupper($key) . '}', $value, $command);
