@@ -9,6 +9,7 @@
  */
 namespace CaptainHook\App\Runner\Action;
 
+use CaptainHook\App\Config\Options;
 use CaptainHook\App\Runner\BaseTestRunner;
 
 class CliTest extends BaseTestRunner
@@ -18,18 +19,33 @@ class CliTest extends BaseTestRunner
      */
     public function testExecuteSuccess()
     {
-        $config = $this->getConfigMock();
         $io     = $this->getIOMock();
-        $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
-
-        $cmd = CH_PATH_FILES . '/bin/success';
+        $args   = new Options([]);
+        $cmd    = CH_PATH_FILES . '/bin/success';
 
         $io->expects($this->once())->method('write');
         $action->expects($this->once())->method('getAction')->willReturn($cmd);
 
         $cli = new Cli();
-        $cli->execute($config, $io, $repo, $action);
+        $cli->execute($io, $action, $args);
+    }
+
+    /**
+     * Tests Cli::execute
+     */
+    public function testExecuteSuccessWithReplacements()
+    {
+        $io     = $this->getIOMock();
+        $action = $this->getActionConfigMock();
+        $args   = new Options(['file' => 'bin', 'mode' => 'success']);
+        $cmd    = CH_PATH_FILES . '/{FILE}/{MODE}';
+
+        $io->expects($this->once())->method('write');
+        $action->expects($this->once())->method('getAction')->willReturn($cmd);
+
+        $cli = new Cli();
+        $cli->execute($io, $action, $args);
     }
 
     /**
@@ -39,16 +55,14 @@ class CliTest extends BaseTestRunner
      */
     public function testExecuteFailure()
     {
-        $config = $this->getConfigMock();
         $io     = $this->getIOMock();
-        $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
-
-        $cmd = CH_PATH_FILES . '/bin/failure';
+        $args   = new Options([]);
+        $cmd    = CH_PATH_FILES . '/bin/failure';
 
         $action->expects($this->once())->method('getAction')->willReturn($cmd);
 
         $cli = new Cli();
-        $cli->execute($config, $io, $repo, $action);
+        $cli->execute($io, $action, $args);
     }
 }

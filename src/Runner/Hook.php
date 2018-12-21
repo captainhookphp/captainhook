@@ -113,7 +113,7 @@ abstract class Hook extends RepositoryAware
 
         $this->io->write(['', '<info>execute hook:</info> <comment>' . $this->hook . '</comment>']);
         foreach ($hookConfig->getActions() as $action) {
-            $this->executeAction($action);
+            $this->handleAction($action);
         }
         $this->afterHook();
     }
@@ -124,7 +124,7 @@ abstract class Hook extends RepositoryAware
      * @param  \CaptainHook\App\Config\Action $action
      * @throws \Exception
      */
-    protected function executeAction(Config\Action $action)
+    protected function handleAction(Config\Action $action)
     {
         $this->io->write([
             '',
@@ -132,37 +132,54 @@ abstract class Hook extends RepositoryAware
             IOUtil::getLineSeparator()
         ]);
 
-        $type   = $action->getType();
-        $runner = self::getActionRunner($type);
-
-        $this->beforeAction();
-        $runner->execute($this->config, $this->io, $this->repository, $action);
-
-        // execute post handling only for php actions
-        // cli actions should do post actions them self
-        if ($type === 'php') {
-            $this->afterAction();
-        }
+        $execMethod = self::getExecMethod($action->getType());
+        $this->{$execMethod}($action);
 
         $this->io->write([str_repeat('-', 80)]);
     }
 
     /**
-     * Return matching action runner.
+     * Execute a php hook action
+     *
+     * @param  \CaptainHook\App\Config\Action $action
+     * @throws \CaptainHook\App\Exception\ActionFailed
+     */
+    protected function executePhpAction(Config\Action $action)
+    {
+        $this->beforeAction();
+        $runner = new Action\PHP();
+        $runner->execute($this->config, $this->io, $this->repository, $action);
+        $this->afterAction();
+    }
+
+    /**
+     * Execute a cli hook action
+     *
+     * @param  \CaptainHook\App\Config\Action $action
+     * @throws \CaptainHook\App\Exception\ActionFailed
+     */
+    protected function executeCliAction(Config\Action $action)
+    {
+        // since the cli has no straight way to communicate back to php
+        // cli hooks have to handle sync stuff by them self
+        // so no 'beforeAction' or 'afterAction' is called here
+        $runner = new Action\Cli();
+        $runner->execute($this->io, $action, $this->arguments);
+    }
+
+    /**
+     * Return the right method to call to execute an action
      *
      * @param  string $type
-     * @return \CaptainHook\App\Hook\Action
-     * @throws \RuntimeException
+     * @return string
      */
-    public static function getActionRunner($type) : ActionInterface
+    public static function getExecMethod(string $type) : string
     {
-        switch ($type) {
-            case 'php':
-                return new Action\PHP();
-            case 'cli':
-                return new Action\Cli();
-            default:
-                throw new \RuntimeException('Unknown action type: ' . $type);
+        $valid = ['php' => 'executePhpAction', 'cli' => 'executeCliAction'];
+
+        if (!isset($valid[$type])) {
+            throw new \RuntimeException('invalid action type: ' . $type);
         }
+        return $valid[$type];
     }
 }

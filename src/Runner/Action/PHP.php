@@ -23,7 +23,7 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
-class PHP implements Action
+class PHP
 {
     /**
      * Execute the configured action.

@@ -12,9 +12,7 @@ namespace CaptainHook\App\Runner\Action;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Exception;
-use CaptainHook\App\Hook\Action;
 use SebastianFeldmann\Cli\Processor\ProcOpen as Processor;
-use SebastianFeldmann\Git\Repository;
 
 /**
  * Class Cli
@@ -24,26 +22,46 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/sebastianfeldmann/captainhook
  * @since   Class available since Release 0.9.0
  */
-class Cli implements Action
+class Cli
 {
     /**
      * Execute the configured action.
      *
-     * @param  \CaptainHook\App\Config           $config
-     * @param  \CaptainHook\App\Console\IO       $io
-     * @param  \SebastianFeldmann\Git\Repository $repository
-     * @param  \CaptainHook\App\Config\Action    $action
-     * @throws \Exception
+     * @param  \CaptainHook\App\Console\IO     $io
+     * @param  \CaptainHook\App\Config\Action  $action
+     * @param  \CaptainHook\App\Config\Options $arguments
+     * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action)
+    public function execute(IO $io, Config\Action $action, Config\Options $arguments)
     {
         $processor = new Processor();
-        $result    = $processor->run($action->getAction());
+        $result    = $processor->run($this->formatCommand($action->getAction(), $arguments->getAll()));
 
         if (!$result->isSuccessful()) {
             throw Exception\ActionFailed::withMessage($result->getStdOut() . PHP_EOL . $result->getStdErr());
         }
 
         $io->write($result->getStdOut());
+    }
+
+    /**
+     * Replace argument placeholder with their original values
+     *
+     * This replaces the hook argument placeholder.
+     *  - prepare-commit-msg => FILE, MODE, HASH
+     *  - commit-msg         => FILE
+     *  - pre-push           => NAME, URL
+     *  - pre-commit         => -
+     *
+     * @param  string $command
+     * @param  array  $args
+     * @return string
+     */
+    protected function formatCommand(string $command, array $args)
+    {
+        foreach ($args as $key => $value) {
+            $command = str_replace('{' . strtoupper($key) . '}', $value, $command);
+        }
+        return $command;
     }
 }

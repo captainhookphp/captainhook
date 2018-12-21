@@ -17,13 +17,13 @@ class HookTest extends BaseTestRunner
     /**
      * Tests Hook::getActionRunner
      */
-    public function testGetRunner()
+    public function testGetExecMethod()
     {
-        $php = Hook::getActionRunner('php');
-        $cli = Hook::getActionRunner('cli');
+        $php = Hook::getExecMethod('php');
+        $cli = Hook::getExecMethod('cli');
 
-        $this->assertInstanceOf(PHP::class, $php);
-        $this->assertInstanceOf(Cli::class, $cli);
+        $this->assertEquals('executePhpAction', $php);
+        $this->assertEquals('executeCliAction', $cli);
     }
 
     /**
@@ -33,6 +33,6 @@ class HookTest extends BaseTestRunner
      */
     public function testGetRunnerFailure()
     {
-        Hook::getActionRunner('foo');
+        Hook::getExecMethod('foo');
     }
 }
