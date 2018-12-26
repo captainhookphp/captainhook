@@ -20,7 +20,7 @@ class AdvancedTest extends BaseTestRunner
     {
         $io     = $this->getIOMock();
         $config = $this->getConfigMock();
-        $config->expects($this->exactly(4))->method('getHookConfig')->willReturn($this->getHookConfigMock());
+        $config->expects($this->exactly(5))->method('getHookConfig')->willReturn($this->getHookConfigMock());
         $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', 'echo \'foo\'', 'n'));
 
         $setup  = new Advanced($io);

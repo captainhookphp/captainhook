@@ -29,6 +29,8 @@ final class Hooks
 
     const PREPARE_COMMIT_MSG = 'prepare-commit-msg';
 
+    const POST_COMMIT = 'post-commit';
+
     /**
      * Returns the list of valid hooks
      *
@@ -41,6 +43,7 @@ final class Hooks
             self::PRE_PUSH           => 'PrePush',
             self::PRE_COMMIT         => 'PreCommit',
             self::PREPARE_COMMIT_MSG => 'PrepareCommitMsg',
+            self::POST_COMMIT        => 'PostCommit',
         ];
     }
 }
