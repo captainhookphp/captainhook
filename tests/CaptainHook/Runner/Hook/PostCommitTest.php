@@ -32,7 +32,7 @@ class PostCommitTest extends BaseTestRunner
         $io->expects($this->exactly(4))->method('write');
 
         $args   = new Config\Options([]);
-        $runner = new PreCommit($io, $config, $repo, $args);
+        $runner = new PostCommit($io, $config, $repo, $args);
         $runner->run();
     }
 
@@ -50,7 +50,7 @@ class PostCommitTest extends BaseTestRunner
         $io->expects($this->once())->method('write');
 
         $args   = new Config\Options([]);
-        $runner = new PreCommit($io, $config, $repo, $args);
+        $runner = new PostCommit($io, $config, $repo, $args);
         $runner->run();
     }
 }
