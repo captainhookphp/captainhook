@@ -57,9 +57,9 @@ class Beams extends Book
     /**
      * Write error to stdErr
      *
-     * @param \CaptainHook\App\Console\IO       $io
-     * @param \SebastianFeldmann\Git\Repository $repository
-     * @param void
+     * @param  \CaptainHook\App\Console\IO       $io
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @return void
      */
     private function writeError(IO $io, Repository $repository) : void
     {
