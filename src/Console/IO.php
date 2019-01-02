@@ -16,7 +16,7 @@ namespace CaptainHook\App\Console;
  * @author  Nils Adermann <naderman@naderman.de>
  * @author  Jordi Boggiano <j.boggiano@seld.be>
  * @author  Sebastian Feldmann <sf@sebastian.feldmann.info>
- * @link    https://github.com/sebastianfeldmann/captainhook
+ * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 0.9.0
  */
 interface IO

@@ -16,7 +16,7 @@ use CaptainHook\App\Hook\Util as HookUtil;
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/sebastianfeldmann/captainhook
+ * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 1.0.3
  */
 abstract class Util

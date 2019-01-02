@@ -17,7 +17,7 @@ use CaptainHook\App\Hook\Message\Rule;
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/sebastianfeldmann/captainhook
+ * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 0.9.0
  */
 abstract class Base implements Rule

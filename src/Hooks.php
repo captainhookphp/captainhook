@@ -16,7 +16,7 @@ namespace CaptainHook\App;
  *
  * @package CaptainHook
  * @author  Andrea Heigl <andreas@heigl.org>
- * @link    https://github.com/sebastianfeldmann/captainhook
+ * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 3.0.1
  */
 final class Hooks
