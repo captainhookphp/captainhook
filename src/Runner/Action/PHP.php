@@ -44,7 +44,7 @@ class PHP
             if ($this->isStaticMethodCall($class)) {
                 $io->write($this->executeStatic($class));
             } else {
-                $exe = $this->createAction($class, $action->getOptions());
+                $exe = $this->createAction($class);
                 $exe->execute($config, $io, $repository, $action);
             }
         } catch (\Exception $e) {
@@ -81,14 +81,9 @@ class PHP
      * @return \CaptainHook\App\Hook\Action
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    protected function createAction(string $class, Config\Options $options) : Action
+    protected function createAction(string $class) : Action
     {
         $action = new $class();
-        if ($action instanceof ActionFactory) {
-            $factory = new $action();
-            $action = $factory->getAction($options);
-        }
-
         if (!$action instanceof Action) {
             throw ActionFailed::withMessage(
                 'PHP class ' . $class . ' has to implement the \'Action\' interface'
