@@ -1,7 +1,7 @@
 {
   "name": "captainhook/captainhook",
-  "description": "PHP git hook manager",
   "type": "library",
+  "description": "PHP git hook manager",
   "keywords": ["git", "hooks", "pre-commit", "pre-push", "commit-msg", "prepare-commit-msg"],
   "homepage": "https://github.com/captainhookphp/captainhook",
   "license": "MIT",
@@ -28,6 +28,7 @@
     "php": ">=7.1.0",
     "ext-json": "*",
     "ext-spl": "*",
+    "ext-simplexml": "*",
     "sebastianfeldmann/cli": "^2.1",
     "sebastianfeldmann/git": "^1.0.7",
     "symfony/console": ">=2.7"
@@ -54,6 +55,6 @@
     "your git hooks": "run 'vendor/bin/captainhook configure' to set up your hook configuration"
   },
   "replace" : {
-    "sebastianfeldmann/captainhook" : "*"
+    "sebastianfeldmann/captainhook": "*"
   }
 }
