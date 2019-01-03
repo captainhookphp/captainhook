@@ -18,16 +18,6 @@ class UtilTest extends TestCase
      *
      * @expectedException \Exception
      */
-    public function testInvalidHookName()
-    {
-        Util::validateJsonConfiguration(['pre-what-ever' => []]);
-    }
-
-    /**
-     * Tests Util::validateJsonConfiguration
-     *
-     * @expectedException \Exception
-     */
     public function testEnabledMissing()
     {
         Util::validateJsonConfiguration(['pre-commit' => ['actions' => []]]);

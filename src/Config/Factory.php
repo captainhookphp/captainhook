@@ -69,8 +69,10 @@ class Factory
     {
         Util::validateJsonConfiguration($json);
 
-        foreach ($json as $hook => $data) {
-            $this->configureHook($config->getHookConfig($hook), $data);
+        foreach (HookUtil::getValidHooks() as $hook => $class) {
+            if (isset($json[$hook])) {
+                $this->configureHook($config->getHookConfig($hook), $json[$hook]);
+            }
         }
     }
 
