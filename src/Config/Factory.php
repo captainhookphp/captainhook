@@ -9,6 +9,7 @@
  */
 namespace CaptainHook\App\Config;
 
+use CaptainHook\App\CH;
 use CaptainHook\App\Config;
 use CaptainHook\App\Hook\Util as HookUtil;
 use CaptainHook\App\Storage\File\Json;
@@ -45,7 +46,7 @@ class Factory
      */
     public function createConfig($path = '') : Config
     {
-        $path       = $path ?: getcwd() . DIRECTORY_SEPARATOR . 'captainhook.json';
+        $path       = $path ?: getcwd() . DIRECTORY_SEPARATOR . CH::CONFIG;
         $json       = new Json($path);
         $fileExists = $json->exists();
         $config     = new Config($path, $fileExists);

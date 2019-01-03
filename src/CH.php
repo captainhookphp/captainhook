@@ -16,10 +16,10 @@ namespace CaptainHook\App;
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 0.9.0
- * @internal
  */
 final class CH
 {
     const VERSION      = '4.0.0';
     const RELEASE_DATE = '2018-12-21';
+    const CONFIG       = 'captainhook.json';
 }

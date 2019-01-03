@@ -9,6 +9,7 @@
  */
 namespace CaptainHook\App\Hook\Message\Action;
 
+use CaptainHook\App\CH;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Git\DummyRepo;
@@ -47,7 +48,7 @@ class PrepareTest extends TestCase
     {
         /** @var NullIO $io */
         $io      = $this->createPartialMock(NullIO::class, ['write']);
-        $config  = new Config(CH_PATH_FILES . '/captainhook.json');
+        $config  = new Config(CH_PATH_FILES . DIRECTORY_SEPARATOR . CH::CONFIG);
         $repo    = new Repository($this->repo->getPath());
         $action  = new Config\Action(
             'php',

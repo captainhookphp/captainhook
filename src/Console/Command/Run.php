@@ -9,6 +9,7 @@
  */
 namespace CaptainHook\App\Console\Command;
 
+use CaptainHook\App\CH;
 use CaptainHook\App\Config;
 use CaptainHook\App\Hook\Util;
 use SebastianFeldmann\Git\Repository;
@@ -44,7 +45,7 @@ class Run extends Base
                  'c',
                  InputOption::VALUE_OPTIONAL,
                  'Path to your json configuration',
-                 getcwd() . DIRECTORY_SEPARATOR . 'captainhook.json'
+                 getcwd() . DIRECTORY_SEPARATOR . CH::CONFIG
              );
     }
 

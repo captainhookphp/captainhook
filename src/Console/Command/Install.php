@@ -9,6 +9,7 @@
  */
 namespace CaptainHook\App\Console\Command;
 
+use CaptainHook\App\CH;
 use CaptainHook\App\Runner\Installer;
 use SebastianFeldmann\Git\Repository;
 use Symfony\Component\Console\Input\InputArgument;
@@ -42,7 +43,7 @@ class Install extends Base
                  'c',
                  InputOption::VALUE_OPTIONAL,
                  'Path to your json configuration',
-                 getcwd() . DIRECTORY_SEPARATOR . 'captainhook.json'
+                 getcwd() . DIRECTORY_SEPARATOR . CH::CONFIG
              )->addOption('force', 'f', InputOption::VALUE_NONE, 'Force to overwrite existing hooks')
              ->addOption(
                  'git-directory',

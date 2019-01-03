@@ -9,6 +9,7 @@
  */
 namespace CaptainHook\App\Console\Application;
 
+use CaptainHook\App\CH;
 use CaptainHook\App\Config;
 use CaptainHook\App\Git\DummyRepo;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -82,7 +83,7 @@ class HookTest extends TestCase
     {
         $app = new Hook();
 
-        $this->assertEquals(getcwd()  . '/captainhook.json', $app->getConfigFile());
+        $this->assertEquals(getcwd()  . '/' . CH::CONFIG, $app->getConfigFile());
     }
 
     /**

@@ -105,7 +105,7 @@ abstract class Hook extends RepositoryAware
         /** @var \CaptainHook\App\Config\Hook $hookConfig */
         $hookConfig = $this->config->getHookConfig($this->hook);
 
-        // if hook is not enabled in captainhook.json skip action execution
+        // if hook is not enabled in captainhook configuration skip the action execution
         if (!$hookConfig->isEnabled()) {
             $this->io->write('<info>skip hook:</info> <comment>' . $this->hook . '</comment>');
             return;

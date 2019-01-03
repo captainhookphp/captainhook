@@ -9,6 +9,7 @@
  */
 namespace CaptainHook\App\Console\Application;
 
+use CaptainHook\App\CH;
 use CaptainHook\App\Console\Application;
 
 /**
@@ -47,7 +48,7 @@ abstract class ConfigHandler extends Application
     public function getConfigFile() : string
     {
         if (empty($this->configFile)) {
-            $this->configFile = getcwd() . DIRECTORY_SEPARATOR . 'captainhook.json';
+            $this->configFile = getcwd() . DIRECTORY_SEPARATOR . CH::CONFIG;
         }
         return $this->configFile;
     }

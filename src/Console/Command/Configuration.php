@@ -9,6 +9,7 @@
  */
 namespace CaptainHook\App\Console\Command;
 
+use CaptainHook\App\CH;
 use CaptainHook\App\Runner\Configurator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -42,7 +43,7 @@ class Configuration extends Base
                  'c',
                  InputOption::VALUE_OPTIONAL,
                  'Path to your json configuration',
-                 './captainhook.json'
+                 './' . CH::CONFIG
              );
     }
 
