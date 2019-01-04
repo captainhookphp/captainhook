@@ -29,26 +29,26 @@
     "ext-json": "*",
     "ext-spl": "*",
     "ext-simplexml": "*",
-    "sebastianfeldmann/cli": "^2.1",
-    "sebastianfeldmann/git": "^1.0.7",
+    "sebastianfeldmann/cli": "^3.0",
+    "sebastianfeldmann/git": "^2.0",
     "symfony/console": ">=2.7"
   },
   "require-dev": {
     "composer/composer": "~1",
-    "phpunit/phpunit": "^6.5"
+    "phpunit/phpunit": "^7.0"
   },
   "bin": [
     "captainhook"
   ],
   "extra": {
+    "captainhookconfig": "./captainhook.script.json",
     "branch-alias": {
       "dev-master": "4.0.x-dev"
     }
   },
   "scripts": {
-    "post-install-cmd": [
-      "\\CaptainHook\\App\\Composer\\Cmd::configure",
-      "\\CaptainHook\\App\\Composer\\Cmd::install"
+    "post-autoload-dump": [
+      "\\CaptainHook\\App\\Composer\\Cmd::setup"
     ]
   },
   "suggest": {

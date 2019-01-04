@@ -20,38 +20,10 @@ use PHPUnit\Framework\TestCase;
 class CmdTest extends TestCase
 {
     /**
-     * Tests Cmd::configure
+     * Tests Cmd::setup
      */
-    public function testConfigureConfigExists()
+    public function testSetupConfigExists()
     {
-        $extra = ['captainhookconfig' => CH_PATH_FILES . '/config/valid.json'];
-        $event = $this->getEventMock($extra);
-
-        Cmd::configure($event);
-
-        $this->assertFileExists($extra['captainhookconfig']);
-    }
-
-    /**
-     * Tests Cmd::configure
-     */
-    public function testConfigureNoConfig()
-    {
-        $extra = ['captainhookconfig' => sys_get_temp_dir() . DIRECTORY_SEPARATOR . md5(__FILE__)];
-        $event = $this->getEventMock($extra);
-        Cmd::configure($event);
-
-        $this->assertFileExists($extra['captainhookconfig']);
-
-        unlink($extra['captainhookconfig']);
-    }
-
-    /**
-     * Tests Cmd::configure
-     */
-    public function testInstall()
-    {
-        $event = $this->getEventMock();
         $repo  = new DummyRepo();
         $repo->setup();
 
@@ -60,11 +32,35 @@ class CmdTest extends TestCase
         chdir($repo->getPath());
         file_put_contents($config, '{}');
 
-        Cmd::install($event);
+        $event = $this->getEventMock([]);
+
+        Cmd::setup($event);
 
         $this->assertFileExists($repo->getHookDir() . DIRECTORY_SEPARATOR . 'pre-commit', 'pre-commit');
         $this->assertFileExists($repo->getHookDir() . DIRECTORY_SEPARATOR . 'pre-push', 'pre-push');
         $this->assertFileExists($repo->getHookDir() . DIRECTORY_SEPARATOR . 'commit-msg', 'commit-msg');
+
+        $repo->cleanup();
+        chdir($old);
+    }
+
+    /**
+     * Tests Cmd::setup
+     */
+    public function testSetupNoConfig()
+    {
+        $repo  = new DummyRepo();
+        $repo->setup();
+
+        $config = $repo->getPath() . DIRECTORY_SEPARATOR . CH::CONFIG;
+        $old    = getcwd();
+        chdir($repo->getPath());
+
+        $extra = ['captainhookconfig' => $config];
+        $event = $this->getEventMock($extra);
+        Cmd::setup($event);
+
+        $this->assertFileExists($extra['captainhookconfig']);
 
         $repo->cleanup();
         chdir($old);

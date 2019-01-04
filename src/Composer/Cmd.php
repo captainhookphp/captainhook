@@ -32,16 +32,27 @@ abstract class Cmd
      * @return void
      * @throws \Exception
      */
-    public static function configure(Event $event) : void
+    public static function setup(Event $event) : void
     {
         $config = self::getCaptainHookConfig($event);
+        $app    = self::createApplication($event, $config);
 
+        self::configure($app, $config);
+        self::install($app, $config);
+    }
+
+    /**
+     * @param  \CaptainHook\App\Composer\Application $app
+     * @param  string                                $config
+     * @return void
+     * @throws \Exception
+     */
+    private static function configure(Application $app, string $config)
+    {
         if (file_exists($config)) {
-            $event->getIO()->write(('  <info>Skipping configuration: config file exists</info>'));
+            $app->getIO()->write(('  <info>Skipping configuration: config file exists</info>'));
             return;
         }
-
-        $app           = self::createApplication($event, $config);
         $configuration = new Configuration();
         $configuration->setIO($app->getIO());
         $input         = new ArrayInput(
@@ -54,14 +65,13 @@ abstract class Cmd
     /**
      * Installs the hooks to your local repository
      *
-     * @param  \Composer\Script\Event $event
+     * @param  \CaptainHook\App\Composer\Application $app
+     * @param  string                                $config
      * @return void
      * @throws \Exception
      */
-    public static function install(Event $event) : void
+    private static function install(Application $app, string $config) : void
     {
-        $config  = self::getCaptainHookConfig($event);
-        $app     = self::createApplication($event, $config);
         $install = new Install();
         $install->setIO($app->getIO());
         $input   = new ArrayInput(['command' => 'install', '--configuration' => $config, '-f' => '-f']);
