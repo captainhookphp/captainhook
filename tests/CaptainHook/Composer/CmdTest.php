@@ -13,6 +13,7 @@ use CaptainHook\App\CH;
 use Composer\Composer;
 use Composer\Config;
 use Composer\IO\NullIO;
+use Composer\Package\Package;
 use Composer\Script\Event;
 use CaptainHook\App\Git\DummyRepo;
 use PHPUnit\Framework\TestCase;
@@ -93,15 +94,15 @@ class CmdTest extends TestCase
      */
     private function getComposerMock(array $extra = [])
     {
-        $config = $this->getMockBuilder(Config::class)
-                       ->disableOriginalConstructor()
-                       ->getMock();
-        $config->expects($this->once())->method('get')->willReturn($extra);
+        $package = $this->getMockBuilder(Package::class)
+                        ->disableOriginalConstructor()
+                        ->getMock();
+        $package->expects($this->once())->method('getExtra')->willReturn($extra);
 
         $composer = $this->getMockBuilder(Composer::class)
                          ->disableOriginalConstructor()
                          ->getMock();
-        $composer->expects($this->once())->method('getConfig')->willReturn($config);
+        $composer->expects($this->once())->method('getPackage')->willReturn($package);
 
         return $composer;
     }

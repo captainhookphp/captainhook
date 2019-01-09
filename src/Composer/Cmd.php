@@ -87,12 +87,12 @@ abstract class Cmd
      */
     private static function getCaptainHookConfig(Event $event) : string
     {
-        $config = $event->getComposer()->getConfig();
-        $extra  = $config->get('extra');
-        if ($extra === null || ! isset($extra['captainhookconfig'])) {
+        $package = $event->getComposer()->getPackage();
+        $extra   = $package->getExtra();
+        if ($extra === null || ! isset($extra[CH::CONFIG_COMPOSER])) {
             return getcwd() . DIRECTORY_SEPARATOR . CH::CONFIG;
         }
-        return $extra['captainhookconfig'];
+        return $extra[CH::CONFIG_COMPOSER];
     }
 
     /**
