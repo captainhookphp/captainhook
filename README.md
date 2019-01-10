@@ -1,17 +1,18 @@
-# CaptainHook
+# CaptainHook 4.0
 
 *CaptainHook* is an easy to use and very flexible git hook library for php developers.
 It enables you to configure your git hook actions in a simple json file.
 
-You can use *CaptainHook* to validate your commit messages, ensure code quality or run unit tests before you
-commit or push changes to git.
+You can use *CaptainHook* to validate your commit messages, ensure code quality or run unit
+tests before you commit or push changes to git.
 
 You can run cli commands, use some built in validators, or write
-your own PHP classes that get executed by *CaptainHook*. For more information have a look at the [documentation](https://captainhookphp.github.io/captainhook/ "CaptainHook Documentation").
+your own PHP classes that get executed by *CaptainHook*.
+For more information have a look at the [documentation](https://captainhookphp.github.io/captainhook/ "CaptainHook Documentation").
 
 
 [![Latest Stable Version](https://poser.pugx.org/captainhook/captainhook/v/stable.svg?v=1)](https://packagist.org/packages/captainhook/captainhook)
-[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.0-8892BF.svg)](https://php.net/)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.1-8892BF.svg)](https://php.net/)
 [![Downloads](https://img.shields.io/packagist/dt/captainhook/captainhook.svg?v1)](https://packagist.org/packages/captainhook/captainhook)
 [![License](https://poser.pugx.org/captainhook/captainhook/license.svg?v=1)](https://packagist.org/packages/captainhook/captainhook)
 [![Build Status](https://travis-ci.org/CaptainHookPhp/captainhook.svg?branch=master)](https://travis-ci.org/CaptainHookPhp/captainhook)
@@ -20,25 +21,26 @@ your own PHP classes that get executed by *CaptainHook*. For more information ha
 
 ## Installation
 
-Use Composer to install CaptainHook.
+Use *Composer* to install *CaptainHook*.
 ```bash
     $ composer require --dev captainhook/captainhook
 ```
-If you want to make sure everybody in your team sets up the hooks as well use the CaptainHook `composer-plugin` instead.
+If you want to make sure your whole team uses the same hooks and you want *Composer* to take care of the hook
+installation and activation you should use the *CaptainHook* `composer-plugin` instead.
 ```bash
     $ composer require --dev captainhook/plugin-composer
 ```
-The plugin will make sure that the hooks get activated after every `composer install`.
+The plugin will make sure that the hooks get activated after every `composer install` or `update`.
 
-## Configuration
+## Setup
 After installing CaptainHook you can use the *captainhook* executable to create a configuration.
 ```bash
     $ vendor/bin/captainhook configure
 ```
 Now there should be a *captainhook.json* configuration file.
 
-If you are not using the `composer-plugin` you have to activate the hooks by installing them to your local .git repository.
-Just run the following *captainhook* command.
+If you are not using the `composer-plugin` you have to activate the hooks manually by installing them to
+your local .git repository. To do so just run the following *captainhook* command.
 ```bash
     $ vendor/bin/captainhook install
 ```

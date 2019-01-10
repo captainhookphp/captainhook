@@ -20,7 +20,7 @@ namespace CaptainHook\App;
 final class CH
 {
     const VERSION          = '4.0.0';
-    const RELEASE_DATE     = '2018-12-21';
+    const RELEASE_DATE     = '2019-01-10';
     const CONFIG           = 'captainhook.json';
     const COMPOSER_CONFIG  = 'captainhook-config';
     const COMPOSER_GIT_DIR = 'captainhook-git-dir';
