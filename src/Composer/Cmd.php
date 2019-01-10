@@ -77,7 +77,7 @@ abstract class Cmd
         $options = [
             'command'         => 'install',
             '--configuration' => $config,
-            '--git-directory' => '.git',
+            '--git-directory' => $repo,
             '-f'              => '-f'
         ];
         $app->run(new ArrayInput($options));
