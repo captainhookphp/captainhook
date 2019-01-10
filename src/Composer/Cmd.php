@@ -10,6 +10,7 @@
 namespace CaptainHook\App\Composer;
 
 use CaptainHook\App\CH;
+use Composer\IO\IOInterface;
 use Composer\Script\Event;
 use CaptainHook\App\Console\Command\Configuration;
 use CaptainHook\App\Console\Command\Install;
@@ -35,9 +36,9 @@ abstract class Cmd
     public static function setup(Event $event) : void
     {
         $extra  = self::getExtraConfig($event);
-        $config = self::extract(CH::COMPOSER_CONFIG, $extra);
-        $repo   = self::extract(CH::COMPOSER_GIT_DIR, $extra);
-        $app    = self::createApplication($event, $config);
+        $config = self::extract(CH::COMPOSER_CONFIG, $extra, CH::CONFIG);
+        $repo   = self::extract(CH::COMPOSER_GIT_DIR, $extra, '.git');
+        $app    = self::createApplication($event->getIO(), $config);
 
         self::configure($app, $config);
         self::install($app, $config, $repo);
@@ -52,16 +53,14 @@ abstract class Cmd
     private static function configure(Application $app, string $config)
     {
         if (file_exists($config)) {
-            $app->getIO()->write(('  <info>Skipping configuration: config file exists</info>'));
+            $app->getIO()->write(('  <info>Using CaptainHook config: ' . $config . '</info>'));
             return;
         }
-        $configuration = new Configuration();
-        $configuration->setIO($app->getIO());
-        $input         = new ArrayInput(
-            ['command' => 'configure', '--configuration' => $config, '-f' => '-f', '-e' => '-e']
-        );
-        $app->add($configuration);
-        $app->run($input);
+        $options = [
+            'command'         => 'configure',
+            '--configuration' => $config
+        ];
+        $app->run(new ArrayInput($options));
     }
 
     /**
@@ -75,15 +74,13 @@ abstract class Cmd
      */
     private static function install(Application $app, string $config, string $repo) : void
     {
-        $options = ['command' => 'install', '-f' => '-f'];
-        self::appendNotEmpty($config, '--configuration', $options);
-        self::appendNotEmpty($repo, '--git-directory', $options);
-
-        $install = new Install();
-        $install->setIO($app->getIO());
-        $input   = new ArrayInput($options);
-        $app->add($install);
-        $app->run($input);
+        $options = [
+            'command'         => 'install',
+            '--configuration' => $config,
+            '--git-directory' => '.git',
+            '-f'              => '-f'
+        ];
+        $app->run(new ArrayInput($options));
     }
 
     /**
@@ -101,16 +98,24 @@ abstract class Cmd
     /**
      * Create a CaptainHook Composer application
      *
-     * @param  \Composer\Script\Event $event
-     * @param  string                 $config
+     * @param  \Composer\IO\IOInterface $io
+     * @param  string                   $config
      * @return \CaptainHook\App\Composer\Application
      */
-    private static function createApplication(Event $event, string $config) : Application
+    private static function createApplication(IOInterface $io, string $config) : Application
     {
         $app = new Application();
         $app->setAutoExit(false);
         $app->setConfigFile($config);
-        $app->setProxyIO($event->getIO());
+        $app->setProxyIO($io);
+
+        $install = new Install();
+        $install->setIO($app->getIO());
+        $app->add($install);
+
+        $configuration = new Configuration();
+        $configuration->setIO($app->getIO());
+        $app->add($configuration);
         return $app;
     }
 
@@ -125,20 +130,5 @@ abstract class Cmd
     private static function extract(string $key, array $array, string $default = '') : string
     {
         return isset($array[$key]) ? $array[$key] : $default;
-    }
-
-    /**
-     * Adds a value to an array with a given key if the value is not empty
-     *
-     * @param  string $value
-     * @param  string $key
-     * @param  array  $array
-     * @return void
-     */
-    private static function appendNotEmpty(string $value, string $key, array &$array) : void
-    {
-        if (!empty($value)) {
-            $array[$key] = $value;
-        }
     }
 }

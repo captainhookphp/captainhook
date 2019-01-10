@@ -10,12 +10,11 @@
 namespace CaptainHook\App\Composer;
 
 use CaptainHook\App\CH;
+use CaptainHook\App\Git\DummyRepo;
 use Composer\Composer;
-use Composer\Config;
 use Composer\IO\NullIO;
 use Composer\Package\Package;
 use Composer\Script\Event;
-use CaptainHook\App\Git\DummyRepo;
 use PHPUnit\Framework\TestCase;
 
 class CmdTest extends TestCase
@@ -30,8 +29,8 @@ class CmdTest extends TestCase
 
         $config = $repo->getPath() . DIRECTORY_SEPARATOR . CH::CONFIG;
         $old    = getcwd();
-        chdir($repo->getPath());
         file_put_contents($config, '{}');
+        chdir($repo->getPath());
 
         $event = $this->getEventMock([]);
 
@@ -57,11 +56,11 @@ class CmdTest extends TestCase
         $old    = getcwd();
         chdir($repo->getPath());
 
-        $extra = ['captainhookconfig' => $config];
+        $extra = ['captainhook-config' => $config];
         $event = $this->getEventMock($extra);
         Cmd::setup($event);
 
-        $this->assertFileExists($extra['captainhookconfig']);
+        $this->assertFileExists($extra['captainhook-config']);
 
         $repo->cleanup();
         chdir($old);
@@ -97,12 +96,12 @@ class CmdTest extends TestCase
         $package = $this->getMockBuilder(Package::class)
                         ->disableOriginalConstructor()
                         ->getMock();
-        $package->expects($this->once())->method('getExtra')->willReturn($extra);
+        $package->expects($this->atLeast(1))->method('getExtra')->willReturn($extra);
 
         $composer = $this->getMockBuilder(Composer::class)
                          ->disableOriginalConstructor()
                          ->getMock();
-        $composer->expects($this->once())->method('getPackage')->willReturn($package);
+        $composer->expects($this->atLeast(1))->method('getPackage')->willReturn($package);
 
         return $composer;
     }
