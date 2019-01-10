@@ -1,0 +1,60 @@
+{
+    "pre-commit": {
+        "enabled": true,
+        "actions": [
+            {
+                "action": "\\CaptainHook\\App\\Hook\\PHP\\Action\\Linting",
+                "options": []
+            },
+            {
+                "action": "phpcs --standard=psr2 src",
+                "options": []
+            },
+            {
+                "action": "\\CaptainHook\\App\\Hook\\PHP\\Action\\TestCoverage",
+                "options": []
+            },
+            {
+                "action": "\\CaptainHook\\App\\Hook\\Composer\\Action\\CheckLockFile",
+                "options": []
+            }
+        ]
+    },
+    "prepare-commit-msg": {
+        "enabled": true,
+        "actions": []
+    },
+    "commit-msg": {
+        "enabled": true,
+        "actions": [
+            {
+                "action": "\\CaptainHook\\App\\Hook\\Message\\Action\\Beams",
+                "options": {
+                    "subjectLength": 50,
+                    "bodyLineLength": 72
+                }
+            },
+            {
+                "action": "\\CaptainHook\\App\\Hook\\Message\\Action\\Rules",
+                "options": [
+                    "\\CaptainHook\\App\\Hook\\Message\\Rule\\MsgNotEmpty",
+                    "\\CaptainHook\\App\\Hook\\Message\\Rule\\CapitalizeSubject"
+                ]
+            },
+            {
+                "action": "\\CaptainHook\\App\\Hook\\Message\\Action\\Regex",
+                "options": {
+                    "regex": "#.*#"
+                }
+            }
+        ]
+    },
+    "post-commit": {
+        "enabled": false,
+        "actions": []
+    },
+    "pre-push": {
+        "enabled": false,
+        "actions": []
+    }
+}
