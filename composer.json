@@ -41,7 +41,8 @@
     "captainhook"
   ],
   "extra": {
-    "captainhookconfig": "./captainhook.script.json",
+    "captainhook-config": "captainhook.json",
+    "captainhook-git-dir": ".git",
     "branch-alias": {
       "dev-master": "4.0.x-dev"
     }

@@ -34,11 +34,13 @@ abstract class Cmd
      */
     public static function setup(Event $event) : void
     {
-        $config = self::getCaptainHookConfig($event);
+        $extra  = self::getExtraConfig($event);
+        $config = self::extract(CH::COMPOSER_CONFIG, $extra);
+        $repo   = self::extract(CH::COMPOSER_GIT_DIR, $extra);
         $app    = self::createApplication($event, $config);
 
         self::configure($app, $config);
-        self::install($app, $config);
+        self::install($app, $config, $repo);
     }
 
     /**
@@ -67,32 +69,33 @@ abstract class Cmd
      *
      * @param  \CaptainHook\App\Composer\Application $app
      * @param  string                                $config
+     * @param  string                                $repo
      * @return void
      * @throws \Exception
      */
-    private static function install(Application $app, string $config) : void
+    private static function install(Application $app, string $config, string $repo) : void
     {
+        $options = ['command' => 'install', '-f' => '-f'];
+        self::appendNotEmpty($config, '--configuration', $options);
+        self::appendNotEmpty($repo, '--git-directory', $options);
+
         $install = new Install();
         $install->setIO($app->getIO());
-        $input   = new ArrayInput(['command' => 'install', '--configuration' => $config, '-f' => '-f']);
+        $input   = new ArrayInput($options);
         $app->add($install);
         $app->run($input);
     }
 
     /**
-     * Return the path to the captainhook config file
+     * Return Composer extra config, make sure it is an array
      *
-     * @param  \Composer\Script\Event $event
-     * @return string
+     * @param \Composer\Script\Event $event
+     * @return array
      */
-    private static function getCaptainHookConfig(Event $event) : string
+    private static function getExtraConfig(Event $event) : array
     {
-        $package = $event->getComposer()->getPackage();
-        $extra   = $package->getExtra();
-        if ($extra === null || ! isset($extra[CH::CONFIG_COMPOSER])) {
-            return getcwd() . DIRECTORY_SEPARATOR . CH::CONFIG;
-        }
-        return $extra[CH::CONFIG_COMPOSER];
+        $extra = $event->getComposer()->getPackage()->getExtra();
+        return is_array($extra) ? $extra : [];
     }
 
     /**
@@ -109,5 +112,33 @@ abstract class Cmd
         $app->setConfigFile($config);
         $app->setProxyIO($event->getIO());
         return $app;
+    }
+
+    /**
+     * Extract a value from an array if not set it returns the given default
+     *
+     * @param  string $key
+     * @param  array  $array
+     * @param  string $default
+     * @return string
+     */
+    private static function extract(string $key, array $array, string $default = '') : string
+    {
+        return isset($array[$key]) ? $array[$key] : $default;
+    }
+
+    /**
+     * Adds a value to an array with a given key if the value is not empty
+     *
+     * @param  string $value
+     * @param  string $key
+     * @param  array  $array
+     * @return void
+     */
+    private static function appendNotEmpty(string $value, string $key, array &$array) : void
+    {
+        if (!empty($value)) {
+            $array[$key] = $value;
+        }
     }
 }
