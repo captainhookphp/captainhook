@@ -47,7 +47,7 @@ your local .git repository. To do so just run the following *captainhook* comman
 
 Have a look at this short installation video.
 
-[![Install demo](http://img.youtube.com/vi/5PvqhfDEYT8/0.jpg)](http://www.youtube.com/watch?v=5PvqhfDEYT8)
+[![Install demo](http://img.youtube.com/vi/agwTZ0jhDDs/0.jpg)](http://www.youtube.com/watch?v=agwTZ0jhDDs)
 
 ## Configuration
 
