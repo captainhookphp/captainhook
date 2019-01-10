@@ -44,7 +44,7 @@
     "captainhook-config": "captainhook.json",
     "captainhook-git-dir": ".git",
     "branch-alias": {
-      "dev-master": "4.0.x-dev"
+      "dev-master": "4.1.x-dev"
     }
   },
   "scripts": {
