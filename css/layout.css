@@ -75,6 +75,13 @@ em.hl {
   border-radius: 3px;
 }
 
+.pirate {
+  border-radius: 5px;
+  padding: 10px;
+  font-style: italic !important;
+  background-color: #ebebeb;
+}
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   /* Remove the padding we set earlier */

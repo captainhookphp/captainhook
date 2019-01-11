@@ -45,10 +45,10 @@
       <h1>Installation</h1>
       <p>
         The easiest way to install <em>CaptainHook</em> is by using composer. You can either edit your
-        composer.json manually and put <em class="hl">"captainhook/captainhook": "~3.1"</em> in your
+        composer.json manually and put <em class="hl">"captainhook/captainhook": "^4.0"</em> in your
         <em class="hl">require-dev</em> package list, or run the following command.
       </p>
-      <pre><code class="bash">$ composer require --dev captainhook/captainhook:~3.1</code></pre>
+      <pre><code class="bash">$ composer require --dev captainhook/captainhook</code></pre>
       <p>
         This will install the package itself and a bin-script to you composer bin directory, usually located under
         <em class="hl">vendor/bin</em>.<br>
@@ -60,13 +60,6 @@
       <p>
         While executing this, <em>CaptainHook</em> will ask you a series of questions to create a valid configuration
         file for you.
-        For each hook-event you get asked, if you want to enable it. If you choose to do so,
-        <em>CaptainHook</em> will ask you to add one or more <a href="configure.html#actions">Actions</a> that should get
-        executed for this hook.
-      </p>
-      <p>
-        If you are new to CaptainHook answer the activation question with yes (y) and for now don't add any actions.
-        This way you create an empty but valid configuration file.
       </p>
       <p>
         After creating the configuration file, there is only one step left to finish the installation.
@@ -74,13 +67,44 @@
       </p>
       <pre><code class="bash">$ vendor/bin/captainhook install</code></pre>
       <p>
-        Executing this will create a script, located in you <em class="hl">.git/hooks</em> directory, for each hook
-        you choose to install while running the command. So every time now, git triggers a hook,
+        Executing this will create the hook script located in your <em class="hl">.git/hooks</em> directory, for each hook
+        you choose to install while running the command. So now every time git triggers a hook,
         <em>CaptainHook</em> gets executed.
       </p>
+      <p class="pirate">
+        AYE! Ye have successfully installed <em>CaptainHook</em> to handle yer git hooks. Want to know how to set sail?
+        Have a closer look at thee <a href="configure.html">configuration file</a> to setup yer git hooks.
+      </p>
+
+      <h2>Composer integration</h2>
       <p>
-        BAM! You'r done, you have successfully installed <em>CaptainHook</em> to handle your git hooks. Please have a closer
-        look at the <a href="configure.html">configuration file</a> to setup your git hooks.
+        If you do not want to handle the <em>configuration</em> and <em>install</em> command manually you can use the
+        <em>CaptainHook</em> Composer plugin that handles all of this automatically.
+      </p>
+      <pre><code class="bash">$ composer require --dev captainhook/plugin-composer</code></pre>
+      <p>
+        Installing the plugin <em>CaptainHook</em> gets installed. If you do not have a <em>captainhook.json</em>
+        file <em>CaptainHook</em>is guiding you through the configuration process by asking some yes or no questions.
+        After finishing the configuration the plugin will activate the hooks automatically.
+      </p>
+      <p>
+        Another advantage using the Composer plugin is that after every composer install or update command
+        <em>CaptainHook</em> makes sure the hooks are activated. This ensures your whole team can use the same hooks.
+      </p>
+      <p>
+        You can still ensure the hook activation without using the Composer plugin. To do so you have to add the
+        following lines to your composer.json
+      </p>
+      <pre><code class="javascript">{
+  "scripts": {
+    "post-autoload-dump": "\\CaptainHook\\App\\Composer\\Cmd::setup"
+  }
+}</code></pre>
+
+      <h2>A word of warning</h2>
+      <p class="pirate">
+        Don't ye forget it is still possible to commit without invoking thee hooks. Make sure ye run
+        appropriate backend-sanity checks on yer code, so yer hearties don't break anything AYE!!!
       </p>
 
     </div>

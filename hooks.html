@@ -104,9 +104,10 @@ class PrepareCommitMessage implements HookAction
      * @param  \CaptainHook\App\Console\IO       $io
      * @param  \SebastianFeldmann\Git\Repository $repository
      * @param  \CaptainHook\App\Config\Action    $action
+       @return void
      * @throws \Exception
      */
-    public function execute(Config $config, IO $io, Repo $repository, Action $action)
+    public function execute(Config $config, IO $io, Repo $repository, Action $action) : void
     {
         $message         = $repository->getCommitMsg();
         $text            = 'This will be your commit message';
@@ -148,9 +149,10 @@ class NoEmptyCommitMessages implements HookAction
      * @param  \CaptainHook\App\Console\IO       $io
      * @param  \SebastianFeldmann\Git\Repository $repository
      * @param  \CaptainHook\App\Config\Action    $action
+       @return void
      * @throws \Exception
      */
-    public function execute(Config $config, IO $io, Repo $repository, Action $action)
+    public function execute(Config $config, IO $io, Repo $repository, Action $action) : void
     {
         $message = $repository->getCommitMsg();
         if (empty($message->getContent()) {
