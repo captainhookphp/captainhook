@@ -31,6 +31,8 @@ final class Hooks
 
     const POST_COMMIT = 'post-commit';
 
+    const POST_MERGE = 'post-merge';
+
     /**
      * Returns the list of valid hooks
      *
@@ -44,6 +46,7 @@ final class Hooks
             self::PRE_COMMIT         => 'PreCommit',
             self::PREPARE_COMMIT_MSG => 'PrepareCommitMsg',
             self::POST_COMMIT        => 'PostCommit',
+            self::POST_MERGE         => 'PostMerge',
         ];
     }
 }
