@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 class PostCommitTest extends TestCase
 {
     /**
-     * Tests CommitMsg::run
+     * Tests PostCommit::run
      */
     public function testExecute()
     {

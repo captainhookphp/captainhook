@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 class PrepareCommitMsgTest extends TestCase
 {
     /**
-     * Tests CommitMsg::run
+     * Tests PrepareCommitMsg::run
      */
     public function testExecute()
     {

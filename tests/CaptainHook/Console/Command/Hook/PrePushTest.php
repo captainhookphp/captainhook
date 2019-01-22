@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 class PrePushTest extends TestCase
 {
     /**
-     * Tests CommitMsg::run
+     * Tests PrePush::run
      */
     public function testExecute()
     {
