@@ -27,5 +27,5 @@ class PostMerge extends Hook
      *
      * @var string
      */
-    protected $hook = Hooks::PRE_PUSH;
+    protected $hook = Hooks::POST_MERGE;
 }
