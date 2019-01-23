@@ -11,6 +11,7 @@ namespace CaptainHook\App\Console\Command\Hook;
 
 use CaptainHook\App\Console\Command\Hook;
 use CaptainHook\App\Hooks;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * Class PostMerge
@@ -28,4 +29,15 @@ class PostMerge extends Hook
      * @var string
      */
     protected $name = Hooks::POST_MERGE;
+
+    /**
+     * Configure the command
+     *
+     * @return void
+     */
+    protected function configure() : void
+    {
+        parent::configure();
+        $this->addArgument('squash', InputArgument::OPTIONAL, 'Merge was done with a squash merge.');
+    }
 }

@@ -27,7 +27,11 @@ class PostMergeTest extends TestCase
 
         $cmd    = new PostMerge(CH_PATH_FILES . '/config/empty.json', $repo->getPath());
         $output = new DummyOutput();
-        $input  = new ArrayInput([]);
+        $input  = new ArrayInput(
+            [
+                'squash' => 0
+            ]
+        );
 
         $cmd->setIO(new NullIO());
         $cmd->run($input, $output);
