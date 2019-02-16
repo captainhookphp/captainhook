@@ -69,6 +69,21 @@ class DefaultIOTest extends TestCase
     }
 
     /**
+     * Tests DefaultIO::getArguments
+     */
+    public function testGetArguments()
+    {
+        $input  = $this->getInputMock();
+        $output = $this->getOutputMock();
+        $helper = $this->getHelperSetMock();
+
+        $input->expects($this->once())->method('getArguments')->willReturn(['foo' => 'bar']);
+        $io = new DefaultIO($input, $output, $helper);
+
+        $this->assertEquals(['foo' => 'bar'], $io->getArguments());
+    }
+
+    /**
      * Tests DefaultIO::isInteractive
      */
     public function testIsInteractive()

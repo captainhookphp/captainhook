@@ -21,5 +21,13 @@ use CaptainHook\App\Console\IO;
  */
 abstract class Base implements IO
 {
-
+    /**
+     * Return the original cli arguments
+     *
+     * @return array
+     */
+    public function getArguments() : array
+    {
+        return [];
+    }
 }

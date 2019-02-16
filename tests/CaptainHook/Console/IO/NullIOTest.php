@@ -7,6 +7,15 @@ use PHPUnit\Framework\TestCase;
 class NullIOTest extends TestCase
 {
     /**
+     * Tests NullIO::getArguments
+     */
+    public function testGetArguments()
+    {
+        $io = new NullIO();
+        $this->assertEquals([], $io->getArguments());
+    }
+
+    /**
      * Tests NullIO::isInteractive
      */
     public function testIsInteractive()

@@ -70,6 +70,16 @@ class DefaultIO extends Base
     }
 
     /**
+     * Return the original cli arguments
+     *
+     * @return array
+     */
+    public function getArguments(): array
+    {
+        return $this->input->getArguments();
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function isInteractive()

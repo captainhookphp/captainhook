@@ -28,6 +28,13 @@ interface IO
     const DEBUG = 16;
 
     /**
+     * Return the original cli arguments
+     *
+     * @return array
+     */
+    public function getArguments() : array;
+
+    /**
      * Is this input interactive?
      *
      * @return bool
