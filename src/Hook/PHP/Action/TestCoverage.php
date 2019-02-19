@@ -66,7 +66,7 @@ class TestCoverage implements Action
         $coverage         = $coverageResolver->getCoverage();
 
         $this->verifyCoverage($coverage);
-        $io->write('<info>test coverage: ' . $coverage . '%</info>');
+        $io->write('<info>Test coverage: ' . $coverage . '%</info>');
     }
 
     /**
@@ -109,7 +109,7 @@ class TestCoverage implements Action
     protected function verifyCoverage($coverage) : void
     {
         if ($coverage < $this->minCoverage) {
-            throw ActionFailed::withMessage(
+            throw new ActionFailed(
                 'Test coverage to low!' . PHP_EOL .
                 'Current coverage is at ' . $coverage . '% but should be at least ' . $this->minCoverage . '%'
             );
