@@ -34,7 +34,7 @@ class CommitMsgTest extends BaseTestRunner
         $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
-        $io->expects($this->exactly(4))->method('write');
+        $io->expects($this->exactly(3))->method('write');
 
         $args   = new Config\Options(['file' => CH_PATH_FILES . '/git/message/valid.txt']);
         $runner = new CommitMsg($io, $config, $repo, $args);
@@ -48,9 +48,17 @@ class CommitMsgTest extends BaseTestRunner
     {
         $this->expectException(\Exception::class);
 
-        $io     = $this->getIOMock();
-        $config = $this->getConfigMock();
-        $repo   = $this->getRepositoryMock();
+        $io           = $this->getIOMock();
+        $config       = $this->getConfigMock();
+        $hookConfig   = $this->getHookConfigMock();
+        $repo         = $this->getRepositoryMock();
+        $actionConfig = $this->getActionConfigMock();
+        $actionConfig->method('getType')->willReturn('cli');
+        $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
+        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
+        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+
         $args   = new Config\Options([]);
         $runner = new CommitMsg($io, $config, $repo, $args);
         $runner->run();

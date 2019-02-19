@@ -101,18 +101,24 @@ abstract class Hook extends RepositoryAware
      */
     public function run() : void
     {
-        $this->beforeHook();
         /** @var \CaptainHook\App\Config\Hook $hookConfig */
         $hookConfig = $this->config->getHookConfig($this->hook);
+        $actions    = $hookConfig->getActions();
 
-        // if hook is not enabled in captainhook configuration skip the action execution
+        // if hook is not enabled in captainhook configuration skip the execution
         if (!$hookConfig->isEnabled()) {
-            $this->io->write('<info>skip hook:</info> <comment>' . $this->hook . '</comment>');
+            $this->io->write($this->formatHookHeadline('Skip'));
+            return;
+        }
+        // if no actions are configured do nothing
+        if (count($actions) === 0) {
+            $this->io->write(['', '<info>No actions to execute</info>']);
             return;
         }
 
-        $this->io->write(['', '<info>execute hook:</info> <comment>' . $this->hook . '</comment>']);
-        foreach ($hookConfig->getActions() as $action) {
+        $this->io->write($this->formatHookHeadline('Execute'));
+        $this->beforeHook();
+        foreach ($actions as $action) {
             $this->handleAction($action);
         }
         $this->afterHook();
@@ -127,16 +133,10 @@ abstract class Hook extends RepositoryAware
      */
     protected function handleAction(Config\Action $action) : void
     {
-        $this->io->write([
-            '',
-            'Action: <comment>' . $action->getAction() . '</comment>',
-            IOUtil::getLineSeparator()
-        ]);
+        $this->io->write(['', 'Action: <comment>' . $action->getAction() . '</comment>']);
 
         $execMethod = self::getExecMethod($action->getType());
         $this->{$execMethod}($action);
-
-        $this->io->write([str_repeat('-', 80)]);
     }
 
     /**
@@ -171,7 +171,7 @@ abstract class Hook extends RepositoryAware
     }
 
     /**
-     * Return the right method to call to execute an action
+     * Return the right method name to execute an action
      *
      * @param  string $type
      * @return string
@@ -184,5 +184,22 @@ abstract class Hook extends RepositoryAware
             throw new \RuntimeException('invalid action type: ' . $type);
         }
         return $valid[$type];
+    }
+
+    /**
+     * Some fancy output formatting
+     *
+     * @param  string $mode
+     * @return array
+     */
+    private function formatHookHeadline(string $mode) : array
+    {
+        $headline = ' ' . $mode . ' hook: <comment>' . $this->hook . '</comment> ';
+        return [
+            '',
+            IOUtil::getLineSeparator(8) .
+            $headline .
+            IOUtil::getLineSeparator(80 - 8 - strlen(strip_tags($headline)))
+        ];
     }
 }

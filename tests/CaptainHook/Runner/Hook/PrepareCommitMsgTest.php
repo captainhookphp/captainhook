@@ -32,7 +32,7 @@ class PrepareCommitMsgTest extends BaseTestRunner
         $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
-        $io->expects($this->exactly(3))->method('write');
+        $io->expects($this->exactly(2))->method('write');
 
         $dummy = new DummyRepo();
         $dummy->setup();
@@ -62,9 +62,18 @@ class PrepareCommitMsgTest extends BaseTestRunner
     {
         $this->expectException(\Exception::class);
 
-        $io     = $this->getIOMock();
-        $config = $this->getConfigMock();
-        $repo   = $this->getRepositoryMock();
+        $io           = $this->getIOMock();
+        $config       = $this->getConfigMock();
+        $repo         = $this->getRepositoryMock();
+        $hookConfig   = $this->getHookConfigMock();
+        $actionConfig = $this->getActionConfigMock();
+        $actionConfig->method('getType')->willReturn('php');
+        $actionConfig->method('getAction')->willReturn(Prepare::class);
+        $actionConfig->method('getOptions')->willReturn(new Config\Options(['message' => 'Prepared commit msg']));
+        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
+        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+
         $args   = new Config\Options([]);
         $runner = new PrepareCommitMsg($io, $config, $repo, $args);
         $runner->run();
