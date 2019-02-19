@@ -76,10 +76,10 @@ abstract class Hook extends Base
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return void
+     * @return int
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output) : void
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $io         = $this->getIO($input, $output);
         $config     = $this->getConfig($this->configFile, true);
@@ -89,6 +89,9 @@ abstract class Hook extends Base
         /** @var \CaptainHook\App\Runner\Hook $hook */
         $class = '\\CaptainHook\\App\\Runner\\Hook\\' . Util::getHookCommand($this->name);
         $hook  = new $class($io, $config, $repository, $arguments);
+
+
         $hook->run();
+        return 0;
     }
 }
