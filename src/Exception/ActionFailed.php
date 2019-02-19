@@ -19,25 +19,4 @@ namespace CaptainHook\App\Exception;
  */
 class ActionFailed extends \Exception
 {
-    /**
-     * Return a Action Failed exception
-     *
-     * @param string $msg
-     * @return \CaptainHook\App\Exception\ActionFailed
-     */
-    public static function withMessage($msg) : ActionFailed
-    {
-        return new self($msg);
-    }
-
-    /**
-     * Create a new exception based on a previous exception
-     *
-     * @param  \CaptainHook\App\Exception\ActionFailed $exception
-     * @return \CaptainHook\App\Exception\ActionFailed
-     */
-    public static function fromPrevious(ActionFailed $exception) : ActionFailed
-    {
-        return new self($exception->getMessage(), $exception->getCode(), $exception);
-    }
 }
