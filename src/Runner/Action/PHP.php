@@ -48,9 +48,9 @@ class PHP
                 $exe->execute($config, $io, $repository, $action);
             }
         } catch (\Exception $e) {
-            throw ActionFailed::withMessage('Execution failed: ' . $e->getMessage());
+            throw new ActionFailed('Execution failed: ' . $e->getMessage());
         } catch (\Error $e) {
-            throw ActionFailed::withMessage('PHP Error: ' . $e->getMessage());
+            throw new ActionFailed('PHP Error:' . $e->getMessage());
         }
     }
 
@@ -85,7 +85,7 @@ class PHP
     {
         $action = new $class();
         if (!$action instanceof Action) {
-            throw ActionFailed::withMessage(
+            throw new ActionFailed(
                 'PHP class ' . $class . ' has to implement the \'Action\' interface'
             );
         }
