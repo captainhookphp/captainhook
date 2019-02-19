@@ -43,7 +43,7 @@ class Debug implements Action
         $io->write($this->getArgumentOutput($originalHookArguments));
         $io->write('  Current git-tag: <comment>' . $currentGitTag . '</comment>');
 
-        throw ActionFailed::withMessage(
+        throw new ActionFailed(
             'The \'Debug\' action is only for debugging purposes, ' .
             'please remove the \'Debug\' action from your config'
         );
