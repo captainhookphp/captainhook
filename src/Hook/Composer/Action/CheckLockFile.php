@@ -59,10 +59,10 @@ class CheckLockFile implements Action
         $configFileHash = $this->getConfigFileHash($path);
 
         if ($lockFileHash !== $configFileHash) {
-            throw new \Exception('composer.lock is out of date');
+            throw new \Exception('Your composer.lock file is out of date');
         }
 
-        $io->write('<info>composer.lock is up to date</info>');
+        $io->write('<info>Your composer.lock file is up to date</info>');
     }
 
     /**
