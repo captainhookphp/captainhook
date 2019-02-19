@@ -43,7 +43,7 @@ class Regex implements Action
         $matches    = [];
 
         if (!preg_match($regex, $repository->getCommitMsg()->getContent(), $matches)) {
-            throw ActionFailed::withMessage(sprintf($errorMsg, $regex));
+            throw new ActionFailed(sprintf($errorMsg, $regex));
         }
 
         $io->write(sprintf($successMsg, $matches[0]));
@@ -60,7 +60,7 @@ class Regex implements Action
     {
         $regex = $options->get('regex');
         if (empty($regex)) {
-            throw ActionFailed::withMessage('No regex option');
+            throw new ActionFailed('No regex option');
         }
         return $regex;
     }
