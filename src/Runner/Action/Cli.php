@@ -39,10 +39,9 @@ class Cli
         $result    = $processor->run($this->formatCommand($action->getAction(), $arguments->getAll()));
 
         if (!$result->isSuccessful()) {
-            throw Exception\ActionFailed::withMessage($result->getStdOut() . PHP_EOL . $result->getStdErr());
+            throw new Exception\ActionFailed($result->getStdOut() . PHP_EOL . $result->getStdErr());
         }
-
-        $io->write($result->getStdOut());
+        $io->write(empty($result->getStdOut()) ? '<info>OK</info>' : $result->getStdOut());
     }
 
     /**
