@@ -11,8 +11,11 @@ namespace CaptainHook\App\Hook\Message\Action;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
+use CaptainHook\App\Console\IOUtil;
+use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Action;
 use CaptainHook\App\Hook\Message\RuleBook;
+use SebastianFeldmann\Cli\Output\Util as OutputUtil;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -42,14 +45,68 @@ abstract class Book implements Action
      *
      * @param  \CaptainHook\App\Hook\Message\RuleBook $ruleBook
      * @param  \SebastianFeldmann\Git\Repository      $repository
+     * @param  \CaptainHook\App\Console\IO            $io
      * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    protected function validate(RuleBook $ruleBook, Repository $repository) : void
+    protected function validate(RuleBook $ruleBook, Repository $repository, IO $io) : void
     {
-        // if this is no merge commit enforce message rules
-        if (!$repository->isMerging()) {
-            $ruleBook->validate($repository->getCommitMsg());
+        // if this is a merge commit skip enforcing message rules
+        if ($repository->isMerging()) {
+            return;
         }
+
+        $problems = $ruleBook->validate($repository->getCommitMsg());
+
+        if (count($problems)) {
+            $io->writeError($this->getErrorOutput($problems, $repository));
+            throw new ActionFailed('Commit message validation failed');
+        }
+        $io->write('<info>All rules passed</info>');
+    }
+
+    /**
+     * Format the error output
+     *
+     * @param  array                             $problems
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @return string
+     */
+    private function getErrorOutput(array $problems, Repository $repository) : string
+    {
+        $err  = count($problems);
+        $head = [
+            IOUtil::getLineSeparator(80, '-'),
+            'CAPTAINHOOK FOUND ' . $err . ' PROBLEM' . ($err === 1 ? '' : 'S') . ' IN YOUR COMMIT MESSAGE',
+            IOUtil::getLineSeparator(80, '-')
+        ];
+        $msg  = OutputUtil::trimEmptyLines($repository->getCommitMsg()->getLines());
+
+        $lines = [IOUtil::getLineSeparator(80, '-')];
+        foreach ($problems as $problem) {
+            $lines[] = '  ' . $this->formatProblem($problem);
+        }
+
+        $lines[] = IOUtil::getLineSeparator(80, '-');
+
+        return implode(PHP_EOL, array_merge($head, $msg, $lines));
+    }
+
+    /**
+     * Indent multi line problems so the lines after the first one are indented for better readability
+     *
+     * @param  string $problem
+     * @return string
+     */
+    private function formatProblem(string $problem) : string
+    {
+        $lines  = explode(PHP_EOL, $problem);
+        $amount = count($lines);
+
+        for ($i = 1; $i < $amount; $i++) {
+            $lines[$i] = '    ' . $lines[$i];
+        }
+
+        return implode(PHP_EOL, $lines);
     }
 }

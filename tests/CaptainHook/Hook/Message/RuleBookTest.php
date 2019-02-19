@@ -39,27 +39,24 @@ class RuleBookTest extends TestCase
         $v   = new RuleBook();
         $v->setRules([new MsgNotEmpty()]);
 
-        $v->validate($msg);
-        $this->assertTrue(true);
+        $problems = $v->validate($msg);
+        $this->assertEquals([], $problems);
     }
 
     /**
      * Tests RuleBook::setRules
-     *
-     * @expectedException \Exception
      */
     public function testSetRulesInvalid()
     {
         $msg = new CommitMessage('');
         $v   = new RuleBook();
         $v->setRules([new MsgNotEmpty()]);
-        $v->validate($msg);
+        $problems = $v->validate($msg);
+        $this->assertEquals(1, count($problems));
     }
 
     /**
      * Tests RuleBook::setRules
-     *
-     * @expectedException \Exception
      */
     public function testAddRuleInvalid()
     {
@@ -68,13 +65,12 @@ class RuleBookTest extends TestCase
         $v->setRules([new MsgNotEmpty()]);
         $v->addRule(new CapitalizeSubject());
 
-        $v->validate($msg);
+        $problems = $v->validate($msg);
+        $this->assertEquals(1, count($problems));
     }
 
     /**
      * Tests RuleBook::setRules
-     *
-     * @expectedException \Exception
      */
     public function testAddRuleInvalidMultiLineProblem()
     {
@@ -82,6 +78,7 @@ class RuleBookTest extends TestCase
         $v   = new RuleBook();
         $v->setRules([new UseImperativeMood()]);
 
-        $v->validate($msg);
+        $problems = $v->validate($msg);
+        $this->assertEquals(1, count($problems));
     }
 }

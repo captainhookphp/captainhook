@@ -42,7 +42,7 @@ class Rules extends Book
         foreach ($rules as $class) {
             $book->addRule($this->createRule($class));
         }
-        $this->validate($book, $repository);
+        $this->validate($book, $repository, $io);
     }
 
     /**

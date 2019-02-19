@@ -11,10 +11,7 @@ namespace CaptainHook\App\Hook\Message\Action;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
-use CaptainHook\App\Console\IOUtil;
-use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Message\RuleBook;
-use SebastianFeldmann\Cli\Output\Util as OutputUtil;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -46,31 +43,6 @@ class Beams extends Book
             $options->get('bodyLineLength', 72)
         ));
 
-        try {
-            $this->validate($book, $repository);
-            $io->write('Commit message seems to be valid', true);
-        } catch (ActionFailed $exception) {
-            $this->writeError($io, $repository);
-            throw ActionFailed::fromPrevious($exception);
-        }
-    }
-
-    /**
-     * Write error to stdErr
-     *
-     * @param  \CaptainHook\App\Console\IO       $io
-     * @param  \SebastianFeldmann\Git\Repository $repository
-     * @return void
-     */
-    private function writeError(IO $io, Repository $repository) : void
-    {
-        $io->writeError(array_merge(
-            [
-                '<error>COMMIT MESSAGE DOES NOT MEET THE REQUIREMENTS</error>',
-                IOUtil::getLineSeparator(),
-            ],
-            OutputUtil::trimEmptyLines($repository->getCommitMsg()->getLines()),
-            [IOUtil::getLineSeparator()]
-        ));
+        $this->validate($book, $repository, $io);
     }
 }
