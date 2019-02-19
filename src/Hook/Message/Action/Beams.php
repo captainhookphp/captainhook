@@ -48,6 +48,7 @@ class Beams extends Book
 
         try {
             $this->validate($book, $repository);
+            $io->write('Commit message seems to be valid', true);
         } catch (ActionFailed $exception) {
             $this->writeError($io, $repository);
             throw ActionFailed::fromPrevious($exception);
