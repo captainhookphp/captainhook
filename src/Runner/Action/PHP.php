@@ -71,7 +71,7 @@ class PHP
         }
         ob_start();
         $class::$method();
-        return ob_get_clean();
+        return (string)ob_get_clean();
     }
 
     /**

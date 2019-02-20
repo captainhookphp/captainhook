@@ -107,7 +107,7 @@ class CheckLockFile implements Action
         }
         ksort($relevantContent);
 
-        return md5(json_encode($relevantContent));
+        return md5((string)json_encode($relevantContent));
     }
 
     /**
@@ -122,6 +122,6 @@ class CheckLockFile implements Action
         if (!file_exists($file)) {
             throw new \Exception($file . ' not found');
         }
-        return file_get_contents($file);
+        return (string)file_get_contents($file);
     }
 }
