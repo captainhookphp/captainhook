@@ -10,17 +10,19 @@
 namespace CaptainHook\App\Hook\Message\Action;
 
 use CaptainHook\App\Config;
-use CaptainHook\App\Foo;
 use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Git\DummyRepo;
 use CaptainHook\App\Hook\Message\Rule\CapitalizeSubject;
 use CaptainHook\App\Hook\Message\Validator;
+use CaptainHook\App\Mockery;
 use SebastianFeldmann\Git\CommitMessage;
 use SebastianFeldmann\Git\Repository;
 use PHPUnit\Framework\TestCase;
 
 class RulesTest extends TestCase
 {
+    use Mockery;
+
     /**
      * @var \CaptainHook\App\Git\DummyRepo
      */
@@ -53,6 +55,23 @@ class RulesTest extends TestCase
         $action = new Config\Action('php', Rules::class);
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
+
+        $standard = new Rules();
+        $standard->execute($config, $io, $repo, $action);
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * Tests Rulebook::execute
+     */
+    public function testNoValidationOnMerging()
+    {
+        $io     = new NullIO();
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
+        $action = new Config\Action('php', Rules::class);
+        $repo   = $this->createRepositoryMock();
+        $repo->expects($this->once())->method('isMerging')->willReturn(true);
 
         $standard = new Rules();
         $standard->execute($config, $io, $repo, $action);
