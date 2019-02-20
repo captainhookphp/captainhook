@@ -68,7 +68,7 @@ class BeamsTest extends TestCase
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action('php', Beams::class);
         $repo   = new Repository($this->repo->getPath());
-        $repo->setCommitMsg(new CommitMessage('foo bar baz.'));
+        $repo->setCommitMsg(new CommitMessage('added foo bar baz.'));
 
         $standard = new Beams();
         $standard->execute($config, $io, $repo, $action);
