@@ -39,11 +39,11 @@ class LintingTest extends TestCase
 
     /**
      * Tests Linter::execute
-     *
-     * @expectedException \Exception
      */
     public function testExecuteInvalidPHP()
     {
+        $this->expectException(\Exception::class);
+
         $io       = new NullIO();
         $config   = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo     = $this->getRepoMock();

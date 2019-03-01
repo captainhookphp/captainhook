@@ -50,11 +50,11 @@ class CliTest extends BaseTestRunner
 
     /**
      * Tests Cli::execute
-     *
-     * @expectedException \Exception
      */
     public function testExecuteFailure()
     {
+        $this->expectException(\Exception::class);
+
         $io     = $this->getIOMock();
         $action = $this->getActionConfigMock();
         $args   = new Options([]);

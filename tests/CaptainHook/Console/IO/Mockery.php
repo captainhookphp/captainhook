@@ -18,10 +18,8 @@ trait Mockery
      */
     public function createIOMock()
     {
-        $io = $this->getMockBuilder(DefaultIO::class)
+        return $this->getMockBuilder(DefaultIO::class)
                    ->disableOriginalConstructor()
                    ->getMock();
-
-        return $io;
     }
 }

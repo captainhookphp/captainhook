@@ -27,7 +27,7 @@ class PrepareTest extends TestCase
     /**
      * Setup dummy repo.
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->repo = new DummyRepo();
         $this->repo->setup();
@@ -36,7 +36,7 @@ class PrepareTest extends TestCase
     /**
      * Cleanup dummy repo.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->repo->cleanup();
     }

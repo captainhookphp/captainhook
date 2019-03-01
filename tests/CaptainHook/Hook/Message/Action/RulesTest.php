@@ -31,7 +31,7 @@ class RulesTest extends TestCase
     /**
      * Setup dummy repo.
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->repo = new DummyRepo();
         $this->repo->setup();
@@ -40,7 +40,7 @@ class RulesTest extends TestCase
     /**
      * Cleanup dummy repo.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->repo->cleanup();
     }
@@ -81,11 +81,11 @@ class RulesTest extends TestCase
 
     /**
      * Tests Rulebook::execute
-     *
-     * @expectedException \Exception
      */
     public function testExecuteClassNotFound()
     {
+        $this->expectException(\Exception::class);
+
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
@@ -101,11 +101,11 @@ class RulesTest extends TestCase
 
     /**
      * Tests Rulebook::execute
-     *
-     * @expectedException \Exception
      */
     public function testExecuteInvalidClass()
     {
+        $this->expectException(\Exception::class);
+
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
@@ -142,11 +142,11 @@ class RulesTest extends TestCase
 
     /**
      * Tests Rule::execute
-     *
-     * @expectedException \Exception
      */
     public function testNoRule()
     {
+        $this->expectException(\Exception::class);
+
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(

@@ -26,11 +26,11 @@ class PHPUnitTest extends TestCase
 
     /**
      * Tests PHPUnit::getCoverage
-     *
-     * @expectedException \Exception
      */
     public function testPHPUnitError()
     {
+        $this->expectException(\Exception::class);
+
         $resolver = new PHPUnit(CH_PATH_FILES . '/bin/failure');
         $resolver->getCoverage();
     }

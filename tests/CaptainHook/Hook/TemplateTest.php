@@ -20,11 +20,11 @@ class TemplateTest extends TestCase
     {
         $code = Template::getCode('commit-msg', '/foo/bar', '/foo/bar/vendor', '/foo/bar/captainhook.json');
 
-        $this->assertContains('#!/usr/bin/env php', $code);
-        $this->assertContains('$app->setHook(\'commit-msg\');', $code);
-        $this->assertContains('$app->run();', $code);
-        $this->assertContains('__DIR__ . \'/../../captain', $code);
-        $this->assertContains('__DIR__ . \'/../../vendor', $code);
+        $this->assertStringContainsString('#!/usr/bin/env php', $code);
+        $this->assertStringContainsString('$app->setHook(\'commit-msg\');', $code);
+        $this->assertStringContainsString('$app->run();', $code);
+        $this->assertStringContainsString('__DIR__ . \'/../../captain', $code);
+        $this->assertStringContainsString('__DIR__ . \'/../../vendor', $code);
     }
 
     /**

@@ -41,11 +41,10 @@ class ConfigTest extends TestCase
 
     /**
      * Tests Config::getHookConfig
-     *
-     * @expectedException \Exception
      */
     public function testGetInvalidHook()
     {
+        $this->expectException(\Exception::class);
         $config = new Config('./no-config.json');
         $config->getHookConfig('foo');
     }
@@ -69,9 +68,9 @@ class ConfigTest extends TestCase
         $config = new Config('./no-config.json');
         $json   = $config->getJsonData();
 
-        $this->assertInternalType('array', $json);
-        $this->assertInternalType('array', $json['pre-commit']);
-        $this->assertInternalType('array', $json['commit-msg']);
-        $this->assertInternalType('array', $json['pre-push']);
+        $this->assertIsArray($json);
+        $this->assertIsArray($json['pre-commit']);
+        $this->assertIsArray($json['commit-msg']);
+        $this->assertIsArray($json['pre-push']);
     }
 }

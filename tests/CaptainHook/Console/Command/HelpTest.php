@@ -33,7 +33,7 @@ class HelpTest extends TestCase
 
         $logs = $output->fetch();
 
-        $this->assertContains('help', $logs);
+        $this->assertStringContainsString('help', $logs);
     }
 
     /**
@@ -53,8 +53,8 @@ class HelpTest extends TestCase
 
         $logs = $output->fetch();
 
-        $this->assertContains('-e', $logs);
-        $this->assertContains('-f', $logs);
-        $this->assertContains('-c', $logs);
+        $this->assertStringContainsString('-e', $logs);
+        $this->assertStringContainsString('-f', $logs);
+        $this->assertStringContainsString('-c', $logs);
     }
 }

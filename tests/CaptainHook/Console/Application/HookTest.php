@@ -43,11 +43,11 @@ class HookTest extends TestCase
 
     /**
      * Tests Hook::executeHook
-     *
-     * @expectedException \Exception
      */
     public function testRunInvalidHook()
     {
+        $this->expectException(\Exception::class);
+
         $app = new Hook();
         $app->setHook('pre-foo');
     }
@@ -94,6 +94,6 @@ class HookTest extends TestCase
         $hook = new Hook();
         $help = $hook->getHelp();
 
-        $this->assertContains('$$$$b ^ceeeee.  4$$ECL.F*$$$$$$$', $help);
+        $this->assertStringContainsString('$$$$b ^ceeeee.  4$$ECL.F*$$$$$$$', $help);
     }
 }

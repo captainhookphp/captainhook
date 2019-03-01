@@ -19,11 +19,11 @@ class InstallTest extends TestCase
 {
     /**
      * Tests Install::run
-     *
-     * @expectedException \Exception
      */
     public function testExecuteNoConfig()
     {
+        $this->expectException(\Exception::class);
+
         $input   = new ArrayInput(
             [
                 'hook' => 'pre-commit',
@@ -39,11 +39,11 @@ class InstallTest extends TestCase
 
     /**
      * Tests Install::run
-     *
-     * @expectedException \Exception
      */
     public function testExecuteInvalidRepository()
     {
+        $this->expectException(\Exception::class);
+
         $input   = new ArrayInput(
             [
                 'hook' => 'pre-commit',

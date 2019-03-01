@@ -29,7 +29,7 @@ class RegexTest extends TestCase
     /**
      * Setup dummy repo.
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->repo = new DummyRepo();
         $this->repo->setup();
@@ -38,7 +38,7 @@ class RegexTest extends TestCase
     /**
      * Cleanup dummy repo.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->repo->cleanup();
     }
@@ -99,11 +99,11 @@ class RegexTest extends TestCase
 
     /**
      * Tests RegexCheck::execute
-     *
-     * @expectedException \Exception
      */
     public function testExecuteInvalidOption()
     {
+        $this->expectException(\Exception::class);
+
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
@@ -115,12 +115,12 @@ class RegexTest extends TestCase
 
     /**
      * Tests RegexCheck::execute
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage No match for #FooBarBaz#
      */
     public function testExecuteNoMatchCustomErrorMessage()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('No match for #FooBarBaz#');
+
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(

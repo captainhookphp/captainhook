@@ -48,11 +48,11 @@ class UtilTest extends TestCase
 
     /**
      * Tests Util::isSubDirectoryOf
-     *
-     * @expectedException \Exception
      */
     public function testGetSubPathOfNoSubDirectory()
     {
+        $this->expectException(\Exception::class);
+
         Util::getSubPathOf(Util::pathToArray('/foo/bar/baz'), Util::pathToArray('/fiz/baz'));
     }
 }

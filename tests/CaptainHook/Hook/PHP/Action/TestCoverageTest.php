@@ -38,11 +38,11 @@ class TestCoverageTest extends TestCase
 
     /**
      * Tests TestCoverage::execute
-     *
-     * @expectedException \Exception
      */
     public function testCoverageLow()
     {
+        $this->expectException(\Exception::class);
+
         $io       = new NullIO();
         $config   = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo     = $this->getRepoMock();

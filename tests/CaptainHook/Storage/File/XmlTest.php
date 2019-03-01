@@ -15,11 +15,11 @@ class XmlTest extends TestCase
 {
     /**
      * Tests Xml::read
-     *
-     * @expectedException \Exception
      */
     public function testRead()
     {
+        $this->expectException(\Exception::class);
+
         $path = realpath(CH_PATH_FILES . '/storage/invalid-xml.txt');
         $file  = new Xml($path);
         $file->read();

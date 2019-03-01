@@ -56,11 +56,10 @@ class ActionTest extends TestCase
 
     /**
      * Tests Action::__construct
-     *
-     * @expectedException \Exception
      */
     public function testInvalidType()
     {
+        $this->expectException(\Exception::class);
         $action = new Action('crap', 'with cinnamon and sugar');
     }
 }

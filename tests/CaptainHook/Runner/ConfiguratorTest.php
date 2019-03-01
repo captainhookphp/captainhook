@@ -13,11 +13,11 @@ class ConfiguratorTest extends BaseTestRunner
 {
     /**
      * Tests Configurator::run
-     *
-     * @expectedException \Exception
      */
     public function testConfigureFileExists()
     {
+        $this->expectException(\Exception::class);
+
         $io     = $this->getIOMock();
         $config = $this->getConfigMock();
         $repo   = $this->getRepositoryMock();

@@ -26,7 +26,7 @@ class CheckLockFileTest extends TestCase
     /**
      * Setup dummy repo.
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->repo = new DummyRepo();
         $this->repo->setup();
@@ -35,7 +35,7 @@ class CheckLockFileTest extends TestCase
     /**
      * Cleanup dummy repo.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->repo->cleanup();
     }
@@ -61,11 +61,11 @@ class CheckLockFileTest extends TestCase
 
     /**
      * Tests CheckLockFile::execute
-     *
-     * @expectedException \Exception
      */
     public function testExecuteFail()
     {
+        $this->expectException(\Exception::class);
+
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
@@ -82,11 +82,11 @@ class CheckLockFileTest extends TestCase
 
     /**
      * Tests CheckLockFile::execute
-     *
-     * @expectedException \Exception
      */
     public function testExecuteNoHash()
     {
+        $this->expectException(\Exception::class);
+
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
@@ -102,11 +102,11 @@ class CheckLockFileTest extends TestCase
 
     /**
      * Tests CheckLockFile::execute
-     *
-     * @expectedException \Exception
      */
     public function testExecuteInvalidPath()
     {
+        $this->expectException(\Exception::class);
+
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());

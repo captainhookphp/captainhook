@@ -23,11 +23,11 @@ class DebugTest extends TestCase
 
     /**
      * Tests Debug::execute
-     *
-     * @expectedException \CaptainHook\App\Exception\ActionFailed
      */
     public function testExecute()
     {
+        $this->expectException(\Exception::class);
+
         $config       = $this->createConfigMock(true);
         $io           = $this->createIOMock();
         $repository   = $this->createRepositoryMock();

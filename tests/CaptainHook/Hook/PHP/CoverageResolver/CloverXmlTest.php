@@ -26,29 +26,31 @@ class CloverXMLTest extends TestCase
 
     /**
      * Tests CloverXML::__construct
-     *
-     * @expectedException \Exception
      */
     public function testFileNotFound()
     {
+        $this->expectException(\Exception::class);
+
         $resolver = new CloverXML('foo.xml');
     }
 
     /**
      * Tests CloverXML::__construct
-     *
-     * @expectedException \Exception
      */
-    public function testInvalidXML() {
+    public function testInvalidXML()
+    {
+        $this->expectException(\Exception::class);
+
         $resolver = new CloverXML(CH_PATH_FILES . '/coverage/no-metrics.xml');
     }
 
     /**
      * Tests CloverXML::__construct
-     *
-     * @expectedException \Exception
      */
-    public function testInvalidMetrics() {
+    public function testInvalidMetrics()
+    {
+        $this->expectException(\Exception::class);
+
         $resolver = new CloverXML(CH_PATH_FILES . '/coverage/invalid-metrics.xml');
         $resolver->getCoverage();
     }

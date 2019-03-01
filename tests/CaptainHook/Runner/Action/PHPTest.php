@@ -33,11 +33,11 @@ class PHPTest extends BaseTestRunner
 
     /**
      * Tests PHP::execute
-     *
-     * @expectedException \Exception
      */
     public function testExecuteFailure()
     {
+        $this->expectException(\Exception::class);
+
         $config = $this->getConfigMock();
         $io     = $this->getIOMock();
         $repo   = $this->getRepositoryMock();
@@ -53,11 +53,11 @@ class PHPTest extends BaseTestRunner
 
     /**
      * Tests PHP::execute
-     *
-     * @expectedException \Exception
      */
     public function testExecuteError()
     {
+        $this->expectException(\Exception::class);
+
         $config = $this->getConfigMock();
         $io     = $this->getIOMock();
         $repo   = $this->getRepositoryMock();
@@ -73,11 +73,11 @@ class PHPTest extends BaseTestRunner
 
     /**
      * Tests PHP::execute
-     *
-     * @expectedException \Exception
      */
     public function testExecuteNoAction()
     {
+        $this->expectException(\Exception::class);
+
         $config = $this->getConfigMock();
         $io     = $this->getIOMock();
         $repo   = $this->getRepositoryMock();
@@ -93,11 +93,11 @@ class PHPTest extends BaseTestRunner
 
     /**
      * Tests PHP::executeStatic
-     *
-     * @expectedException \Exception
      */
     public function testExecuteStaticClassNotFound()
     {
+        $this->expectException(\Exception::class);
+
         $config = $this->getConfigMock();
         $io     = $this->getIOMock();
         $repo   = $this->getRepositoryMock();
@@ -113,11 +113,11 @@ class PHPTest extends BaseTestRunner
 
     /**
      * Tests PHP::executeStatic
-     *
-     * @expectedException \Exception
      */
     public function testExecuteStaticMethodNotFound()
     {
+        $this->expectException(\Exception::class);
+        
         $config = $this->getConfigMock();
         $io     = $this->getIOMock();
         $repo   = $this->getRepositoryMock();

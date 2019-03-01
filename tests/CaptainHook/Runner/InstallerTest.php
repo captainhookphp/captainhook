@@ -13,11 +13,11 @@ class InstallerTest extends BaseTestRunner
 {
     /**
      * Tests Installer::setHook
-     *
-     * @expectedException \Exception
      */
     public function testSetHookInvalid()
     {
+        $this->expectException(\Exception::class);
+
         $io     = $this->getIOMock();
         $config = $this->getConfigMock();
         $repo   = $this->getRepositoryMock();
@@ -50,6 +50,6 @@ class InstallerTest extends BaseTestRunner
         $runner = new Installer($io, $config, $repo);
         $repo->expects($this->once())->method('hookExists')->willReturn(true);
         $io->expects($this->once())->method('ask')->willReturn('no');
-        $runner->writeHookFile('pre-push', true);
+        $runner->writeHookFile('pre-push');
     }
 }

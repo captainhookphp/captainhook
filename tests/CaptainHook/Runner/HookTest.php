@@ -28,11 +28,11 @@ class HookTest extends BaseTestRunner
 
     /**
      * Tests Hook::getActionRunner
-     *
-     * @expectedException \Exception
      */
     public function testGetRunnerFailure()
     {
+        $this->expectException(\Exception::class);
+
         Hook::getExecMethod('foo');
     }
 }

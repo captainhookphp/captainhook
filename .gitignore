@@ -4,6 +4,9 @@
 # Ignore MacOS cache files
 .DS_STORE
 
+# ignore PHPUnit result cache
+.phpunit.result.cache
+
 # Ignore composer libs
 /vendor/
 /composer.lock

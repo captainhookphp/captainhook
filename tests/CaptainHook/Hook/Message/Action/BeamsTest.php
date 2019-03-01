@@ -26,7 +26,7 @@ class BeamsTest extends TestCase
     /**
      * Setup dummy repo.
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->repo = new DummyRepo();
         $this->repo->setup();
@@ -35,7 +35,7 @@ class BeamsTest extends TestCase
     /**
      * Cleanup dummy repo.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->repo->cleanup();
     }
@@ -59,11 +59,11 @@ class BeamsTest extends TestCase
 
     /**
      * Tests Beams::execute
-     *
-     * @expectedException \Exception
      */
     public function testExecuteFail()
     {
+        $this->expectException(\Exception::class);
+
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action('php', Beams::class);

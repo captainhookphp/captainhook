@@ -23,11 +23,11 @@ class GuidedTest extends TestCase
 
     /**
      * Tests Guided::isPHPActionOptionValid
-     *
-     * @expectedException \Exception
      */
     public function testPHPActionOptionValidationInvalid()
     {
+        $this->expectException(\Exception::class);
+
         Guided::isPHPActionOptionValid('foo-bar');
     }
 }

@@ -31,16 +31,16 @@ class FileTest extends TestCase
         $file    = new File(__FILE__);
         $content = $file->read();
 
-        $this->assertContains('<?php', $content);
+        $this->assertStringContainsString('<?php', $content);
     }
 
     /**
      * Tests File::read
-     *
-     * @expectedException \Exception
      */
     public function testReadFail()
     {
+        $this->expectException(\Exception::class);
+
         $file    = new File(__FILE__ . '.absent');
         $content = $file->read();
 
@@ -63,11 +63,11 @@ class FileTest extends TestCase
 
     /**
      * Tests File::write
-     *
-     * @expectedException \Exception
      */
     public function testWriteFailNoDir()
     {
+        $this->expectException(\Exception::class);
+
         $path   = __FILE__ . DIRECTORY_SEPARATOR . 'foo.txt';
         $file   = new File($path);
         $file->write('foo');
@@ -77,11 +77,11 @@ class FileTest extends TestCase
 
     /**
      * Tests File::write
-     *
-     * @expectedException \Exception
      */
     public function testNoWritePermission()
     {
+        $this->expectException(\Exception::class);
+
         $path = tempnam(sys_get_temp_dir(), 'noPermission');
         chmod($path, 0000);
 
@@ -91,11 +91,11 @@ class FileTest extends TestCase
 
     /**
      * Tests File::write
-     *
-     * @expectedException \Exception
      */
     public function testCantCreateDirectory()
     {
+        $this->expectException(\Exception::class);
+
         $baseDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('basedir');
         mkdir($baseDir, 0000);
 

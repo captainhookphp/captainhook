@@ -15,41 +15,41 @@ class UtilTest extends TestCase
 {
     /**
      * Tests Util::validateJsonConfiguration
-     *
-     * @expectedException \Exception
      */
     public function testEnabledMissing()
     {
+        $this->expectException(\Exception::class);
+
         Util::validateJsonConfiguration(['pre-commit' => ['actions' => []]]);
     }
 
     /**
      * Tests Util::validateJsonConfiguration
-     *
-     * @expectedException \Exception
      */
     public function testActionsMissing()
     {
+        $this->expectException(\Exception::class);
+
         Util::validateJsonConfiguration(['pre-commit' => ['enabled' => true]]);
     }
 
     /**
      * Tests Util::validateJsonConfiguration
-     *
-     * @expectedException \Exception
      */
     public function testActionsNoArray()
     {
+        $this->expectException(\Exception::class);
+
         Util::validateJsonConfiguration(['pre-commit' => ['enabled' => true, 'actions' => false]]);
     }
 
     /**
      * Tests Util::validateJsonConfiguration
-     *
-     * @expectedException \Exception
      */
     public function testActionMissing()
     {
+        $this->expectException(\Exception::class);
+
         Util::validateJsonConfiguration(
             [
                 'pre-commit' => [
@@ -66,11 +66,11 @@ class UtilTest extends TestCase
 
     /**
      * Tests Util::validateJsonConfiguration
-     *
-     * @expectedException \Exception
      */
     public function testActionEmpty()
     {
+        $this->expectException(\Exception::class);
+
         Util::validateJsonConfiguration(
             [
                 'pre-commit' => [
