@@ -8,13 +8,17 @@
 
 # CaptainHook 4.0
 
-<img src="https://captainhookphp.github.io/captainhook/gfx/ch.png" align="right" width="130"/>
+<img src="https://captainhookphp.github.io/captainhook/gfx/ch.png" align="right" width="200"/>
 
 *CaptainHook* is an easy to use and very flexible git hook library for php developers.
 It enables you to configure your git hook actions in a simple json file.
 
-You can use *CaptainHook* to validate your commit messages, ensure code quality or run unit
-tests before you commit or push changes to git.
+You can use *CaptainHook* to validate or prepare your commit messages, ensure code quality
+or run unit tests before you commit or push changes to git. You can automatically clear
+local caches or install the latest composer dependencies after pulling the latest changes.
+
+*CaptainHook* makes it easy to share hooks within your team and even can make sure that
+everybody in your team activates the hooks locally.
 
 You can run cli commands, use some built in validators, or write
 your own PHP classes that get executed by *CaptainHook*.
