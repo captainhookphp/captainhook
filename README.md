@@ -1,5 +1,7 @@
 # CaptainHook 4.0
 
+<img src="https://captainhookphp.github.io/captainhook/gfx/ch.png" align="right" width="250"/>
+
 *CaptainHook* is an easy to use and very flexible git hook library for php developers.
 It enables you to configure your git hook actions in a simple json file.
 
