@@ -1,6 +1,14 @@
+[![Latest Stable Version](https://poser.pugx.org/captainhook/captainhook/v/stable.svg?v=1)](https://packagist.org/packages/captainhook/captainhook)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.1-8892BF.svg)](https://php.net/)
+[![Downloads](https://img.shields.io/packagist/dt/captainhook/captainhook.svg?v1)](https://packagist.org/packages/captainhook/captainhook)
+[![License](https://poser.pugx.org/captainhook/captainhook/license.svg?v=1)](https://packagist.org/packages/captainhook/captainhook)
+[![Build Status](https://travis-ci.org/CaptainHookPhp/captainhook.svg?branch=master)](https://travis-ci.org/CaptainHookPhp/captainhook)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/captainhookphp/captainhook/badges/quality-score.png?b=master&v=1)](https://scrutinizer-ci.com/g/captainhookphp/captainhook/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/captainhookphp/captainhook/badges/coverage.png?b=master&v=1)](https://scrutinizer-ci.com/g/captainhookphp/captainhook/?branch=master)
+
 # CaptainHook 4.0
 
-<img src="https://captainhookphp.github.io/captainhook/gfx/ch.png" align="right" width="250"/>
+<img src="https://captainhookphp.github.io/captainhook/gfx/ch.png" align="right" width="130"/>
 
 *CaptainHook* is an easy to use and very flexible git hook library for php developers.
 It enables you to configure your git hook actions in a simple json file.
@@ -11,15 +19,6 @@ tests before you commit or push changes to git.
 You can run cli commands, use some built in validators, or write
 your own PHP classes that get executed by *CaptainHook*.
 For more information have a look at the [documentation](https://captainhookphp.github.io/captainhook/ "CaptainHook Documentation").
-
-
-[![Latest Stable Version](https://poser.pugx.org/captainhook/captainhook/v/stable.svg?v=1)](https://packagist.org/packages/captainhook/captainhook)
-[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.1-8892BF.svg)](https://php.net/)
-[![Downloads](https://img.shields.io/packagist/dt/captainhook/captainhook.svg?v1)](https://packagist.org/packages/captainhook/captainhook)
-[![License](https://poser.pugx.org/captainhook/captainhook/license.svg?v=1)](https://packagist.org/packages/captainhook/captainhook)
-[![Build Status](https://travis-ci.org/CaptainHookPhp/captainhook.svg?branch=master)](https://travis-ci.org/CaptainHookPhp/captainhook)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/captainhookphp/captainhook/badges/quality-score.png?b=master&v=1)](https://scrutinizer-ci.com/g/captainhookphp/captainhook/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/captainhookphp/captainhook/badges/coverage.png?b=master&v=1)](https://scrutinizer-ci.com/g/captainhookphp/captainhook/?branch=master)
 
 ## Installation
 
