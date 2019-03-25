@@ -33,6 +33,8 @@ final class Hooks
 
     const POST_MERGE = 'post-merge';
 
+    const POST_CHECKOUT = 'post-checkout';
+
     /**
      * Returns the list of valid hooks
      *
@@ -47,6 +49,7 @@ final class Hooks
             self::PREPARE_COMMIT_MSG => 'PrepareCommitMsg',
             self::POST_COMMIT        => 'PostCommit',
             self::POST_MERGE         => 'PostMerge',
+            self::POST_CHECKOUT      => 'PostCheckout',
         ];
     }
 }
