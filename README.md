@@ -6,7 +6,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/captainhookphp/captainhook/badges/quality-score.png?b=master&v=1)](https://scrutinizer-ci.com/g/captainhookphp/captainhook/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/captainhookphp/captainhook/badges/coverage.png?b=master&v=1)](https://scrutinizer-ci.com/g/captainhookphp/captainhook/?branch=master)
 
-# CaptainHook 4.0
+# CaptainHook
 
 <img src="https://captainhookphp.github.io/captainhook/gfx/ch.png" align="right" width="200"/>
 
