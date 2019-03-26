@@ -1,10 +1,18 @@
-tools:
-  external_code_coverage: true
+build:
+  tools:
+    external_code_coverage: true
 
-checks:
-  php:
-    code_rating: true
-    duplication: true
+  checks:
+    php:
+      code_rating: true
+      duplication: true
 
-filter:
+  filter:
     paths: ["src/*"]
+
+  nodes:
+    analysis:
+      tests:
+        override:
+          - php-scrutinizer-run
+
