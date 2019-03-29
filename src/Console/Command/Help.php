@@ -113,6 +113,9 @@ class Help extends Base
             '  <info>help</info>      Outputs this help message',
             '  <info>configure</info> Create a CaptainHook configuration',
             '  <info>install</info>   Install hooks to your .git/hooks directory',
+            '  <info>add</info>       Add an action to a given hook',
+            '  <info>enable</info>    Enables a hook configuration',
+            '  <info>disable</info>   Disables a hook configuration',
             ''
         ];
     }
