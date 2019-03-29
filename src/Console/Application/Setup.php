@@ -31,8 +31,11 @@ class Setup extends Application
     {
         return [
             new Cmd\Help(),
-            new Cmd\Configuration(),
             new Cmd\Install(),
+            new Cmd\Configuration(),
+            new Cmd\Add(),
+            new Cmd\Disable(),
+            new Cmd\Enable(),
             new Cmd\Run(),
         ];
     }

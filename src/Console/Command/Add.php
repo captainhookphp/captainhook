@@ -10,20 +10,21 @@
 namespace CaptainHook\App\Console\Command;
 
 use CaptainHook\App\CH;
-use CaptainHook\App\Runner\Config\Creator;
+use CaptainHook\App\Runner\Config\Editor;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class Config
+ * Class Add
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
- * @since   Class available since Release 0.9.0
+ * @since   Class available since Release 4.1.1
  */
-class Configuration extends Base
+class Add extends Base
 {
     /**
      * Configure the command
@@ -32,18 +33,16 @@ class Configuration extends Base
      */
     protected function configure() : void
     {
-        $this->setName('configure')
-             ->setDescription('Configure your hooks')
-             ->setHelp('This command creates or updates your captainhook configuration')
-             ->addOption('extend', 'e', InputOption::VALUE_NONE, 'Extend existing configuration file')
-             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing configuration file')
-             ->addOption('advanced', 'a', InputOption::VALUE_NONE, 'More options, but more to type')
+        $this->setName('add')
+             ->setDescription('Add an action to a hook configuration')
+             ->setHelp('This command will add an action configuration to a given hook configuration')
+             ->addArgument('hook', InputArgument::REQUIRED, 'Hook you want to add the action to')
              ->addOption(
                  'configuration',
                  'c',
                  InputOption::VALUE_OPTIONAL,
                  'Path to your json configuration',
-                 './' . CH::CONFIG
+                 getcwd() . DIRECTORY_SEPARATOR . CH::CONFIG
              );
     }
 
@@ -53,16 +52,17 @@ class Configuration extends Base
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
      * @return void
+     * @throws \CaptainHook\App\Exception\InvalidHookName
      */
     protected function execute(InputInterface $input, OutputInterface $output) : void
     {
         $io     = $this->getIO($input, $output);
-        $config = $this->getConfig($input->getOption('configuration'));
+        $config = $this->getConfig($input->getOption('configuration'), true);
 
-        $configurator = new Creator($io, $config);
-        $configurator->force($input->getOption('force'))
-                     ->extend($input->getOption('extend'))
-                     ->advanced($input->getOption('advanced'))
-                     ->run();
+        $editor = new Editor($io, $config);
+        $editor->setHook((string) $input->getArgument('hook'))
+               ->setChange('AddAction');
+
+        $editor->run();
     }
 }

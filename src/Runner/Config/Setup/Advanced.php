@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Runner\Configurator\Setup;
+namespace CaptainHook\App\Runner\Config\Setup;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Hook\Util;
-use CaptainHook\App\Runner\Configurator\Setup;
+use CaptainHook\App\Runner\Config\Setup;
 
 /**
  * Class Advanced
@@ -75,7 +75,7 @@ class Advanced extends Guided implements Setup
      */
     public function getActionConfig() : Config\Action
     {
-        $call    = $this->io->ask('  <info>PHP class or shell command to execute?</info> ', '');
+        $call    = $this->io->ask('  <info>PHP class or shell command to execute?</info> ');
         $type    = Util::getActionType($call);
         $options = $this->getActionOptions($type);
 
@@ -123,7 +123,7 @@ class Advanced extends Guided implements Setup
         $result = [];
         $answer = $this->io->askAndValidate(
             '  <info>Specify options key and value</info> <comment>[key:value]</comment> ',
-            ['\\CaptainHook\\App\\Runner\\Configurator\\Setup\\Guided', 'isPHPActionOptionValid'],
+            ['\\CaptainHook\\App\\Runner\\Config\\Setup\\Guided', 'isPHPActionOptionValid'],
             3,
             null
         );

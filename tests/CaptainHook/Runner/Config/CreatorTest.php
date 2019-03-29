@@ -7,12 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Runner;
+namespace CaptainHook\App\Runner\Config;
 
-class ConfiguratorTest extends BaseTestRunner
+use CaptainHook\App\Runner\BaseTestRunner;
+
+class CreatorTest extends BaseTestRunner
 {
     /**
-     * Tests Configurator::run
+     * Tests Creator::run
      */
     public function testConfigureFileExists()
     {
@@ -21,7 +23,7 @@ class ConfiguratorTest extends BaseTestRunner
         $io     = $this->getIOMock();
         $config = $this->getConfigMock();
         $repo   = $this->getRepositoryMock();
-        $runner = new Configurator($io, $config, $repo);
+        $runner = new Creator($io, $config, $repo);
         $config->expects($this->once())->method('isLoadedFromFile')->willReturn(true);
         $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', '\\Foo\\Bar', 'y', 'n'));
         $runner->advanced(true)
@@ -30,7 +32,7 @@ class ConfiguratorTest extends BaseTestRunner
     }
 
     /**
-     * Tests Configurator::run
+     * Tests Creator::run
      */
     public function testConfigureFileExtend()
     {
@@ -38,7 +40,7 @@ class ConfiguratorTest extends BaseTestRunner
         $io     = $this->getIOMock();
         $config = $this->getConfigMock();
         $repo   = $this->getRepositoryMock();
-        $runner = new Configurator($io, $config, $repo);
+        $runner = new Creator($io, $config, $repo);
         $config->method('getHookConfig')->willReturn($this->getHookConfigMock());
         $config->method('getPath')->willReturn($path);
         $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', '\\Foo\\Bar', 'y', 'n'));

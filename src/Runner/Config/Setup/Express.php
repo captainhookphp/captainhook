@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Runner\Configurator\Setup;
+namespace CaptainHook\App\Runner\Config\Setup;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Hooks;
-use CaptainHook\App\Runner\Configurator\Setup;
+use CaptainHook\App\Runner\Config\Setup;
 
 /**
  * Class Express

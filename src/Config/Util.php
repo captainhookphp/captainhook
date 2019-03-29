@@ -10,6 +10,8 @@
 namespace CaptainHook\App\Config;
 
 use CaptainHook\App\Hook\Util as HookUtil;
+use CaptainHook\App\Config;
+use CaptainHook\App\Storage\File\Json;
 
 /**
  * Class Util
@@ -72,6 +74,19 @@ abstract class Util
                 throw new \RuntimeException('Config error: \'action\' can\'t be empty');
             }
         }
+    }
+
+    /**
+     * Write the config to disk
+     *
+     * @param  \CaptainHook\App\Config $config
+     * @return void
+     */
+    public static function writeToDisk(Config $config) : void
+    {
+        $filePath = $config->getPath();
+        $file     = new Json($filePath);
+        $file->write($config->getJsonData());
     }
 
     /**

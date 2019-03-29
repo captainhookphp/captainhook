@@ -17,7 +17,7 @@
     ]
   },
   "pre-push": {
-    "enabled": true,
+    "enabled": false,
     "actions": []
   }
 }

@@ -7,13 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Runner;
+namespace CaptainHook\App\Runner\Config;
 
 use CaptainHook\App\Config;
-use CaptainHook\App\Console\IOUtil;
-use CaptainHook\App\Hook\Util;
 use CaptainHook\App\Runner;
-use CaptainHook\App\Storage\File\Json;
 
 /**
  * Class Configurator
@@ -23,7 +20,7 @@ use CaptainHook\App\Storage\File\Json;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 0.9.0
  */
-class Configurator extends Runner
+class Creator extends Runner
 {
     /**
      * Force mode
@@ -57,7 +54,7 @@ class Configurator extends Runner
         $setup  = $this->getHookSetup();
 
         $setup->configureHooks($config);
-        $this->writeConfig($config);
+        Config\Util::writeToDisk($config);
 
         $this->io->write(
             [
@@ -71,9 +68,9 @@ class Configurator extends Runner
      * Force mode setter
      *
      * @param  bool $force
-     * @return \CaptainHook\App\Runner\Configurator
+     * @return \CaptainHook\App\Runner\Config\Creator
      */
-    public function force(bool $force) : Configurator
+    public function force(bool $force) : Creator
     {
         $this->force = $force;
         return $this;
@@ -83,9 +80,9 @@ class Configurator extends Runner
      * Set configuration mode
      *
      * @param  bool $extend
-     * @return \CaptainHook\App\Runner\Configurator
+     * @return \CaptainHook\App\Runner\Config\Creator
      */
-    public function extend(bool $extend) : Configurator
+    public function extend(bool $extend) : Creator
     {
         $this->mode = $extend ? 'extend' : 'create';
         return $this;
@@ -95,9 +92,9 @@ class Configurator extends Runner
      * Set configuration speed
      *
      * @param  bool $advanced
-     * @return \CaptainHook\App\Runner\Configurator
+     * @return \CaptainHook\App\Runner\Config\Creator
      */
-    public function advanced(bool $advanced) : Configurator
+    public function advanced(bool $advanced) : Creator
     {
         $this->advanced = $advanced;
         return $this;
@@ -110,10 +107,10 @@ class Configurator extends Runner
      */
     public function getConfigToManipulate() : Config
     {
-        // create mode, create blank configuration
-        if ('extend' !== $this->mode) {
+        if (!$this->isExtending()) {
             // make sure the force option is set if the configuration file exists
             $this->ensureForce();
+            // create a blank configuration to overwrite the old one
             return new Config($this->config->getPath());
         }
         return $this->config;
@@ -122,13 +119,23 @@ class Configurator extends Runner
     /**
      * Return the setup handler to ask the user questions
      *
-     * @return \CaptainHook\App\Runner\Configurator\Setup
+     * @return \CaptainHook\App\Runner\Config\Setup
      */
-    private function getHookSetup() : Configurator\Setup
+    private function getHookSetup() : Setup
     {
         return $this->advanced
-            ? new Configurator\Setup\Advanced($this->io)
-            : new Configurator\Setup\Express($this->io);
+            ? new Setup\Advanced($this->io)
+            : new Setup\Express($this->io);
+    }
+
+    /**
+     * Should the config file be extended
+     *
+     * @return bool
+     */
+    private function isExtending() : bool
+    {
+        return 'extend' === $this->mode;
     }
 
     /**
@@ -142,18 +149,5 @@ class Configurator extends Runner
         if ($this->config->isLoadedFromFile() && !$this->force) {
             throw new \RuntimeException('Configuration file exists, use -f to overwrite, or -e to extend');
         }
-    }
-
-    /**
-     * Write config to project root
-     *
-     * @return void
-     * @param \CaptainHook\App\Config $config
-     */
-    public function writeConfig(Config $config) : void
-    {
-        $filePath = $this->config->getPath();
-        $file     = new Json($filePath);
-        $file->write($config->getJsonData());
     }
 }
