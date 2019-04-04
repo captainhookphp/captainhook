@@ -80,6 +80,19 @@ class DefaultIO extends Base
     }
 
     /**
+     * Return the original cli argument or a given default
+     *
+     * @param  string $name
+     * @param  string $default
+     * @return string
+     */
+    public function getArgument(string $name, string $default = '') : string
+    {
+        $arg = $this->input->getArgument($name);
+        return $arg ?? $default;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function isInteractive()

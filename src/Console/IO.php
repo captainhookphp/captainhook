@@ -35,6 +35,15 @@ interface IO
     public function getArguments() : array;
 
     /**
+     * Return the original cli argument or a given default
+     *
+     * @param  string $name
+     * @param  string $default
+     * @return string
+     */
+    public function getArgument(string $name, string $default = '') : string;
+
+    /**
      * Is this input interactive?
      *
      * @return bool

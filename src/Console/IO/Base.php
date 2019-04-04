@@ -30,4 +30,16 @@ abstract class Base implements IO
     {
         return [];
     }
+
+    /**
+     * Return the original cli argument or a given default
+     *
+     * @param  string $name
+     * @param  string $default
+     * @return string
+     */
+    public function getArgument(string $name, string $default = '') : string
+    {
+        return $default;
+    }
 }
