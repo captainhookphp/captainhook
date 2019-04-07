@@ -52,6 +52,8 @@ class Cli
      *  - commit-msg         => FILE
      *  - pre-push           => TARGET, URL
      *  - pre-commit         => -
+     *  - post-checkout      => PREVIOUSHEAD, NEWHEAD, MODE
+     *  - post-merge         => SQUASH
      *
      * @param  string $command
      * @param  array  $args
