@@ -9,6 +9,7 @@
  */
 namespace CaptainHook\App;
 
+use SebastianFeldmann\Git\Operator\Diff;
 use SebastianFeldmann\Git\Operator\Info;
 use SebastianFeldmann\Git\Repository;
 
@@ -23,8 +24,8 @@ trait Mockery
     public function createRepositoryMock(string $root = '')
     {
         $repo = $this->getMockBuilder(Repository::class)
-                       ->disableOriginalConstructor()
-                       ->getMock();
+                     ->disableOriginalConstructor()
+                     ->getMock();
 
         $repo->method('getRoot')->willReturn($root);
         $repo->method('getHooksDir')->willReturn($root . '/.git/hooks');
@@ -45,6 +46,24 @@ trait Mockery
                          ->getMock();
 
         $operator->method('getCurrentTag')->willReturn($tag);
+
+        return $operator;
+    }
+
+
+    /**
+     * Create diff operator mock
+     *
+     * @param  array $changedFiles
+     * @return \SebastianFeldmann\Git\Operator\Diff
+     */
+    public function createGitDiffOperator(array $changedFiles = [])
+    {
+        $operator = $this->getMockBuilder(Diff::class)
+                         ->disableOriginalConstructor()
+                         ->getMock();
+
+        $operator->method('getChangedFiles')->willReturn($changedFiles);
 
         return $operator;
     }
