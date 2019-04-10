@@ -32,7 +32,7 @@ class DebugTest extends TestCase
         $io           = $this->createIOMock();
         $repository   = $this->createRepositoryMock();
         $infoOperator = $this->createGitInfoOperator('1.0.0');
-        $action       = new Action('php', Debug::class);
+        $action       = new Action('\\' . Debug::class);
 
         $io->expects($this->once())->method('getArguments')->willReturn(['foo' => 'bar']);
         $io->expects($this->exactly(3))->method('write');

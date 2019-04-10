@@ -24,7 +24,6 @@ class PostCheckoutTest extends BaseTestRunner
         $repo         = $this->getRepositoryMock();
         $hookConfig   = $this->getHookConfigMock();
         $actionConfig = $this->getActionConfigMock();
-        $actionConfig->method('getType')->willReturn('cli');
         $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);

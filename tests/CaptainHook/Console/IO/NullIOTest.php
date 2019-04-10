@@ -16,6 +16,16 @@ class NullIOTest extends TestCase
     }
 
     /**
+     * Tests NullIO::getArgument
+     */
+    public function testGetArgument()
+    {
+        $io = new NullIO();
+        $this->assertEquals('', $io->getArgument('foo'));
+        $this->assertEquals('bar', $io->getArgument('foo', 'bar'));
+    }
+
+    /**
      * Tests NullIO::isInteractive
      */
     public function testIsInteractive()

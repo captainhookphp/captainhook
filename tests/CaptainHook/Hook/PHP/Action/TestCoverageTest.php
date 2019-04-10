@@ -27,7 +27,6 @@ class TestCoverageTest extends TestCase
         $repo     = $this->getRepoMock();
         $standard = new TestCoverage();
         $action   = new Config\Action(
-            'php',
             TextCoverage::class,
             ['cloverXml' => CH_PATH_FILES . '/coverage/valid.xml']
         );
@@ -48,7 +47,6 @@ class TestCoverageTest extends TestCase
         $repo     = $this->getRepoMock();
         $standard = new TestCoverage();
         $action   = new Config\Action(
-            'php',
             TextCoverage::class,
             [
                 'cloverXml'   => CH_PATH_FILES . '/coverage/valid.xml',
@@ -68,7 +66,6 @@ class TestCoverageTest extends TestCase
         $repo     = $this->getRepoMock();
         $standard = new TestCoverage();
         $action   = new Config\Action(
-            'php',
             TextCoverage::class,
             ['phpUnit' => CH_PATH_FILES . '/bin/phpunit']
         );

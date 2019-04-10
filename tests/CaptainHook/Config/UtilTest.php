@@ -86,6 +86,63 @@ class UtilTest extends TestCase
     /**
      * Tests Util::validateJsonConfiguration
      */
+    public function testConditionExecMissing()
+    {
+        $this->expectException(\Exception::class);
+
+        Util::validateJsonConfiguration(
+            [
+                'pre-commit' => [
+                    'enabled' => true,
+                    'actions' => [
+                        [
+                            'action'    => 'foo',
+                            'conditions' => [
+                                [
+                                    'args' => [
+                                        'foo' => 'fiz',
+                                        'bar' => 'baz'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        );
+    }
+
+    /**
+     * Tests Util::validateJsonConfiguration
+     */
+    public function testConditionArgsNoArray()
+    {
+        $this->expectException(\Exception::class);
+
+        Util::validateJsonConfiguration(
+            [
+                'pre-commit' => [
+                    'enabled' => true,
+                    'actions' => [
+                        [
+                            'action'    => 'foo',
+                            'conditions' => [
+                                [
+                                    'exec' => '\\Foo',
+                                    'args' => 'fooBarBaz'
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        );
+    }
+
+
+    /**
+     * Tests Util::validateJsonConfiguration
+     */
     public function testValid()
     {
         Util::validateJsonConfiguration(
@@ -94,6 +151,36 @@ class UtilTest extends TestCase
                     'enabled' => true,
                     'actions' => [
                         ['action'  => 'foo']
+                    ]
+                ]
+            ]
+        );
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * Tests Util::validateJsonConfiguration
+     */
+    public function testValidWithCondition()
+    {
+        Util::validateJsonConfiguration(
+            [
+                'pre-commit' => [
+                    'enabled' => true,
+                    'actions' => [
+                        [
+                            'action'    => 'foo',
+                            'conditions' => [
+                                [
+                                    'exec' => '\\Fiz\\Baz',
+                                    'args' => [
+                                        'foo' => 'fiz',
+                                        'bar' => 'baz'
+                                    ]
+                                ]
+                            ]
+                        ]
                     ]
                 ]
             ]

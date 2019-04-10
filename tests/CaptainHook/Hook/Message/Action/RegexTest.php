@@ -54,13 +54,7 @@ class RegexTest extends TestCase
 
         $config  = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo    = new Repository($this->repo->getPath());
-        $action  = new Config\Action(
-            'php',
-            Regex::class,
-            [
-                'regex'   => '#bar#'
-            ]
-        );
+        $action  = new Config\Action(Regex::class, ['regex'   => '#bar#']);
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
         $standard = new Regex();
@@ -82,7 +76,6 @@ class RegexTest extends TestCase
         $config  = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo    = new Repository($this->repo->getPath());
         $action  = new Config\Action(
-            'php',
             Regex::class,
             [
                 'regex'   => '#.*#',
@@ -107,7 +100,7 @@ class RegexTest extends TestCase
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
-        $action = new Config\Action('php', Rulebook::class);
+        $action = new Config\Action(Rulebook::class);
 
         $standard = new Regex();
         $standard->execute($config, $io, $repo, $action);
@@ -124,7 +117,6 @@ class RegexTest extends TestCase
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
-            'php',
             MessageRuleBook::class,
             [
                 'regex' => '#FooBarBaz#',

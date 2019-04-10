@@ -26,8 +26,7 @@ class PrepareCommitMsgTest extends BaseTestRunner
         $config       = $this->getConfigMock();
         $hookConfig   = $this->getHookConfigMock();
         $actionConfig = $this->getActionConfigMock();
-        $actionConfig->method('getType')->willReturn('php');
-        $actionConfig->method('getAction')->willReturn(Prepare::class);
+        $actionConfig->method('getAction')->willReturn('\\' . Prepare::class);
         $actionConfig->method('getOptions')->willReturn(new Config\Options(['message' => 'Prepared commit msg']));
         $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
@@ -67,7 +66,6 @@ class PrepareCommitMsgTest extends BaseTestRunner
         $repo         = $this->getRepositoryMock();
         $hookConfig   = $this->getHookConfigMock();
         $actionConfig = $this->getActionConfigMock();
-        $actionConfig->method('getType')->willReturn('php');
         $actionConfig->method('getAction')->willReturn(Prepare::class);
         $actionConfig->method('getOptions')->willReturn(new Config\Options(['message' => 'Prepared commit msg']));
         $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);

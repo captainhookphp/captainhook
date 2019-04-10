@@ -88,8 +88,7 @@ class DefaultIO extends Base
      */
     public function getArgument(string $name, string $default = '') : string
     {
-        $arg = $this->input->getArgument($name);
-        return $arg ?? $default;
+        return (string)($this->getArguments()[$name] ?? $default);
     }
 
     /**

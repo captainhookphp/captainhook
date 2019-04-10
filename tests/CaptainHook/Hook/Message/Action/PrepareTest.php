@@ -51,7 +51,6 @@ class PrepareTest extends TestCase
         $config  = new Config(CH_PATH_FILES . DIRECTORY_SEPARATOR . CH::CONFIG);
         $repo    = new Repository($this->repo->getPath());
         $action  = new Config\Action(
-            'php',
             Prepare::class,
             [
                 'message' => 'Prepared Commit Message'

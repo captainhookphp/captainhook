@@ -58,10 +58,9 @@ class Express extends Guided implements Setup
         );
 
         if (IOUtil::answerToBool($answer)) {
-            $type    = 'php';
             $call    = '\\CaptainHook\\App\\Hook\\Message\\Action\\Beams';
             $options = ['subjectLength' => 50, 'bodyLineLength' => 72];
-            $config->addAction(new Config\Action($type, $call, $options));
+            $config->addAction(new Config\Action($call, $options));
         }
     }
 
@@ -80,9 +79,8 @@ class Express extends Guided implements Setup
         );
 
         if (IOUtil::answerToBool($answer)) {
-            $type    = 'php';
             $call    = '\\CaptainHook\\App\\Hook\\PHP\\Action\\Linting';
-            $config->addAction(new Config\Action($type, $call));
+            $config->addAction(new Config\Action($call));
         }
     }
 
@@ -101,12 +99,11 @@ class Express extends Guided implements Setup
         );
 
         if (IOUtil::answerToBool($answer)) {
-            $type = 'cli';
             $call = $this->io->ask(
                 '  <info>Enter the phpunit command you want to execute.</info> <comment>[phpunit]</comment> ',
                 'phpunit'
             );
-            $config->addAction(new Config\Action($type, $call));
+            $config->addAction(new Config\Action($call));
         }
     }
 
@@ -125,13 +122,12 @@ class Express extends Guided implements Setup
         );
 
         if (IOUtil::answerToBool($answer)) {
-            $type    = 'cli';
             $call    = $this->io->ask(
                 '  <info>Enter the phpcs command you want to execute.</info> '
                 . '<comment>[phpcs --standard=psr2 src]</comment> ',
                 'phpcs --standard=psr2 src'
             );
-            $config->addAction(new Config\Action($type, $call));
+            $config->addAction(new Config\Action($call));
         }
     }
 }

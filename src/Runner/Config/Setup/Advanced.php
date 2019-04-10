@@ -11,7 +11,8 @@ namespace CaptainHook\App\Runner\Config\Setup;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IOUtil;
-use CaptainHook\App\Hook\Util;
+use CaptainHook\App\Hook\Util as HookUtil;
+use CaptainHook\App\Runner\Util as RunnerUtil;
 use CaptainHook\App\Runner\Config\Setup;
 
 /**
@@ -33,7 +34,7 @@ class Advanced extends Guided implements Setup
      */
     public function configureHooks(Config $config) : void
     {
-        foreach (Util::getHooks() as $hook) {
+        foreach (HookUtil::getHooks() as $hook) {
             $this->configureHook($config->getHookConfig($hook), $hook);
         }
     }
@@ -76,10 +77,9 @@ class Advanced extends Guided implements Setup
     public function getActionConfig() : Config\Action
     {
         $call    = $this->io->ask('  <info>PHP class or shell command to execute?</info> ');
-        $type    = Util::getActionType($call);
-        $options = $this->getActionOptions($type);
+        $options = $this->getActionOptions(RunnerUtil::getExecType($call));
 
-        return new Config\Action($type, $call, $options);
+        return new Config\Action($call, $options);
     }
 
     /**

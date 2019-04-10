@@ -29,7 +29,6 @@ class CommitMsgTest extends BaseTestRunner
 
         $hookConfig   = $this->getHookConfigMock();
         $actionConfig = $this->getActionConfigMock();
-        $actionConfig->method('getType')->willReturn('cli');
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
         $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
@@ -53,7 +52,6 @@ class CommitMsgTest extends BaseTestRunner
         $hookConfig   = $this->getHookConfigMock();
         $repo         = $this->getRepositoryMock();
         $actionConfig = $this->getActionConfigMock();
-        $actionConfig->method('getType')->willReturn('cli');
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
         $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);

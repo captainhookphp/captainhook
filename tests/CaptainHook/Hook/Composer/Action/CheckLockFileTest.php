@@ -49,7 +49,6 @@ class CheckLockFileTest extends TestCase
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
-            'php',
             CheckLockFile::class,
             ['path' => CH_PATH_FILES . '/composer/valid']
         );
@@ -70,7 +69,6 @@ class CheckLockFileTest extends TestCase
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
-            'php',
             CheckLockFile::class,
             ['path' => CH_PATH_FILES . '/composer/invalid-hash']
         );
@@ -91,7 +89,6 @@ class CheckLockFileTest extends TestCase
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
-            'php',
             CheckLockFile::class,
             ['path' => CH_PATH_FILES . '/composer/no-hash']
         );
@@ -111,7 +108,6 @@ class CheckLockFileTest extends TestCase
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
-            'php',
             CheckLockFile::class,
             ['path' => CH_PATH_FILES . '/composer/not-there']
         );

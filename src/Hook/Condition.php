@@ -7,31 +7,28 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Runner\Config\Change;
+namespace CaptainHook\App\Hook;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
-use CaptainHook\App\Runner\Config\Change;
-use CaptainHook\App\Runner\Config\Setup\Advanced;
+use SebastianFeldmann\Git\Repository;
 
 /**
- * Class AddAction
+ * Interface Conditions
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 4.2.0
  */
-class DisableHook extends Hook
+interface Condition
 {
     /**
-     * Apply changes to the given config
+     * Evaluates a condition
      *
-     * @param  \CaptainHook\App\Config $config
-     * @throws \Exception
+     * @param  \CaptainHook\App\Console\IO       $io
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @return bool
      */
-    public function applyTo(Config $config)
-    {
-        $config->getHookConfig($this->hookToChange)->setEnabled(false);
-    }
+    public function isTrue(IO $io, Repository $repository) : bool;
 }

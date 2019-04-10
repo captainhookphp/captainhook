@@ -47,7 +47,7 @@ class BeamsTest extends TestCase
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action('php', Beams::class);
+        $action = new Config\Action(Beams::class);
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
@@ -66,7 +66,7 @@ class BeamsTest extends TestCase
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action('php', Beams::class);
+        $action = new Config\Action(Beams::class);
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('added foo bar baz.'));
 

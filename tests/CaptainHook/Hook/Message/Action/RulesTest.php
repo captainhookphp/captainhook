@@ -52,7 +52,7 @@ class RulesTest extends TestCase
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action('php', Rules::class);
+        $action = new Config\Action(Rules::class);
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
@@ -69,7 +69,7 @@ class RulesTest extends TestCase
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action('php', Rules::class);
+        $action = new Config\Action(Rules::class);
         $repo   = $this->createRepositoryMock();
         $repo->expects($this->once())->method('isMerging')->willReturn(true);
 
@@ -89,11 +89,7 @@ class RulesTest extends TestCase
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
-        $action = new Config\Action(
-            'php',
-            Rules::class,
-            [Foo::class]
-        );
+        $action = new Config\Action(Rules::class, [Foo::class]);
 
         $standard = new Rules();
         $standard->execute($config, $io, $repo, $action);
@@ -108,11 +104,7 @@ class RulesTest extends TestCase
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action(
-            'php',
-            Rules::class,
-            [Validator::class]
-        );
+        $action = new Config\Action(Rules::class, [Validator::class]);
         $repo   = new Repository($this->repo->getPath());
 
         $standard = new Rules();
@@ -126,11 +118,7 @@ class RulesTest extends TestCase
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action(
-            'php',
-            Rules::class,
-            [CapitalizeSubject::class]
-        );
+        $action = new Config\Action(Rules::class, [CapitalizeSubject::class]);
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
@@ -149,19 +137,11 @@ class RulesTest extends TestCase
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action(
-            'php',
-            Rules::class,
-            [NoRule::class]
-        );
+        $action = new Config\Action(Rules::class, [NoRule::class]);
         $repo   = new Repository($this->repo->getPath());
         $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
 
         $standard = new Rules();
         $standard->execute($config, $io, $repo, $action);
     }
-}
-
-class NoRule
-{
 }

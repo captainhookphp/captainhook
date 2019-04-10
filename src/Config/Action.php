@@ -20,13 +20,6 @@ namespace CaptainHook\App\Config;
 class Action
 {
     /**
-     * Action type
-     *
-     * @var string
-     */
-    private $type;
-
-    /**
      * Action phpc lass or cli script
      *
      * @var string
@@ -41,38 +34,47 @@ class Action
     private $options;
 
     /**
-     * List of valid action types
+     * List of action conditions
      *
-     * @var array
+     * @var \CaptainHook\App\Config\Condition[]
      */
-    protected static $validTypes = ['php' => true, 'cli' => true];
+    private $conditions = [];
 
     /**
      * Action constructor
      *
-     * @param  string $type
      * @param  string $action
      * @param  array  $options
+     * @param  array  $conditions
      * @throws \Exception
      */
-    public function __construct(string $type, string $action, array $options = [])
+    public function __construct(string $action, array $options = [], array $conditions = [])
     {
-        if (!isset(self::$validTypes[$type])) {
-            throw new \Exception(sprintf('Invalid action type: %s', $type));
-        }
-        $this->type    = $type;
-        $this->action  = $action;
+        $this->action = $action;
+        $this->setupOptions($options);
+        $this->setupConditions($conditions);
+    }
+
+    /**
+     * Setup options
+     *
+     * @param array $options
+     */
+    private function setupOptions(array $options) : void
+    {
         $this->options = new Options($options);
     }
 
     /**
-     * Type getter
+     * Setup action conditions
      *
-     * @return string
+     * @param array $conditions
      */
-    public function getType() : string
+    private function setupConditions(array $conditions) : void
     {
-        return $this->type;
+        foreach ($conditions as $condition) {
+            $this->conditions[] = new Condition($condition['exec'], $condition['args'] ?? []);
+        }
     }
 
     /**
@@ -96,6 +98,16 @@ class Action
     }
 
     /**
+     * Return condition configurations
+     *
+     * @return \CaptainHook\App\Config\Condition[]
+     */
+    public function getConditions() : array
+    {
+        return $this->conditions;
+    }
+
+    /**
      * Return config data
      *
      * @return array
@@ -103,8 +115,23 @@ class Action
     public function getJsonData() : array
     {
         return [
-            'action'  => $this->action,
-            'options' => $this->options->getAll(),
+            'action'     => $this->action,
+            'options'    => $this->options->getAll(),
+            'conditions' => $this->getConditionJsonData()
         ];
+    }
+
+    /**
+     * Return conditions json data
+     *
+     * @return array
+     */
+    private function getConditionJsonData() : array
+    {
+        $json = [];
+        foreach ($this->conditions as $condition) {
+            $json[] = $condition->getJsonData();
+        }
+        return $json;
     }
 }

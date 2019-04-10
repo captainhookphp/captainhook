@@ -14,6 +14,7 @@ use CaptainHook\App\Config\Options;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Console\IOUtil;
 use SebastianFeldmann\Git\Repository;
+use RuntimeException;
 
 /**
  * Hook
@@ -135,7 +136,14 @@ abstract class Hook extends RepositoryAware
     {
         $this->io->write(['', 'Action: <comment>' . $action->getAction() . '</comment>']);
 
-        $execMethod = self::getExecMethod($action->getType());
+        if (!$this->doConditionsApply($action->getConditions())) {
+            $this->io->write(
+                ['', 'Action: <comment>' . $action->getAction() . '</comment> skipped due to failing conditions']
+            );
+            return;
+        }
+
+        $execMethod = self::getExecMethod(Util::getExecType($action->getAction()));
         $this->{$execMethod}($action);
     }
 
@@ -181,9 +189,26 @@ abstract class Hook extends RepositoryAware
         $valid = ['php' => 'executePhpAction', 'cli' => 'executeCliAction'];
 
         if (!isset($valid[$type])) {
-            throw new \RuntimeException('invalid action type: ' . $type);
+            throw new RuntimeException('invalid action type: ' . $type);
         }
         return $valid[$type];
+    }
+
+    /**
+     * Check if conditions apply
+     *
+     * @param  \CaptainHook\App\Config\Condition[] $conditions
+     * @return bool
+     */
+    private function doConditionsApply(array $conditions) : bool
+    {
+        $conditionRunner = new Condition($this->io, $this->repository);
+        foreach ($conditions as $config) {
+            if (!$conditionRunner->doesConditionApply($config)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

@@ -93,14 +93,4 @@ class UtilTest extends TestCase
         $this->assertContains('pre-push', Util::getHooks());
         $this->assertContains('commit-msg', Util::getHooks());
     }
-
-    /**
-     * Tests Util::getActionType
-     */
-    public function testGetActionType()
-    {
-        $this->assertEquals('php', Util::getActionType('\\Foo\\Bar'));
-        $this->assertEquals('cli', Util::getActionType('echo foo'));
-        $this->assertEquals('cli', Util::getActionType('/usr/local/bin/phpunit.phar'));
-    }
 }

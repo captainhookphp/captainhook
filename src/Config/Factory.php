@@ -89,9 +89,13 @@ class Factory
     {
         $config->setEnabled($json['enabled']);
         foreach ($json['actions'] as $actionJson) {
-            $type    = HookUtil::getActionType($actionJson['action']);
-            $options = isset($actionJson['options']) && is_array($actionJson['options']) ? $actionJson['options'] : [];
-            $config->addAction(new Config\Action($type, $actionJson['action'], $options));
+            $options    = isset($actionJson['options']) && is_array($actionJson['options'])
+                        ? $actionJson['options']
+                        : [];
+            $conditions = isset($actionJson['conditions']) && is_array($actionJson['conditions'])
+                        ? $actionJson['conditions']
+                        : [];
+            $config->addAction(new Config\Action($actionJson['action'], $options, $conditions));
         }
     }
 }

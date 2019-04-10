@@ -73,6 +73,27 @@ abstract class Util
             if (empty($action['action'])) {
                 throw new \RuntimeException('Config error: \'action\' can\'t be empty');
             }
+            if (!empty($action['conditions'])) {
+                self::validateConditionsConfig($action['conditions']);
+            }
+        }
+    }
+
+    /**
+     * Validate a list of condition configurations
+     *
+     * @param  array $json
+     * @throws \RuntimeException
+     */
+    public static function validateConditionsConfig(array $json) : void
+    {
+        foreach ($json as $condition) {
+            if (!self::keysExist(['exec'], $condition) || empty($condition['exec'])) {
+                throw new \RuntimeException('Config error: \'exec\' is required for conditions');
+            }
+            if (!empty($condition['args']) && !is_array($condition['args'])) {
+                throw new \RuntimeException('Config error: invalid \'args\' configuration');
+            }
         }
     }
 

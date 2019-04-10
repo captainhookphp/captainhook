@@ -32,7 +32,7 @@ class LintingTest extends TestCase
         $repo->expects($this->once())->method('getIndexOperator')->willReturn($resolver);
 
 
-        $action   = new Config\Action('php', Linter::class, []);
+        $action   = new Config\Action(Linter::class, []);
         $standard = new Linting();
         $standard->execute($config, $io, $repo, $action);
     }
@@ -53,7 +53,7 @@ class LintingTest extends TestCase
         $repo->expects($this->once())->method('getIndexOperator')->willReturn($resolver);
 
 
-        $action   = new Config\Action('php', Linter::class, []);
+        $action   = new Config\Action(Linter::class, []);
         $standard = new Linting();
         $standard->execute($config, $io, $repo, $action);
     }

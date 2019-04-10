@@ -56,7 +56,7 @@ class HookTest extends TestCase
     public function testAddAction()
     {
         $hook   = new Hook();
-        $hook->addAction(new Action('php', '\\Foo\\Bar'));
+        $hook->addAction(new Action('\\Foo\\Bar'));
         $config = $hook->getJsonData();
 
         $this->assertCount(1, $hook->getActions());

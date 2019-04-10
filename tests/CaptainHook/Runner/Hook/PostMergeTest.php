@@ -24,7 +24,51 @@ class PostMergeTest extends BaseTestRunner
         $repo         = $this->getRepositoryMock();
         $hookConfig   = $this->getHookConfigMock();
         $actionConfig = $this->getActionConfigMock();
-        $actionConfig->method('getType')->willReturn('cli');
+        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
+        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $io->expects($this->exactly(3))->method('write');
+
+        $args   = new Config\Options([]);
+        $runner = new PostMerge($io, $config, $repo, $args);
+        $runner->run();
+    }
+
+    /**
+     * Tests PostMerge::run
+     */
+    public function testRunHookWithConditionsApply()
+    {
+        $io              = $this->getIOMock();
+        $config          = $this->getConfigMock();
+        $repo            = $this->getRepositoryMock();
+        $hookConfig      = $this->getHookConfigMock();
+        $conditionConfig = new Config\Condition(CH_PATH_FILES . '/bin/phpunit');
+        $actionConfig    = $this->getActionConfigMock();
+        $actionConfig->expects($this->once())->method('getConditions')->willReturn([$conditionConfig]);
+        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
+        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $io->expects($this->exactly(3))->method('write');
+
+        $args   = new Config\Options([]);
+        $runner = new PostMerge($io, $config, $repo, $args);
+        $runner->run();
+    }
+
+
+    /**
+     * Tests PostMerge::run
+     */
+    public function testRunHookWithConditionsFail()
+    {
+        $io              = $this->getIOMock();
+        $config          = $this->getConfigMock();
+        $repo            = $this->getRepositoryMock();
+        $hookConfig      = $this->getHookConfigMock();
+        $conditionConfig = new Config\Condition(CH_PATH_FILES . '/bin/failure');
+        $actionConfig    = $this->getActionConfigMock();
+        $actionConfig->expects($this->once())->method('getConditions')->willReturn([$conditionConfig]);
         $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);

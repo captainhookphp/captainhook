@@ -30,7 +30,7 @@
     "ext-spl": "*",
     "ext-simplexml": "*",
     "sebastianfeldmann/cli": "^3.0",
-    "sebastianfeldmann/git": "^2.0",
+    "sebastianfeldmann/git": "^2.1",
     "symfony/console": ">=2.7"
   },
   "require-dev": {

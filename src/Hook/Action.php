@@ -14,7 +14,7 @@ use CaptainHook\App\Console\IO;
 use SebastianFeldmann\Git\Repository;
 
 /**
- * Class Action
+ * Interface Action
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
@@ -24,7 +24,7 @@ use SebastianFeldmann\Git\Repository;
 interface Action
 {
     /**
-     * Executes the action.
+     * Executes the action
      *
      * @param  \CaptainHook\App\Config           $config
      * @param  \CaptainHook\App\Console\IO       $io

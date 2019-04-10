@@ -14,52 +14,63 @@ use PHPUnit\Framework\TestCase;
 class ActionTest extends TestCase
 {
     /**
-     * Tests Action::getType
-     */
-    public function testGetType()
-    {
-        $action = new Action('php', '\\Foo\\Bar');
-
-        $this->assertEquals('php', $action->getType());
-    }
-
-    /**
      * Tests Action::getAction
      */
     public function testGetAction()
     {
-        $action = new Action('php', '\\Foo\\Bar');
+        $action = new Action('\\Foo\\Bar');
 
         $this->assertEquals('\\Foo\\Bar', $action->getAction());
     }
 
     /**
-     * Tests Action::getOption
+     * Tests Action::getOptions
      */
     public function testGetOptions()
     {
-        $action = new Action('php', '\\Foo\\Bar');
+        $action = new Action('\\Foo\\Bar');
 
         $this->assertEquals([], $action->getOptions()->getAll());
     }
 
     /**
-     * Tests Action::__construct
+     * Tests Action::getJsonData
      */
     public function testEmptyOptions()
     {
-        $action = new Action('php', '\\Foo\\Bar');
+        $action = new Action('\\Foo\\Bar');
         $config = $action->getJsonData();
 
         $this->assertCount(0, $config['options']);
     }
 
     /**
-     * Tests Action::__construct
+     * Tests Action::getJsonData
      */
-    public function testInvalidType()
+    public function testConditions()
     {
-        $this->expectException(\Exception::class);
-        $action = new Action('crap', 'with cinnamon and sugar');
+        $conditions = [
+            ['exec' => '\\Foo\\Bar', 'args' => []]
+        ];
+
+        $action = new Action('\\Foo\\Bar', [], $conditions);
+        $config = $action->getJsonData();
+
+        $this->assertCount(1, $config['conditions']);
+    }
+
+    /**
+     * Tests Action::getConditions
+     */
+    public function testGetConditions()
+    {
+        $conditions = [
+            ['exec' => '\\Foo\\Bar', 'args' => []],
+            ['exec' => '\\Fiz\\Baz', 'args' => []]
+        ];
+
+        $action = new Action('\\Foo\\Bar', [], $conditions);
+
+        $this->assertCount(2, $action->getConditions());
     }
 }
