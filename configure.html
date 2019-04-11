@@ -137,6 +137,68 @@
       <p>
         You can easily build your own action classes. Have a look on how to <a href="extend.html">extend</a> CaptainHook.
       </p>
+      <h3 id="conditions">Conditions</h3>
+      <p>
+        You can add conditions to an <em>action</em> configuration. Only if all configured conditions apply the action gets executed.
+        This becomes useful for example if you want to run <em>composer install</em> automatically every time someone changes <em>composer.json</em>
+        or <em>composer.lock</em>.
+      </p>
+      <p>
+        To make sure you catch every change in your repository you have to add the action to both <em>post-merge</em> and <em>post-checkout</em>
+        hooks. This way you run composer after every <em>merge</em> or <em>pull</em> or after checking out another branch that changes you local
+        composer files.
+      </p>
+
+      <pre><code class="javascript">{
+  "post-merge": {
+    "enabled": true,
+    "actions": [
+      {
+        "action": "composer install",
+        "options": {},
+        "conditions": [
+          {
+            "exec": "\\CaptainHook\\App\Hook\\Condition\\FileChange\\Any",
+            "args": [
+              ["composer.json", "composer.lock"]
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "post-checkout": {
+    "enabled": true,
+    "actions": [
+      {
+        "action": "composer install",
+        "options": {},
+        "conditions": [
+          {
+            "exec": "\\CaptainHook\\App\Hook\\Condition\\FileChange\\Any",
+            "args": [
+              ["composer.json", "composer.lock"]
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+      <p>Here's a list of all built-in conditions</p>
+      <h5>post-merge / post-checkout</h5>
+      <ul>
+        <li>\CaptainHook\App\Hook\Condition\FileChange\Any</a><br>Check if <strong>any</strong> of the configured files is changed</li>
+        <li>\CaptainHook\App\Hook\Condition\FileChange\All</a><br>Check if <strong>all</strong> of the configured files is changed</li>
+      </ul>
+      <p>
+        You can build your own conditions. You can either use simple scripts or binaries which have to return an exit code.
+        The exit code 0 means the condition applies, any exit code other then 0 means the condition does not apply.
+      </p>
+      <p>
+        Or you can build custom PHP <em>Conditions</em>. For an exact guide have a look at the
+        <a href="extend.html#conditions">"how to extend CaptainHook"</a> section.
+      </p>
 
     </div>
 

@@ -192,6 +192,124 @@ class TicketIDValidator implements Action
     }
 }</code></pre>
 
+      <h3 id="conditions">Conditions</h3>
+
+      <p>
+        The only thing you have to do to write your own <em>Condition</em> is that you have to implement the <em>\CaptainHook\App\Hook\Condition</em> interface.
+        That means that you have to implement one single method called <em>"isTrue"</em>
+      </p>
+      <p>
+        Here is a minimal example.
+      </p>
+
+      <pre><code class="php">&lt;?php
+
+namespace MyName\HookConditions;
+
+use CaptainHook\App\Console\IO;
+use CaptainHook\App\Hook\Condition;
+use SebastianFeldmann\Git\Repository;
+
+class NotOnMonday implements Condition
+{
+    /**
+     * Make sure the action is not executed on mondays
+     *
+     * @param  \CaptainHook\App\Console\IO       $io
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @return bool
+     */
+    public function isTrue(IO $io, Repository $repository) : bool
+    {
+        return date('D') != 'MON';
+    }
+}</code></pre>
+
+      <p>To use this you can add this to any action configuration you want.</p>
+
+      <pre><code class="javascript">{
+  "pre-commit": {
+    "enabled": true,
+    "actions": [
+      {
+        "action": "\\MyName\\GitHook\\MyAction::execute",
+        "conditions": [
+          {
+            "exec:"\\MyName\\HookConditions\\NotOnMonday"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+      <p>
+        If you want to make the days of the week configurable, all you have to do is to add an constructor and configure the arguments you want to pass to the constructor.
+      </p>
+
+      <pre><code class="php">&lt;?php
+
+namespace MyName\HookConditions;
+
+use CaptainHook\App\Console\IO;
+use CaptainHook\App\Hook\Condition;
+use SebastianFeldmann\Git\Repository;
+
+class NotOnAnyWeekday implements Condition
+{
+    /**
+     * List of days where to not execute the action e.g. ['SAT', 'SUN']
+     *
+     * @var array
+     */
+    private $weekdays;
+
+    /**
+     * NotOnAnyWeekday constructor
+     *
+     * @param array $weekdays List of weekdays to skip e.g. ['MON', 'SAT']
+     */
+    public function __construct(array $weekdays)
+    {
+        $this->weekdays = $weekdays;
+    }
+
+    /**
+     * Make sure this action is not executed on and configured weekdays
+     *
+     * @param  \CaptainHook\App\Console\IO       $io
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @return bool
+     */
+    public function isTrue(IO $io, Repository $repository) : bool
+    {
+        return !in_array(date('D'), $this->weekdays;
+    }
+}</code></pre>
+
+      <p>
+        To setup the weekdays you would configure it like this. If you want to use multiple constructor arguments, just add them to the args array.
+      </p>
+
+      <pre><code class="javascript">{
+  "pre-commit": {
+    "enabled": true,
+    "actions": [
+      {
+        "action": "\\MyName\\GitHook\\MyAction::execute",
+        "conditions": [
+          {
+            "exec:"\\MyName\\HookConditions\\NotOnMonday",
+            "args": [
+              ["Mon", "SAT"]
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
     </div>
 
     <footer class="footer">
