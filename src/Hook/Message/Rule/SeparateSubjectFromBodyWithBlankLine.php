@@ -37,6 +37,6 @@ class SeparateSubjectFromBodyWithBlankLine extends Base
      */
     public function pass(CommitMessage $msg) : bool
     {
-        return $msg->getLineCount() < 2 || empty($msg->getLine(1));
+        return $msg->getContentLineCount() < 2 || empty($msg->getContentLine(1));
     }
 }
