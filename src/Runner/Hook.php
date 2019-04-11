@@ -138,7 +138,7 @@ abstract class Hook extends RepositoryAware
 
         if (!$this->doConditionsApply($action->getConditions())) {
             $this->io->write(
-                ['', 'Action: <comment>' . $action->getAction() . '</comment> skipped due to failing conditions']
+                ['', 'Skipped due to failing conditions']
             );
             return;
         }
