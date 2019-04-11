@@ -7,21 +7,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace CaptainHook\App\Hook\Condition;
+namespace CaptainHook\App\Hook\Condition\FileChanged;
 
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
 use CaptainHook\App\Mockery as CHMockery;
 use PHPUnit\Framework\TestCase;
 
-class AnyFileChangedTest extends TestCase
+class AllTest extends TestCase
 {
     use IOMockery;
     use CHMockery;
 
     /**
-     * Tests AnyFileChanged::isTrue
+     * Tests All::isTrue
      */
-    public function testIsTrue()
+    public function testIsFalse()
     {
         $io = $this->createIOMock();
         $io->expects($this->exactly(2))->method('getArgument')->willReturn('');
@@ -29,24 +29,24 @@ class AnyFileChangedTest extends TestCase
         $repository = $this->createRepositoryMock('');
         $repository->expects($this->once())->method('getDiffOperator')->willReturn($operator);
 
-        $fileChange = new AnyFileChanged(['foo.php', 'bar.php']);
+        $fileChange = new All(['foo.php', 'bar.php']);
 
-        $this->assertTrue($fileChange->isTrue($io, $repository));
+        $this->assertFalse($fileChange->isTrue($io, $repository));
     }
 
     /**
-     * Tests AnyFileChanged::isTrue
+     * Tests All::isTrue
      */
-    public function testIsFalse()
+    public function testIsTrue()
     {
         $io = $this->createIOMock();
         $io->expects($this->exactly(2))->method('getArgument')->willReturn('');
-        $operator   = $this->createGitDiffOperator(['fiz.php', 'baz.php']);
+        $operator   = $this->createGitDiffOperator(['foo.php', 'bar.php', 'baz.php']);
         $repository = $this->createRepositoryMock('');
         $repository->expects($this->once())->method('getDiffOperator')->willReturn($operator);
 
-        $fileChange = new AnyFileChanged(['foo.php', 'bar.php']);
+        $fileChange = new All(['foo.php', 'bar.php']);
 
-        $this->assertFalse($fileChange->isTrue($io, $repository));
+        $this->assertTrue($fileChange->isTrue($io, $repository));
     }
 }

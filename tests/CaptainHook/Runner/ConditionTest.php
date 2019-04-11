@@ -9,7 +9,7 @@
  */
 namespace CaptainHook\App\Runner;
 
-use CaptainHook\App\Hook\Condition\AnyFileChanged;
+use CaptainHook\App\Hook\Condition\FileChanged\Any;
 use PHPUnit\Framework\TestCase;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
@@ -25,7 +25,6 @@ class ConditionTest extends TestCase
      */
     public function testDoesConditionApply()
     {
-
         $io = $this->createIOMock();
         $io->expects($this->exactly(2))->method('getArgument')->willReturn('');
 
@@ -34,7 +33,7 @@ class ConditionTest extends TestCase
         $repository->expects($this->once())->method('getDiffOperator')->willReturn($operator);
 
         $conditionConfig = new Config\Condition(
-            '\\' . AnyFileChanged::class,
+            '\\' . Any::class,
             [
                 ['foo.php', 'bar.php']
             ]
@@ -55,7 +54,6 @@ class ConditionTest extends TestCase
 
         $runner = new Condition($this->createIOMock(), $this->createRepositoryMock());
         $runner->doesConditionApply($conditionConfig);
-
     }
 
     /**
@@ -70,6 +68,5 @@ class ConditionTest extends TestCase
 
         $runner = new Condition($io, $repository);
         $this->assertTrue($runner->doesConditionApply($conditionConfig));
-
     }
 }
