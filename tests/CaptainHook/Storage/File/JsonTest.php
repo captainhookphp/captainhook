@@ -9,16 +9,29 @@
  */
 namespace CaptainHook\App\Storage\File;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class JsonTest extends TestCase
 {
     /**
-     * Tests Json::read
+     * Tests Json::readAssoc
+     */
+    public function testReadInvalid()
+    {
+        $this->expectException(Exception::class);
+
+        $path = realpath(CH_PATH_FILES . '/config/invalid.json');
+        $json = new Json($path);
+        $data = $json->readAssoc();
+    }
+
+    /**
+     * Tests Json::readAssoc
      */
     public function testReadAssoc()
     {
-        $path = realpath(__DIR__ . '/../../../files/storage/test.json');
+        $path = realpath(CH_PATH_FILES . '/storage/test.json');
         $json = new Json($path);
         $data = $json->readAssoc();
 
