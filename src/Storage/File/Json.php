@@ -10,6 +10,7 @@
 namespace CaptainHook\App\Storage\File;
 
 use CaptainHook\App\Storage\File;
+use RuntimeException;
 
 /**
  * Class Json
@@ -29,7 +30,11 @@ class Json extends File
      */
     public function read(bool $assoc = false)
     {
-        return json_decode(parent::read(), $assoc, 512, JSON_THROW_ON_ERROR);
+        $json = json_decode(parent::read(), $assoc);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new RuntimeException('Invalid json file');
+        }
+        return $json;
     }
 
     /**
