@@ -24,7 +24,7 @@ class CmdTest extends TestCase
      */
     public function testSetupConfigExists()
     {
-        $repo  = new DummyRepo();
+        $repo = new DummyRepo();
         $repo->setup();
 
         $config = $repo->getPath() . DIRECTORY_SEPARATOR . CH::CONFIG;
