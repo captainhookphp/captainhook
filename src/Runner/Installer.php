@@ -9,9 +9,9 @@
  */
 namespace CaptainHook\App\Runner;
 
-use CaptainHook\App\Console\Command\Install;
 use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Exception;
+use CaptainHook\App\Hook\Runner;
 use CaptainHook\App\Hook\Template;
 use CaptainHook\App\Hook\Util;
 use CaptainHook\App\Storage\File;
@@ -74,6 +74,7 @@ class Installer extends RepositoryAware
     public function run() : void
     {
         $hooks = $this->getHooksToInstall();
+        $this->installRunner();
 
         foreach ($hooks as $hook => $ask) {
             $this->installHook($hook, ($ask && !$this->force));
@@ -96,7 +97,7 @@ class Installer extends RepositoryAware
      * @param string $hook
      * @param bool   $ask
      */
-    public function installHook(string $hook, bool $ask)
+    public function installHook(string $hook, bool $ask): void
     {
         $doIt = true;
         if ($ask) {
@@ -107,6 +108,11 @@ class Installer extends RepositoryAware
         if ($doIt) {
             $this->writeHookFile($hook);
         }
+    }
+
+    public function installRunner(): void
+    {
+        $this->writeRunnerFile();
     }
 
     /**
@@ -137,6 +143,23 @@ class Installer extends RepositoryAware
         }
     }
 
+    public function writeRunnerFile(): void
+    {
+        $absRepoPath = realpath($this->repository->getRoot());
+        $vendorPath  = getcwd() . '/vendor';
+        $configPath  = realpath($this->config->getPath());
+
+        $code = Runner::getCode($absRepoPath, $vendorPath, $configPath);
+
+        $hooksDir = $this->repository->getHooksDir();
+        $runnerFile = $hooksDir . DIRECTORY_SEPARATOR . 'captain-runner.php';
+
+        $file = new File($runnerFile);
+        $file->write($code);
+        chmod($runnerFile, 0755);
+        $this->io->write('  <info>\'Runner\' installed successfully</info>');
+    }
+
     /**
      * Return the source code for a given hook script
      *
@@ -145,10 +168,7 @@ class Installer extends RepositoryAware
      */
     protected function getHookSourceCode(string $hook) : string
     {
-        $absRepoPath = realpath($this->repository->getRoot());
-        $vendorPath  = getcwd() . '/vendor';
-        $configPath  = realpath($this->config->getPath());
-        return Template::getCode($hook, $absRepoPath, $vendorPath, $configPath);
+        return Template::getCode($hook, 'TODO get container name from configure command');
     }
 
     /**
