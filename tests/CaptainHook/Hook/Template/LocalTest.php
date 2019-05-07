@@ -12,12 +12,12 @@ namespace CaptainHook\App\Hook;
 use CaptainHook\App\Hook\Template\Local;
 use PHPUnit\Framework\TestCase;
 
-class TemplateTest extends TestCase
+class LocalTest extends TestCase
 {
     /**
-     * Tests Template::getCode
+     * Tests Local::getCode
      */
-    public function testLocalTemplate() : void
+    public function testTemplate() : void
     {
         $template = new Local('/foo/bar', '/foo/bar/vendor', '/foo/bar/captainhook.json');
         $code = $template->getCode('commit-msg');
