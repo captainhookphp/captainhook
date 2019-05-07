@@ -10,6 +10,7 @@
 namespace CaptainHook\App\Hook;
 
 use CaptainHook\App\Hooks;
+use CaptainHook\App\Storage\Util as StorageUtil;
 use RuntimeException;
 
 /**
@@ -65,5 +66,38 @@ abstract class Util
     public static function getHooks() : array
     {
         return array_keys(Hooks::getValidHooks());
+    }
+
+    /**
+     * Return the path to the target path from inside the .git/hooks directory f.e. __DIR__ ../../vendor.
+     *
+     * @param string $repoDir
+     * @param string $targetPath
+     *
+     * @return string
+     * @throws RuntimeException
+     */
+    public static function getTplTargetPath(string $repoDir, string $targetPath) : string
+    {
+        $repo = explode(DIRECTORY_SEPARATOR, ltrim($repoDir, DIRECTORY_SEPARATOR));
+        $target = explode(DIRECTORY_SEPARATOR, ltrim($targetPath, DIRECTORY_SEPARATOR));
+
+        if (!StorageUtil::isSubDirectoryOf($target, $repo)) {
+            return '\'' . $targetPath;
+        }
+
+        return '__DIR__ . \'/../../' . StorageUtil::getSubPathOf($target, $repo);
+    }
+
+    public static function getBinaryPath(string $repoDir, string $vendorPath, string $binary): string
+    {
+        $repo = explode(DIRECTORY_SEPARATOR, ltrim($repoDir, DIRECTORY_SEPARATOR));
+        $vendor = explode(DIRECTORY_SEPARATOR, ltrim($vendorPath, DIRECTORY_SEPARATOR));
+
+        if (!StorageUtil::isSubDirectoryOf($vendor, $repo)) {
+            return $vendorPath . '/bin/' . $binary;
+        }
+
+        return $binary;
     }
 }

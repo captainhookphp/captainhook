@@ -11,7 +11,6 @@ namespace CaptainHook\App\Runner;
 
 use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Exception;
-use CaptainHook\App\Hook\Runner;
 use CaptainHook\App\Hook\Template;
 use CaptainHook\App\Hook\Util;
 use CaptainHook\App\Storage\File;
@@ -39,6 +38,13 @@ class Installer extends RepositoryAware
      * @var string
      */
     protected $hookToHandle;
+
+    /**
+     * Hook template
+     *
+     * @var Template
+     */
+    private $template;
 
     /**
      * @param  bool $force
@@ -74,7 +80,6 @@ class Installer extends RepositoryAware
     public function run() : void
     {
         $hooks = $this->getHooksToInstall();
-        $this->installRunner();
 
         foreach ($hooks as $hook => $ask) {
             $this->installHook($hook, ($ask && !$this->force));
@@ -110,11 +115,6 @@ class Installer extends RepositoryAware
         }
     }
 
-    public function installRunner(): void
-    {
-        $this->writeRunnerFile();
-    }
-
     /**
      * Write given hook to .git/hooks directory
      *
@@ -143,23 +143,6 @@ class Installer extends RepositoryAware
         }
     }
 
-    public function writeRunnerFile(): void
-    {
-        $absRepoPath = realpath($this->repository->getRoot());
-        $vendorPath  = getcwd() . '/vendor';
-        $configPath  = realpath($this->config->getPath());
-
-        $code = Runner::getCode($absRepoPath, $vendorPath, $configPath);
-
-        $hooksDir = $this->repository->getHooksDir();
-        $runnerFile = $hooksDir . DIRECTORY_SEPARATOR . 'captain-runner.php';
-
-        $file = new File($runnerFile);
-        $file->write($code);
-        chmod($runnerFile, 0755);
-        $this->io->write('  <info>\'Runner\' installed successfully</info>');
-    }
-
     /**
      * Return the source code for a given hook script
      *
@@ -168,7 +151,7 @@ class Installer extends RepositoryAware
      */
     protected function getHookSourceCode(string $hook) : string
     {
-        return Template::getCode($hook, 'TODO get container name from configure command');
+        return $this->template->getCode($hook);
     }
 
     /**
@@ -180,5 +163,18 @@ class Installer extends RepositoryAware
     protected function needInstallConfirmation(string $hook) : bool
     {
         return $this->repository->hookExists($hook) && !$this->force;
+    }
+
+    /**
+     * Set used hook template
+     *
+     * @param Template $template
+     *
+     * @return Installer
+     */
+    public function setTemplate(Template $template) : Installer
+    {
+        $this->template = $template;
+        return $this;
     }
 }

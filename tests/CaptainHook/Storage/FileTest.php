@@ -9,6 +9,7 @@
  */
 namespace CaptainHook\App\Storage;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class FileTest extends TestCase
@@ -16,7 +17,7 @@ class FileTest extends TestCase
     /**
      * Tests File::getPath
      */
-    public function testGetPath()
+    public function testGetPath(): void
     {
         $file = new File(__FILE__);
 
@@ -26,7 +27,7 @@ class FileTest extends TestCase
     /**
      * Tests File::read
      */
-    public function testRead()
+    public function testRead(): void
     {
         $file    = new File(__FILE__);
         $content = $file->read();
@@ -37,20 +38,18 @@ class FileTest extends TestCase
     /**
      * Tests File::read
      */
-    public function testReadFail()
+    public function testReadFail(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $file    = new File(__FILE__ . '.absent');
-        $content = $file->read();
-
-        $this->assertTrue(false);
+        $file->read();
     }
 
     /**
      * Tests File::write
      */
-    public function testWrite()
+    public function testWrite(): void
     {
         $tmpDir = sys_get_temp_dir();
         $path   = tempnam($tmpDir, 'foo');
@@ -64,23 +63,21 @@ class FileTest extends TestCase
     /**
      * Tests File::write
      */
-    public function testWriteFailNoDir()
+    public function testWriteFailNoDir(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $path   = __FILE__ . DIRECTORY_SEPARATOR . 'foo.txt';
         $file   = new File($path);
         $file->write('foo');
-
-        $this->assertTrue(false);
     }
 
     /**
      * Tests File::write
      */
-    public function testNoWritePermission()
+    public function testNoWritePermission(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $path = tempnam(sys_get_temp_dir(), 'noPermission');
         chmod($path, 0000);
@@ -92,11 +89,11 @@ class FileTest extends TestCase
     /**
      * Tests File::write
      */
-    public function testCantCreateDirectory()
+    public function testCantCreateDirectory(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
-        $baseDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('basedir');
+        $baseDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('basedir', true);
         mkdir($baseDir, 0000);
 
         $path = $baseDir . '/foo/bar.txt';

@@ -10,7 +10,10 @@
 namespace CaptainHook\App\Console\Command;
 
 use CaptainHook\App\CH;
+use CaptainHook\App\Hook\Template;
+use CaptainHook\App\Hook\TemplateBuilder;
 use CaptainHook\App\Runner\Installer;
+use RuntimeException;
 use SebastianFeldmann\Git\Repository;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -51,6 +54,19 @@ class Install extends Base
                  InputOption::VALUE_OPTIONAL,
                  'Path to your .git directory',
                  getcwd() . DIRECTORY_SEPARATOR . '.git'
+             )
+             ->addOption(
+                 'run-mode',
+                 'r',
+                 InputOption::VALUE_OPTIONAL,
+                 'Git hook run mode [local|docker]',
+                 Template::LOCAL
+             )
+             ->addOption(
+                 'container-name',
+                 null,
+                 InputOption::VALUE_OPTIONAL,
+                 'Container name for run-mode docker'
              );
     }
 
@@ -69,9 +85,20 @@ class Install extends Base
         $config = $this->getConfig($input->getOption('configuration'), true);
         $repo   = new Repository(dirname($input->getOption('git-directory')));
 
+        $runMode = $input->getOption('run-mode');
+        $containerName = $input->getOption('container-name');
+
+        if ($runMode === Template::DOCKER && $containerName === null) {
+            throw new RuntimeException(
+                'Option "container-name" missing for run-mode docker.'
+            );
+        }
+
         $installer = new Installer($io, $config, $repo);
-        $installer->setForce($input->getOption('force'))
-                  ->setHook((string) $input->getArgument('hook'));
+        $installer
+            ->setForce($input->getOption('force'))
+            ->setHook((string) $input->getArgument('hook'))
+            ->setTemplate(TemplateBuilder::build($input, $config, $repo));
 
         $installer->run();
     }
