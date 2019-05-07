@@ -36,7 +36,6 @@ class Setup extends Application
             new Cmd\Add(),
             new Cmd\Disable(),
             new Cmd\Enable(),
-            new Cmd\Run(),
         ];
     }
 }
