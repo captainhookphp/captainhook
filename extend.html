@@ -221,7 +221,7 @@ class NotOnMonday implements Condition
      */
     public function isTrue(IO $io, Repository $repository) : bool
     {
-        return date('D') != 'MON';
+        return date('D') !== 'Mon';
     }
 }</code></pre>
 
@@ -283,7 +283,7 @@ class NotOnAnyWeekday implements Condition
      */
     public function isTrue(IO $io, Repository $repository) : bool
     {
-        return !in_array(date('D'), $this->weekdays;
+        return !in_array(date('D'), $this->weekdays);
     }
 }</code></pre>
 
@@ -301,7 +301,7 @@ class NotOnAnyWeekday implements Condition
           {
             "exec:"\\MyName\\HookConditions\\NotOnMonday",
             "args": [
-              ["Mon", "SAT"]
+              ["Mon", "Sat"]
             ]
           }
         ]
