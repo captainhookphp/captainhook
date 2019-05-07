@@ -1,0 +1,93 @@
+#!/usr/bin/env php
+<?php
+/**
+ * CaptainHook
+ *
+ * Copyright (c) 2016, Sebastian Feldmann <sf@sebnastian-feldmann.info>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *
+ *  3. Neither the name of the copyright holder nor the names of its
+ *     contributors may be used to endorse or promote products derived
+ *     from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+// check installation [composer default, composer bin, git clone]
+foreach ([__DIR__ . '/../../autoload.php', __DIR__ . '/../autoload.php', __DIR__ . '/vendor/autoload.php'] as $file) {
+    if (file_exists($file)) {
+        define('CAPTAINHOOK_COMPOSER_AUTOLOAD', $file);
+        break;
+    }
+}
+
+if (!defined('CAPTAINHOOK_COMPOSER_AUTOLOAD')) {
+    fwrite(STDERR,
+        'You need to set up the project dependencies using the following commands:' . PHP_EOL .
+        'wget http://getcomposer.org/composer.phar' . PHP_EOL .
+        'php composer.phar install' . PHP_EOL
+    );
+    exit(1);
+}
+
+$arguments = $_SERVER['argv'] ?? [];
+$hook = $arguments ?? null;
+
+if ($hook === null) {
+    fwrite(
+        STDERR,
+        sprintf('Expected at least 3 parameters but got %d', count($_SERVER['argv']))
+    );
+    exit(1);
+}
+
+array_splice($_SERVER['argv'], 1, 1);
+
+require CAPTAINHOOK_COMPOSER_AUTOLOAD;
+
+// check captainhook.json
+foreach ([__DIR__ . '/../../captainhook.json', __DIR__ . '/../../captainhook.json'] as $file) {
+    if (file_exists($file)) {
+        define('CAPTAINHOOK_CONFIG', $file);
+        break;
+    }
+}
+unset($file);
+
+if (!defined('CAPTAINHOOK_CONFIG')) {
+    fwrite(
+        STDERR,
+        'Configuration "captainhook.json" not found.' . PHP_EOL .
+        'Run vendor/bin/captainhook configure to create one.'
+    );
+    exit(1);
+}
+
+$config = realpath(CAPTAINHOOK_CONFIG);
+$app    = new CaptainHook\App\Console\Application\Hook();
+$app->setHook($hook);
+$app->setConfigFile($config);
+$app->run();
+

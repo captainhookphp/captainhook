@@ -38,7 +38,8 @@
     "phpunit/phpunit": "^7.0"
   },
   "bin": [
-    "captainhook"
+    "captainhook",
+    "captainhook-run"
   ],
   "extra": {
     "captainhook-config": "captainhook.json",
