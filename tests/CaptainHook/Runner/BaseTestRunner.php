@@ -13,6 +13,7 @@ use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\DefaultIO;
 use CaptainHook\App\Config\Hook;
 use CaptainHook\App\Config\Action;
+use CaptainHook\App\Hook\Template;
 use SebastianFeldmann\Git\Repository;
 use PHPUnit\Framework\TestCase;
 
@@ -66,5 +67,11 @@ class BaseTestRunner extends TestCase
         return $this->getMockBuilder(Repository::class)
                     ->disableOriginalConstructor()
                     ->getMock();
+    }
+
+    public function getTemplateMock()
+    {
+        return $this->getMockBuilder(Template::class)
+            ->getMock();
     }
 }
