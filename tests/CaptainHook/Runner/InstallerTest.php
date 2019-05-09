@@ -62,7 +62,7 @@ class InstallerTest extends BaseTestRunner
         $repo = $this->getRepositoryMock();
         $template = $this->getTemplateMock();
 
-        $repo->method('getHooksDir')->willReturn(__DIR__);
+        $repo->method('getHooksDir')->willReturn(sys_get_temp_dir());
 
         $template->expects($this->once())
             ->method('getCode')
