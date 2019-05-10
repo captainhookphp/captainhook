@@ -21,19 +21,19 @@ namespace CaptainHook\App;
  */
 final class Hooks
 {
-    const PRE_COMMIT = 'pre-commit';
+    public const PRE_COMMIT = 'pre-commit';
 
-    const PRE_PUSH = 'pre-push';
+    public const PRE_PUSH = 'pre-push';
 
-    const COMMIT_MSG = 'commit-msg';
+    public const COMMIT_MSG = 'commit-msg';
 
-    const PREPARE_COMMIT_MSG = 'prepare-commit-msg';
+    public const PREPARE_COMMIT_MSG = 'prepare-commit-msg';
 
-    const POST_COMMIT = 'post-commit';
+    public const POST_COMMIT = 'post-commit';
 
-    const POST_MERGE = 'post-merge';
+    public const POST_MERGE = 'post-merge';
 
-    const POST_CHECKOUT = 'post-checkout';
+    public const POST_CHECKOUT = 'post-checkout';
 
     /**
      * Returns the list of valid hooks
