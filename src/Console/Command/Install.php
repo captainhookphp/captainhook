@@ -65,7 +65,8 @@ class Install extends Base
                  'container',
                  null,
                  InputOption::VALUE_OPTIONAL,
-                 'Container name for run-mode docker'
+                 'Container name for run-mode docker',
+                 ''
              );
     }
 
@@ -83,8 +84,8 @@ class Install extends Base
         $config = $this->getConfig($input->getOption('configuration'), true);
         $repo   = new Repository(dirname($input->getOption('git-directory')));
 
-        $runMode       = $input->getOption('run-mode', Template::LOCAL);
-        $containerName = $input->getOption('container', '');
+        $runMode       = $input->getOption('run-mode');
+        $containerName = $input->getOption('container');
 
         if ($runMode === Template::DOCKER && empty($containerName)) {
             throw new RuntimeException(
