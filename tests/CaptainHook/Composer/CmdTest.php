@@ -15,6 +15,7 @@ use Composer\Composer;
 use Composer\IO\NullIO;
 use Composer\Package\Package;
 use Composer\Script\Event;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class CmdTest extends TestCase
@@ -70,7 +71,7 @@ class CmdTest extends TestCase
      * Create event mock to test composer scripts
      *
      * @param  array $extra
-     * @return \Composer\Script\Event
+     * @return \Composer\Script\Event&MockObject
      */
     private function getEventMock(array $extra = [])
     {
@@ -89,7 +90,7 @@ class CmdTest extends TestCase
      * Create composer mock to return composer extra config
      *
      * @param  array $extra
-     * @return \Composer\Composer
+     * @return \Composer\Composer&MockObject
      */
     private function getComposerMock(array $extra = [])
     {
