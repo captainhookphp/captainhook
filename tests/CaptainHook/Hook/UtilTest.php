@@ -9,15 +9,15 @@
  */
 namespace CaptainHook\App\Hook;
 
-use RuntimeException;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 class UtilTest extends TestCase
 {
     /**
      * Tests Util::isValid
      */
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $this->assertTrue(Util::isValid('pre-commit'));
         $this->assertTrue(Util::isValid('pre-push'));
@@ -28,7 +28,7 @@ class UtilTest extends TestCase
     /**
      * Tests Util::getValidHooks
      */
-    public function testGetValidHooks()
+    public function testGetValidHooks(): void
     {
         $this->assertArrayHasKey('pre-commit', Util::getValidHooks());
         $this->assertArrayHasKey('pre-push', Util::getValidHooks());
@@ -40,7 +40,7 @@ class UtilTest extends TestCase
      *
      * @dataProvider providerValidCommands
      */
-    public function testGetHookCommandValid(string $class, string $hook)
+    public function testGetHookCommandValid(string $class, string $hook): void
     {
         $this->assertEquals($class, Util::getHookCommand($hook));
         $this->assertEquals('PreCommit', Util::getHookCommand('pre-commit'));
@@ -51,7 +51,7 @@ class UtilTest extends TestCase
     /**
      * @return array
      */
-    public function providerValidCommands() : array
+    public function providerValidCommands(): array
     {
         return [
             ['CommitMsg', 'commit-msg'],
@@ -66,17 +66,17 @@ class UtilTest extends TestCase
      *
      * @dataProvider providerInvalidCommands
      */
-    public function testGetHookCommandInvalid(string $hook)
+    public function testGetHookCommandInvalid(string $hook): void
     {
         $this->expectException(RuntimeException::class);
 
-        $this->assertEquals('',Util::getHookCommand($hook));
+        $this->assertEquals('', Util::getHookCommand($hook));
     }
 
     /**
      * @return array
      */
-    public function providerInvalidCommands() : array
+    public function providerInvalidCommands(): array
     {
         return [
             [''],
@@ -87,7 +87,7 @@ class UtilTest extends TestCase
     /**
      * Tests Util::getHooks
      */
-    public function testGetHooks()
+    public function testGetHooks(): void
     {
         $this->assertContains('pre-commit', Util::getHooks());
         $this->assertContains('pre-push', Util::getHooks());
