@@ -9,17 +9,19 @@
  */
 namespace CaptainHook\App\Console\IO;
 
+use CaptainHook\App\Console\IO;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class DefaultIOTest extends TestCase
 {
     /**
-     * @return \Symfony\Component\Console\Input\InputInterface
+     * @return \Symfony\Component\Console\Input\InputInterface&MockObject
      */
     public function getInputMock()
     {
@@ -29,7 +31,7 @@ class DefaultIOTest extends TestCase
     }
 
     /**
-     * @return \Symfony\Component\Console\Output\ConsoleOutputInterface
+     * @return \Symfony\Component\Console\Output\ConsoleOutputInterface&MockObject
      */
     public function getConsoleOutputMock()
     {
@@ -39,7 +41,7 @@ class DefaultIOTest extends TestCase
     }
 
     /**
-     * @return \Symfony\Component\Console\Output\OutputInterface
+     * @return \Symfony\Component\Console\Output\OutputInterface&MockObject
      */
     public function getOutputMock()
     {
@@ -49,7 +51,7 @@ class DefaultIOTest extends TestCase
     }
 
     /**
-     * @return \Symfony\Component\Console\Helper\HelperSet
+     * @return \Symfony\Component\Console\Helper\HelperSet&MockObject
      */
     public function getHelperSetMock()
     {
@@ -59,7 +61,7 @@ class DefaultIOTest extends TestCase
     }
 
     /**
-     * @return \Symfony\Component\Console\Helper\QuestionHelper
+     * @return \Symfony\Component\Console\Helper\QuestionHelper&MockObject
      */
     public function getQuestionHelper()
     {
@@ -247,5 +249,22 @@ class DefaultIOTest extends TestCase
 
         $io = new DefaultIO($input, $output, $helper);
         $io->writeError('foo');
+    }
+
+
+    /**
+     * Tests DefaultIO::write
+     */
+    public function testWriteSkipped()
+    {
+        $input          = $this->getInputMock();
+        $output         = $this->getConsoleOutputMock();
+        $helper         = $this->getHelperSetMock();
+
+        $output->expects($this->once())->method('getVerbosity')->willReturn(OutputInterface::VERBOSITY_NORMAL);
+        $output->expects($this->exactly(0))->method('getErrorOutput');
+
+        $io = new DefaultIO($input, $output, $helper);
+        $io->writeError('foo', false, IO::DEBUG);
     }
 }
