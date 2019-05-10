@@ -3,7 +3,7 @@ version: "3.7"
 services:
   php7.1:
     build: .docker/php7.1
-    container_name: captainhook-7.1
+    container_name: captainhook-php7.1
     volumes:
       - .:/docker:rw
     tty: true
@@ -13,7 +13,7 @@ services:
 
   php7.2:
     build: .docker/php7.2
-    container_name: captainhook-7.2
+    container_name: captainhook-php7.2
     volumes:
       - .:/docker:rw
     tty: true
@@ -23,7 +23,7 @@ services:
 
   php7.3:
     build: .docker/php7.3
-    container_name: captainhook-7.3
+    container_name: captainhook-php7.3
     volumes:
       - .:/docker:rw
     tty: true

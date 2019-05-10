@@ -9,7 +9,6 @@
  */
 namespace CaptainHook\App\Runner;
 
-use CaptainHook\App\Console\Command\Install;
 use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Exception;
 use CaptainHook\App\Hook\Template;
@@ -39,6 +38,13 @@ class Installer extends RepositoryAware
      * @var string
      */
     protected $hookToHandle;
+
+    /**
+     * Hook template
+     *
+     * @var Template
+     */
+    private $template;
 
     /**
      * @param  bool $force
@@ -96,7 +102,7 @@ class Installer extends RepositoryAware
      * @param string $hook
      * @param bool   $ask
      */
-    public function installHook(string $hook, bool $ask)
+    public function installHook(string $hook, bool $ask): void
     {
         $doIt = true;
         if ($ask) {
@@ -145,10 +151,7 @@ class Installer extends RepositoryAware
      */
     protected function getHookSourceCode(string $hook) : string
     {
-        $absRepoPath = realpath($this->repository->getRoot());
-        $vendorPath  = getcwd() . '/vendor';
-        $configPath  = realpath($this->config->getPath());
-        return Template::getCode($hook, $absRepoPath, $vendorPath, $configPath);
+        return $this->template->getCode($hook);
     }
 
     /**
@@ -160,5 +163,18 @@ class Installer extends RepositoryAware
     protected function needInstallConfirmation(string $hook) : bool
     {
         return $this->repository->hookExists($hook) && !$this->force;
+    }
+
+    /**
+     * Set used hook template
+     *
+     * @param Template $template
+     *
+     * @return Installer
+     */
+    public function setTemplate(Template $template) : Installer
+    {
+        $this->template = $template;
+        return $this;
     }
 }

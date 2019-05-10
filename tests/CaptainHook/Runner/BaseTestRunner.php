@@ -13,13 +13,15 @@ use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\DefaultIO;
 use CaptainHook\App\Config\Hook;
 use CaptainHook\App\Config\Action;
+use CaptainHook\App\Hook\Template;
+use PHPUnit\Framework\MockObject\MockObject;
 use SebastianFeldmann\Git\Repository;
 use PHPUnit\Framework\TestCase;
 
 class BaseTestRunner extends TestCase
 {
     /**
-     * @return \CaptainHook\App\Console\IO\DefaultIO
+     * @return \CaptainHook\App\Console\IO\DefaultIO&MockObject
      */
     public function getIOMock()
     {
@@ -29,7 +31,7 @@ class BaseTestRunner extends TestCase
     }
 
     /**
-     * @return \CaptainHook\App\Config
+     * @return \CaptainHook\App\Config&MockObject
      */
     public function getConfigMock()
     {
@@ -39,7 +41,7 @@ class BaseTestRunner extends TestCase
     }
 
     /**
-     * @return \CaptainHook\App\Config\Hook
+     * @return \CaptainHook\App\Config\Hook&MockObject
      */
     public function getHookConfigMock()
     {
@@ -49,7 +51,7 @@ class BaseTestRunner extends TestCase
     }
 
     /**
-     * @return \CaptainHook\App\Config\Action
+     * @return \CaptainHook\App\Config\Action&MockObject
      */
     public function getActionConfigMock()
     {
@@ -59,12 +61,21 @@ class BaseTestRunner extends TestCase
     }
 
     /**
-     * @return \SebastianFeldmann\Git\Repository
+     * @return \SebastianFeldmann\Git\Repository&MockObject
      */
     public function getRepositoryMock()
     {
         return $this->getMockBuilder(Repository::class)
                     ->disableOriginalConstructor()
+                    ->getMock();
+    }
+
+    /**
+     * @return \CaptainHook\App\Hook\Template&MockObject
+     */
+    public function getTemplateMock()
+    {
+        return $this->getMockBuilder(Template::class)
                     ->getMock();
     }
 }

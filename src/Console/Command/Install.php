@@ -10,7 +10,9 @@
 namespace CaptainHook\App\Console\Command;
 
 use CaptainHook\App\CH;
+use CaptainHook\App\Hook\Template;
 use CaptainHook\App\Runner\Installer;
+use RuntimeException;
 use SebastianFeldmann\Git\Repository;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -51,6 +53,19 @@ class Install extends Base
                  InputOption::VALUE_OPTIONAL,
                  'Path to your .git directory',
                  getcwd() . DIRECTORY_SEPARATOR . '.git'
+             )
+             ->addOption(
+                 'run-mode',
+                 'r',
+                 InputOption::VALUE_OPTIONAL,
+                 'Git hook run mode [local|docker]',
+                 Template::LOCAL
+             )
+             ->addOption(
+                 'container',
+                 null,
+                 InputOption::VALUE_OPTIONAL,
+                 'Container name for run-mode docker'
              );
     }
 
@@ -64,14 +79,23 @@ class Install extends Base
      */
     protected function execute(InputInterface $input, OutputInterface $output) : void
     {
-
         $io     = $this->getIO($input, $output);
         $config = $this->getConfig($input->getOption('configuration'), true);
         $repo   = new Repository(dirname($input->getOption('git-directory')));
 
+        $runMode       = $input->getOption('run-mode', Template::LOCAL);
+        $containerName = $input->getOption('container', '');
+
+        if ($runMode === Template::DOCKER && empty($containerName)) {
+            throw new RuntimeException(
+                'Option "container" missing for run-mode docker.'
+            );
+        }
+
         $installer = new Installer($io, $config, $repo);
         $installer->setForce($input->getOption('force'))
-                  ->setHook((string) $input->getArgument('hook'));
+                  ->setHook((string) $input->getArgument('hook'))
+                  ->setTemplate(Template\Builder::build($input, $config, $repo));
 
         $installer->run();
     }

@@ -66,4 +66,44 @@ class Util
         }
         return implode(DIRECTORY_SEPARATOR, $path);
     }
+
+    /**
+     * Return the path to the target path from inside the .git/hooks directory f.e. __DIR__ ../../vendor
+     *
+     * @param  string $repoDir
+     * @param  string $targetPath
+     * @return string
+     * @throws \RuntimeException
+     */
+    public static function getTplTargetPath(string $repoDir, string $targetPath) : string
+    {
+        $repo   = explode(DIRECTORY_SEPARATOR, ltrim($repoDir, DIRECTORY_SEPARATOR));
+        $target = explode(DIRECTORY_SEPARATOR, ltrim($targetPath, DIRECTORY_SEPARATOR));
+
+        if (!self::isSubDirectoryOf($target, $repo)) {
+            return '\'' . $targetPath;
+        }
+
+        return '__DIR__ . \'/../../' . self::getSubPathOf($target, $repo);
+    }
+
+    /**
+     * Returns the path to the captainhook-run binary
+     *
+     * @param  string $repoDir
+     * @param  string $vendorPath
+     * @param  string $binary
+     * @return string
+     */
+    public static function getBinaryPath(string $repoDir, string $vendorPath, string $binary): string
+    {
+        $repo   = explode(DIRECTORY_SEPARATOR, ltrim($repoDir, DIRECTORY_SEPARATOR));
+        $vendor = explode(DIRECTORY_SEPARATOR, ltrim($vendorPath, DIRECTORY_SEPARATOR));
+
+        if (!self::isSubDirectoryOf($vendor, $repo)) {
+            return $vendorPath . '/bin/' . $binary;
+        }
+
+        return $binary;
+    }
 }

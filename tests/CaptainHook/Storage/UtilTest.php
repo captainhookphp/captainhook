@@ -55,4 +55,34 @@ class UtilTest extends TestCase
 
         Util::getSubPathOf(Util::pathToArray('/foo/bar/baz'), Util::pathToArray('/fiz/baz'));
     }
+
+    /**
+     * Tests Template::getHookTargetPath
+     */
+    public function testGetTplTargetPath(): void
+    {
+        $path = Util::getTplTargetPath('/foo/bar', '/foo/bar/baz/vendor');
+        $this->assertEquals('__DIR__ . \'/../../baz/vendor', $path);
+
+        $path = Util::getTplTargetPath('/foo/bar', '/foo/bar/vendor');
+        $this->assertEquals('__DIR__ . \'/../../vendor', $path);
+
+        $path = Util::getTplTargetPath('/foo/bar', '/foo/bar/captainhook.json');
+        $this->assertEquals('__DIR__ . \'/../../captainhook.json', $path);
+
+        $path = Util::getTplTargetPath('/foo/bar', '/fiz/baz/captainhook.json');
+        $this->assertEquals('\'/fiz/baz/captainhook.json', $path);
+    }
+
+    /**
+     * Tests Util::getBinaryPath
+     */
+    public function testGetBinaryPath(): void
+    {
+        $path = Util::getBinaryPath('/foo/bar', '/foo/bar/vendor', 'captainhook-run');
+        $this->assertEquals('captainhook-run', $path);
+
+        $path = Util::getBinaryPath('/foo/bar', '/fiz/baz/vendor', 'captainhook-run');
+        $this->assertEquals('/fiz/baz/vendor/bin/captainhook-run', $path);
+    }
 }
