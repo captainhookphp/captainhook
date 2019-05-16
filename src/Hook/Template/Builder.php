@@ -40,9 +40,23 @@ abstract class Builder
     public static function build(InputInterface $input, Config $config, Repository $repository): Template
     {
         if ($input->getOption('run-mode') === Template::DOCKER) {
+            // For docker we need to strip down the current working directory.
+            // This is caused because docker will always connect to a specific working directory
+            // where the absolute path will not be recognized.
+            // E.g.:
+            //   cwd => /docker
+            //   path => /docker/captainhook-run
+            //
+            // The actual path needs to be /captainhook-run to work
+            $cwd = getcwd();
+
+            $repoPath = ltrim(realpath($repository->getRoot()), $cwd . DIRECTORY_SEPARATOR);
+            // TODO get vendor path from composer config
+            $vendorPath = ltrim(realpath(getcwd() . '/vendor'), $cwd . DIRECTORY_SEPARATOR);
+
             return new Docker(
-                realpath($repository->getRoot()),
-                getcwd() . '/vendor',
+                $repoPath,
+                $vendorPath,
                 $input->getOption('container')
             );
         }

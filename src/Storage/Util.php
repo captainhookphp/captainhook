@@ -77,8 +77,8 @@ class Util
      */
     public static function getTplTargetPath(string $repoDir, string $targetPath) : string
     {
-        $repo   = explode(DIRECTORY_SEPARATOR, ltrim($repoDir, DIRECTORY_SEPARATOR));
-        $target = explode(DIRECTORY_SEPARATOR, ltrim($targetPath, DIRECTORY_SEPARATOR));
+        $repo   = self::pathToArray($repoDir);
+        $target = self::pathToArray($targetPath);
 
         if (!self::isSubDirectoryOf($target, $repo)) {
             return '\'' . $targetPath;
@@ -88,22 +88,24 @@ class Util
     }
 
     /**
-     * Returns the path to the captainhook-run binary
+     * Resolves the path to the captainhook-run binary and returns it.
+     *
+     * This path is either right inside the repo itself (captainhook) or only in vendor path.
+     * Which happens if captainhook is required as dependency.
      *
      * @param  string $repoDir
      * @param  string $vendorPath
      * @param  string $binary
      * @return string
      */
-    public static function getBinaryPath(string $repoDir, string $vendorPath, string $binary): string
+    public static function resolveBinaryPath(string $repoDir, string $vendorPath, string $binary): string
     {
-        $repo   = explode(DIRECTORY_SEPARATOR, ltrim($repoDir, DIRECTORY_SEPARATOR));
-        $vendor = explode(DIRECTORY_SEPARATOR, ltrim($vendorPath, DIRECTORY_SEPARATOR));
+        $binaryPath = $repoDir . DIRECTORY_SEPARATOR . $binary;
 
-        if (!self::isSubDirectoryOf($vendor, $repo)) {
+        if (!file_exists($binary)) {
             return $vendorPath . '/bin/' . $binary;
         }
 
-        return $binary;
+        return $binaryPath;
     }
 }

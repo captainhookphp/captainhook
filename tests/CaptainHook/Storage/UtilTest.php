@@ -75,14 +75,20 @@ class UtilTest extends TestCase
     }
 
     /**
-     * Tests Util::getBinaryPath
+     * Tests Util::resolveBinaryPath
      */
-    public function testGetBinaryPath(): void
+    public function testResolveBinaryPath(): void
     {
-        $path = Util::getBinaryPath('/foo/bar', '/foo/bar/vendor', 'captainhook-run');
-        $this->assertEquals('captainhook-run', $path);
+        $repoDir = realpath(__DIR__ . '/../../files/storage');
+        $vendorDir = realpath(__DIR__ . '/../../files/storage');
 
-        $path = Util::getBinaryPath('/foo/bar', '/fiz/baz/vendor', 'captainhook-run');
-        $this->assertEquals('/fiz/baz/vendor/bin/captainhook-run', $path);
+        $path = Util::resolveBinaryPath($repoDir, $vendorDir, 'captainhook-run');
+        $this->assertEquals($repoDir . '/captainhook-run', $path);
+
+        $repoDir = __DIR__;
+        $vendorDir = __DIR__;
+
+        $path = Util::resolveBinaryPath($repoDir, $vendorDir, 'captainhook-run');
+        $this->assertEquals(__DIR__ . '/bin/captainhook-run', $path);
     }
 }

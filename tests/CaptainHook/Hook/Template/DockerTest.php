@@ -17,14 +17,32 @@ class DockerTest extends TestCase
     /**
      * Tests Docker::getCode
      */
-    public function testTemplate() : void
+    public function testTemplateFirstParty() : void
     {
-        $template = new Docker('/foo/bar', '/foo/bar/vendor', 'captain-container');
+        $repoPath = realpath(__DIR__ . '/../../../files/storage');
+
+        $template = new Docker($repoPath, 'does/not/matter', 'captain-container');
         $code = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/usr/bin/env bash', $code);
         $this->assertStringContainsString('docker exec', $code);
         $this->assertStringContainsString('captain-container', $code);
-        $this->assertStringContainsString('./captainhook-run', $code);
+        $this->assertStringContainsString($repoPath . '/captainhook-run', $code);
+    }
+
+    /**
+     * Tests Docker::getCode
+     */
+    public function testTemplateThirdParty() : void
+    {
+        $repoPath = realpath(__DIR__);
+
+        $template = new Docker($repoPath, $repoPath, 'captain-container');
+        $code = $template->getCode('commit-msg');
+
+        $this->assertStringContainsString('#!/usr/bin/env bash', $code);
+        $this->assertStringContainsString('docker exec', $code);
+        $this->assertStringContainsString('captain-container', $code);
+        $this->assertStringContainsString($repoPath . '/bin/captainhook-run', $code);
     }
 }
