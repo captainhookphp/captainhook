@@ -67,8 +67,6 @@ class Local implements Template
             'if (!file_exists($autoLoader)) {' . PHP_EOL .
             '    fwrite(STDERR,' . PHP_EOL .
             '        \'Composer autoload.php could not be found\' . PHP_EOL .' . PHP_EOL .
-            '        \'Please re-install the hook with:\' . PHP_EOL .' . PHP_EOL .
-            '        \'$ captainhook install --composer-vendor-path=...\' . PHP_EOL' . PHP_EOL .
             '    );' . PHP_EOL .
             '    exit(1);' . PHP_EOL .
             '}' . PHP_EOL .
