@@ -102,7 +102,7 @@ class Util
     {
         $binaryPath = $repoDir . DIRECTORY_SEPARATOR . $binary;
 
-        if (!file_exists($binary)) {
+        if (!file_exists($binaryPath)) {
             return $vendorPath . '/bin/' . $binary;
         }
 
