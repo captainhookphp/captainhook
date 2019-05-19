@@ -46,12 +46,10 @@ abstract class Builder
             // E.g.:
             //   cwd => /docker
             //   path => /docker/captainhook-run
-            //
             // The actual path needs to be /captainhook-run to work
             $cwd = getcwd();
 
             $repoPath = ltrim(realpath($repository->getRoot()), $cwd . DIRECTORY_SEPARATOR);
-            // TODO get vendor path from composer config
             $vendorPath = ltrim(realpath(getcwd() . '/vendor'), $cwd . DIRECTORY_SEPARATOR);
 
             return new Docker(
