@@ -50,8 +50,11 @@ class Docker implements Template
      */
     public function __construct(string $repoPath, string $vendorPath, string $container)
     {
-        $this->binaryPath = ltrim(Util::resolveBinaryPath($repoPath, $vendorPath, 'captainhook-run'), DIRECTORY_SEPARATOR);
         $this->container  = $container;
+        $this->binaryPath = ltrim(
+            Util::resolveBinaryPath($repoPath, $vendorPath, 'captainhook-run'),
+            DIRECTORY_SEPARATOR
+        );
     }
 
     /**
