@@ -68,7 +68,7 @@ array_splice($_SERVER['argv'], 1, 1);
 require CAPTAINHOOK_COMPOSER_AUTOLOAD;
 
 // check captainhook.json
-foreach ([__DIR__ . '/../../captainhook.json', __DIR__ . '/../captainhook.json', __DIR__ . '/captainhook.json'] as $file) {
+foreach ([__DIR__ . '/../../../captainhook.json', __DIR__ . '/captainhook.json'] as $file) {
     if (file_exists($file)) {
         define('CAPTAINHOOK_CONFIG', $file);
         break;

@@ -39,19 +39,19 @@ class Docker implements Template
      *
      * @var string
      */
-    private $containerName;
+    private $container;
 
     /**
      * Docker constructor
      *
      * @param string $repoPath
      * @param string $vendorPath
-     * @param string $containerName
+     * @param string $container
      */
-    public function __construct(string $repoPath, string $vendorPath, string $containerName)
+    public function __construct(string $repoPath, string $vendorPath, string $container)
     {
-        $this->binaryPath    = Util::getBinaryPath($repoPath, $vendorPath, 'captainhook-run');
-        $this->containerName = $containerName;
+        $this->binaryPath = ltrim(Util::resolveBinaryPath($repoPath, $vendorPath, 'captainhook-run'), DIRECTORY_SEPARATOR);
+        $this->container  = $container;
     }
 
     /**
@@ -63,6 +63,6 @@ class Docker implements Template
     public function getCode(string $hook): string
     {
         return '#!/usr/bin/env bash' . PHP_EOL .
-            'docker exec ' . $this->containerName . ' ./' . $this->binaryPath . ' ' . $hook . ' "$@"';
+            'docker exec ' . $this->container . ' ./' . $this->binaryPath . ' ' . $hook . ' "$@"';
     }
 }

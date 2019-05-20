@@ -84,10 +84,10 @@ class Install extends Base
         $config = $this->getConfig($input->getOption('configuration'), true);
         $repo   = new Repository(dirname($input->getOption('git-directory')));
 
-        $runMode       = $input->getOption('run-mode');
-        $containerName = $input->getOption('container');
+        $runMode   = $input->getOption('run-mode');
+        $container = $input->getOption('container');
 
-        if ($runMode === Template::DOCKER && empty($containerName)) {
+        if ($runMode === Template::DOCKER && empty($container)) {
             throw new RuntimeException(
                 'Option "container" missing for run-mode docker.'
             );
