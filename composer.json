@@ -27,8 +27,8 @@
   "require": {
     "php": ">=7.1.0",
     "ext-json": "*",
-    "ext-spl": "*",
     "ext-simplexml": "*",
+    "ext-spl": "*",
     "sebastianfeldmann/cli": "^3.0",
     "sebastianfeldmann/git": "^2.2",
     "symfony/console": ">=2.7"
@@ -55,5 +55,8 @@
   },
   "replace" : {
     "sebastianfeldmann/captainhook": "*"
+  },
+  "config": {
+    "sort-packages": true
   }
 }
