@@ -42,6 +42,10 @@ class Regex implements Action
         $successMsg = $this->getSuccessMessage($action->getOptions());
         $matches    = [];
 
+        if ($repository->isMerging()) {
+            return;
+        }
+
         if (!preg_match($regex, $repository->getCommitMsg()->getContent(), $matches)) {
             throw new ActionFailed(sprintf($errorMsg, $regex));
         }

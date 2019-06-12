@@ -12,15 +12,15 @@ namespace CaptainHook\App\Hook\Message\Action;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Git\DummyRepo;
-use CaptainHook\App\Hook\Message\Action\Regex;
-use CaptainHook\App\Hook\Message\Action\Rulebook;
-use CaptainHook\App\Hook\Message\Rulebook as MessageRuleBook;
+use CaptainHook\App\Mockery;
 use SebastianFeldmann\Git\CommitMessage;
 use SebastianFeldmann\Git\Repository;
 use PHPUnit\Framework\TestCase;
 
 class RegexTest extends TestCase
 {
+    use Mockery;
+
     /**
      * @var \CaptainHook\App\Git\DummyRepo
      */
@@ -100,10 +100,28 @@ class RegexTest extends TestCase
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo   = new Repository($this->repo->getPath());
-        $action = new Config\Action(Rulebook::class);
+        $action = new Config\Action(Regex::class);
 
         $standard = new Regex();
         $standard->execute($config, $io, $repo, $action);
+    }
+
+
+    /**
+     * Tests RegexCheck::execute
+     */
+    public function testMerging()
+    {
+        $io     = new NullIO();
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
+        $repo   = $this->createRepositoryMock();
+        $repo->expects($this->once())->method('isMerging')->willReturn(true);
+        $action = new Config\Action(Regex::class, ['regex'   => '#.*#']);
+
+        $standard = new Regex();
+        $standard->execute($config, $io, $repo, $action);
+
+        $this->assertTrue(true, 'Since we are merging nothing should happen');
     }
 
     /**
@@ -117,7 +135,7 @@ class RegexTest extends TestCase
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
-            MessageRuleBook::class,
+            Regex::class,
             [
                 'regex' => '#FooBarBaz#',
                 'error' => 'No match for %s'
