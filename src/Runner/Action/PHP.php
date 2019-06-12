@@ -27,7 +27,7 @@ use SebastianFeldmann\Git\Repository;
 class PHP
 {
     /**
-     * Execute the configured action.
+     * Execute the configured action
      *
      * @param  \CaptainHook\App\Config           $config
      * @param  \CaptainHook\App\Console\IO       $io
@@ -48,14 +48,17 @@ class PHP
                 $exe->execute($config, $io, $repository, $action);
             }
         } catch (\Exception $e) {
-            throw new ActionFailed('Execution failed: ' . $e->getMessage());
+            throw new ActionFailed(
+                'Execution failed: ' . PHP_EOL .
+                $e->getMessage() . ' in ' . $e->getFile() . ' line ' . $e->getLine()
+            );
         } catch (\Error $e) {
             throw new ActionFailed('PHP Error:' . $e->getMessage());
         }
     }
 
     /**
-     * Execute static method call and return its output.
+     * Execute static method call and return its output
      *
      * @param  string $class
      * @return string
@@ -75,7 +78,7 @@ class PHP
     }
 
     /**
-     * Create an action instance.
+     * Create an action instance
      *
      * @param  string $class
      * @return \CaptainHook\App\Hook\Action
@@ -93,7 +96,7 @@ class PHP
     }
 
     /**
-     * Is this a static method call.
+     * Is this a static method call
      *
      * @param  string $class
      * @return bool
