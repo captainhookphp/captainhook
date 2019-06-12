@@ -29,14 +29,13 @@ class Cli
      *
      * @param  \CaptainHook\App\Console\IO     $io
      * @param  \CaptainHook\App\Config\Action  $action
-     * @param  \CaptainHook\App\Config\Options $arguments
      * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    public function execute(IO $io, Config\Action $action, Config\Options $arguments) : void
+    public function execute(IO $io, Config\Action $action) : void
     {
         $processor = new Processor();
-        $result    = $processor->run($this->formatCommand($action->getAction(), $arguments->getAll()));
+        $result    = $processor->run($this->formatCommand($action->getAction(), $io->getArguments()));
 
         if (!$result->isSuccessful()) {
             throw new Exception\ActionFailed($result->getStdOut() . PHP_EOL . $result->getStdErr());

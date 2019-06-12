@@ -84,11 +84,10 @@ abstract class Hook extends Base
         $io         = $this->getIO($input, $output);
         $config     = $this->getConfig($this->configFile, true);
         $repository = new Repository($this->repositoryPath);
-        $arguments  = new Config\Options($input->getArguments());
 
         /** @var \CaptainHook\App\Runner\Hook $hook */
         $class = '\\CaptainHook\\App\\Runner\\Hook\\' . Util::getHookCommand($this->name);
-        $hook  = new $class($io, $config, $repository, $arguments);
+        $hook  = new $class($io, $config, $repository);
 
 
         $hook->run();

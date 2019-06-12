@@ -19,16 +19,17 @@ class CliTest extends BaseTestRunner
      */
     public function testExecuteSuccess()
     {
+        $args   = [];
         $io     = $this->getIOMock();
         $action = $this->getActionConfigMock();
-        $args   = new Options([]);
         $cmd    = CH_PATH_FILES . '/bin/success';
 
+        $io->expects($this->once())->method('getArguments')->willReturn($args);
         $io->expects($this->once())->method('write');
         $action->expects($this->once())->method('getAction')->willReturn($cmd);
 
         $cli = new Cli();
-        $cli->execute($io, $action, $args);
+        $cli->execute($io, $action);
     }
 
     /**
@@ -36,16 +37,17 @@ class CliTest extends BaseTestRunner
      */
     public function testExecuteSuccessWithReplacements()
     {
+        $args   = ['file' => 'bin', 'mode' => 'success'];
         $io     = $this->getIOMock();
         $action = $this->getActionConfigMock();
-        $args   = new Options(['file' => 'bin', 'mode' => 'success']);
         $cmd    = CH_PATH_FILES . '/{FILE}/{MODE}';
 
+        $io->expects($this->once())->method('getArguments')->willReturn($args);
         $io->expects($this->once())->method('write');
         $action->expects($this->once())->method('getAction')->willReturn($cmd);
 
         $cli = new Cli();
-        $cli->execute($io, $action, $args);
+        $cli->execute($io, $action);
     }
 
     /**
@@ -55,14 +57,15 @@ class CliTest extends BaseTestRunner
     {
         $this->expectException(\Exception::class);
 
+        $args   = [];
         $io     = $this->getIOMock();
         $action = $this->getActionConfigMock();
-        $args   = new Options([]);
         $cmd    = CH_PATH_FILES . '/bin/failure';
 
+        $io->expects($this->once())->method('getArguments')->willReturn($args);
         $action->expects($this->once())->method('getAction')->willReturn($cmd);
 
         $cli = new Cli();
-        $cli->execute($io, $action, $args);
+        $cli->execute($io, $action);
     }
 }

@@ -34,27 +34,6 @@ abstract class Hook extends RepositoryAware
     protected $hook;
 
     /**
-     * List of original hook arguments
-     *
-     * @var \CaptainHook\App\Config\Options
-     */
-    protected $arguments;
-
-    /**
-     * HookHandler constructor.
-     *
-     * @param \CaptainHook\App\Console\IO       $io
-     * @param \CaptainHook\App\Config           $config
-     * @param \SebastianFeldmann\Git\Repository $repository
-     * @param \CaptainHook\App\Config\Options   $arguments
-     */
-    public function __construct(IO $io, Config $config, Repository $repository, Options $arguments)
-    {
-        parent::__construct($io, $config, $repository);
-        $this->arguments = $arguments;
-    }
-
-    /**
      * Execute stuff before executing any actions
      *
      * @return void
@@ -175,7 +154,7 @@ abstract class Hook extends RepositoryAware
         // cli hooks have to handle sync stuff by them self
         // so no 'beforeAction' or 'afterAction' is called here
         $runner = new Action\Cli();
-        $runner->execute($this->io, $action, $this->arguments);
+        $runner->execute($this->io, $action);
     }
 
     /**
@@ -215,7 +194,7 @@ abstract class Hook extends RepositoryAware
      * Some fancy output formatting
      *
      * @param  string $mode
-     * @return array
+     * @return string[]
      */
     private function formatHookHeadline(string $mode) : array
     {

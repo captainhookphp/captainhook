@@ -31,7 +31,6 @@ class PrepareCommitMsgTest extends BaseTestRunner
         $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
-        $io->expects($this->exactly(2))->method('write');
 
         $dummy = new DummyRepo();
         $dummy->setup();
@@ -41,13 +40,17 @@ class PrepareCommitMsgTest extends BaseTestRunner
         $path   = tempnam($tmpDir, 'prepare-commit-msg');
         file_put_contents($path, 'Commit Message');
 
+        $io->expects($this->exactly(2))->method('write');
+        $io->expects($this->exactly(3))->method('getArgument')->willReturnOnConsecutiveCalls(
+            $path,
+            '',
+            ''
+        );
+
         try {
-            $args   = new Config\Options(['file' => $path]);
-            $runner = new PrepareCommitMsg($io, $config, $repo, $args);
+            $runner = new PrepareCommitMsg($io, $config, $repo);
             $runner->run();
-
             $this->assertEquals('Prepared commit msg', file_get_contents($path));
-
         } finally {
             unlink($path);
             $dummy->cleanup();
@@ -71,9 +74,9 @@ class PrepareCommitMsgTest extends BaseTestRunner
         $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $io->expects($this->exactly(3))->method('getArgument')->willReturn('');
 
-        $args   = new Config\Options([]);
-        $runner = new PrepareCommitMsg($io, $config, $repo, $args);
+        $runner = new PrepareCommitMsg($io, $config, $repo);
         $runner->run();
     }
 }
