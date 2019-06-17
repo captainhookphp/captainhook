@@ -10,6 +10,7 @@
 namespace CaptainHook\App\Console\Command;
 
 use CaptainHook\App\CH;
+use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Runner\Config\Editor;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -51,18 +52,19 @@ class Enable extends Base
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return void
+     * @return int|null
      * @throws \CaptainHook\App\Exception\InvalidHookName
      */
-    protected function execute(InputInterface $input, OutputInterface $output) : void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io     = $this->getIO($input, $output);
-        $config = $this->getConfig($input->getOption('configuration'), true);
+        $config = $this->getConfig(IOUtil::argToString($input->getOption('configuration')), true);
 
         $editor = new Editor($io, $config);
-        $editor->setHook((string) $input->getArgument('hook'))
-               ->setChange('EnableHook');
+        $editor->setHook(IOUtil::argToString($input->getArgument('hook')))
+               ->setChange('EnableHook')
+               ->run();
 
-        $editor->run();
+        return 0;
     }
 }

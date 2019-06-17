@@ -44,7 +44,7 @@ class Json extends File
      */
     public function readAssoc() : array
     {
-        return $this->read(true) ?? [];
+        return (array) ($this->read(true) ?? []);
     }
 
     /**

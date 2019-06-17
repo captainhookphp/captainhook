@@ -33,7 +33,7 @@ class Xml extends File
         $errors = libxml_get_errors();
         libxml_use_internal_errors($old);
 
-        if (count($errors)) {
+        if (count($errors) || $xml === false) {
             throw new \RuntimeException('xml file \''. $this->path . '\': ' . $errors[0]->message);
         }
         return $xml;

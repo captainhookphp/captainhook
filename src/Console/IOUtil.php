@@ -41,4 +41,28 @@ abstract class IOUtil
     {
         return str_repeat($char, $length);
     }
+
+    /**
+     * Convert everything to a string
+     *
+     * @param  array<string>|bool|string|null $arg
+     * @param  string                        $default
+     * @return string
+     */
+    public static function argToString($arg, $default = '') : string
+    {
+        return is_string($arg) ? $arg : $default;
+    }
+
+    /**
+     * Convert everything to a boolean
+     *
+     * @param  array<string>|bool|string|null $arg
+     * @param  bool                           $default
+     * @return bool
+     */
+    public static function argToBool($arg, $default = false) : bool
+    {
+        return is_bool($arg) ? $arg : $default;
+    }
 }

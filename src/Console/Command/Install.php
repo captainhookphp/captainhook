@@ -10,6 +10,7 @@
 namespace CaptainHook\App\Console\Command;
 
 use CaptainHook\App\CH;
+use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Hook\Template;
 use CaptainHook\App\Runner\Installer;
 use RuntimeException;
@@ -75,17 +76,17 @@ class Install extends Base
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return void
+     * @return int|null
      * @throws \CaptainHook\App\Exception\InvalidHookName
      */
-    protected function execute(InputInterface $input, OutputInterface $output) : void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io     = $this->getIO($input, $output);
-        $config = $this->getConfig($input->getOption('configuration'), true);
-        $repo   = new Repository(dirname($input->getOption('git-directory')));
+        $config = $this->getConfig(IOUtil::argToString($input->getOption('configuration')), true);
+        $repo   = new Repository(dirname(IOUtil::argToString($input->getOption('git-directory'))));
 
-        $runMode   = $input->getOption('run-mode');
-        $container = $input->getOption('container');
+        $runMode   = IOUtil::argToString($input->getOption('run-mode'));
+        $container = IOUtil::argToString($input->getOption('container'));
 
         if ($runMode === Template::DOCKER && empty($container)) {
             throw new RuntimeException(
@@ -94,10 +95,11 @@ class Install extends Base
         }
 
         $installer = new Installer($io, $config, $repo);
-        $installer->setForce($input->getOption('force'))
-                  ->setHook((string) $input->getArgument('hook'))
-                  ->setTemplate(Template\Builder::build($input, $config, $repo));
+        $installer->setForce(IOUtil::argToBool($input->getOption('force')))
+                  ->setHook(IOUtil::argToString($input->getArgument('hook')))
+                  ->setTemplate(Template\Builder::build($input, $config, $repo))
+                  ->run();
 
-        $installer->run();
+        return 0;
     }
 }

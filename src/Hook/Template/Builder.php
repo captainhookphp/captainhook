@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace CaptainHook\App\Hook\Template;
 
 use CaptainHook\App\Config;
+use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Hook\Template;
 use SebastianFeldmann\Git\Repository;
 use Symfony\Component\Console\Input\InputInterface;
@@ -49,20 +50,20 @@ abstract class Builder
             // The actual path needs to be /captainhook-run to work
             $cwd = getcwd();
 
-            $repoPath = ltrim(realpath($repository->getRoot()), $cwd . DIRECTORY_SEPARATOR);
-            $vendorPath = ltrim(realpath(getcwd() . '/vendor'), $cwd . DIRECTORY_SEPARATOR);
+            $repoPath   = ltrim((string) realpath($repository->getRoot()), $cwd . DIRECTORY_SEPARATOR);
+            $vendorPath = ltrim((string) realpath(getcwd() . '/vendor'), $cwd . DIRECTORY_SEPARATOR);
 
             return new Docker(
                 $repoPath,
                 $vendorPath,
-                $input->getOption('container')
+                IOUtil::argToString($input->getOption('container'))
             );
         }
 
         return new Local(
-            realpath($repository->getRoot()),
+            (string) realpath($repository->getRoot()),
             getcwd() . '/vendor',
-            realpath($config->getPath())
+            (string) realpath($config->getPath())
         );
     }
 }

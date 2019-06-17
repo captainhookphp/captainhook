@@ -61,18 +61,20 @@ class Help extends Base
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return void
+     * @return int|null
      */
-    protected function execute(InputInterface $input, OutputInterface $output) : void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($this->command !== null) {
             $helper = new DescriptorHelper();
             $helper->describe($output, $this->command);
-            return;
+            return 0;
         }
 
         $io = $this->getIO($input, $output);
         $io->write($this->getHelpLines());
+
+        return 0;
     }
 
     /**
