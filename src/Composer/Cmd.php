@@ -79,7 +79,7 @@ abstract class Cmd
             '--git-directory' => self::extract(CH::COMPOSER_GIT_DIR, $extra, '.git'),
             '--run-mode'      => self::extract(CH::COMPOSER_RUN_MODE, $extra, 'local'),
             '--container'     => self::extract(CH::COMPOSER_CONTAINER, $extra, ''),
-            '-f'              => '-f'
+            '-f'              => true
         ];
         $app->run(new ArrayInput($options));
     }
