@@ -75,6 +75,8 @@ class Factory
                 $this->configureHook($config->getHookConfig($hook), $json[$hook]);
             }
         }
+
+        $this->appendIncludedConfigurations($config, $json);
     }
 
     /**
@@ -96,6 +98,56 @@ class Factory
                         ? $actionJson['conditions']
                         : [];
             $config->addAction(new Config\Action($actionJson['action'], $options, $conditions));
+        }
+    }
+
+    /**
+     * Append all included configuration to the current configuration
+     *
+     * @param \CaptainHook\App\Config $config
+     * @param array                   $json
+     */
+    private function appendIncludedConfigurations(Config $config, array $json)
+    {
+        $includes = $this->loadIncludedConfigs($json, $config->getPath());
+        foreach (HookUtil::getValidHooks() as $hook => $class) {
+            foreach ($includes as $includedConfig) {
+                $this->copyActionsFromTo($includedConfig->getHookConfig($hook), $config->getHookConfig($hook));
+            }
+        }
+    }
+
+    /**
+     * Read included configurations to add them to the main configuration later
+     *
+     * @param  array  $json
+     * @param  string $path
+     * @return \CaptainHook\App\Config[]
+     */
+    protected function loadIncludedConfigs(array $json, string $path) : array
+    {
+        $includes  = [];
+        $directory = dirname($path);
+        $files     = isset($json['config']['includes']) && is_array($json['config']['includes'])
+                   ? $json['config']['includes']
+                   : [];
+
+        foreach ($files as $file) {
+            $includes[] = self::create($directory . DIRECTORY_SEPARATOR . $file);
+        }
+        return $includes;
+    }
+
+    /**
+     * Append actions for a given hook from all included configurations to the current configuration
+     *
+     * @param \CaptainHook\App\Config\Hook $includedConfig
+     * @param \CaptainHook\App\Config\Hook $hookConfig
+     */
+    private function copyActionsFromTo(Hook $includedConfig, Hook $hookConfig)
+    {
+        foreach ($includedConfig->getActions() as $action) {
+            $hookConfig->addAction($action);
         }
     }
 }
