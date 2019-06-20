@@ -12,6 +12,7 @@ namespace CaptainHook\App\Config;
 use CaptainHook\App\Hook\Util as HookUtil;
 use CaptainHook\App\Config;
 use CaptainHook\App\Storage\File\Json;
+use RuntimeException;
 
 /**
  * Class Util
@@ -20,6 +21,7 @@ use CaptainHook\App\Storage\File\Json;
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 1.0.3
+ * @internal
  */
 abstract class Util
 {
@@ -49,10 +51,10 @@ abstract class Util
     public static function validateHookConfig(array $json) : void
     {
         if (!self::keysExist(['enabled', 'actions'], $json)) {
-            throw new \RuntimeException('Config error: invalid hook configuration');
+            throw new RuntimeException('Config error: invalid hook configuration');
         }
         if (!is_array($json['actions'])) {
-            throw new \RuntimeException('Config error: \'actions\' must be an array');
+            throw new RuntimeException('Config error: \'actions\' must be an array');
         }
         self::validateActionsConfig($json['actions']);
     }
@@ -68,10 +70,10 @@ abstract class Util
     {
         foreach ($json as $action) {
             if (!self::keysExist(['action'], $action)) {
-                throw new \RuntimeException('Config error: \'action\' missing');
+                throw new RuntimeException('Config error: \'action\' missing');
             }
             if (empty($action['action'])) {
-                throw new \RuntimeException('Config error: \'action\' can\'t be empty');
+                throw new RuntimeException('Config error: \'action\' can\'t be empty');
             }
             if (!empty($action['conditions'])) {
                 self::validateConditionsConfig($action['conditions']);
@@ -89,10 +91,10 @@ abstract class Util
     {
         foreach ($json as $condition) {
             if (!self::keysExist(['exec'], $condition) || empty($condition['exec'])) {
-                throw new \RuntimeException('Config error: \'exec\' is required for conditions');
+                throw new RuntimeException('Config error: \'exec\' is required for conditions');
             }
             if (!empty($condition['args']) && !is_array($condition['args'])) {
-                throw new \RuntimeException('Config error: invalid \'args\' configuration');
+                throw new RuntimeException('Config error: invalid \'args\' configuration');
             }
         }
     }

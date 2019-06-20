@@ -18,7 +18,7 @@ class HookTest extends TestCase
      */
     public function testDisabledByDefault()
     {
-        $hook   = new Hook();
+        $hook   = new Hook('pre-commit');
         $config = $hook->getJsonData();
 
         $this->assertFalse($hook->isEnabled());
@@ -30,7 +30,7 @@ class HookTest extends TestCase
      */
     public function testSetEnabled()
     {
-        $hook   = new Hook();
+        $hook   = new Hook('pre-commit');
         $hook->setEnabled(true);
         $config = $hook->getJsonData();
 
@@ -43,7 +43,7 @@ class HookTest extends TestCase
      */
     public function testEmptyActions()
     {
-        $hook   = new Hook();
+        $hook   = new Hook('pre-commit');
         $config = $hook->getJsonData();
 
         $this->assertCount(0, $hook->getActions());
@@ -55,7 +55,7 @@ class HookTest extends TestCase
      */
     public function testAddAction()
     {
-        $hook   = new Hook();
+        $hook   = new Hook('pre-commit');
         $hook->addAction(new Action('\\Foo\\Bar'));
         $config = $hook->getJsonData();
 

@@ -16,9 +16,17 @@ namespace CaptainHook\App\Config;
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 0.9.0
+ * @internal
  */
 class Hook
 {
+    /**
+     * Hook name e.g. pre-commit
+     *
+     * @var string
+     */
+    private $name;
+
     /**
      * Is hook enabled
      *
@@ -36,11 +44,23 @@ class Hook
     /**
      * Hook constructor
      *
-     * @param bool $enabled
+     * @param string $name
+     * @param bool   $enabled
      */
-    public function __construct(bool $enabled = false)
+    public function __construct(string $name, bool $enabled = false)
     {
+        $this->name      = $name;
         $this->isEnabled = $enabled;
+    }
+
+    /**
+     * Name getter
+     *
+     * @return string
+     */
+    public function getName() : string
+    {
+        return $this->name;
     }
 
     /**
