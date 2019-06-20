@@ -13,6 +13,7 @@ use CaptainHook\App\CH;
 use CaptainHook\App\Config;
 use CaptainHook\App\Hook\Util as HookUtil;
 use CaptainHook\App\Storage\File\Json;
+use RuntimeException;
 
 /**
  * Class Factory
@@ -21,21 +22,23 @@ use CaptainHook\App\Storage\File\Json;
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 0.9.0
+ * @internal
  */
-class Factory
+final class Factory
 {
     /**
-     * Config factory method
+     * Maximal level in including config files
      *
-     * @param  string $path
-     * @return \CaptainHook\App\Config
+     * @var int
      */
-    public static function create(string $path = '') : Config
-    {
-        $factory = new static();
+    private $maxIncludeLevel = 1;
 
-        return $factory->createConfig($path);
-    }
+    /**
+     * Current level of inclusion
+     *
+     * @var int
+     */
+    private $includeLevel = 0;
 
     /**
      * Create a CaptainHook configuration
@@ -46,28 +49,55 @@ class Factory
      */
     public function createConfig($path = '') : Config
     {
-        $path       = $path ?: getcwd() . DIRECTORY_SEPARATOR . CH::CONFIG;
-        $json       = new Json($path);
-        $fileExists = $json->exists();
-        $config     = new Config($path, $fileExists);
+        $path = $path ?: getcwd() . DIRECTORY_SEPARATOR . CH::CONFIG;
+        $file = new Json($path);
 
-        if ($fileExists) {
-            $this->configure($config, $json->readAssoc());
+        return $this->setupConfig($file);
+    }
+
+    /**
+     * @param  string $path
+     * @return \CaptainHook\App\Config
+     * @throws \Exception
+     */
+    private function includeConfig(string $path) : Config
+    {
+        $file = new Json($path);
+        if (!$file->exists()) {
+            throw new RuntimeException('Config to include not found: ' . $path);
         }
+        return $this->setupConfig($file);
+    }
 
+
+    /**
+     * Return a configuration with data loaded from json file it it exists
+     *
+     * @param  \CaptainHook\App\Storage\File\Json $file
+     * @return \CaptainHook\App\Config
+     * @throws \Exception
+     */
+    private function setupConfig(Json $file) : Config
+    {
+        // use variable to not check file system twice
+        $fileExists = $file->exists();
+        $config     = new Config($file->getPath(), $fileExists);
+        if ($fileExists) {
+            $this->loadConfigFromFile($config, $file);
+        }
         return $config;
     }
 
     /**
-     * Initialize the configuration with data load from config file
+     * Loads a given file into given the configuration
      *
-     * @param  \CaptainHook\App\Config $config
-     * @param  array                   $json
-     * @return void
+     * @param  \CaptainHook\App\Config            $config
+     * @param  \CaptainHook\App\Storage\File\Json $file
      * @throws \Exception
      */
-    protected function configure(Config $config, array $json) : void
+    private function loadConfigFromFile(Config $config, Json $file) : void
     {
+        $json = $file->readAssoc();
         Util::validateJsonConfiguration($json);
 
         foreach (HookUtil::getValidHooks() as $hook => $class) {
@@ -87,7 +117,7 @@ class Factory
      * @return void
      * @throws \Exception
      */
-    protected function configureHook(Config\Hook $config, array $json) : void
+    private function configureHook(Config\Hook $config, array $json) : void
     {
         $config->setEnabled($json['enabled']);
         foreach ($json['actions'] as $actionJson) {
@@ -104,25 +134,56 @@ class Factory
     /**
      * Append all included configuration to the current configuration
      *
-     * @param \CaptainHook\App\Config $config
-     * @param array                   $json
+     * @param  \CaptainHook\App\Config $config
+     * @param  array                   $json
+     * @throws \Exception
      */
     private function appendIncludedConfigurations(Config $config, array $json)
     {
-        $includes = $this->loadIncludedConfigs($json, $config->getPath());
-        foreach (HookUtil::getValidHooks() as $hook => $class) {
-            foreach ($includes as $includedConfig) {
-                $this->copyActionsFromTo($includedConfig->getHookConfig($hook), $config->getHookConfig($hook));
+        $this->readMaxIncludeLevel($json);
+        if ($this->includeLevel < $this->maxIncludeLevel) {
+            $includes = $this->loadIncludedConfigs($json, $config->getPath());
+            foreach (HookUtil::getValidHooks() as $hook => $class) {
+                $this->appendHookActionsFromIncludes($config->getHookConfig($hook), $includes);
             }
+        }
+        $this->includeLevel++;
+    }
+
+    /**
+     * Check config section for 'maxIncludeLevel' setting
+     *
+     * @param array $json
+     */
+    private function readMaxIncludeLevel(array $json) : void
+    {
+        // read the include level setting only for the actual configuration
+        if ($this->includeLevel === 0 && isset($json['config']['maxIncludeLevel'])) {
+            $this->maxIncludeLevel = (int) $json['config']['maxIncludeLevel'];
         }
     }
 
     /**
-     * Read included configurations to add them to the main configuration later
+     * Append actions to a given hook config from a list of included configurations
+     *
+     * @param  \CaptainHook\App\Config\Hook $hook
+     * @param  \CaptainHook\App\Config[]    $includes
+     * @return void
+     */
+    private function appendHookActionsFromIncludes(Hook $hook, array $includes) : void
+    {
+        foreach ($includes as $includedConfig) {
+            $this->copyActionsFromTo($includedConfig->getHookConfig($hook->getName()), $hook);
+        }
+    }
+
+    /**
+     * Return list of included configurations to add them to the main configuration afterwards
      *
      * @param  array  $json
      * @param  string $path
      * @return \CaptainHook\App\Config[]
+     * @throws \Exception
      */
     protected function loadIncludedConfigs(array $json, string $path) : array
     {
@@ -133,21 +194,33 @@ class Factory
                    : [];
 
         foreach ($files as $file) {
-            $includes[] = self::create($directory . DIRECTORY_SEPARATOR . $file);
+            $includes[] = $this->includeConfig($directory . DIRECTORY_SEPARATOR . $file);
         }
         return $includes;
     }
 
     /**
-     * Append actions for a given hook from all included configurations to the current configuration
+     * Copy action from a given configuration to the second given configuration
      *
-     * @param \CaptainHook\App\Config\Hook $includedConfig
-     * @param \CaptainHook\App\Config\Hook $hookConfig
+     * @param \CaptainHook\App\Config\Hook $sourceConfig
+     * @param \CaptainHook\App\Config\Hook $targetConfig
      */
-    private function copyActionsFromTo(Hook $includedConfig, Hook $hookConfig)
+    private function copyActionsFromTo(Hook $sourceConfig, Hook $targetConfig)
     {
-        foreach ($includedConfig->getActions() as $action) {
-            $hookConfig->addAction($action);
+        foreach ($sourceConfig->getActions() as $action) {
+            $targetConfig->addAction($action);
         }
+    }
+
+    /**
+     * Config factory method
+     *
+     * @param  string $path
+     * @return \CaptainHook\App\Config
+     */
+    public static function create(string $path = '') : Config
+    {
+        $factory = new static();
+        return $factory->createConfig($path);
     }
 }

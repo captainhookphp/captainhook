@@ -1,0 +1,28 @@
+{
+  "config": {
+    "includes": [
+      "valid-include.json"
+    ]
+  },
+  "prepare-commit-msg": {
+    "enabled": true,
+    "actions": []
+  },
+  "commit-msg": {
+    "enabled": true,
+    "actions": []
+  },
+  "pre-commit": {
+    "enabled": true,
+    "actions": [
+      {
+        "action": "phpcs --standard=psr2 src",
+        "options": []
+      }
+    ]
+  },
+  "pre-push": {
+    "enabled": false,
+    "actions": []
+  }
+}

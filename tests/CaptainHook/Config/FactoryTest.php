@@ -50,4 +50,28 @@ class FactoryTest extends TestCase
         $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
         $this->assertCount(2, $config->getHookConfig('pre-commit')->getActions());
     }
+
+    /**
+     * Tests Factory::create
+     */
+    public function testCreateWithValidNestedIncludes()
+    {
+        $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-nested-includes.json'));
+
+        $this->assertInstanceOf(Config::class, $config);
+        $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
+        $this->assertCount(3, $config->getHookConfig('pre-commit')->getActions());
+    }
+
+    /**
+     * Tests Factory::create
+     */
+    public function testCreateWithInvalidNestedIncludes()
+    {
+        $config = Factory::create(realpath(__DIR__ . '/../../files/config/invalid-with-nested-includes.json'));
+
+        $this->assertInstanceOf(Config::class, $config);
+        $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
+        $this->assertCount(2, $config->getHookConfig('pre-commit')->getActions());
+    }
 }
