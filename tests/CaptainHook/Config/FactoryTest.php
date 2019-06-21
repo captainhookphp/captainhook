@@ -10,6 +10,7 @@
 namespace CaptainHook\App\Config;
 
 use CaptainHook\App\Config;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class FactoryTest extends TestCase
@@ -36,5 +37,51 @@ class FactoryTest extends TestCase
         $this->assertInstanceOf(Config::class, $config);
         $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
         $this->assertCount(1, $config->getHookConfig('pre-commit')->getActions());
+    }
+
+
+    /**
+     * Tests Factory::create
+     */
+    public function testCreateWithIncludes()
+    {
+        $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-includes.json'));
+
+        $this->assertInstanceOf(Config::class, $config);
+        $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
+        $this->assertCount(2, $config->getHookConfig('pre-commit')->getActions());
+    }
+
+    /**
+     * Tests Factory::create
+     */
+    public function testCreateWithValidNestedIncludes()
+    {
+        $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-nested-includes.json'));
+
+        $this->assertInstanceOf(Config::class, $config);
+        $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
+        $this->assertCount(3, $config->getHookConfig('pre-commit')->getActions());
+    }
+
+    /**
+     * Tests Factory::create
+     */
+    public function testCreateWithInvalidNestedIncludes()
+    {
+        $config = Factory::create(realpath(__DIR__ . '/../../files/config/invalid-with-nested-includes.json'));
+
+        $this->assertInstanceOf(Config::class, $config);
+        $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
+        $this->assertCount(2, $config->getHookConfig('pre-commit')->getActions());
+    }
+
+    /**
+     * Tests Factory::create
+     */
+    public function testCreateWithInvalidIncludes()
+    {
+        $this->expectException(Exception::class);
+        Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-invalid-includes.json'));
     }
 }

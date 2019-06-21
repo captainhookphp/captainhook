@@ -9,6 +9,8 @@
  */
 namespace CaptainHook\App;
 
+use InvalidArgumentException;
+
 /**
  * Class Config
  *
@@ -16,6 +18,7 @@ namespace CaptainHook\App;
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 0.9.0
+ * @internal
  */
 class Config
 {
@@ -41,23 +44,23 @@ class Config
     private $hooks = [];
 
     /**
-     * Config constructor.
+     * Config constructor
      *
      * @param string $path
      * @param bool   $fileExists
      */
     public function __construct(string $path, bool $fileExists = false)
     {
-        $this->path                = $path;
-        $this->fileExists          = $fileExists;
+        $this->path       = $path;
+        $this->fileExists = $fileExists;
 
         foreach (Hooks::getValidHooks() as $hook => $value) {
-            $this->hooks[$hook] = new Config\Hook();
+            $this->hooks[$hook] = new Config\Hook($hook);
         }
     }
 
     /**
-     * Is configuration loaded from file.
+     * Is configuration loaded from file
      *
      * @return bool
      */
@@ -67,7 +70,7 @@ class Config
     }
 
     /**
-     * Path getter.
+     * Path getter
      *
      * @return string
      */
@@ -77,7 +80,7 @@ class Config
     }
 
     /**
-     * Return config for given hook.
+     * Return config for given hook
      *
      * @param  string $hook
      * @return \CaptainHook\App\Config\Hook
@@ -86,13 +89,13 @@ class Config
     public function getHookConfig(string $hook) : Config\Hook
     {
         if (!Hook\Util::isValid($hook)) {
-            throw new \InvalidArgumentException('Invalid hook name: ' . $hook);
+            throw new InvalidArgumentException('Invalid hook name: ' . $hook);
         }
         return $this->hooks[$hook];
     }
 
     /**
-     * Return config array to write to disc.
+     * Return config array to write to disc
      *
      * @return array
      */
