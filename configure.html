@@ -48,10 +48,10 @@
       </p>
 
       <pre><code class="javascript">{
-  'commit-msg': {
+  "commit-msg": {
     // a hook config block
   },
-  'pre-commit': {
+  "pre-commit": {
     // another hook config block
   },
   // ...
@@ -63,8 +63,8 @@
       </p>
 
       <pre><code class="javascript">'commit-msg': {
-  'enabled': true,
-  'actions': []
+  "enabled": true,
+  "actions": []
 }</code></pre>
 
       <p>
@@ -81,11 +81,11 @@
       </p>
 
       <pre><code class="javascript">{
-  'pre-commit': {
-    'enabled': true,
-    'actions': [
+  "pre-commit": {
+    "enabled": true,
+    "actions": [
       {
-        'action': 'phpunit.phar --configuration=phpunit.git.xml'
+        "action": "phpunit.phar --configuration=phpunit.git.xml"
       }
     ]
   }
@@ -104,13 +104,13 @@
       </p>
 
       <pre><code class="javascript">{
-  'commit-msg': {
-    'enabled': true,
-    'actions': [
+  "commit-msg": {
+    "enabled": true,
+    "actions": [
       {
-        'action': '\CaptainHook\App\Hook\Message\Action\Regex',
-        'options': {
-          'regex': '#.*#'
+        "action": "\CaptainHook\App\Hook\Message\Action\Regex",
+        "options": {
+          "regex": "#.*#"
         }
       }
     ]
@@ -199,6 +199,68 @@
         Or you can build custom PHP <em>Conditions</em>. For an exact guide have a look at the
         <a href="extend.html#conditions">"how to extend CaptainHook"</a> section.
       </p>
+
+      <h3 id="includes">Include other configuration files</h3>
+      <p>
+        If you have a lot of project you maybe want to define a set of default hooks for all of them. In order to maintain
+        this default configuration CaptainHook version 4.4.0 introduce the possibility to include other <em>CaptainHook</em> configurations like this.
+      </p>
+      <pre><code class="javascript">{
+  "config": {
+    "includes": [
+      "some-other-captainhook-config.json"
+    ]
+  },
+  "pre-commit": {
+    "enabled": true,
+    "actions": [
+      {
+        "action"0: "\CaptainHook\App\Hook\Message\Action\Regex",
+        "options": {
+          "regex": "#.*#"
+        }
+      }
+    ]
+  }
+}</code></pre>
+      <p>
+        The idea is to create a separate <em>composer</em> package e.g. <em class="hl">my-git-hooks</em> that is structured like this.
+      </p>
+      <pre><code class="javascript">my-git-hooks/
+├── composer.json
+├── msg-validation.json
+└── crazy-workflow.json</code></pre>
+      <p>
+        Inside your composer.json you require all libs and plugins you need to execute the configured actions plus <em>captainhook/captainhook</em>
+        or <em>captainhook/plugin-composer</em>. The only thing you have to do in your projects is to require your <em class="hl">my-git-hooks</em>
+        package and add something like this to your local project <em>captainhook.json</em> file.
+      </p>
+      <pre><code class="javascript">{
+  "config": {
+    "includes": [
+      "vendor/my-company/my-git-hooks/msg-validation.json",
+      "vendor/my-company/my-git-hooks/crazy-workflow.json"
+    ]
+  }
+}</code></pre>
+      <p>
+        To update the base configuration you create a new version for your <em class="hl">my-git-hooks</em> package and run composer update in your projects.
+      </p>
+
+      <h4>Include Level</h4>
+      <p>
+        By default you can't include configurations in included configurations. But if you really want shoot yourself in the foot, who am I to judge you.
+        You can increase the maximum levels of inclusion in your project configuration. Setting this in included configurations will have no effect.
+      </p>
+      <pre><code class="javascript">{
+  "config": {
+    "maxIncludeLevel": 2,
+    "includes": [
+      "vendor/my-company/my-git-hooks/msg-validation.json",
+      "vendor/my-company/my-git-hooks/crazy-workflow.json"
+    ]
+  }
+}</code></pre>
 
     </div>
 
