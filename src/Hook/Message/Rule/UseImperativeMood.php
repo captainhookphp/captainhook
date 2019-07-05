@@ -9,6 +9,8 @@
  */
 namespace CaptainHook\App\Hook\Message\Rule;
 
+use function strpos;
+
 /**
  * Class UseImperativeMood
  *
@@ -19,11 +21,13 @@ namespace CaptainHook\App\Hook\Message\Rule;
  */
 class UseImperativeMood extends Blacklist
 {
+    private $checkOnlyBeginning;
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct($checkOnlyBeginning = false)
     {
+        $this->checkOnlyBeginning = $checkOnlyBeginning;
         parent::__construct(false);
         $this->hint = 'Subject should be written in imperative mood';
         $this->setSubjectBlacklist(
@@ -38,4 +42,17 @@ class UseImperativeMood extends Blacklist
             ]
         );
     }
+
+    protected function containsBlacklistedWord(array $list, string $content) : bool
+    {
+        if ($this->checkOnlyBeginning === true) {
+            return $this->compareContentAgainstWordListUsingCallback($content, $list, function ($content, $term): bool {
+                return strpos($content, $term) === 0;
+            });
+        }
+
+        return parent::containsBlacklistedWord($list, $content);
+    }
+
+
 }

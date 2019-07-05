@@ -34,7 +34,7 @@ abstract class RuleSet
             new Rule\CapitalizeSubject(),
             new Rule\LimitSubjectLength($subjectLength),
             new Rule\NoPeriodOnSubjectEnd(),
-            new Rule\UseImperativeMood(),
+            new Rule\UseImperativeMood(true),
             new Rule\LimitBodyLineLength($bodyLineLength),
             new Rule\SeparateSubjectFromBodyWithBlankLine()
         ];

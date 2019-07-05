@@ -9,7 +9,11 @@
  */
 namespace CaptainHook\App\Hook\Message\Rule;
 
+use function array_map;
+use const PHP_EOL;
 use SebastianFeldmann\Git\CommitMessage;
+use function strpos;
+use function strtolower;
 
 /**
  * Class UseImperativeMood
@@ -125,12 +129,30 @@ class Blacklist extends Base
      */
     protected function containsBlacklistedWord(array $list, string $content) : bool
     {
+        return $this->compareContentAgainstWordListUsingCallback($content, $list, function ($content, $term) : bool {
+            return strpos($content, $term) !== false;
+        });
+    }
+
+    /**
+     * Contains blacklisted word
+     *
+     * Calable has to accept two parameters. The first is the string to check, the second is the string that is not
+     * supposed to be contained in the given string
+     *
+     * @param  array  $list
+     * @param  string $content
+     * @param callable $callable
+     * @return bool
+     */
+    protected function compareContentAgainstWordListUsingCallback(string $content, array $list, Callable $callable) : bool
+    {
         if (!$this->isCaseSensitive) {
             $content = strtolower($content);
             $list    = array_map('strtolower', $list);
         }
         foreach ($list as $term) {
-            if (strpos($content, $term) !== false) {
+            if ($callable($content, $term)) {
                 $this->hint .= PHP_EOL . 'Invalid use of \'' . $term . '\'';
                 return true;
             }

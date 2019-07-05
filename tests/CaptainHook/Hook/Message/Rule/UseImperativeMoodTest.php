@@ -16,27 +16,26 @@ class UseImperativeMoodTest extends TestCase
 {
     /**
      * Tests UseImperativeMood::pass
+     *
+     * @dataProvider passProvider
      */
-    public function testPassSuccess()
+    public function testPass(string $string, bool $begin, bool $expectedResult)
     {
-        $msg  = new CommitMessage('Foo bar baz');
-        $rule = new UseImperativeMood();
+        $msg  = new CommitMessage($string);
+        $rule = new UseImperativeMood($begin);
 
-        $this->assertTrue($rule->pass($msg));
+        $this->assertSame($expectedResult, $rule->pass($msg));
     }
 
-    /**
-     * Tests UseImperativeMood::pass
-     */
-    public function testPassFail()
+    public function passProvider() : array
     {
-        $msg  = new CommitMessage('Added some something');
-        $rule = new UseImperativeMood();
-
-        $this->assertFalse($rule->pass($msg));
-
-        $hint = $rule->getHint();
-
-        $this->assertTrue((bool) strpos($hint, 'imperative'));
+        return [
+            ['foo bar baz', true, true],
+            ['foo bar baz', false, true],
+            ['fixed soemthing something', false, false],
+            ['fixed soemthing something', true, false],
+            ['soemthing fixed something', false, false],
+            ['soemthing fixed something', true, true],
+        ];
     }
 }
