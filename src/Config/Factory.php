@@ -144,7 +144,7 @@ final class Factory
         if ($this->includeLevel < $this->maxIncludeLevel) {
             $includes = $this->loadIncludedConfigs($json, $config->getPath());
             foreach (HookUtil::getValidHooks() as $hook => $class) {
-                $this->appendHookActionsFromIncludes($config->getHookConfig($hook), $includes);
+                $this->mergeHookConfigFromIncludes($config->getHookConfig($hook), $includes);
             }
         }
         $this->includeLevel++;
@@ -164,16 +164,20 @@ final class Factory
     }
 
     /**
-     * Append actions to a given hook config from a list of included configurations
+     * Merge a given hook config with the corresponding hook configs from a list of included configurations
      *
      * @param  \CaptainHook\App\Config\Hook $hook
      * @param  \CaptainHook\App\Config[]    $includes
      * @return void
      */
-    private function appendHookActionsFromIncludes(Hook $hook, array $includes) : void
+    private function mergeHookConfigFromIncludes(Hook $hook, array $includes) : void
     {
         foreach ($includes as $includedConfig) {
-            $this->copyActionsFromTo($includedConfig->getHookConfig($hook->getName()), $hook);
+            $includedHook = $includedConfig->getHookConfig($hook->getName());
+            if ($includedHook->isEnabled()) {
+                $hook->setEnabled(true);
+            }
+            $this->copyActionsFromTo($includedHook, $hook);
         }
     }
 
