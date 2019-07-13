@@ -21,8 +21,10 @@ class UseImperativeMood extends Blacklist
 {
     /**
      * Constructor
+     *
+     * @param bool $checkOnlyBeginning
      */
-    public function __construct()
+    public function __construct(bool $checkOnlyBeginning = false)
     {
         parent::__construct(false);
         $this->hint = 'Subject should be written in imperative mood';
@@ -31,11 +33,19 @@ class UseImperativeMood extends Blacklist
                 'added',
                 'changed',
                 'created',
+                'deleted',
                 'fixed',
                 'removed',
                 'updated',
-                'uploaded',
+                'uploaded'
             ]
         );
+
+        if ($checkOnlyBeginning) {
+            // overwrite the detection logic to only check the beginning og the string
+            $this->stringDetection = function (string $content, string $term) : bool {
+                return strpos($content, $term) === 0;
+            };
+        }
     }
 }

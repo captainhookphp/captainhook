@@ -40,7 +40,8 @@ class Beams extends Book
         $book    = new RuleBook();
         $book->setRules(RuleBook\RuleSet::beams(
             $options->get('subjectLength', 50),
-            $options->get('bodyLineLength', 72)
+            $options->get('bodyLineLength', 72),
+            $options->get('checkImperativeBeginningOnly', false)
         ));
 
         $this->validate($book, $repository, $io);

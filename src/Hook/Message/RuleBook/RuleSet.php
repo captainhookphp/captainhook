@@ -24,17 +24,21 @@ abstract class RuleSet
     /**
      * Return Beams rule set
      *
-     * @param  int $subjectLength
-     * @param  int $bodyLineLength
+     * @param  int  $subjectLength
+     * @param  int  $bodyLineLength
+     * @param  bool $checkImperativeBeginningOnly
      * @return \CaptainHook\App\Hook\Message\Rule[]
      */
-    public static function beams(int $subjectLength = 50, int $bodyLineLength = 72) : array
-    {
+    public static function beams(
+        int $subjectLength = 50,
+        int $bodyLineLength = 72,
+        bool $checkImperativeBeginningOnly = false
+    ) : array {
         return [
             new Rule\CapitalizeSubject(),
             new Rule\LimitSubjectLength($subjectLength),
             new Rule\NoPeriodOnSubjectEnd(),
-            new Rule\UseImperativeMood(),
+            new Rule\UseImperativeMood($checkImperativeBeginningOnly),
             new Rule\LimitBodyLineLength($bodyLineLength),
             new Rule\SeparateSubjectFromBodyWithBlankLine()
         ];

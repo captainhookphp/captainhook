@@ -39,6 +39,11 @@ class Blacklist extends Base
     ];
 
     /**
+     * @var \Closure
+     */
+    protected $stringDetection;
+
+    /**
      * Constructor
      *
      * @param bool $caseSensitive
@@ -47,6 +52,9 @@ class Blacklist extends Base
     {
         $this->isCaseSensitive = $caseSensitive;
         $this->hint            = 'Commit message should not contain blacklisted words';
+        $this->stringDetection = function (string $content, string $term) : bool {
+            return strpos($content, $term) !== false;
+        };
     }
 
     /**
@@ -130,7 +138,7 @@ class Blacklist extends Base
             $list    = array_map('strtolower', $list);
         }
         foreach ($list as $term) {
-            if (strpos($content, $term) !== false) {
+            if (($this->stringDetection)($content, $term)) {
                 $this->hint .= PHP_EOL . 'Invalid use of \'' . $term . '\'';
                 return true;
             }

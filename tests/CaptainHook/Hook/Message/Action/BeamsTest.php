@@ -60,6 +60,25 @@ class BeamsTest extends TestCase
     /**
      * Tests Beams::execute
      */
+    public function testExecuteImperativeBeginning()
+    {
+        $this->expectException(\Exception::class);
+
+        $io     = new NullIO();
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
+        $action = new Config\Action(Beams::class, ['checkImperativeBeginningOnly' => true]);
+        $repo   = new Repository($this->repo->getPath());
+        $repo->setCommitMsg(new CommitMessage('foo added foo bar baz.'));
+
+        $standard = new Beams();
+        $standard->execute($config, $io, $repo, $action);
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * Tests Beams::execute
+     */
     public function testExecuteFail()
     {
         $this->expectException(\Exception::class);
