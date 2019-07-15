@@ -100,13 +100,13 @@ final class Factory
         $json = $file->readAssoc();
         Util::validateJsonConfiguration($json);
 
+        $this->appendIncludedConfigurations($config, $json);
+
         foreach (HookUtil::getValidHooks() as $hook => $class) {
             if (isset($json[$hook])) {
                 $this->configureHook($config->getHookConfig($hook), $json[$hook]);
             }
         }
-
-        $this->appendIncludedConfigurations($config, $json);
     }
 
     /**

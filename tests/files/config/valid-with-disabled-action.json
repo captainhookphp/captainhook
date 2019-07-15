@@ -1,0 +1,11 @@
+{
+  "config": {
+    "includes": [
+      "valid-include.json"
+    ]
+  },
+  "pre-commit": {
+    "enabled": false,
+    "actions": []
+  }
+}
