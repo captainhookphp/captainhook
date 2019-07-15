@@ -84,4 +84,27 @@ class FactoryTest extends TestCase
         $this->expectException(Exception::class);
         Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-invalid-includes.json'));
     }
+
+    /**
+     * Tests Factory::create
+     */
+    public function testCreateEmptyWithIncludes()
+    {
+        $config = Factory::create(realpath(__DIR__ . '/../../files/config/empty-with-includes.json'));
+
+        $this->assertInstanceOf(Config::class, $config);
+        $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
+        $this->assertCount(1, $config->getHookConfig('pre-commit')->getActions());
+    }
+
+    /**
+     * Tests Factory::create
+     */
+    public function testWithMainConfigurationOverridingInclude()
+    {
+        $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-disabled-action.json'));
+
+        $this->assertInstanceOf(Config::class, $config);
+        $this->assertFalse($config->getHookConfig('pre-commit')->isEnabled());
+    }
 }
