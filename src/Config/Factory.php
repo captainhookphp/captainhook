@@ -176,8 +176,8 @@ final class Factory
             $includedHook = $includedConfig->getHookConfig($hook->getName());
             if ($includedHook->isEnabled()) {
                 $hook->setEnabled(true);
+                $this->copyActionsFromTo($includedHook, $hook);
             }
-            $this->copyActionsFromTo($includedHook, $hook);
         }
     }
 
