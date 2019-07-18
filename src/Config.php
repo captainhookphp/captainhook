@@ -37,6 +37,13 @@ class Config
     private $fileExists;
 
     /**
+     * CaptainHook settings
+     *
+     * @var array
+     */
+    private $settings;
+
+    /**
      * List of hook configs
      *
      * @var \CaptainHook\App\Config\Hook[]
@@ -48,11 +55,13 @@ class Config
      *
      * @param string $path
      * @param bool   $fileExists
+     * @param array  $settings
      */
-    public function __construct(string $path, bool $fileExists = false)
+    public function __construct(string $path, bool $fileExists = false, array $settings = [])
     {
         $this->path       = $path;
         $this->fileExists = $fileExists;
+        $this->settings   = $settings;
 
         foreach (Hooks::getValidHooks() as $hook => $value) {
             $this->hooks[$hook] = new Config\Hook($hook);
@@ -77,6 +86,18 @@ class Config
     public function getPath() : string
     {
         return $this->path;
+    }
+
+    /**
+     * Return git directory path if configured, CWD/.git if not
+     *
+     * @return string
+     */
+    public function getGitDirectory() : string
+    {
+        return !empty($this->settings['git-directory'])
+            ? dirname($this->path) . DIRECTORY_SEPARATOR . $this->settings['git-directory']
+            : getcwd() . DIRECTORY_SEPARATOR . '.git';
     }
 
     /**

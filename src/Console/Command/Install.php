@@ -59,7 +59,7 @@ class Install extends Base
                  'g',
                  InputOption::VALUE_OPTIONAL,
                  'Path to your .git directory',
-                 getcwd() . DIRECTORY_SEPARATOR . '.git'
+                 ''
              )
              ->addOption(
                  'run-mode',
@@ -89,7 +89,15 @@ class Install extends Base
     {
         $io     = $this->getIO($input, $output);
         $config = $this->getConfig(IOUtil::argToString($input->getOption('configuration')), true);
-        $repo   = new Repository(dirname(IOUtil::argToString($input->getOption('git-directory'))));
+
+        // figure out where the git repository is located, setting needs to include the '.git' directory
+        // the cli option supersedes all other settings
+        //  1. command option --git-directory
+        //  2. captainhook.json config, git-directory value
+        //  3. default current working directory
+        $gitDirOption = IOUtil::argToString($input->getOption('git-directory'));
+        $gitDir       = !empty($gitDirOption) ? $gitDirOption : $config->getGitDirectory();
+        $repo         = new Repository(dirname($gitDir));
 
         $runMode   = IOUtil::argToString($input->getOption('run-mode'));
         $container = IOUtil::argToString($input->getOption('container'));

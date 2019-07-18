@@ -1,0 +1,26 @@
+{
+  "config": {
+    "git-directory": "../../../.git"
+  },
+  "prepare-commit-msg": {
+    "enabled": true,
+    "actions": []
+  },
+  "commit-msg": {
+    "enabled": true,
+    "actions": []
+  },
+  "pre-commit": {
+    "enabled": true,
+    "actions": [
+      {
+        "action": "phpunit --configuration=build/phpunit-hook.xml",
+        "options": []
+      }
+    ]
+  },
+  "pre-push": {
+    "enabled": false,
+    "actions": []
+  }
+}

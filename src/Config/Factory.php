@@ -79,26 +79,22 @@ final class Factory
      */
     private function setupConfig(Json $file) : Config
     {
-        // use variable to not check file system twice
-        $fileExists = $file->exists();
-        $config     = new Config($file->getPath(), $fileExists);
-        if ($fileExists) {
-            $this->loadConfigFromFile($config, $file);
-        }
-        return $config;
+        return $file->exists() ? $this->loadConfigFromFile($file) : new Config($file->getPath());
     }
 
     /**
      * Loads a given file into given the configuration
      *
-     * @param  \CaptainHook\App\Config            $config
      * @param  \CaptainHook\App\Storage\File\Json $file
+     * @return \CaptainHook\App\Config
      * @throws \Exception
      */
-    private function loadConfigFromFile(Config $config, Json $file) : void
+    private function loadConfigFromFile(Json $file) : Config
     {
         $json = $file->readAssoc();
         Util::validateJsonConfiguration($json);
+
+        $config = new Config($file->getPath(), true, $this->extractSettings($json));
 
         $this->appendIncludedConfigurations($config, $json);
 
@@ -107,6 +103,18 @@ final class Factory
                 $this->configureHook($config->getHookConfig($hook), $json[$hook]);
             }
         }
+        return $config;
+    }
+
+    /**
+     * Return `config` section of captainhook.json
+     *
+     * @param  array $json
+     * @return array
+     */
+    private function extractSettings(array $json) : array
+    {
+        return isset($json['config']) && is_array($json['config']) ? $json['config'] : [];
     }
 
     /**
