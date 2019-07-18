@@ -46,7 +46,7 @@ abstract class IOUtil
      * Convert everything to a string
      *
      * @param  array<string>|bool|string|null $arg
-     * @param  string                        $default
+     * @param  string                         $default
      * @return string
      */
     public static function argToString($arg, $default = '') : string
