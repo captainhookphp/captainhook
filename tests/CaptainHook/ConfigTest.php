@@ -33,9 +33,7 @@ class ConfigTest extends TestCase
      */
     public function testIsLoadedFromFile()
     {
-        $path   = realpath(__DIR__ . '/../files/config/valid.json');
-        $config = new Config($path, true);
-
+        $config = new Config('valid.json', true);
         $this->assertTrue($config->isLoadedFromFile());
     }
 
@@ -58,6 +56,24 @@ class ConfigTest extends TestCase
         $config = new Config($path);
 
         $this->assertEquals($path, $config->getPath());
+    }
+
+    /**
+     * Tests Config::useAnsiColors
+     */
+    public function testAnsiColorsEnabledByDefault()
+    {
+        $config = new Config('foo.json', true);
+        $this->assertEquals(true, $config->useAnsiColors());
+    }
+
+    /**
+     * Tests Config::useAnsiColors
+     */
+    public function testDisableAnsiColors()
+    {
+        $config = new Config('foo.json', true, ['ansi-colors' => false]);
+        $this->assertEquals(false, $config->useAnsiColors());
     }
 
     /**

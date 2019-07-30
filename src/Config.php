@@ -101,6 +101,16 @@ class Config
     }
 
     /**
+     * Should the output use ansi colors
+     *
+     * @return bool
+     */
+    public function useAnsiColors() : bool
+    {
+        return (bool) ($this->settings['ansi-colors'] ?? true);
+    }
+
+    /**
      * Return config for given hook
      *
      * @param  string $hook

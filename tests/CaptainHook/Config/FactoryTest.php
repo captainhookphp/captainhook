@@ -42,15 +42,16 @@ class FactoryTest extends TestCase
     /**
      * Tests Factory::create
      */
-    public function testCreateWithGitDirectorySetting()
+    public function testCreateWithAllSetting()
     {
-        $path   = realpath(__DIR__ . '/../../files/config/valid-with-git-directory.json');
+        $path   = realpath(__DIR__ . '/../../files/config/valid-with-all-settings.json');
         $config = Factory::create($path);
 
         $this->assertInstanceOf(Config::class, $config);
         $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
         $this->assertCount(1, $config->getHookConfig('pre-commit')->getActions());
         $this->assertEquals(dirname($path) . '/../../../.git', $config->getGitDirectory());
+        $this->assertEquals(false, $config->useAnsiColors());
     }
 
     /**

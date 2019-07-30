@@ -85,10 +85,12 @@ abstract class Hook extends Base
         $config     = $this->getConfig($this->configFile, true);
         $repository = new Repository($this->repositoryPath);
 
+        // use ansi coloring only if not disabled in captainhook.json
+        $output->setDecorated($config->useAnsiColors());
+
         /** @var \CaptainHook\App\Runner\Hook $hook */
         $class = '\\CaptainHook\\App\\Runner\\Hook\\' . Util::getHookCommand($this->name);
         $hook  = new $class($io, $config, $repository);
-
 
         $hook->run();
         return 0;

@@ -89,7 +89,6 @@ class Hook extends ConfigHandler
      */
     public function doRun(InputInterface $input, OutputInterface $output) : int
     {
-        $output->setDecorated(false);
         $input->setInteractive(false);
 
         $command = $this->createCommand();
