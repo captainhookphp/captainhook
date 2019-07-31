@@ -17,7 +17,7 @@ namespace CaptainHook\App\Storage;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 1.0.4
  */
-class Util
+abstract class Util
 {
     /**
      * Array representation of a path.
@@ -57,7 +57,12 @@ class Util
     public static function getSubPathOf(array $subDir, array $parentDir) : string
     {
         if (!self::isSubDirectoryOf($subDir, $parentDir)) {
-            throw new \RuntimeException('Invalid sub directory');
+            throw new \RuntimeException(
+                'Invalid sub directory: '
+                . implode('/', $subDir)
+                . ' is not a sub directory of '
+                . implode('/', $parentDir)
+            );
         }
 
         $path = [];

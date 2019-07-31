@@ -49,6 +49,28 @@ class UtilTest extends TestCase
     /**
      * Tests Util::isSubDirectoryOf
      */
+    public function testGetSubPathOf()
+    {
+        $this->assertEquals(
+            'baz',
+            Util::getSubPathOf(
+                Util::pathToArray('/foo/bar/baz'),
+                Util::pathToArray('/foo/bar')
+            )
+        );
+
+        $this->assertEquals(
+            'baz/buz',
+            Util::getSubPathOf(
+                Util::pathToArray('/foo/bar/baz/buz'),
+                Util::pathToArray('/foo/bar')
+            )
+        );
+    }
+
+    /**
+     * Tests Util::isSubDirectoryOf
+     */
     public function testGetSubPathOfNoSubDirectory()
     {
         $this->expectException(\Exception::class);

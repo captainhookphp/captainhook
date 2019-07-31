@@ -14,6 +14,7 @@ namespace CaptainHook\App\Hook\Template;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Hook\Template;
+use Captainhook\App\Storage\Util;
 use SebastianFeldmann\Git\Repository;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -48,14 +49,11 @@ abstract class Builder
             //   cwd => /docker
             //   path => /docker/captainhook-run
             // The actual path needs to be /captainhook-run to work
-            $cwd = getcwd();
-
-            $repoPath   = ltrim((string) realpath($repository->getRoot()), $cwd . DIRECTORY_SEPARATOR);
-            $vendorPath = ltrim((string) realpath(getcwd() . '/vendor'), $cwd . DIRECTORY_SEPARATOR);
+            $repoPath = self::getRelativePath((string) realpath($repository->getRoot()));
 
             return new Docker(
                 $repoPath,
-                $vendorPath,
+                'vendor',
                 IOUtil::argToString($input->getOption('container'))
             );
         }
@@ -64,6 +62,20 @@ abstract class Builder
             (string) realpath($repository->getRoot()),
             getcwd() . '/vendor',
             (string) realpath($config->getPath())
+        );
+    }
+
+    /**
+     * Transforms an absolute path to a relative one
+     *
+     * @param  string $path
+     * @return string
+     */
+    private static function getRelativePath(string $path)
+    {
+        return Util::getSubPathOf(
+            Util::pathToArray($path),
+            Util::pathToArray(getcwd())
         );
     }
 }
