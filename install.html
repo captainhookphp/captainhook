@@ -42,6 +42,7 @@
 
     <div class="container theme-showcase" role="main">
 
+      <a name="installation"></a>
       <h1>Installation</h1>
       <p>
         The easiest way to install <em>CaptainHook</em> is by using composer. You can either edit your
@@ -98,6 +99,35 @@
       <pre><code class="javascript">{
   "scripts": {
     "post-autoload-dump": "\\CaptainHook\\App\\Composer\\Cmd::setup"
+  }
+}</code></pre>
+
+      <a name="docker"></a>
+      <h2>Using Docker</h2>
+      <p>
+        If you don't have PHP installed locally or you have installed a different version, you can use Docker to
+        execute CaptainHook. To do so you have to install the hooks a bit differently.
+      </p>
+      <pre><code class="bash">$ vendor/bin/captainhook install --run-mode=docker --command="docker exec CONTAINER_NAME"</code></pre>
+      <p>
+        You can choose your preferred docker command e.g.:
+      </p>
+      <ul>
+        <li>docker exec MY_CONTAINER_NAME</li>
+        <li>docker run --rm -v $(pwd):/var/www/html MY_IMAGE_NAME</li>
+        <li>docker-compose -f docker/docker-compose.yml run --rm MY_SERVICE_NAME</li>
+      </ul>
+      <p>
+        If you are using the composer plugin or just dont't want to provide the settings via cli option you can
+        configure the settings in the "config" section of your <em>captainhook.json</em>.
+      </p>
+      <pre><code class="javascript">{
+  "config": {
+    "run-mode": "docker",
+    "run-exec": "docker exec CONTAINER_NAME"
+  }
+  "pre-commit": {
+    ...
   }
 }</code></pre>
 
