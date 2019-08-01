@@ -64,7 +64,7 @@ class InstallTest extends TestCase
     /**
      * Tests Install::run
      */
-    public function testExecuteMissingContainerName(): void
+    public function testExecuteMissingCommandName(): void
     {
         $repo = new DummyRepo();
         $repo->setup();
@@ -84,7 +84,7 @@ class InstallTest extends TestCase
             $install->setIO(new NullIO());
             $install->run($input, $output);
         } catch (Exception $e) {
-            $this->assertEquals('Option "container" missing for run-mode docker.', $e->getMessage());
+            $this->assertEquals('Option "command" missing for run-mode docker.', $e->getMessage());
             $this->assertTrue(true, 'Exception should be thrown');
         } finally {
             $repo->cleanup();

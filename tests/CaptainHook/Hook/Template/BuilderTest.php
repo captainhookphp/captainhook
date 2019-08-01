@@ -25,7 +25,7 @@ class BuilderTest extends TestCase
     {
         $input = $this->prophesize(InputInterface::class);
         $input->getOption('run-mode')->willReturn('docker');
-        $input->getOption('container')->willReturn('captain-container');
+        $input->getOption('command')->willReturn('docker exec captain-container');
 
         $config = $this->prophesize(Config::class);
         $config->getPath()->willReturn(CH_PATH_FILES . '/config/valid.json');
@@ -38,7 +38,7 @@ class BuilderTest extends TestCase
 
         $code = $template->getCode('pre-commit');
         $this->assertStringContainsString('pre-commit', $code);
-        $this->assertStringContainsString('captain-container', $code);
+        $this->assertStringContainsString('docker exec captain-container', $code);
     }
 
     /**

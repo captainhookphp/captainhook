@@ -69,11 +69,10 @@ class Install extends Base
                  Template::LOCAL
              )
              ->addOption(
-                 'container',
+                 'command',
                  null,
                  InputOption::VALUE_OPTIONAL,
-                 'Container name for run-mode docker',
-                 ''
+                 'The Docker command to start your container e.g. \'docker exec CONTAINER\''
              );
     }
 
@@ -99,12 +98,12 @@ class Install extends Base
         $gitDir       = !empty($gitDirOption) ? $gitDirOption : $config->getGitDirectory();
         $repo         = new Repository(dirname($gitDir));
 
-        $runMode   = IOUtil::argToString($input->getOption('run-mode'));
-        $container = IOUtil::argToString($input->getOption('container'));
+        $runMode = IOUtil::argToString($input->getOption('run-mode'));
+        $command = IOUtil::argToString($input->getOption('command'));
 
-        if ($runMode === Template::DOCKER && empty($container)) {
+        if ($runMode === Template::DOCKER && empty($command)) {
             throw new RuntimeException(
-                'Option "container" missing for run-mode docker.'
+                'Option "command" missing for run-mode docker.'
             );
         }
 

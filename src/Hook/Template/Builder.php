@@ -14,7 +14,7 @@ namespace CaptainHook\App\Hook\Template;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Hook\Template;
-use Captainhook\App\Storage\Util;
+use CaptainHook\App\Storage\Util;
 use SebastianFeldmann\Git\Repository;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -54,7 +54,7 @@ abstract class Builder
             return new Docker(
                 $repoPath,
                 'vendor',
-                IOUtil::argToString($input->getOption('container'))
+                IOUtil::argToString($input->getOption('command'))
             );
         }
 
@@ -73,9 +73,6 @@ abstract class Builder
      */
     private static function getRelativePath(string $path)
     {
-        return Util::getSubPathOf(
-            Util::pathToArray($path),
-            Util::pathToArray(getcwd())
-        );
+        return Util::getSubPathOf(Util::pathToArray($path), Util::pathToArray(getcwd()));
     }
 }
