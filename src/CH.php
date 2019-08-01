@@ -23,7 +23,4 @@ final class CH
     const RELEASE_DATE      = '2019-08-01';
     const CONFIG            = 'captainhook.json';
     const COMPOSER_CONFIG   = 'captainhook-config';
-    const COMPOSER_GIT_DIR  = 'captainhook-git-dir';
-    const COMPOSER_RUN_MODE = 'captainhook-run-mode';
-    const COMPOSER_COMMAND  = 'captainhook-command';
 }

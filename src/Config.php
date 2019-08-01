@@ -22,6 +22,11 @@ use InvalidArgumentException;
  */
 class Config
 {
+    const SETTING_GIT_DIR  = 'git-directory';
+    const SETTING_COLORS   = 'ansi-colors';
+    const SETTING_RUN_MODE = 'run-mode';
+    const SETTING_RUN_EXEC = 'run-exec';
+
     /**
      * Path to the config file
      *
@@ -95,8 +100,8 @@ class Config
      */
     public function getGitDirectory() : string
     {
-        return !empty($this->settings['git-directory'])
-            ? dirname($this->path) . DIRECTORY_SEPARATOR . $this->settings['git-directory']
+        return !empty($this->settings[self::SETTING_GIT_DIR])
+            ? dirname($this->path) . DIRECTORY_SEPARATOR . $this->settings[self::SETTING_GIT_DIR]
             : getcwd() . DIRECTORY_SEPARATOR . '.git';
     }
 
@@ -107,7 +112,27 @@ class Config
      */
     public function useAnsiColors() : bool
     {
-        return (bool) ($this->settings['ansi-colors'] ?? true);
+        return (bool) ($this->settings[self::SETTING_COLORS] ?? true);
+    }
+
+    /**
+     * Get configured run-mode
+     *
+     * @return string
+     */
+    public function getRunMode() : string
+    {
+        return (string) ($this->settings[self::SETTING_RUN_MODE] ?? 'local');
+    }
+
+    /**
+     * Get configured run-exec
+     *
+     * @return string
+     */
+    public function getRunExec() : string
+    {
+        return (string) ($this->settings[self::SETTING_RUN_EXEC] ?? '');
     }
 
     /**

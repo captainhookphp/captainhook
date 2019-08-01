@@ -52,6 +52,8 @@ class FactoryTest extends TestCase
         $this->assertCount(1, $config->getHookConfig('pre-commit')->getActions());
         $this->assertEquals(dirname($path) . '/../../../.git', $config->getGitDirectory());
         $this->assertEquals(false, $config->useAnsiColors());
+        $this->assertEquals('docker', $config->getRunMode());
+        $this->assertEquals('docker exec CONTAINER_NAME', $config->getRunExec());
     }
 
     /**

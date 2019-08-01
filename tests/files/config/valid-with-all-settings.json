@@ -1,7 +1,9 @@
 {
   "config": {
     "ansi-colors": false,
-    "git-directory": "../../../.git"
+    "git-directory": "../../../.git",
+    "run-mode": "docker",
+    "run-exec": "docker exec CONTAINER_NAME"
   },
   "prepare-commit-msg": {
     "enabled": true,

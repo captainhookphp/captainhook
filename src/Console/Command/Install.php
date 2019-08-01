@@ -58,19 +58,17 @@ class Install extends Base
                  'git-directory',
                  'g',
                  InputOption::VALUE_OPTIONAL,
-                 'Path to your .git directory',
-                 ''
+                 'Path to your .git directory'
              )
              ->addOption(
                  'run-mode',
-                 'r',
+                 'm',
                  InputOption::VALUE_OPTIONAL,
-                 'Git hook run mode [local|docker]',
-                 Template::LOCAL
+                 'Git hook run mode [local|docker]'
              )
              ->addOption(
-                 'command',
-                 null,
+                 'run-exec',
+                 'e',
                  InputOption::VALUE_OPTIONAL,
                  'The Docker command to start your container e.g. \'docker exec CONTAINER\''
              );
@@ -94,16 +92,15 @@ class Install extends Base
         //  1. command option --git-directory
         //  2. captainhook.json config, git-directory value
         //  3. default current working directory
-        $gitDirOption = IOUtil::argToString($input->getOption('git-directory'));
-        $gitDir       = !empty($gitDirOption) ? $gitDirOption : $config->getGitDirectory();
-        $repo         = new Repository(dirname($gitDir));
+        // same applies for run-mode and run-command OPTION > CONFIG > DEFAULT
+        $gitDir  = $this->getOpt(IOUtil::argToString($input->getOption('git-directory')), $config->getGitDirectory());
+        $runMode = $this->getOpt(IOUtil::argToString($input->getOption('run-mode')), $config->getRunMode());
+        $runCmd  = $this->getOpt(IOUtil::argToString($input->getOption('run-exec')), $config->getRunExec());
+        $repo    = new Repository(dirname($gitDir));
 
-        $runMode = IOUtil::argToString($input->getOption('run-mode'));
-        $command = IOUtil::argToString($input->getOption('command'));
-
-        if ($runMode === Template::DOCKER && empty($command)) {
+        if ($runMode === Template::DOCKER && empty($runCmd)) {
             throw new RuntimeException(
-                'Option "command" missing for run-mode docker.'
+                'Option "run-exec" missing for run-mode docker.'
             );
         }
 
@@ -114,5 +111,17 @@ class Install extends Base
                   ->run();
 
         return 0;
+    }
+
+    /**
+     * Choose option value over config value
+     *
+     * @param  string $optionValue
+     * @param  string $configValue
+     * @return string
+     */
+    protected function getOpt(string $optionValue, string $configValue) : string
+    {
+        return !empty($optionValue) ? $optionValue : $configValue;
     }
 }

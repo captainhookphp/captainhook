@@ -41,7 +41,7 @@ abstract class Builder
      */
     public static function build(InputInterface $input, Config $config, Repository $repository): Template
     {
-        if ($input->getOption('run-mode') === Template::DOCKER) {
+        if ($input->getOption(Config::SETTING_RUN_MODE) === Template::DOCKER) {
             // For docker we need to strip down the current working directory.
             // This is caused because docker will always connect to a specific working directory
             // where the absolute path will not be recognized.
@@ -54,7 +54,7 @@ abstract class Builder
             return new Docker(
                 $repoPath,
                 'vendor',
-                IOUtil::argToString($input->getOption('command'))
+                IOUtil::argToString($input->getOption(Config::SETTING_RUN_EXEC))
             );
         }
 

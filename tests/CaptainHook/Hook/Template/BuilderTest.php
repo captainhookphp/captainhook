@@ -25,7 +25,7 @@ class BuilderTest extends TestCase
     {
         $input = $this->prophesize(InputInterface::class);
         $input->getOption('run-mode')->willReturn('docker');
-        $input->getOption('command')->willReturn('docker exec captain-container');
+        $input->getOption('run-exec')->willReturn('docker exec captain-container');
 
         $config = $this->prophesize(Config::class);
         $config->getPath()->willReturn(CH_PATH_FILES . '/config/valid.json');

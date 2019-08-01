@@ -40,7 +40,7 @@ abstract class Cmd
         $app    = self::createApplication($event->getIO(), $config);
 
         self::configure($app, $config);
-        self::install($app, $config, $extra);
+        self::install($app, $config);
     }
 
     /**
@@ -67,18 +67,14 @@ abstract class Cmd
      *
      * @param  \CaptainHook\App\Composer\Application $app
      * @param  string                                $config
-     * @param  array                                 $extra
      * @return void
      * @throws \Exception
      */
-    private static function install(Application $app, string $config, array $extra) : void
+    private static function install(Application $app, string $config) : void
     {
         $options = [
             'command'         => 'install',
             '--configuration' => $config,
-            '--git-directory' => self::extract(CH::COMPOSER_GIT_DIR, $extra, '.git'),
-            '--run-mode'      => self::extract(CH::COMPOSER_RUN_MODE, $extra, 'local'),
-            '--command'       => self::extract(CH::COMPOSER_COMMAND, $extra, ''),
             '-f'              => true
         ];
         $app->run(new ArrayInput($options));

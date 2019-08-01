@@ -10,6 +10,7 @@
 namespace CaptainHook\App;
 
 use CaptainHook\App\Config\Hook;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class ConfigTest extends TestCase
@@ -42,7 +43,7 @@ class ConfigTest extends TestCase
      */
     public function testGetInvalidHook()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $config = new Config('./no-config.json');
         $config->getHookConfig('foo');
     }
@@ -74,6 +75,24 @@ class ConfigTest extends TestCase
     {
         $config = new Config('foo.json', true, ['ansi-colors' => false]);
         $this->assertEquals(false, $config->useAnsiColors());
+    }
+
+    /**
+     * Tests Config::getRunMode
+     */
+    public function testGetRunMode()
+    {
+        $config = new Config('foo.json', true, ['run-mode' => 'docker', 'run-exec' => 'foo']);
+        $this->assertEquals('docker', $config->getRunMode());
+    }
+
+    /**
+     * Tests Config::getRunExec
+     */
+    public function testGetRunExec()
+    {
+        $config = new Config('foo.json', true, ['run-mode' => 'docker', 'run-exec' => 'foo']);
+        $this->assertEquals('foo', $config->getRunExec());
     }
 
     /**

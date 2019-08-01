@@ -39,6 +39,9 @@ class UtilTest extends TestCase
      * Tests Util::getHookCommand
      *
      * @dataProvider providerValidCommands
+     *
+     * @param string $class
+     * @param string $hook
      */
     public function testGetHookCommandValid(string $class, string $hook): void
     {
