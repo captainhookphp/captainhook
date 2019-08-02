@@ -159,15 +159,15 @@ final class Factory
     }
 
     /**
-     * Check config section for 'maxIncludeLevel' setting
+     * Check config section for 'includes-level' setting
      *
      * @param array $json
      */
     private function readMaxIncludeLevel(array $json) : void
     {
         // read the include level setting only for the actual configuration
-        if ($this->includeLevel === 0 && isset($json['config']['maxIncludeLevel'])) {
-            $this->maxIncludeLevel = (int) $json['config']['maxIncludeLevel'];
+        if ($this->includeLevel === 0 && isset($json['config'][Config::SETTING_INCLUDES_LEVEL])) {
+            $this->maxIncludeLevel = (int) $json['config'][Config::SETTING_INCLUDES_LEVEL];
         }
     }
 
@@ -201,8 +201,9 @@ final class Factory
     {
         $includes  = [];
         $directory = dirname($path);
-        $files     = isset($json['config']['includes']) && is_array($json['config']['includes'])
-                   ? $json['config']['includes']
+        $files     = isset($json['config'][Config::SETTING_INCLUDES])
+                     && is_array($json['config'][Config::SETTING_INCLUDES])
+                   ? $json['config'][Config::SETTING_INCLUDES]
                    : [];
 
         foreach ($files as $file) {

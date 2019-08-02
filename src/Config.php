@@ -22,10 +22,12 @@ use InvalidArgumentException;
  */
 class Config
 {
-    const SETTING_GIT_DIR  = 'git-directory';
-    const SETTING_COLORS   = 'ansi-colors';
-    const SETTING_RUN_MODE = 'run-mode';
-    const SETTING_RUN_EXEC = 'run-exec';
+    const SETTING_GIT_DIR        = 'git-directory';
+    const SETTING_COLORS         = 'ansi-colors';
+    const SETTING_INCLUDES       = 'includes';
+    const SETTING_INCLUDES_LEVEL = 'includes-level';
+    const SETTING_RUN_MODE       = 'run-mode';
+    const SETTING_RUN_EXEC       = 'run-exec';
 
     /**
      * Path to the config file

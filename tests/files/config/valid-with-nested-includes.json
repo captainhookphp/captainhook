@@ -1,6 +1,6 @@
 {
   "config": {
-    "maxIncludeLevel": 2,
+    "includes-level": 2,
     "includes": [
       "valid-nested-include.json"
     ]
