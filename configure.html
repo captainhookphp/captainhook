@@ -44,7 +44,8 @@
 
       <h1>Configuration</h1>
       <p>
-        If you look at a <em class="hl">captainhook.json</em> configuration, it consists of a config block for each hook.
+        If you look at a <em class="hl">captainhook.json</em> configuration, it consists of a config block for each
+        hook and an optional <a href="#settings"><em>config</em></a> section to tweak some setting.
       </p>
 
       <pre><code class="javascript">{
@@ -202,8 +203,8 @@
 
       <h3 id="includes">Include other configuration files</h3>
       <p>
-        If you have a lot of project you maybe want to define a set of default hooks for all of them. In order to maintain
-        this default configuration CaptainHook version 4.4.0 introduce the possibility to include other <em>CaptainHook</em> configurations like this.
+        If you have a lot of projects you maybe want to define a set of default hooks for all of them. To maintain
+        such a default configuration CaptainHook version 4.4.0 introduced the possibility to include other <em>CaptainHook</em> configurations like this.
       </p>
       <pre><code class="javascript">{
   "config": {
@@ -249,18 +250,72 @@
 
       <h4>Include Level</h4>
       <p>
-        By default you can't include configurations in included configurations. But if you really want shoot yourself in the foot, who am I to judge you.
-        You can increase the maximum levels of inclusion in your project configuration. Setting this in included configurations will have no effect.
+        By default you can't include configurations in included configurations. But if you really want to shoot yourself in the foot, who am I to judge you.
+        You can increase the maximum levels of inclusion in your project configuration. Be aware, that setting this in any included configuration will have no effect.
       </p>
       <pre><code class="javascript">{
   "config": {
-    "maxIncludeLevel": 2,
+    "includes-level": 2,
     "includes": [
       "vendor/my-company/my-git-hooks/msg-validation.json",
       "vendor/my-company/my-git-hooks/crazy-workflow.json"
     ]
   }
 }</code></pre>
+
+      <a name="settings"></a>
+      <h2>Settings</h2>
+      <p>
+       For example if your .git directory is not located on the same level as your captainhook.json.
+      </p>
+      <pre><code class="javascript">{
+  "config": {
+    "git-directory": "../../.git",
+    "ansi-colors": false,
+    "includes-level": 2,
+    "includes": [],
+    "run-mode": "docker",
+    "run-exec": "docker exec CONTAINER_NAME"
+  }
+}</code></pre>
+
+      <table class="table">
+        <tr>
+          <th>Setting</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+        <tr>
+          <td>git-directory</td>
+          <td>Custom path to your repositories .git directory (relative from the configuration file)</td>
+          <td>.git</td>
+        </tr>
+        <tr>
+          <td>ansi-colors</td>
+          <td>Enable or disable ANSI color output</td>
+          <td>true</td>
+        </tr>
+        <tr>
+          <td>includes</td>
+          <td>A list of CaptainHook configuration files to include</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>includes-level</td>
+          <td>Nesting level of allowed config file inclusion</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>run-mode</td>
+          <td>CaptainHook execution mode (local|docker)</td>
+          <td>local</td>
+        </tr>
+        <tr>
+          <td>run-exec</td>
+          <td>Docker command to spin up the container and execute a script</td>
+          <td>-</td>
+        </tr>
+      </table>
 
     </div>
 
