@@ -19,8 +19,8 @@ namespace CaptainHook\App;
  */
 final class CH
 {
-    const VERSION           = '4.5.0';
-    const RELEASE_DATE      = '2019-08-02';
+    const VERSION           = '4.5.1';
+    const RELEASE_DATE      = '2019-08-06';
     const CONFIG            = 'captainhook.json';
     const COMPOSER_CONFIG   = 'captainhook-config';
 }
