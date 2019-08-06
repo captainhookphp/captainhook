@@ -23,6 +23,7 @@ use InvalidArgumentException;
 class Config
 {
     const SETTING_GIT_DIR        = 'git-directory';
+    const SETTING_VERBOSITY      = 'verbosity';
     const SETTING_COLORS         = 'ansi-colors';
     const SETTING_INCLUDES       = 'includes';
     const SETTING_INCLUDES_LEVEL = 'includes-level';
@@ -105,6 +106,18 @@ class Config
         return !empty($this->settings[self::SETTING_GIT_DIR])
             ? dirname($this->path) . DIRECTORY_SEPARATOR . $this->settings[self::SETTING_GIT_DIR]
             : getcwd() . DIRECTORY_SEPARATOR . '.git';
+    }
+
+    /**
+     * Return the configured verbosity
+     *
+     * @return string
+     */
+    public function getVerbosity() : string
+    {
+        return !empty($this->settings[self::SETTING_VERBOSITY])
+            ? $this->settings[self::SETTING_VERBOSITY]
+            : 'verbose';
     }
 
     /**

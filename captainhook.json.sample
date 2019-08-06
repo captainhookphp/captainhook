@@ -1,4 +1,11 @@
 {
+    "config": {
+        "verbosity": "normal",
+        "ansi-colors": true,
+        "git-directory": ".git",
+        "includes": [],
+        "run-mode": "local"
+    },
     "pre-commit": {
         "enabled": true,
         "actions": [

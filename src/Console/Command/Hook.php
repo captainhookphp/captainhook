@@ -10,6 +10,7 @@
 namespace CaptainHook\App\Console\Command;
 
 use CaptainHook\App\Config;
+use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Hook\Util;
 use SebastianFeldmann\Git\Repository;
 use Symfony\Component\Console\Input\InputInterface;
@@ -87,6 +88,8 @@ abstract class Hook extends Base
 
         // use ansi coloring only if not disabled in captainhook.json
         $output->setDecorated($config->useAnsiColors());
+        // use the configured verbosity to manage general output verbosity
+        $output->setVerbosity(IOUtil::mapConfigVerbosity($config->getVerbosity()));
 
         /** @var \CaptainHook\App\Runner\Hook $hook */
         $class = '\\CaptainHook\\App\\Runner\\Hook\\' . Util::getHookCommand($this->name);

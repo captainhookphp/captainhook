@@ -1,5 +1,6 @@
 {
   "config": {
+    "verbosity": "verbose",
     "ansi-colors": false,
     "git-directory": "../../../.git",
     "run-mode": "docker",

@@ -50,6 +50,7 @@ class FactoryTest extends TestCase
         $this->assertInstanceOf(Config::class, $config);
         $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
         $this->assertCount(1, $config->getHookConfig('pre-commit')->getActions());
+        $this->assertEquals('verbose', $config->getVerbosity());
         $this->assertEquals(dirname($path) . '/../../../.git', $config->getGitDirectory());
         $this->assertEquals(false, $config->useAnsiColors());
         $this->assertEquals('docker', $config->getRunMode());

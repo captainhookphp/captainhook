@@ -10,9 +10,29 @@
 namespace CaptainHook\App\Console;
 
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class IOUtilTest extends TestCase
 {
+    /**
+     * Tests IOUtil::mapConfigVerbosity
+     */
+    public function testMapConfigVerbosity()
+    {
+        $this->assertEquals(OutputInterface::VERBOSITY_QUIET, IOUtil::mapConfigVerbosity('quiet'));
+        $this->assertEquals(OutputInterface::VERBOSITY_NORMAL, IOUtil::mapConfigVerbosity('normal'));
+        $this->assertEquals(OutputInterface::VERBOSITY_VERBOSE, IOUtil::mapConfigVerbosity('verbose'));
+        $this->assertEquals(OutputInterface::VERBOSITY_DEBUG, IOUtil::mapConfigVerbosity('debug'));
+    }
+
+    /**
+     * Tests IOUtil::mapConfigVerbosity
+     */
+    public function testMapConfigVerbosityNotFound()
+    {
+        $this->assertEquals(OutputInterface::VERBOSITY_NORMAL, IOUtil::mapConfigVerbosity('foobar'));
+    }
+
     /**
      * Tests IOUtil::answerToBool
      */

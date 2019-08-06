@@ -9,6 +9,8 @@
  */
 namespace CaptainHook\App\Console;
 
+use Symfony\Component\Console\Output\OutputInterface;
+
 /**
  * IOUtil class
  *
@@ -19,6 +21,30 @@ namespace CaptainHook\App\Console;
  */
 abstract class IOUtil
 {
+    /**
+     * Maps config values to Symfony verbosity values
+     *
+     * @var array
+     */
+    private static $verbosityMap = [
+        'quiet'        => OutputInterface::VERBOSITY_QUIET,
+        'normal'       => OutputInterface::VERBOSITY_NORMAL,
+        'verbose'      => OutputInterface::VERBOSITY_VERBOSE,
+        'very-verbose' => OutputInterface::VERBOSITY_VERY_VERBOSE,
+        'debug'        => OutputInterface::VERBOSITY_DEBUG
+    ];
+
+    /**
+     * Return the Symfony verbosity for a given config value
+     *
+     * @param  string $verbosity
+     * @return int
+     */
+    public static function mapConfigVerbosity(string $verbosity) : int
+    {
+        return self::$verbosityMap[strtolower($verbosity)] ?? OutputInterface::VERBOSITY_NORMAL;
+    }
+
     /**
      * Convert a user answer to boolean
      *
