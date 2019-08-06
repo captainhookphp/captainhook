@@ -87,16 +87,16 @@ abstract class Hook extends RepositoryAware
 
         // if hook is not enabled in captainhook configuration skip the execution
         if (!$hookConfig->isEnabled()) {
-            $this->io->write($this->formatHookHeadline('Skip'));
+            $this->io->write($this->formatHookHeadline('Skip'), true, IO::VERBOSE);
             return;
         }
         // if no actions are configured do nothing
         if (count($actions) === 0) {
-            $this->io->write(['', '<info>No actions to execute</info>']);
+            $this->io->write(['', '<info>No actions to execute</info>'], true, IO::VERBOSE);
             return;
         }
 
-        $this->io->write($this->formatHookHeadline('Execute'));
+        $this->io->write($this->formatHookHeadline('Execute'), true, IO::VERBOSE);
         $this->beforeHook();
         foreach ($actions as $action) {
             $this->handleAction($action);
@@ -113,11 +113,13 @@ abstract class Hook extends RepositoryAware
      */
     protected function handleAction(Config\Action $action) : void
     {
-        $this->io->write(['', 'Action: <comment>' . $action->getAction() . '</comment>']);
+        $this->io->write(['', 'Action: <comment>' . $action->getAction() . '</comment>'], true, IO::VERBOSE);
 
         if (!$this->doConditionsApply($action->getConditions())) {
             $this->io->write(
-                ['', 'Skipped due to failing conditions']
+                ['', 'Skipped due to failing conditions'],
+                true,
+                IO::VERBOSE
             );
             return;
         }

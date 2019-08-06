@@ -43,10 +43,11 @@ class PHP
         try {
             if ($this->isStaticMethodCall($class)) {
                 $io->write($this->executeStatic($class));
-            } else {
-                $exe = $this->createAction($class);
-                $exe->execute($config, $io, $repository, $action);
+                return;
             }
+
+            $exe = $this->createAction($class);
+            $exe->execute($config, $io, $repository, $action);
         } catch (\Exception $e) {
             throw new ActionFailed(
                 'Execution failed: ' . PHP_EOL .
