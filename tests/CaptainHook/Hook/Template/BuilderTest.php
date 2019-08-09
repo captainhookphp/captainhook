@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace CaptainHook\App\Hook\Template;
 
 use CaptainHook\App\Config;
+use CaptainHook\App\Hook\Template;
 use PHPUnit\Framework\TestCase;
 use SebastianFeldmann\Git\Repository;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,7 +34,7 @@ class BuilderTest extends TestCase
         $repository = $this->prophesize(Repository::class);
         $repository->getRoot()->willReturn(CH_PATH_FILES . '/config');
 
-        $template = Builder::build($input->reveal(), $config->reveal(), $repository->reveal());
+        $template = Builder::build($input->reveal(), $config->reveal(), $repository->reveal(), Template::DOCKER);
         $this->assertInstanceOf(Docker::class, $template);
 
         $code = $template->getCode('pre-commit');
@@ -55,7 +56,7 @@ class BuilderTest extends TestCase
         $repository = $this->prophesize(Repository::class);
         $repository->getRoot()->willReturn(CH_PATH_FILES . '/config');
 
-        $template = Builder::build($input->reveal(), $config->reveal(), $repository->reveal());
+        $template = Builder::build($input->reveal(), $config->reveal(), $repository->reveal(), Template::LOCAL);
         $this->assertInstanceOf(Local::class, $template);
 
         $code = $template->getCode('pre-commit');
