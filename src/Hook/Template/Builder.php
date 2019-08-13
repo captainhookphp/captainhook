@@ -36,12 +36,18 @@ abstract class Builder
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \CaptainHook\App\Config                         $config
      * @param \SebastianFeldmann\Git\Repository               $repository
+     * @param string                                          $runMode
      *
      * @return \CaptainHook\App\Hook\Template
      */
-    public static function build(InputInterface $input, Config $config, Repository $repository): Template
+    public static function build(
+        InputInterface $input,
+        Config $config,
+        Repository $repository,
+        string $runMode
+    ): Template
     {
-        if ($input->getOption(Config::SETTING_RUN_MODE) === Template::DOCKER) {
+        if ($runMode === Template::DOCKER) {
             // For docker we need to strip down the current working directory.
             // This is caused because docker will always connect to a specific working directory
             // where the absolute path will not be recognized.
