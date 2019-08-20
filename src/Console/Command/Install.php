@@ -107,7 +107,7 @@ class Install extends Base
         $installer = new Installer($io, $config, $repo);
         $installer->setForce(IOUtil::argToBool($input->getOption('force')))
                   ->setHook(IOUtil::argToString($input->getArgument('hook')))
-                  ->setTemplate(Template\Builder::build($input, $config, $repo, $runMode))
+                  ->setTemplate(Template\Builder::build($input, $config, $repo))
                   ->run();
 
         return 0;
