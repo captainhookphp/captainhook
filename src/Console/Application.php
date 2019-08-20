@@ -94,13 +94,10 @@ class Application extends SymfonyApplication
      */
     public function __construct()
     {
-        if (function_exists('ini_set') && extension_loaded('xdebug')) {
-            ini_set('xdebug.show_exception_trace', false);
-            ini_set('xdebug.scream', false);
-        }
         parent::__construct('CaptainHook', CH::VERSION);
 
         $this->setDefaultCommand('help');
+        $this->silenceXDebug();
     }
 
     /**
@@ -126,5 +123,18 @@ class Application extends SymfonyApplication
     public function getHelp() : string
     {
         return self::$logo . parent::getHelp();
+    }
+
+    /**
+     * Make sure X-Debug does not interfere with the exception handling
+     *
+     * @return void
+     */
+    public function silenceXDebug(): void
+    {
+        if (function_exists('ini_set') && extension_loaded('xdebug')) {
+            ini_set('xdebug.show_exception_trace', false);
+            ini_set('xdebug.scream', false);
+        }
     }
 }
