@@ -24,12 +24,14 @@ use SebastianFeldmann\Git\Repository;
 abstract class FileChanged implements Condition
 {
     /**
+     * List of file to watch
+     *
      * @var string[]
      */
     protected $filesToWatch;
 
     /**
-     * FileChange constructor.
+     * FileChange constructor
      *
      * @param string[] $files
      */
@@ -41,8 +43,8 @@ abstract class FileChanged implements Condition
     /**
      * Evaluates a condition
      *
-     * @param \CaptainHook\App\Console\IO       $io
-     * @param \SebastianFeldmann\Git\Repository $repository
+     * @param  \CaptainHook\App\Console\IO       $io
+     * @param  \SebastianFeldmann\Git\Repository $repository
      * @return bool
      */
     abstract public function isTrue(IO $io, Repository $repository): bool;
@@ -55,8 +57,8 @@ abstract class FileChanged implements Condition
      * to do it and using 'HEAD@{1}' as the last position before the merge and 'HEAD' as the
      * current position after the merge.
      *
-     * @param \CaptainHook\App\Console\IO       $io
-     * @param \SebastianFeldmann\Git\Repository $repository
+     * @param  \CaptainHook\App\Console\IO       $io
+     * @param  \SebastianFeldmann\Git\Repository $repository
      * @return array|string[]
      */
     protected function getChangedFiles(IO $io, Repository $repository)
