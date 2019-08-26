@@ -43,10 +43,14 @@ abstract class Builder
     public static function build(
         InputInterface $input,
         Config $config,
-        Repository $repository,
-        string $runMode
+        Repository $repository
     ): Template
     {
+        $runMode = self::getOpt(
+            IOUtil::argToString($input->getOption(Config::SETTING_RUN_MODE)),
+            $config->getRunMode()
+        );
+
         if ($runMode === Template::DOCKER) {
             // For docker we need to strip down the current working directory.
             // This is caused because docker will always connect to a specific working directory
@@ -57,10 +61,15 @@ abstract class Builder
             // The actual path needs to be /captainhook-run to work
             $repoPath = self::getRelativePath((string) realpath($repository->getRoot()));
 
+            $runExec = self::getOpt(
+                IOUtil::argToString($input->getOption(Config::SETTING_RUN_EXEC)),
+                $config->getRunExec()
+            );
+
             return new Docker(
                 $repoPath,
                 'vendor',
-                IOUtil::argToString($input->getOption(Config::SETTING_RUN_EXEC))
+                $runExec
             );
         }
 
@@ -80,5 +89,17 @@ abstract class Builder
     private static function getRelativePath(string $path)
     {
         return Util::getSubPathOf(Util::pathToArray($path), Util::pathToArray(getcwd()));
+    }
+
+    /**
+     * Choose option value over config value
+     *
+     * @param  string $optionValue
+     * @param  string $configValue
+     * @return string
+     */
+    private static function getOpt(string $optionValue, string $configValue) : string
+    {
+        return !empty($optionValue) ? $optionValue : $configValue;
     }
 }
