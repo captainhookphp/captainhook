@@ -44,8 +44,7 @@ abstract class Builder
         InputInterface $input,
         Config $config,
         Repository $repository
-    ): Template
-    {
+    ): Template {
         $runMode = self::getOpt(
             IOUtil::argToString($input->getOption(Config::SETTING_RUN_MODE)),
             $config->getRunMode()
