@@ -33,11 +33,9 @@ abstract class Builder
     /**
      * Creates a template that is responsible for the git hook template
      *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \CaptainHook\App\Config                         $config
-     * @param \SebastianFeldmann\Git\Repository               $repository
-     * @param string                                          $runMode
-     *
+     * @param  \Symfony\Component\Console\Input\InputInterface $input
+     * @param  \CaptainHook\App\Config                         $config
+     * @param  \SebastianFeldmann\Git\Repository               $repository
      * @return \CaptainHook\App\Hook\Template
      */
     public static function build(
@@ -85,7 +83,7 @@ abstract class Builder
      * @param  string $path
      * @return string
      */
-    private static function getRelativePath(string $path)
+    private static function getRelativePath(string $path): string
     {
         return Util::getSubPathOf(Util::pathToArray($path), Util::pathToArray(getcwd()));
     }
