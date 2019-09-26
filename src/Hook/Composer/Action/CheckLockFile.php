@@ -55,8 +55,10 @@ class CheckLockFile implements Action
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action) : void
     {
         $path           = $action->getOptions()->get('path', getcwd());
-        $lockFileHash   = $this->getLockFileHash($path);
-        $configFileHash = $this->getConfigFileHash($path);
+        $name           = $action->getOptions()->get('name', 'composer');
+        $pathname       = $path . DIRECTORY_SEPARATOR . $name;
+        $lockFileHash   = $this->getLockFileHash($pathname . '.lock');
+        $configFileHash = $this->getConfigFileHash($pathname . '.json');
 
         if ($lockFileHash !== $configFileHash) {
             throw new \Exception('Your composer.lock file is out of date');
@@ -68,13 +70,13 @@ class CheckLockFile implements Action
     /**
      * Read the composer.lock file and extract the composer.json hash
      *
-     * @param  string $path
+     * @param  string $composerLock
      * @return string
      * @throws \Exception
      */
-    private function getLockFileHash(string $path) : string
+    private function getLockFileHash(string $composerLock) : string
     {
-        $lockFile = json_decode($this->loadFile($path . DIRECTORY_SEPARATOR . 'composer.lock'));
+        $lockFile = json_decode($this->loadFile($composerLock));
         $hashKey  = 'content-hash';
 
         if (!isset($lockFile->$hashKey)) {
@@ -90,13 +92,13 @@ class CheckLockFile implements Action
      * This more or less is composer internal code to generate the content-hash so this might not be the best idea
      * and will be removed in the future.
      *
-     * @param  string $path
+     * @param  string $composerJson
      * @return string
      * @throws \Exception
      */
-    private function getConfigFileHash(string $path) : string
+    private function getConfigFileHash(string $composerJson) : string
     {
-        $content         = json_decode($this->loadFile($path . DIRECTORY_SEPARATOR . 'composer.json'), true);
+        $content         = json_decode($this->loadFile($composerJson), true);
         $relevantContent = [];
 
         foreach (array_intersect($this->relevantKeys, array_keys($content)) as $key) {

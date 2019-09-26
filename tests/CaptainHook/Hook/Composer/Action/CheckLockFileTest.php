@@ -50,7 +50,7 @@ class CheckLockFileTest extends TestCase
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
             CheckLockFile::class,
-            ['path' => CH_PATH_FILES . '/composer/valid']
+            ['path' => CH_PATH_FILES . '/composer/valid', 'name' => 'composer.fake']
         );
         $standard = new CheckLockFile();
         $standard->execute($config, $io, $repo, $action);
@@ -70,7 +70,7 @@ class CheckLockFileTest extends TestCase
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
             CheckLockFile::class,
-            ['path' => CH_PATH_FILES . '/composer/invalid-hash']
+            ['path' => CH_PATH_FILES . '/composer/invalid-hash', 'name' => 'composer.fake']
         );
 
         $standard = new CheckLockFile();
@@ -90,7 +90,7 @@ class CheckLockFileTest extends TestCase
         $repo   = new Repository($this->repo->getPath());
         $action = new Config\Action(
             CheckLockFile::class,
-            ['path' => CH_PATH_FILES . '/composer/no-hash']
+            ['path' => CH_PATH_FILES . '/composer/no-hash', 'name' => 'composer.fake']
         );
 
         $standard = new CheckLockFile();
