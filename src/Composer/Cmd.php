@@ -88,8 +88,7 @@ abstract class Cmd
      */
     private static function getExtraConfig(Event $event) : array
     {
-        $extra = $event->getComposer()->getPackage()->getExtra();
-        return is_array($extra) ? $extra : [];
+        return $event->getComposer()->getPackage()->getExtra();
     }
 
     /**
