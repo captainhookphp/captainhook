@@ -108,4 +108,28 @@ class ConfigTest extends TestCase
         $this->assertIsArray($json['commit-msg']);
         $this->assertIsArray($json['pre-push']);
     }
+
+    /**
+     * Tests Config::getJsonData
+     */
+    public function testGetJsonDataWithoutEmptyConfig()
+    {
+        $config = new Config('foo.json', true, []);
+        $json   = $config->getJsonData();
+
+        $this->assertArrayNotHasKey('config', $json);
+    }
+
+    /**
+     * Tests Config::getJsonData
+     */
+    public function testGetJsonDataWithConfigSection()
+    {
+        $config = new Config('foo.json', true, ['run-mode' => 'docker', 'run-exec' => 'foo']);
+        $json   = $config->getJsonData();
+
+        $this->assertIsArray($json);
+        $this->assertIsArray($json['config']);
+        $this->assertEquals('foo', $json['config']['run-exec']);
+    }
 }

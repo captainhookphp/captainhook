@@ -172,12 +172,16 @@ class Config
      */
     public function getJsonData() : array
     {
-        $return = [];
-
+        $data = [];
+        // only append config settings if at least one setting is present
+        if (!empty($this->settings)) {
+            $data['config'] = $this->settings;
+        }
+        // append all configured hooks
         foreach (Hooks::getValidHooks() as $hook => $value) {
-            $return[$hook] = $this->hooks[$hook]->getJsonData();
+            $data[$hook] = $this->hooks[$hook]->getJsonData();
         }
 
-        return $return;
+        return $data;
     }
 }
