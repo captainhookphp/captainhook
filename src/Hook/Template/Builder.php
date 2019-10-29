@@ -56,7 +56,7 @@ abstract class Builder
             //   cwd => /docker
             //   path => /docker/captainhook-run
             // The actual path needs to be /captainhook-run to work
-            $repoPath = self::getRelativePath((string) realpath($repository->getRoot()));
+            $repoPath = self::getRelativePath((string)realpath($repository->getRoot()));
 
             $runExec = self::getOpt(
                 IOUtil::argToString($input->getOption(Config::SETTING_RUN_EXEC)),
@@ -85,7 +85,7 @@ abstract class Builder
      */
     private static function getRelativePath(string $path): string
     {
-        return Util::getSubPathOf(Util::pathToArray($path), Util::pathToArray(getcwd()));
+        return Util::getSubPathOf(Util::pathToArray($path), Util::pathToArray((string)getcwd()));
     }
 
     /**
