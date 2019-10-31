@@ -31,6 +31,7 @@ class CmdTest extends TestCase
         $config = $repo->getPath() . DIRECTORY_SEPARATOR . CH::CONFIG;
         $old    = getcwd();
         file_put_contents($config, '{}');
+        mkdir($repo->getPath() . DIRECTORY_SEPARATOR . 'vendor');
         chdir($repo->getPath());
 
         $event = $this->getEventMock([]);
@@ -52,6 +53,8 @@ class CmdTest extends TestCase
     {
         $repo  = new DummyRepo();
         $repo->setup();
+
+        mkdir($repo->getPath() . DIRECTORY_SEPARATOR . 'vendor');
 
         $config = $repo->getPath() . DIRECTORY_SEPARATOR . CH::CONFIG;
         $old    = getcwd();
