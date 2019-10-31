@@ -44,15 +44,16 @@ final class Factory
      * Create a CaptainHook configuration
      *
      * @param  string $path
+     * @param  array  $settings
      * @return \CaptainHook\App\Config
      * @throws \Exception
      */
-    public function createConfig($path = '') : Config
+    public function createConfig(string $path = '', array $settings = []) : Config
     {
         $path = $path ?: getcwd() . DIRECTORY_SEPARATOR . CH::CONFIG;
         $file = new Json($path);
 
-        return $this->setupConfig($file);
+        return $this->setupConfig($file, $settings);
     }
 
     /**
@@ -74,27 +75,32 @@ final class Factory
      * Return a configuration with data loaded from json file it it exists
      *
      * @param  \CaptainHook\App\Storage\File\Json $file
+     * @param  array                              $settings
      * @return \CaptainHook\App\Config
      * @throws \Exception
      */
-    private function setupConfig(Json $file) : Config
+    private function setupConfig(Json $file, array $settings = []) : Config
     {
-        return $file->exists() ? $this->loadConfigFromFile($file) : new Config($file->getPath());
+        return $file->exists()
+            ? $this->loadConfigFromFile($file, $settings)
+            : new Config($file->getPath(), false, $settings);
     }
 
     /**
      * Loads a given file into given the configuration
      *
      * @param  \CaptainHook\App\Storage\File\Json $file
+     * @param  array                              $settings
      * @return \CaptainHook\App\Config
      * @throws \Exception
      */
-    private function loadConfigFromFile(Json $file) : Config
+    private function loadConfigFromFile(Json $file, array $settings) : Config
     {
         $json = $file->readAssoc();
         Util::validateJsonConfiguration($json);
 
-        $config = new Config($file->getPath(), true, $this->extractSettings($json));
+        $settings = array_merge($this->extractSettings($json), $settings);
+        $config   = new Config($file->getPath(), true, $settings);
 
         $this->appendIncludedConfigurations($config, $json);
 
@@ -229,11 +235,13 @@ final class Factory
      * Config factory method
      *
      * @param  string $path
+     * @param  array  $settings
      * @return \CaptainHook\App\Config
+     * @throws \Exception
      */
-    public static function create(string $path = '') : Config
+    public static function create(string $path = '', array $settings = []) : Config
     {
         $factory = new static();
-        return $factory->createConfig($path);
+        return $factory->createConfig($path, $settings);
     }
 }

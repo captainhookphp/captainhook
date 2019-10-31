@@ -69,11 +69,13 @@ class Base extends Command
      *
      * @param  string $path
      * @param  bool   $failIfNotFound
+     * @param  array  $settings
      * @return \CaptainHook\App\Config
+     * @throws \Exception
      */
-    protected function getConfig(string $path = '', bool $failIfNotFound = false) : Config
+    protected function getConfig(string $path = '', bool $failIfNotFound = false, array $settings = []) : Config
     {
-        $this->config = Config\Factory::create($path);
+        $this->config = Config\Factory::create($path, $settings);
 
         if ($failIfNotFound && !$this->config->isLoadedFromFile()) {
             throw new \RuntimeException(

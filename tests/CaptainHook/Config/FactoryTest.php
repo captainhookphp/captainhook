@@ -30,6 +30,33 @@ class FactoryTest extends TestCase
     /**
      * Tests Factory::create
      */
+    public function testCreateWithAbsoluteGitDir()
+    {
+        $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid.json'), ['git-directory' => '/foo']);
+
+        $this->assertInstanceOf(Config::class, $config);
+        $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
+        $this->assertCount(1, $config->getHookConfig('pre-commit')->getActions());
+        $this->assertEquals('/foo', $config->getGitDirectory());
+    }
+
+    /**
+     * Tests Factory::create
+     */
+    public function testCreateWithRelativeGitDir()
+    {
+        $path   = realpath(__DIR__ . '/../../files/config/valid.json');
+        $config = Factory::create($path, ['git-directory' => '../.git']);
+
+        $this->assertInstanceOf(Config::class, $config);
+        $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
+        $this->assertCount(1, $config->getHookConfig('pre-commit')->getActions());
+        $this->assertEquals(dirname($path) . '/../.git', $config->getGitDirectory());
+    }
+
+    /**
+     * Tests Factory::create
+     */
     public function testCreateWithConditions()
     {
         $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-conditions.json'));
