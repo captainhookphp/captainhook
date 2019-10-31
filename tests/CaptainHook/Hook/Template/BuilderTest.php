@@ -84,4 +84,23 @@ class BuilderTest extends TestCase
         $this->assertStringContainsString('pre-commit', $code);
         $this->assertStringContainsString('$app->setHook', $code);
     }
+
+    /**
+     * Tests Builder::build
+     */
+    public function testBuildInvalidVendor(): void
+    {
+        $this->expectException(\Exception::class);
+
+        $config = $this->prophesize(Config::class);
+        $config->getRunMode()->willReturn('local');
+        $config->getRunExec()->willReturn('');
+        $config->getPath()->willReturn(CH_PATH_FILES . '/config/valid.json');
+        $config->getVendorDirectory()->willReturn('vendor-fail');
+
+        $repository = $this->prophesize(Repository::class);
+        $repository->getRoot()->willReturn(CH_PATH_FILES . '/config');
+
+        $template = Builder::build($config->reveal(), $repository->reveal());
+    }
 }
