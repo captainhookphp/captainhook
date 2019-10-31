@@ -11,6 +11,7 @@ namespace CaptainHook\App\Console\Command;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
+use CaptainHook\App\Console\IOUtil;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 0.9.0
  */
-class Base extends Command
+abstract class Base extends Command
 {
     /**
      * Input output handler
@@ -65,7 +66,26 @@ class Base extends Command
     }
 
     /**
-     * CaptainHook config getter
+     * Return list of available options to overwrite the configuration settings
+     *
+     * @param  \Symfony\Component\Console\Input\InputInterface $input
+     * @param  array                                           $settingNames
+     * @return array
+     */
+    protected function fetchInputSettings(InputInterface $input, array $settingNames): array
+    {
+        $settings = [];
+        foreach ($settingNames as $setting) {
+            $value = IOUtil::argToString($input->getOption($setting));
+            if (!empty($value)) {
+                $settings[$setting] = $value;
+            }
+        }
+        return $settings;
+    }
+
+    /**
+     * CaptainHook config factory
      *
      * @param  string $path
      * @param  bool   $failIfNotFound

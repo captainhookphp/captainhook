@@ -24,19 +24,16 @@ class BuilderTest extends TestCase
      */
     public function testBuildDockerTemplate(): void
     {
-        $input = $this->prophesize(InputInterface::class);
-        $input->getOption('run-mode')->willReturn('docker');
-        $input->getOption('run-exec')->willReturn('docker exec captain-container');
-
         $config = $this->prophesize(Config::class);
-        $config->getRunMode()->willReturn('local');
-        $config->getRunExec()->willReturn('');
+        $config->getRunMode()->willReturn('docker');
+        $config->getRunExec()->willReturn('docker exec captain-container');
         $config->getPath()->willReturn(CH_PATH_FILES . '/config/valid.json');
+        $config->getVendorDirectory()->willReturn('vendor');
 
         $repository = $this->prophesize(Repository::class);
         $repository->getRoot()->willReturn(CH_PATH_FILES . '/config');
 
-        $template = Builder::build($input->reveal(), $config->reveal(), $repository->reveal(), Template::DOCKER);
+        $template = Builder::build($config->reveal(), $repository->reveal());
         $this->assertInstanceOf(Docker::class, $template);
 
         $code = $template->getCode('pre-commit');
@@ -44,21 +41,21 @@ class BuilderTest extends TestCase
         $this->assertStringContainsString('docker exec captain-container', $code);
     }
 
+    /**
+     * Tests Builder::build
+     */
     public function testBuildDockerTemplateObservesConfig(): void
     {
-        $input = $this->prophesize(InputInterface::class);
-        $input->getOption('run-mode')->willReturn('');
-        $input->getOption('run-exec')->willReturn('');
-
         $config = $this->prophesize(Config::class);
         $config->getRunMode()->willReturn('docker');
         $config->getRunExec()->willReturn('docker exec captain-container');
         $config->getPath()->willReturn(CH_PATH_FILES . '/config/valid.json');
+        $config->getVendorDirectory()->willReturn('vendor');
 
         $repository = $this->prophesize(Repository::class);
         $repository->getRoot()->willReturn(CH_PATH_FILES . '/config');
 
-        $template = Builder::build($input->reveal(), $config->reveal(), $repository->reveal());
+        $template = Builder::build($config->reveal(), $repository->reveal());
         $this->assertInstanceOf(Docker::class, $template);
 
         $code = $template->getCode('pre-commit');
@@ -71,18 +68,16 @@ class BuilderTest extends TestCase
      */
     public function testBuildLocalTemplate(): void
     {
-        $input = $this->prophesize(InputInterface::class);
-        $input->getOption('run-mode')->willReturn('local');
-
         $config = $this->prophesize(Config::class);
         $config->getRunMode()->willReturn('local');
         $config->getRunExec()->willReturn('');
         $config->getPath()->willReturn(CH_PATH_FILES . '/config/valid.json');
+        $config->getVendorDirectory()->willReturn('vendor');
 
         $repository = $this->prophesize(Repository::class);
         $repository->getRoot()->willReturn(CH_PATH_FILES . '/config');
 
-        $template = Builder::build($input->reveal(), $config->reveal(), $repository->reveal(), Template::LOCAL);
+        $template = Builder::build($config->reveal(), $repository->reveal());
         $this->assertInstanceOf(Local::class, $template);
 
         $code = $template->getCode('pre-commit');

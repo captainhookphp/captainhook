@@ -12,11 +12,10 @@ declare(strict_types=1);
 namespace CaptainHook\App\Hook\Template;
 
 use CaptainHook\App\Config;
-use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Hook\Template;
 use CaptainHook\App\Storage\Util;
+use RuntimeException;
 use SebastianFeldmann\Git\Repository;
-use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Builder class
@@ -33,22 +32,21 @@ abstract class Builder
     /**
      * Creates a template that is responsible for the git hook template
      *
-     * @param  \Symfony\Component\Console\Input\InputInterface $input
      * @param  \CaptainHook\App\Config                         $config
      * @param  \SebastianFeldmann\Git\Repository               $repository
      * @return \CaptainHook\App\Hook\Template
      */
-    public static function build(
-        InputInterface $input,
-        Config $config,
-        Repository $repository
-    ): Template {
-        $runMode = self::getOpt(
-            IOUtil::argToString($input->getOption(Config::SETTING_RUN_MODE)),
-            $config->getRunMode()
-        );
+    public static function build(Config $config, Repository $repository): Template
+    {
+        $vendorPath     = (string) realpath($config->getVendorDirectory());
+        $repositoryPath = (string) realpath($repository->getRoot());
+        $configPath     = (string) realpath($config->getPath());
 
-        if ($runMode === Template::DOCKER) {
+        if (empty($vendorPath)) {
+            throw new RuntimeException('composer vendor directory not found');
+        }
+
+        if ($config->getRunMode() === Template::DOCKER) {
             // For docker we need to strip down the current working directory.
             // This is caused because docker will always connect to a specific working directory
             // where the absolute path will not be recognized.
@@ -56,24 +54,19 @@ abstract class Builder
             //   cwd => /docker
             //   path => /docker/captainhook-run
             // The actual path needs to be /captainhook-run to work
-            $repoPath = self::getRelativePath((string)realpath($repository->getRoot()));
-
-            $runExec = self::getOpt(
-                IOUtil::argToString($input->getOption(Config::SETTING_RUN_EXEC)),
-                $config->getRunExec()
-            );
+            $dockerRepoPath = self::getRelativePath($repositoryPath);
 
             return new Docker(
-                $repoPath,
-                'vendor',
-                $runExec
+                $dockerRepoPath,
+                $config->getVendorDirectory(),
+                $config->getRunExec()
             );
         }
 
         return new Local(
-            (string) realpath($repository->getRoot()),
-            getcwd() . '/vendor',
-            (string) realpath($config->getPath())
+            $repositoryPath,
+            $vendorPath,
+            $configPath
         );
     }
 
@@ -86,17 +79,5 @@ abstract class Builder
     private static function getRelativePath(string $path): string
     {
         return Util::getSubPathOf(Util::pathToArray($path), Util::pathToArray((string)getcwd()));
-    }
-
-    /**
-     * Choose option value over config value
-     *
-     * @param  string $optionValue
-     * @param  string $configValue
-     * @return string
-     */
-    private static function getOpt(string $optionValue, string $configValue) : string
-    {
-        return !empty($optionValue) ? $optionValue : $configValue;
     }
 }

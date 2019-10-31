@@ -45,6 +45,12 @@ class Configuration extends Base
                  InputOption::VALUE_OPTIONAL,
                  'Path to your json configuration',
                  './' . CH::CONFIG
+             )
+             ->addOption(
+                 'vendor-directory',
+                 null,
+                 InputOption::VALUE_OPTIONAL,
+                 'Path to composers vendor directory'
              );
     }
 
@@ -54,11 +60,13 @@ class Configuration extends Base
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
      * @return int|null
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io     = $this->getIO($input, $output);
-        $config = $this->getConfig(IOUtil::argToString($input->getOption('configuration')));
+        $io       = $this->getIO($input, $output);
+        $settings = $this->fetchInputSettings($input, ['vendor-directory']);
+        $config   = $this->getConfig(IOUtil::argToString($input->getOption('configuration')), false, $settings);
 
         $configurator = new Creator($io, $config);
         $configurator->force(IOUtil::argToBool($input->getOption('force')))

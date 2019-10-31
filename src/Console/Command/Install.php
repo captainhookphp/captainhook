@@ -61,6 +61,12 @@ class Install extends Base
                  'Path to your .git directory'
              )
              ->addOption(
+                 'vendor-directory',
+                 null,
+                 InputOption::VALUE_OPTIONAL,
+                 'Path to composers vendor directory'
+             )
+             ->addOption(
                  'run-mode',
                  'm',
                  InputOption::VALUE_OPTIONAL,
@@ -84,21 +90,15 @@ class Install extends Base
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io     = $this->getIO($input, $output);
-        $config = $this->getConfig(IOUtil::argToString($input->getOption('configuration')), true);
+        $io = $this->getIO($input, $output);
 
-        // figure out where the git repository is located, setting needs to include the '.git' directory
-        // the cli option supersedes all other settings
-        //  1. command option --git-directory
-        //  2. captainhook.json config, git-directory value
-        //  3. default current working directory
-        // same applies for run-mode and run-command OPTION > CONFIG > DEFAULT
-        $gitDir  = $this->getOpt(IOUtil::argToString($input->getOption('git-directory')), $config->getGitDirectory());
-        $runMode = $this->getOpt(IOUtil::argToString($input->getOption('run-mode')), $config->getRunMode());
-        $runCmd  = $this->getOpt(IOUtil::argToString($input->getOption('run-exec')), $config->getRunExec());
-        $repo    = new Repository(dirname($gitDir));
+        // collect settings to overwrite configuration values
+        $settings = $this->fetchInputSettings($input, ['git-directory', 'run-mode', 'run-exec', 'vendor-directory']);
 
-        if ($runMode === Template::DOCKER && empty($runCmd)) {
+        $config = $this->getConfig(IOUtil::argToString($input->getOption('configuration')), true, $settings);
+        $repo   = new Repository(dirname($config->getGitDirectory()));
+
+        if ($config->getRunMode() === Template::DOCKER && empty($config->getRunExec())) {
             throw new RuntimeException(
                 'Option "run-exec" missing for run-mode docker.'
             );
@@ -107,21 +107,9 @@ class Install extends Base
         $installer = new Installer($io, $config, $repo);
         $installer->setForce(IOUtil::argToBool($input->getOption('force')))
                   ->setHook(IOUtil::argToString($input->getArgument('hook')))
-                  ->setTemplate(Template\Builder::build($input, $config, $repo))
+                  ->setTemplate(Template\Builder::build($config, $repo))
                   ->run();
 
         return 0;
-    }
-
-    /**
-     * Choose option value over config value
-     *
-     * @param  string $optionValue
-     * @param  string $configValue
-     * @return string
-     */
-    protected function getOpt(string $optionValue, string $configValue) : string
-    {
-        return !empty($optionValue) ? $optionValue : $configValue;
     }
 }
