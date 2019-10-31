@@ -60,6 +60,28 @@ class ConfigTest extends TestCase
     }
 
     /**
+     * Tests Config::getVendorDirectory
+     */
+    public function testGetVendorDirectoryDefault()
+    {
+        $path   = realpath(__DIR__ . '/../files/config/valid.json');
+        $config = new Config($path);
+
+        $this->assertEquals(getcwd() . DIRECTORY_SEPARATOR . 'vendor', $config->getVendorDirectory());
+    }
+
+    /**
+     * Tests Config::getVendorDirectory
+     */
+    public function testGetVendorDirectorySetting()
+    {
+        $path   = realpath(__DIR__ . '/../files/config/valid.json');
+        $config = new Config($path, true, ['vendor-directory' => 'libs/composer']);
+
+        $this->assertEquals(dirname($path) . DIRECTORY_SEPARATOR . 'libs/composer', $config->getVendorDirectory());
+    }
+
+    /**
      * Tests Config::useAnsiColors
      */
     public function testAnsiColorsEnabledByDefault()

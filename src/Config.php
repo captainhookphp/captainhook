@@ -22,6 +22,7 @@ use InvalidArgumentException;
  */
 class Config
 {
+    const SETTING_VENDOR_DIR     = 'vendor-directory';
     const SETTING_GIT_DIR        = 'git-directory';
     const SETTING_VERBOSITY      = 'verbosity';
     const SETTING_COLORS         = 'ansi-colors';
@@ -103,9 +104,26 @@ class Config
      */
     public function getGitDirectory() : string
     {
-        return !empty($this->settings[self::SETTING_GIT_DIR])
-            ? dirname($this->path) . DIRECTORY_SEPARATOR . $this->settings[self::SETTING_GIT_DIR]
-            : getcwd() . DIRECTORY_SEPARATOR . '.git';
+        if (empty($this->settings[self::SETTING_GIT_DIR])) {
+            return getcwd() . DIRECTORY_SEPARATOR . '.git';
+        }
+
+        // if repo path is absolute use it otherwise create an absolute path relative to the configuration file
+        return substr($this->settings[self::SETTING_GIT_DIR], 0, 1) === DIRECTORY_SEPARATOR
+            ? $this->settings[self::SETTING_GIT_DIR]
+            : dirname($this->path) . DIRECTORY_SEPARATOR . $this->settings[self::SETTING_GIT_DIR];
+    }
+
+    /**
+     * Return composer vendor directory path if configured, CWD/vendor if not
+     *
+     * @return string
+     */
+    public function getVendorDirectory() : string
+    {
+        return !empty($this->settings[self::SETTING_VENDOR_DIR])
+            ? dirname($this->path) . DIRECTORY_SEPARATOR . $this->settings[self::SETTING_VENDOR_DIR]
+            : getcwd() . DIRECTORY_SEPARATOR . 'vendor';
     }
 
     /**
