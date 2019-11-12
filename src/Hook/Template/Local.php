@@ -73,6 +73,7 @@ class Local implements Template
             '$app    = new CaptainHook\App\Console\Application\Hook();' . PHP_EOL .
             '$app->setHook(\'' . $hook . '\');' . PHP_EOL .
             '$app->setConfigFile($config);' . PHP_EOL .
+            '$app->setRepositoryPath(dirname(dirname(__DIR__)));' . PHP_EOL .
             '$app->run();' . PHP_EOL . PHP_EOL;
     }
 }

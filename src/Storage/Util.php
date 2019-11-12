@@ -31,6 +31,18 @@ abstract class Util
     }
 
     /**
+     * Convert array to path
+     *
+     * @param  array $path
+     * @param  bool  $absolute
+     * @return string
+     */
+    public static function arrayToPath(array $path, bool $absolute = false) : string
+    {
+        return ( $absolute ? DIRECTORY_SEPARATOR : '' ) . implode(DIRECTORY_SEPARATOR, $path);
+    }
+
+    /**
      * Is the given subDir a sub directory of given parentDir.
      *
      * @param  array $subDir
@@ -52,9 +64,9 @@ abstract class Util
      *
      * @param  array $subDir
      * @param  array $parentDir
-     * @return string
+     * @return array
      */
-    public static function getSubPathOf(array $subDir, array $parentDir) : string
+    public static function getSubPathOf(array $subDir, array $parentDir) : array
     {
         if (!self::isSubDirectoryOf($subDir, $parentDir)) {
             throw new \RuntimeException(
@@ -69,7 +81,7 @@ abstract class Util
         foreach (array_slice($subDir, count($parentDir)) as $dir) {
             $path[] = $dir;
         }
-        return implode(DIRECTORY_SEPARATOR, $path);
+        return $path;
     }
 
     /**
@@ -86,10 +98,10 @@ abstract class Util
         $target = self::pathToArray($targetPath);
 
         if (!self::isSubDirectoryOf($target, $repo)) {
-            return '\'' . $targetPath;
+            return '\'/' . implode('/', $target);
         }
 
-        return '__DIR__ . \'/../../' . self::getSubPathOf($target, $repo);
+        return '__DIR__ . \'/../../' . implode('/', self::getSubPathOf($target, $repo));
     }
 
     /**

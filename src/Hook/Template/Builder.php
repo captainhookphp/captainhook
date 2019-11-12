@@ -78,6 +78,6 @@ abstract class Builder
      */
     private static function getRelativePath(string $path): string
     {
-        return Util::getSubPathOf(Util::pathToArray($path), Util::pathToArray((string)getcwd()));
+        return Util::arrayToPath(Util::getSubPathOf(Util::pathToArray($path), Util::pathToArray((string)getcwd())));
     }
 }
