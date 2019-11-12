@@ -10,20 +10,23 @@
 namespace CaptainHook\App\Runner\Action;
 
 use CaptainHook\App\Runner\BaseTestRunner;
+use CaptainHook\App\Runner\Action\DummyPHPSuccess;
+use CaptainHook\App\Runner\Action\DummyPHPFailure;
+use CaptainHook\App\Runner\Action\DummyPHPError;
+use CaptainHook\App\Runner\Action\DummyNoAction;
 
 class PHPTest extends BaseTestRunner
 {
     /**
      * Tests PHP::execute
      */
-    public function testExecuteSuccess()
+    public function testExecuteSuccess(): void
     {
         $config = $this->getConfigMock();
         $io     = $this->getIOMock();
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
-
-        $class = '\\CaptainHook\\App\\Runner\\Action\\DummyPHPSuccess';
+        $class  = DummyPHPSuccess::class;
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -34,7 +37,7 @@ class PHPTest extends BaseTestRunner
     /**
      * Tests PHP::execute
      */
-    public function testExecuteFailure()
+    public function testExecuteFailure(): void
     {
         $this->expectException(\Exception::class);
 
@@ -42,8 +45,7 @@ class PHPTest extends BaseTestRunner
         $io     = $this->getIOMock();
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
-
-        $class = '\\CaptainHook\\App\\Runner\\Action\\DummyPHPFailure';
+        $class  = DummyPHPFailure::class;
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -54,7 +56,7 @@ class PHPTest extends BaseTestRunner
     /**
      * Tests PHP::execute
      */
-    public function testExecuteError()
+    public function testExecuteError(): void
     {
         $this->expectException(\Exception::class);
 
@@ -62,8 +64,7 @@ class PHPTest extends BaseTestRunner
         $io     = $this->getIOMock();
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
-
-        $class = '\\CaptainHook\\App\\Runner\\Action\\DummyPHPError';
+        $class  = DummyPHPError::class;
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -74,7 +75,7 @@ class PHPTest extends BaseTestRunner
     /**
      * Tests PHP::execute
      */
-    public function testExecuteNoAction()
+    public function testExecuteNoAction(): void
     {
         $this->expectException(\Exception::class);
 
@@ -82,8 +83,7 @@ class PHPTest extends BaseTestRunner
         $io     = $this->getIOMock();
         $repo   = $this->getRepositoryMock();
         $action = $this->getActionConfigMock();
-
-        $class = '\\CaptainHook\\App\\Runner\\Action\\DummyNoAction';
+        $class  = DummyNoAction::class;
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
@@ -94,7 +94,7 @@ class PHPTest extends BaseTestRunner
     /**
      * Tests PHP::executeStatic
      */
-    public function testExecuteStaticClassNotFound()
+    public function testExecuteStaticClassNotFound(): void
     {
         $this->expectException(\Exception::class);
 
@@ -114,7 +114,7 @@ class PHPTest extends BaseTestRunner
     /**
      * Tests PHP::executeStatic
      */
-    public function testExecuteStaticMethodNotFound()
+    public function testExecuteStaticMethodNotFound(): void
     {
         $this->expectException(\Exception::class);
         
@@ -135,7 +135,7 @@ class PHPTest extends BaseTestRunner
     /**
      * Tests PHP::executeStatic
      */
-    public function testExecuteStaticSuccess()
+    public function testExecuteStaticSuccess(): void
     {
         $config = $this->getConfigMock();
         $io     = $this->getIOMock();

@@ -16,14 +16,13 @@ class CreatorTest extends BaseTestRunner
     /**
      * Tests Creator::run
      */
-    public function testConfigureFileExists()
+    public function testConfigureFileExists(): void
     {
         $this->expectException(\Exception::class);
 
         $io     = $this->getIOMock();
         $config = $this->getConfigMock();
-        $repo   = $this->getRepositoryMock();
-        $runner = new Creator($io, $config, $repo);
+        $runner = new Creator($io, $config);
         $config->expects($this->once())->method('isLoadedFromFile')->willReturn(true);
         $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', '\\Foo\\Bar', 'y', 'n'));
         $runner->advanced(true)
@@ -34,13 +33,12 @@ class CreatorTest extends BaseTestRunner
     /**
      * Tests Creator::run
      */
-    public function testConfigureFileExtend()
+    public function testConfigureFileExtend(): void
     {
         $path   = sys_get_temp_dir() . DIRECTORY_SEPARATOR . md5(__FILE__);
         $io     = $this->getIOMock();
         $config = $this->getConfigMock();
-        $repo   = $this->getRepositoryMock();
-        $runner = new Creator($io, $config, $repo);
+        $runner = new Creator($io, $config);
         $config->method('getHookConfig')->willReturn($this->getHookConfigMock());
         $config->method('getPath')->willReturn($path);
         $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', '\\Foo\\Bar', 'y', 'n'));

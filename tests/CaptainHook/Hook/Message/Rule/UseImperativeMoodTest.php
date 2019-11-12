@@ -23,7 +23,7 @@ class UseImperativeMoodTest extends TestCase
      * @param bool   $begin
      * @param bool   $expectedResult
      */
-    public function testPass(string $string, bool $begin, bool $expectedResult)
+    public function testPass(string $string, bool $begin, bool $expectedResult): void
     {
         $msg  = new CommitMessage($string);
         $rule = new UseImperativeMood($begin);

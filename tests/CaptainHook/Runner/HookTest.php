@@ -17,7 +17,7 @@ class HookTest extends BaseTestRunner
     /**
      * Tests Hook::getActionRunner
      */
-    public function testGetExecMethod()
+    public function testGetExecMethod(): void
     {
         $php = Hook::getExecMethod('php');
         $cli = Hook::getExecMethod('cli');
@@ -29,7 +29,7 @@ class HookTest extends BaseTestRunner
     /**
      * Tests Hook::getActionRunner
      */
-    public function testGetRunnerFailure()
+    public function testGetRunnerFailure(): void
     {
         $this->expectException(\Exception::class);
 

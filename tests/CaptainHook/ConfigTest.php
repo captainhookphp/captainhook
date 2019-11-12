@@ -18,21 +18,16 @@ class ConfigTest extends TestCase
     /**
      * Tests Config::__construct
      */
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $config = new Config('./no-config.json');
-
-        $this->assertInstanceOf(Hook::class, $config->getHookConfig('commit-msg'));
-        $this->assertInstanceOf(Hook::class, $config->getHookConfig('pre-commit'));
-        $this->assertInstanceOf(Hook::class, $config->getHookConfig('pre-push'));
-
         $this->assertFalse($config->isLoadedFromFile());
     }
 
     /**
      * Tests Config::isLoadedFromFile
      */
-    public function testIsLoadedFromFile()
+    public function testIsLoadedFromFile(): void
     {
         $config = new Config('valid.json', true);
         $this->assertTrue($config->isLoadedFromFile());
@@ -41,7 +36,7 @@ class ConfigTest extends TestCase
     /**
      * Tests Config::getHookConfig
      */
-    public function testGetInvalidHook()
+    public function testGetInvalidHook(): void
     {
         $this->expectException(Exception::class);
         $config = new Config('./no-config.json');
@@ -51,7 +46,7 @@ class ConfigTest extends TestCase
     /**
      * Tests Config::getPath
      */
-    public function testGetPath()
+    public function testGetPath(): void
     {
         $path   = realpath(__DIR__ . '/../files/config/valid.json');
         $config = new Config($path);
@@ -62,7 +57,7 @@ class ConfigTest extends TestCase
     /**
      * Tests Config::getVendorDirectory
      */
-    public function testGetVendorDirectoryDefault()
+    public function testGetVendorDirectoryDefault(): void
     {
         $path   = realpath(__DIR__ . '/../files/config/valid.json');
         $config = new Config($path);
@@ -73,7 +68,7 @@ class ConfigTest extends TestCase
     /**
      * Tests Config::getVendorDirectory
      */
-    public function testGetVendorDirectorySetting()
+    public function testGetVendorDirectorySetting(): void
     {
         $path   = realpath(__DIR__ . '/../files/config/valid.json');
         $config = new Config($path, true, ['vendor-directory' => 'libs/composer']);
@@ -84,7 +79,7 @@ class ConfigTest extends TestCase
     /**
      * Tests Config::useAnsiColors
      */
-    public function testAnsiColorsEnabledByDefault()
+    public function testAnsiColorsEnabledByDefault(): void
     {
         $config = new Config('foo.json', true);
         $this->assertEquals(true, $config->useAnsiColors());
@@ -93,7 +88,7 @@ class ConfigTest extends TestCase
     /**
      * Tests Config::useAnsiColors
      */
-    public function testDisableAnsiColors()
+    public function testDisableAnsiColors(): void
     {
         $config = new Config('foo.json', true, ['ansi-colors' => false]);
         $this->assertEquals(false, $config->useAnsiColors());
@@ -102,7 +97,7 @@ class ConfigTest extends TestCase
     /**
      * Tests Config::getRunMode
      */
-    public function testGetRunMode()
+    public function testGetRunMode(): void
     {
         $config = new Config('foo.json', true, ['run-mode' => 'docker', 'run-exec' => 'foo']);
         $this->assertEquals('docker', $config->getRunMode());
@@ -111,7 +106,7 @@ class ConfigTest extends TestCase
     /**
      * Tests Config::getRunExec
      */
-    public function testGetRunExec()
+    public function testGetRunExec(): void
     {
         $config = new Config('foo.json', true, ['run-mode' => 'docker', 'run-exec' => 'foo']);
         $this->assertEquals('foo', $config->getRunExec());
@@ -120,7 +115,7 @@ class ConfigTest extends TestCase
     /**
      * Tests Config::getJsonData
      */
-    public function testGetJsonData()
+    public function testGetJsonData(): void
     {
         $config = new Config('./no-config.json');
         $json   = $config->getJsonData();
@@ -134,7 +129,7 @@ class ConfigTest extends TestCase
     /**
      * Tests Config::getJsonData
      */
-    public function testGetJsonDataWithoutEmptyConfig()
+    public function testGetJsonDataWithoutEmptyConfig(): void
     {
         $config = new Config('foo.json', true, []);
         $json   = $config->getJsonData();
@@ -145,7 +140,7 @@ class ConfigTest extends TestCase
     /**
      * Tests Config::getJsonData
      */
-    public function testGetJsonDataWithConfigSection()
+    public function testGetJsonDataWithConfigSection(): void
     {
         $config = new Config('foo.json', true, ['run-mode' => 'docker', 'run-exec' => 'foo']);
         $json   = $config->getJsonData();

@@ -23,8 +23,12 @@ class CmdTest extends TestCase
     /**
      * Tests Cmd::setup
      */
-    public function testSetupConfigExists()
+    public function testSetupConfigExists(): void
     {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
         $repo = new DummyRepo();
         $repo->setup();
 
@@ -49,8 +53,12 @@ class CmdTest extends TestCase
     /**
      * Tests Cmd::setup
      */
-    public function testSetupNoConfig()
+    public function testSetupNoConfig(): void
     {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
         $repo  = new DummyRepo();
         $repo->setup();
 

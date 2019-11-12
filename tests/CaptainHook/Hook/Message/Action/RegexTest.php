@@ -22,40 +22,18 @@ class RegexTest extends TestCase
     use Mockery;
 
     /**
-     * @var \CaptainHook\App\Git\DummyRepo
-     */
-    private $repo;
-
-    /**
-     * Setup dummy repo.
-     */
-    public function setUp(): void
-    {
-        $this->repo = new DummyRepo();
-        $this->repo->setup();
-    }
-
-    /**
-     * Cleanup dummy repo.
-     */
-    public function tearDown(): void
-    {
-        $this->repo->cleanup();
-    }
-
-    /**
      * Tests RegexCheck::execute
      */
-    public function testExecuteDefaultSuccess()
+    public function testExecuteDefaultSuccess(): void
     {
         $io = $this->createPartialMock(NullIO::class, ['write']);
         $io->expects($this->once())->method('write')->with('Found matching pattern: bar');
         /** @var NullIO $io */
 
         $config  = new Config(CH_PATH_FILES . '/captainhook.json');
-        $repo    = new Repository($this->repo->getPath());
+        $repo    = $this->createRepositoryMock();
         $action  = new Config\Action(Regex::class, ['regex'   => '#bar#']);
-        $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
+        $repo->expects($this->once())->method('getCommitMsg')->willReturn(new CommitMessage('Foo bar baz'));
 
         $standard = new Regex();
         $standard->execute($config, $io, $repo, $action);
@@ -66,7 +44,7 @@ class RegexTest extends TestCase
     /**
      * Tests RegexCheck::execute
      */
-    public function testExecuteCustomSuccess()
+    public function testExecuteCustomSuccess(): void
     {
         $successMessage = 'Regex matched';
         $io             = $this->createPartialMock(NullIO::class, ['write']);
@@ -74,7 +52,7 @@ class RegexTest extends TestCase
         /** @var NullIO $io */
 
         $config  = new Config(CH_PATH_FILES . '/captainhook.json');
-        $repo    = new Repository($this->repo->getPath());
+        $repo    = $this->createRepositoryMock();
         $action  = new Config\Action(
             Regex::class,
             [
@@ -82,7 +60,7 @@ class RegexTest extends TestCase
                 'success' => $successMessage
             ]
         );
-        $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
+        $repo->expects($this->once())->method('getCommitMsg')->willReturn(new CommitMessage('Foo bar baz'));
 
         $standard = new Regex();
         $standard->execute($config, $io, $repo, $action);
@@ -93,13 +71,13 @@ class RegexTest extends TestCase
     /**
      * Tests RegexCheck::execute
      */
-    public function testExecuteInvalidOption()
+    public function testExecuteInvalidOption(): void
     {
         $this->expectException(\Exception::class);
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $repo   = new Repository($this->repo->getPath());
+        $repo    = $this->createRepositoryMock();
         $action = new Config\Action(Regex::class);
 
         $standard = new Regex();
@@ -110,7 +88,7 @@ class RegexTest extends TestCase
     /**
      * Tests RegexCheck::execute
      */
-    public function testMerging()
+    public function testMerging(): void
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
@@ -127,7 +105,7 @@ class RegexTest extends TestCase
     /**
      * Tests RegexCheck::execute
      */
-    public function testExecuteNoMatchCustomErrorMessage()
+    public function testExecuteNoMatchCustomErrorMessage(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('No match for #FooBarBaz#');
@@ -141,8 +119,8 @@ class RegexTest extends TestCase
                 'error' => 'No match for %s'
             ]
         );
-        $repo   = new Repository($this->repo->getPath());
-        $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
+        $repo   = $this->createRepositoryMock();
+        $repo->expects($this->once())->method('getCommitMsg')->willReturn(new CommitMessage('Foo bar baz'));
 
         $standard = new Regex();
         $standard->execute($config, $io, $repo, $action);

@@ -21,7 +21,7 @@ class AllTest extends TestCase
     /**
      * Tests All::isTrue
      */
-    public function testIsFalse()
+    public function testIsFalse(): void
     {
         $io = $this->createIOMock();
         $io->expects($this->exactly(2))->method('getArgument')->willReturn('');
@@ -37,7 +37,7 @@ class AllTest extends TestCase
     /**
      * Tests All::isTrue
      */
-    public function testIsTrue()
+    public function testIsTrue(): void
     {
         $io = $this->createIOMock();
         $io->expects($this->exactly(2))->method('getArgument')->willReturn('');

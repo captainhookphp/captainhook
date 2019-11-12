@@ -11,45 +11,24 @@ namespace CaptainHook\App\Hook\Message\Action;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
-use CaptainHook\App\Git\DummyRepo;
+use CaptainHook\App\Mockery;
 use SebastianFeldmann\Git\CommitMessage;
-use SebastianFeldmann\Git\Repository;
 use PHPUnit\Framework\TestCase;
 
 class BeamsTest extends TestCase
 {
-    /**
-     * @var \CaptainHook\App\Git\DummyRepo
-     */
-    private $repo;
-
-    /**
-     * Setup dummy repo.
-     */
-    public function setUp(): void
-    {
-        $this->repo = new DummyRepo();
-        $this->repo->setup();
-    }
-
-    /**
-     * Cleanup dummy repo.
-     */
-    public function tearDown(): void
-    {
-        $this->repo->cleanup();
-    }
+    use Mockery;
 
     /**
      * Tests Beams::execute
      */
-    public function testExecute()
+    public function testExecute(): void
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(Beams::class);
-        $repo   = new Repository($this->repo->getPath());
-        $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
+        $repo   = $this->createRepositoryMock();
+        $repo->method('getCommitMsg')->willReturn(new CommitMessage('Foo bar baz'));
 
         $standard = new Beams();
         $standard->execute($config, $io, $repo, $action);
@@ -60,15 +39,15 @@ class BeamsTest extends TestCase
     /**
      * Tests Beams::execute
      */
-    public function testExecuteImperativeBeginning()
+    public function testExecuteImperativeBeginning(): void
     {
         $this->expectException(\Exception::class);
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(Beams::class, ['checkImperativeBeginningOnly' => true]);
-        $repo   = new Repository($this->repo->getPath());
-        $repo->setCommitMsg(new CommitMessage('foo added foo bar baz.'));
+        $repo   = $this->createRepositoryMock();
+        $repo->method('getCommitMsg')->willReturn(new CommitMessage('foo added foo bar baz.'));
 
         $standard = new Beams();
         $standard->execute($config, $io, $repo, $action);
@@ -79,15 +58,15 @@ class BeamsTest extends TestCase
     /**
      * Tests Beams::execute
      */
-    public function testExecuteFail()
+    public function testExecuteFail(): void
     {
         $this->expectException(\Exception::class);
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(Beams::class);
-        $repo   = new Repository($this->repo->getPath());
-        $repo->setCommitMsg(new CommitMessage('added foo bar baz.'));
+        $repo   = $this->createRepositoryMock();
+        $repo->method('getCommitMsg')->willReturn(new CommitMessage('added foo bar baz.'));
 
         $standard = new Beams();
         $standard->execute($config, $io, $repo, $action);

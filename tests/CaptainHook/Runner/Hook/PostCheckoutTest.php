@@ -17,7 +17,7 @@ class PostCheckoutTest extends BaseTestRunner
     /**
      * Tests PostCheckout::run
      */
-    public function testRunHookEnabled()
+    public function testRunHookEnabled(): void
     {
         $io           = $this->getIOMock();
         $config       = $this->getConfigMock();
@@ -37,7 +37,7 @@ class PostCheckoutTest extends BaseTestRunner
     /**
      * Tests PostCheckout::run
      */
-    public function testRunHookDisabled()
+    public function testRunHookDisabled(): void
     {
         $io           = $this->getIOMock();
         $config       = $this->getConfigMock();

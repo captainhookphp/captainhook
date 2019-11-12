@@ -24,7 +24,7 @@ class DebugTest extends TestCase
     /**
      * Tests Debug::execute
      */
-    public function testExecute()
+    public function testExecute(): void
     {
         $this->expectException(\Exception::class);
 

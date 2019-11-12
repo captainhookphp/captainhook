@@ -17,7 +17,7 @@ class RuleSetTest extends TestCase
     /**
      * Tests RuleSet::beams
      */
-    public function testRuleSetBeams()
+    public function testRuleSetBeams(): void
     {
         $msg   = new CommitMessage('Foo bar baz' . PHP_EOL . PHP_EOL . 'This is a longer body line.');
         $rules = RuleSet::beams();

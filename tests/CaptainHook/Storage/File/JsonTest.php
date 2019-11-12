@@ -17,7 +17,7 @@ class JsonTest extends TestCase
     /**
      * Tests Json::readAssoc
      */
-    public function testReadInvalid()
+    public function testReadInvalid(): void
     {
         $this->expectException(Exception::class);
 
@@ -29,7 +29,7 @@ class JsonTest extends TestCase
     /**
      * Tests Json::readAssoc
      */
-    public function testReadAssoc()
+    public function testReadAssoc(): void
     {
         $path = realpath(CH_PATH_FILES . '/storage/test.json');
         $json = new Json($path);
@@ -41,7 +41,7 @@ class JsonTest extends TestCase
     /**
      * Test Json::write
      */
-    public function testWrite()
+    public function testWrite(): void
     {
         $path = tempnam(sys_get_temp_dir(), 'json');
         $json = new Json($path);

@@ -20,7 +20,7 @@ class DisableTest extends TestCase
     /**
      * Tests Enable::run
      */
-    public function testExecuteNoConfig()
+    public function testExecuteNoConfig(): void
     {
         $this->expectException(\Exception::class);
 
@@ -39,7 +39,7 @@ class DisableTest extends TestCase
     /**
      * Tests Enable::run
      */
-    public function testExecuteEnablePrePush()
+    public function testExecuteEnablePrePush(): void
     {
         $config = sys_get_temp_dir() . '/captainhook-enable.json';
         copy(CH_PATH_FILES . '/config/valid.json', $config);

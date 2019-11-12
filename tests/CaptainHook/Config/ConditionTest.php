@@ -16,7 +16,7 @@ class ConditionTest extends TestCase
     /**
      * Tests Condition::getExec
      */
-    public function testGetExec()
+    public function testGetExec(): void
     {
         $config = new Condition('\\Foo\\Bar');
 
@@ -26,7 +26,7 @@ class ConditionTest extends TestCase
     /**
      * Tests Condition::getArgs
      */
-    public function testGetEmptyArgs()
+    public function testGetEmptyArgs(): void
     {
         $config = new Condition('\\Foo\\Bar');
 

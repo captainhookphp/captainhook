@@ -17,7 +17,7 @@ class MsgNotEmptyTest extends TestCase
     /**
      * Tests MsgNotEmpty::pass
      */
-    public function testPassSuccess()
+    public function testPassSuccess(): void
     {
         $msg  = new CommitMessage('Foo bar');
         $rule = new MsgNotEmpty();
@@ -28,7 +28,7 @@ class MsgNotEmptyTest extends TestCase
     /**
      * Tests MsgNotEmpty::pass
      */
-    public function testPassFail()
+    public function testPassFail(): void
     {
         $msg  = new CommitMessage('');
         $rule = new MsgNotEmpty();

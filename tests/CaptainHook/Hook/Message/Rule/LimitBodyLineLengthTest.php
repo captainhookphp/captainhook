@@ -17,7 +17,7 @@ class LimitBodyLineLengthTest extends TestCase
     /**
      * Tests LimitBodyLineLength::pass
      */
-    public function testPassSuccess()
+    public function testPassSuccess(): void
     {
         $msg  = new CommitMessage('Foo' . PHP_EOL . PHP_EOL . 'Bar');
         $rule = new LimitBodyLineLength(10);
@@ -28,7 +28,7 @@ class LimitBodyLineLengthTest extends TestCase
     /**
      * Tests LimitBodyLineLength::pass
      */
-    public function testPassFail()
+    public function testPassFail(): void
     {
         $msg  = new CommitMessage('Foo' . PHP_EOL . PHP_EOL . 'Bar Baz Fiz Baz');
         $rule = new LimitBodyLineLength(10);
@@ -39,7 +39,7 @@ class LimitBodyLineLengthTest extends TestCase
     /**
      * Tests LimitBodyLineLength::pass
      */
-    public function testPassFailOnAnyLine()
+    public function testPassFailOnAnyLine(): void
     {
         $msg  = new CommitMessage('Foo' . PHP_EOL . PHP_EOL . 'Fooish' . PHP_EOL . 'Bar Baz Fiz Baz');
         $rule = new LimitBodyLineLength(10);

@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 class SetupTest extends TestCase
 {
-    public function testRun()
+    public function testRun(): void
     {
         $output = new NullOutput();
         $input  = new ArrayInput([

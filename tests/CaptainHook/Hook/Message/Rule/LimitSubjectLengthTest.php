@@ -17,7 +17,7 @@ class LimitSubjectLengthTest extends TestCase
     /**
      * Tests LimitSubjectLength::pass
      */
-    public function testPassSuccess()
+    public function testPassSuccess(): void
     {
         $msg  = new CommitMessage('Foo Bar');
         $rule = new LimitSubjectLength(10);
@@ -28,7 +28,7 @@ class LimitSubjectLengthTest extends TestCase
     /**
      * Tests LimitSubjectLength::pass
      */
-    public function testPassFail()
+    public function testPassFail(): void
     {
         $msg  = new CommitMessage('Foo Bar Baz Fiz Baz');
         $rule = new LimitSubjectLength(10);

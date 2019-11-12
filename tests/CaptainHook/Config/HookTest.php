@@ -16,7 +16,7 @@ class HookTest extends TestCase
     /**
      * Tests Hook::__construct
      */
-    public function testDisabledByDefault()
+    public function testDisabledByDefault(): void
     {
         $hook   = new Hook('pre-commit');
         $config = $hook->getJsonData();
@@ -28,7 +28,7 @@ class HookTest extends TestCase
     /**
      * Tests Hook::setEnabled
      */
-    public function testSetEnabled()
+    public function testSetEnabled(): void
     {
         $hook   = new Hook('pre-commit');
         $hook->setEnabled(true);
@@ -41,7 +41,7 @@ class HookTest extends TestCase
     /**
      * Tests Hook::__construct
      */
-    public function testEmptyActions()
+    public function testEmptyActions(): void
     {
         $hook   = new Hook('pre-commit');
         $config = $hook->getJsonData();
@@ -53,7 +53,7 @@ class HookTest extends TestCase
     /**
      * Tests Hook::addAction
      */
-    public function testAddAction()
+    public function testAddAction(): void
     {
         $hook   = new Hook('pre-commit');
         $hook->addAction(new Action('\\Foo\\Bar'));

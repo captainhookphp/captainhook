@@ -17,7 +17,7 @@ class SeparateSubjectFromBodyWithBlankLineTest extends TestCase
     /**
      * Tests SeparateSubjectFromBodyWithBlankLine::pass
      */
-    public function testPassSuccessOnSubjectOnly()
+    public function testPassSuccessOnSubjectOnly(): void
     {
         $msg  = new CommitMessage('Foo bar');
         $rule = new SeparateSubjectFromBodyWithBlankLine();
@@ -28,7 +28,7 @@ class SeparateSubjectFromBodyWithBlankLineTest extends TestCase
     /**
      * Tests SeparateSubjectFromBodyWithBlankLine::pass
      */
-    public function testPassSuccessWithBody()
+    public function testPassSuccessWithBody(): void
     {
         $msg  = new CommitMessage('Foo bar' . PHP_EOL . PHP_EOL . 'Foo Bar Baz.');
         $rule = new SeparateSubjectFromBodyWithBlankLine();
@@ -39,7 +39,7 @@ class SeparateSubjectFromBodyWithBlankLineTest extends TestCase
     /**
      * Tests SeparateSubjectFromBodyWithBlankLine::pass
      */
-    public function testPassFailNoEmptyLine()
+    public function testPassFailNoEmptyLine(): void
     {
         $msg  = new CommitMessage('Foo bar' . PHP_EOL . 'Foo Bar Baz.');
         $rule = new SeparateSubjectFromBodyWithBlankLine();

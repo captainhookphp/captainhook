@@ -20,7 +20,7 @@ class AddTest extends TestCase
     /**
      * Tests Add::run
      */
-    public function testExecuteNoConfig()
+    public function testExecuteNoConfig(): void
     {
         $this->expectException(\Exception::class);
 
@@ -39,7 +39,7 @@ class AddTest extends TestCase
     /**
      * Tests Add::run
      */
-    public function testExecutePreCommit()
+    public function testExecutePreCommit(): void
     {
         $config = sys_get_temp_dir() . '/captainhook-add.json';
         copy(CH_PATH_FILES . '/config/valid.json', $config);

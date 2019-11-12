@@ -21,8 +21,12 @@ class HookTest extends TestCase
     /**
      * Tests Hook::run
      */
-    public function testRun()
+    public function testRun(): void
     {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
         $config = new Config(CH_PATH_FILES . '/config/valid.json');
         $repo   = new DummyRepo();
         $output = new NullOutput();
@@ -44,7 +48,7 @@ class HookTest extends TestCase
     /**
      * Tests Hook::executeHook
      */
-    public function testRunInvalidHook()
+    public function testRunInvalidHook(): void
     {
         $this->expectException(\Exception::class);
 
@@ -55,7 +59,7 @@ class HookTest extends TestCase
     /**
      * Tests Hook::executeHook
      */
-    public function testRunNoHook()
+    public function testRunNoHook(): void
     {
         $input  = new ArrayInput([]);
         $output = new NullOutput();
@@ -69,7 +73,7 @@ class HookTest extends TestCase
     /**
      * Tests Hook::getRepositoryPath
      */
-    public function testGetRepositoryPath()
+    public function testGetRepositoryPath(): void
     {
         $app = new Hook();
 
@@ -79,17 +83,17 @@ class HookTest extends TestCase
     /**
      * Tests Hook::getConfigFile
      */
-    public function testGetConfigFile()
+    public function testGetConfigFile(): void
     {
         $app = new Hook();
 
-        $this->assertEquals(getcwd()  . '/' . CH::CONFIG, $app->getConfigFile());
+        $this->assertEquals(getcwd()  . DIRECTORY_SEPARATOR . CH::CONFIG, $app->getConfigFile());
     }
 
     /**
      * Tests Application::getHelp
      */
-    public function testGetHelp()
+    public function testGetHelp(): void
     {
         $hook = new Hook();
         $help = $hook->getHelp();

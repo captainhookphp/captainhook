@@ -17,8 +17,12 @@ class PostMergeTest extends BaseTestRunner
     /**
      * Tests PostMerge::run
      */
-    public function testRunHookEnabled()
+    public function testRunHookEnabled(): void
     {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
         $io           = $this->getIOMock();
         $config       = $this->getConfigMock();
         $repo         = $this->getRepositoryMock();
@@ -37,7 +41,7 @@ class PostMergeTest extends BaseTestRunner
     /**
      * Tests PostMerge::run
      */
-    public function testRunHookWithConditionsApply()
+    public function testRunHookWithConditionsApply(): void
     {
         $io              = $this->getIOMock();
         $config          = $this->getConfigMock();

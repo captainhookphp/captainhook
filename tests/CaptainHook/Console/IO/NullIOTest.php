@@ -9,7 +9,7 @@ class NullIOTest extends TestCase
     /**
      * Tests NullIO::getArguments
      */
-    public function testGetArguments()
+    public function testGetArguments(): void
     {
         $io = new NullIO();
         $this->assertEquals([], $io->getArguments());
@@ -18,7 +18,7 @@ class NullIOTest extends TestCase
     /**
      * Tests NullIO::getArgument
      */
-    public function testGetArgument()
+    public function testGetArgument(): void
     {
         $io = new NullIO();
         $this->assertEquals('', $io->getArgument('foo'));
@@ -28,7 +28,7 @@ class NullIOTest extends TestCase
     /**
      * Tests NullIO::isInteractive
      */
-    public function testIsInteractive()
+    public function testIsInteractive(): void
     {
         $io = new NullIO();
         $this->assertFalse($io->isInteractive());
@@ -37,7 +37,7 @@ class NullIOTest extends TestCase
     /**
      * Tests NullIO::isDebug
      */
-    public function testIsDebug()
+    public function testIsDebug(): void
     {
         $io = new NullIO();
         $this->assertFalse($io->isDebug());
@@ -46,7 +46,7 @@ class NullIOTest extends TestCase
     /**
      * Tests NullIO::isVerbose
      */
-    public function testIsVerbose()
+    public function testIsVerbose(): void
     {
         $io = new NullIO();
         $this->assertFalse($io->isVerbose());
@@ -55,7 +55,7 @@ class NullIOTest extends TestCase
     /**
      * Tests NullIO::isVeryVerbose
      */
-    public function testIsVeryVerbose()
+    public function testIsVeryVerbose(): void
     {
         $io = new NullIO();
         $this->assertFalse($io->isVeryVerbose());
@@ -64,7 +64,7 @@ class NullIOTest extends TestCase
     /**
      * Tests NullIO::writeError
      */
-    public function testWriteError()
+    public function testWriteError(): void
     {
         $io = new NullIO();
         $io->writeError('foo');
@@ -74,7 +74,7 @@ class NullIOTest extends TestCase
     /**
      * Tests NullIO::ask
      */
-    public function testAsk()
+    public function testAsk(): void
     {
         $io = new NullIO();
         $this->assertEquals('bar', $io->ask('foo', 'bar'));
@@ -83,7 +83,7 @@ class NullIOTest extends TestCase
     /**
      * Tests NullIO::askConfirmation
      */
-    public function testAskConfirmation()
+    public function testAskConfirmation(): void
     {
         $io = new NullIO();
         $this->assertEquals(true, $io->askConfirmation('foo', true));
@@ -92,7 +92,7 @@ class NullIOTest extends TestCase
     /**
      * Tests NullIO::askAbdValidate
      */
-    public function testAskAndValidate()
+    public function testAskAndValidate(): void
     {
         $io = new NullIO();
         $this->assertEquals(

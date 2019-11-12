@@ -17,8 +17,12 @@ class CommitMsgTest extends BaseTestRunner
     /**
      * Tests CommitMsg::run
      */
-    public function testRunHookEnabled()
+    public function testRunHookEnabled(): void
     {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
         $io       = $this->getIOMock();
         $config   = $this->getConfigMock();
         $configOp = $this->createMock(\SebastianFeldmann\Git\Operator\Config::class);
@@ -43,7 +47,7 @@ class CommitMsgTest extends BaseTestRunner
     /**
      * Tests CommitMsg::run
      */
-    public function testRunWithoutCommitMsgFile()
+    public function testRunWithoutCommitMsgFile(): void
     {
         $this->expectException(\Exception::class);
 

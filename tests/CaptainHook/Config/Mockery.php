@@ -20,7 +20,7 @@ trait Mockery
      * @param  string $path
      * @return \CaptainHook\App\Config
      */
-    public function createConfigMock(bool $loadedFromFile = false, string $path = '')
+    public function createConfigMock(bool $loadedFromFile = false, string $path = ''): CHConfig
     {
         $config = $this->getMockBuilder(CHConfig::class)
                        ->disableOriginalConstructor()

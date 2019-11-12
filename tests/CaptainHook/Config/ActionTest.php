@@ -16,7 +16,7 @@ class ActionTest extends TestCase
     /**
      * Tests Action::getAction
      */
-    public function testGetAction()
+    public function testGetAction(): void
     {
         $action = new Action('\\Foo\\Bar');
 
@@ -26,7 +26,7 @@ class ActionTest extends TestCase
     /**
      * Tests Action::getOptions
      */
-    public function testGetOptions()
+    public function testGetOptions(): void
     {
         $action = new Action('\\Foo\\Bar');
 
@@ -36,7 +36,7 @@ class ActionTest extends TestCase
     /**
      * Tests Action::getJsonData
      */
-    public function testEmptyOptions()
+    public function testEmptyOptions(): void
     {
         $action = new Action('\\Foo\\Bar');
         $config = $action->getJsonData();
@@ -47,7 +47,7 @@ class ActionTest extends TestCase
     /**
      * Tests Action::getJsonData
      */
-    public function testConditions()
+    public function testConditions(): void
     {
         $conditions = [
             ['exec' => '\\Foo\\Bar', 'args' => []]
@@ -62,7 +62,7 @@ class ActionTest extends TestCase
     /**
      * Tests Action::getConditions
      */
-    public function testGetConditions()
+    public function testGetConditions(): void
     {
         $conditions = [
             ['exec' => '\\Foo\\Bar', 'args' => []],

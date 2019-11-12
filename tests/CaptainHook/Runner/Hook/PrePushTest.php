@@ -17,7 +17,7 @@ class PrePushTest extends BaseTestRunner
     /**
      * Tests PrePush::run
      */
-    public function testRunHookEnabled()
+    public function testRunHookEnabled(): void
     {
         $io           = $this->getIOMock();
         $config       = $this->getConfigMock();
@@ -29,15 +29,14 @@ class PrePushTest extends BaseTestRunner
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->exactly(3))->method('write');
 
-        $args   = new Config\Options([]);
-        $runner = new PreCommit($io, $config, $repo, $args);
+        $runner = new PreCommit($io, $config, $repo);
         $runner->run();
     }
 
     /**
      * Tests PrePush::run
      */
-    public function testRunHookDisabled()
+    public function testRunHookDisabled(): void
     {
         $io           = $this->getIOMock();
         $config       = $this->getConfigMock();
@@ -47,8 +46,7 @@ class PrePushTest extends BaseTestRunner
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->once())->method('write');
 
-        $args   = new Config\Options([]);
-        $runner = new PreCommit($io, $config, $repo, $args);
+        $runner = new PreCommit($io, $config, $repo);
         $runner->run();
     }
 }

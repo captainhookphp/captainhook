@@ -109,9 +109,9 @@ class Config
         }
 
         // if repo path is absolute use it otherwise create an absolute path relative to the configuration file
-        return substr($this->settings[self::SETTING_GIT_DIR], 0, 1) === DIRECTORY_SEPARATOR
+        return substr($this->settings[self::SETTING_GIT_DIR], 0, 1) === '/'
             ? $this->settings[self::SETTING_GIT_DIR]
-            : dirname($this->path) . DIRECTORY_SEPARATOR . $this->settings[self::SETTING_GIT_DIR];
+            : \dirname($this->path) . DIRECTORY_SEPARATOR . $this->settings[self::SETTING_GIT_DIR];
     }
 
     /**
@@ -122,7 +122,7 @@ class Config
     public function getVendorDirectory() : string
     {
         return !empty($this->settings[self::SETTING_VENDOR_DIR])
-            ? dirname($this->path) . DIRECTORY_SEPARATOR . $this->settings[self::SETTING_VENDOR_DIR]
+            ? \dirname($this->path) . DIRECTORY_SEPARATOR . $this->settings[self::SETTING_VENDOR_DIR]
             : getcwd() . DIRECTORY_SEPARATOR . 'vendor';
     }
 

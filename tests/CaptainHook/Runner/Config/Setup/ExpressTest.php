@@ -16,7 +16,7 @@ class ExpressTest extends BaseTestRunner
     /**
      * Tests Express::configureHooks
      */
-    public function testConfigureExpress()
+    public function testConfigureExpress(): void
     {
         $io     = $this->getIOMock();
         $config = $this->getConfigMock();

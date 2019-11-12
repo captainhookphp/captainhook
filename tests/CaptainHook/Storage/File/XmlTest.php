@@ -16,7 +16,7 @@ class XmlTest extends TestCase
     /**
      * Tests Xml::read
      */
-    public function testRead()
+    public function testRead(): void
     {
         $this->expectException(\Exception::class);
 

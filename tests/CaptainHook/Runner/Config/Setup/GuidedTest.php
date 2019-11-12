@@ -16,7 +16,7 @@ class GuidedTest extends TestCase
     /**
      * Tests Guided::isPHPActionOptionValid
      */
-    public function testPHPActionOptionValidationValid()
+    public function testPHPActionOptionValidationValid(): void
     {
         $this->assertEquals('foo:bar', Guided::isPHPActionOptionValid('foo:bar'));
     }
@@ -24,7 +24,7 @@ class GuidedTest extends TestCase
     /**
      * Tests Guided::isPHPActionOptionValid
      */
-    public function testPHPActionOptionValidationInvalid()
+    public function testPHPActionOptionValidationInvalid(): void
     {
         $this->expectException(\Exception::class);
 

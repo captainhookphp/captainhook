@@ -14,11 +14,30 @@ use PHPUnit\Framework\TestCase;
 class UtilTest extends TestCase
 {
     /**
+     * Tests Util::arrayToPath
+     */
+    public function testAbsoluteArrayToPath(): void
+    {
+        $expected = DIRECTORY_SEPARATOR . 'foo' . DIRECTORY_SEPARATOR . 'bar';
+        $this->assertEquals($expected, Util::arrayToPath(['foo', 'bar'], true));
+    }
+
+    /**
+     * Tests Util::arrayToPath
+     */
+    public function testRelativeArrayToPath(): void
+    {
+        $expected = 'foo' . DIRECTORY_SEPARATOR . 'bar';
+        $this->assertEquals($expected, Util::arrayToPath(['foo', 'bar']));
+    }
+
+    /**
      * Tests Util::pathToArray
      */
-    public function testAbsolutePathToArray()
+    public function testAbsolutePathToArray(): void
     {
-        $path = Util::pathToArray('/foo/bar/baz');
+        $absolute = DIRECTORY_SEPARATOR . 'foo' . DIRECTORY_SEPARATOR . 'bar' . DIRECTORY_SEPARATOR . 'baz';
+        $path     = Util::pathToArray($absolute);
 
         $this->assertCount(3, $path);
         $this->assertEquals('bar', $path[1]);
@@ -27,9 +46,10 @@ class UtilTest extends TestCase
     /**
      * Tests Util::pathToArray
      */
-    public function testRelativePathToArray()
+    public function testRelativePathToArray(): void
     {
-        $path = Util::pathToArray('foo/bar/baz');
+        $relative = 'foo' . DIRECTORY_SEPARATOR . 'bar' . DIRECTORY_SEPARATOR . 'baz';
+        $path     = Util::pathToArray($relative);
 
         $this->assertCount(3, $path);
         $this->assertEquals('bar', $path[1]);
@@ -38,44 +58,31 @@ class UtilTest extends TestCase
     /**
      * Tests Util::isSubDirectoryOf
      */
-    public function testIsSubdirectory()
+    public function testIsSubdirectory(): void
     {
-        $this->assertTrue(Util::isSubDirectoryOf(Util::pathToArray('/foo/bar/baz'), Util::pathToArray('/foo/bar')));
-        $this->assertTrue(Util::isSubDirectoryOf(Util::pathToArray('/foo/bar'), Util::pathToArray('/foo')));
-        $this->assertFalse(Util::isSubDirectoryOf(Util::pathToArray('/foo/bar/baz'), Util::pathToArray('/fiz/baz')));
-        $this->assertFalse(Util::isSubDirectoryOf(Util::pathToArray('/foo'), Util::pathToArray('/bar')));
+        $this->assertTrue(Util::isSubDirectoryOf(['foo', 'bar', 'baz'], ['foo', 'bar']));
+        $this->assertTrue(Util::isSubDirectoryOf(['foo', 'bar'], ['foo']));
+        $this->assertFalse(Util::isSubDirectoryOf(['foo', 'bar', 'baz'], ['fiz', 'baz']));
+        $this->assertFalse(Util::isSubDirectoryOf(['foo'], ['bar']));
     }
 
     /**
      * Tests Util::isSubDirectoryOf
      */
-    public function testGetSubPathOf()
+    public function testGetSubPathOf(): void
     {
-        $this->assertEquals(
-            'baz',
-            Util::getSubPathOf(
-                Util::pathToArray('/foo/bar/baz'),
-                Util::pathToArray('/foo/bar')
-            )
-        );
-
-        $this->assertEquals(
-            'baz/buz',
-            Util::getSubPathOf(
-                Util::pathToArray('/foo/bar/baz/buz'),
-                Util::pathToArray('/foo/bar')
-            )
-        );
+        $this->assertEquals(['baz'], Util::getSubPathOf(['foo', 'bar', 'baz'],['foo', 'bar']));
+        $this->assertEquals(['baz', 'buz'], Util::getSubPathOf(['foo', 'bar', 'baz', 'buz'], ['foo', 'bar']));
     }
 
     /**
      * Tests Util::isSubDirectoryOf
      */
-    public function testGetSubPathOfNoSubDirectory()
+    public function testGetSubPathOfNoSubDirectory(): void
     {
         $this->expectException(\Exception::class);
 
-        Util::getSubPathOf(Util::pathToArray('/foo/bar/baz'), Util::pathToArray('/fiz/baz'));
+        Util::getSubPathOf(['foo', 'bar', 'baz'], ['fiz', 'baz']);
     }
 
     /**
@@ -83,17 +90,21 @@ class UtilTest extends TestCase
      */
     public function testGetTplTargetPath(): void
     {
-        $path = Util::getTplTargetPath('/foo/bar', '/foo/bar/baz/vendor');
-        $this->assertEquals('__DIR__ . \'/../../baz/vendor', $path);
+        $repo   = Util::arrayToPath(['foo', 'bar'], true);
+        $target = Util::arrayToPath(['foo', 'bar', 'baz', 'vendor'], true);
+        $this->assertEquals('__DIR__ . \'/../../baz/vendor', Util::getTplTargetPath($repo, $target));
 
-        $path = Util::getTplTargetPath('/foo/bar', '/foo/bar/vendor');
-        $this->assertEquals('__DIR__ . \'/../../vendor', $path);
+        $repo   = Util::arrayToPath(['foo', 'bar'], true);
+        $target = Util::arrayToPath(['foo', 'bar', 'vendor'], true);
+        $this->assertEquals('__DIR__ . \'/../../vendor', Util::getTplTargetPath($repo, $target));
 
-        $path = Util::getTplTargetPath('/foo/bar', '/foo/bar/captainhook.json');
-        $this->assertEquals('__DIR__ . \'/../../captainhook.json', $path);
+        $repo   = Util::arrayToPath(['foo', 'bar'], true);
+        $target = Util::arrayToPath(['foo', 'bar', 'captainhook.json'], true);
+        $this->assertEquals('__DIR__ . \'/../../captainhook.json', Util::getTplTargetPath($repo, $target));
 
-        $path = Util::getTplTargetPath('/foo/bar', '/fiz/baz/captainhook.json');
-        $this->assertEquals('\'/fiz/baz/captainhook.json', $path);
+        $repo   = Util::arrayToPath(['foo', 'bar'], true);
+        $target = Util::arrayToPath(['fiz', 'baz', 'captainhook.json'], true);
+        $this->assertEquals('\'/fiz/baz/captainhook.json', Util::getTplTargetPath($repo, $target));
     }
 
     /**
@@ -105,9 +116,9 @@ class UtilTest extends TestCase
         $vendorDir = realpath(__DIR__ . '/../../files/storage');
 
         $path = Util::resolveBinaryPath($repoDir, $vendorDir, 'captainhook-run');
-        $this->assertEquals($repoDir . '/captainhook-run', $path);
+        $this->assertEquals($repoDir . DIRECTORY_SEPARATOR . 'captainhook-run', $path);
 
-        $repoDir = __DIR__;
+        $repoDir   = __DIR__;
         $vendorDir = __DIR__;
 
         $path = Util::resolveBinaryPath($repoDir, $vendorDir, 'captainhook-run');

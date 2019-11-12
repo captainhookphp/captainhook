@@ -20,7 +20,7 @@ class RuleBookTest extends TestCase
     /**
      * Tests RuleBook::validate
      */
-    public function testValidOnEmptyRuleList()
+    public function testValidOnEmptyRuleList(): void
     {
         $msg = new CommitMessage('Foo');
         $v   = new RuleBook();
@@ -33,7 +33,7 @@ class RuleBookTest extends TestCase
     /**
      * Tests RuleBook::setRules
      */
-    public function testSetRulesValid()
+    public function testSetRulesValid(): void
     {
         $msg = new CommitMessage('Foo');
         $v   = new RuleBook();
@@ -46,19 +46,19 @@ class RuleBookTest extends TestCase
     /**
      * Tests RuleBook::setRules
      */
-    public function testSetRulesInvalid()
+    public function testSetRulesInvalid(): void
     {
         $msg = new CommitMessage('');
         $v   = new RuleBook();
         $v->setRules([new MsgNotEmpty()]);
         $problems = $v->validate($msg);
-        $this->assertEquals(1, count($problems));
+        $this->assertCount(1, $problems);
     }
 
     /**
      * Tests RuleBook::setRules
      */
-    public function testAddRuleInvalid()
+    public function testAddRuleInvalid(): void
     {
         $msg = new CommitMessage('foo bar baz');
         $v   = new RuleBook();
@@ -66,19 +66,19 @@ class RuleBookTest extends TestCase
         $v->addRule(new CapitalizeSubject());
 
         $problems = $v->validate($msg);
-        $this->assertEquals(1, count($problems));
+        $this->assertCount(1, $problems);
     }
 
     /**
      * Tests RuleBook::setRules
      */
-    public function testAddRuleInvalidMultiLineProblem()
+    public function testAddRuleInvalidMultiLineProblem(): void
     {
         $msg = new CommitMessage('fixed bar baz');
         $v   = new RuleBook();
         $v->setRules([new UseImperativeMood()]);
 
         $problems = $v->validate($msg);
-        $this->assertEquals(1, count($problems));
+        $this->assertCount(1, $problems);
     }
 }

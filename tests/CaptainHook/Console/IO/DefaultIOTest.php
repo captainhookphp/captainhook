@@ -73,7 +73,7 @@ class DefaultIOTest extends TestCase
     /**
      * Tests DefaultIO::getArguments
      */
-    public function testGetArguments()
+    public function testGetArguments(): void
     {
         $input  = $this->getInputMock();
         $output = $this->getOutputMock();
@@ -88,7 +88,7 @@ class DefaultIOTest extends TestCase
     /**
      * Tests DefaultIO::getArgument
      */
-    public function testGetArgument()
+    public function testGetArgument(): void
     {
         $input  = $this->getInputMock();
         $output = $this->getOutputMock();
@@ -104,7 +104,7 @@ class DefaultIOTest extends TestCase
     /**
      * Tests DefaultIO::isInteractive
      */
-    public function testIsInteractive()
+    public function testIsInteractive(): void
     {
         $input  = $this->getInputMock();
         $output = $this->getOutputMock();
@@ -119,7 +119,7 @@ class DefaultIOTest extends TestCase
     /**
      * Tests DefaultIO::isVerbose
      */
-    public function testIsVerbose()
+    public function testIsVerbose(): void
     {
         $input  = $this->getInputMock();
         $output = $this->getOutputMock();
@@ -134,7 +134,7 @@ class DefaultIOTest extends TestCase
     /**
      * Tests DefaultIO::isVeryVerbose
      */
-    public function testIsVeryVerbose()
+    public function testIsVeryVerbose(): void
     {
         $input  = $this->getInputMock();
         $output = $this->getOutputMock();
@@ -149,7 +149,7 @@ class DefaultIOTest extends TestCase
     /**
      * Tests DefaultIO::isDebug
      */
-    public function testIsDebug()
+    public function testIsDebug(): void
     {
         $input  = $this->getInputMock();
         $output = $this->getOutputMock();
@@ -164,7 +164,7 @@ class DefaultIOTest extends TestCase
     /**
      * Tests DefaultIO::writeError
      */
-    public function testWriteError()
+    public function testWriteError(): void
     {
         $input  = $this->getInputMock();
         $output = $this->getOutputMock();
@@ -179,7 +179,7 @@ class DefaultIOTest extends TestCase
     /**
      * Tests DefaultIO::ask
      */
-    public function testAsk()
+    public function testAsk(): void
     {
         $input          = $this->getInputMock();
         $output         = $this->getOutputMock();
@@ -197,7 +197,7 @@ class DefaultIOTest extends TestCase
     /**
      * Tests DefaultIO::askConfirmation
      */
-    public function testAskConfirmation()
+    public function testAskConfirmation(): void
     {
         $input          = $this->getInputMock();
         $output         = $this->getOutputMock();
@@ -215,7 +215,7 @@ class DefaultIOTest extends TestCase
     /**
      * Tests DefaultIO::askAbdValidate
      */
-    public function testAskAndValidate()
+    public function testAskAndValidate(): void
     {
         $input          = $this->getInputMock();
         $output         = $this->getOutputMock();
@@ -238,7 +238,7 @@ class DefaultIOTest extends TestCase
     /**
      * Tests DefaultIO::write
      */
-    public function testWrite()
+    public function testWrite(): void
     {
         $input          = $this->getInputMock();
         $output         = $this->getConsoleOutputMock();
@@ -255,7 +255,7 @@ class DefaultIOTest extends TestCase
     /**
      * Tests DefaultIO::write
      */
-    public function testWriteSkipped()
+    public function testWriteSkipped(): void
     {
         $input          = $this->getInputMock();
         $output         = $this->getConsoleOutputMock();

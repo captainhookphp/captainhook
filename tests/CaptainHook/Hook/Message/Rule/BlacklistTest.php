@@ -17,7 +17,7 @@ class BlacklistTest extends TestCase
     /**
      * Tests Blacklist::pass
      */
-    public function testCaseInsensitiveHit()
+    public function testCaseInsensitiveHit(): void
     {
         $msg  = new CommitMessage('Foo bar baz' . PHP_EOL . PHP_EOL . 'Some Body text that is longer');
         $list = new Blacklist(false);
@@ -30,7 +30,7 @@ class BlacklistTest extends TestCase
     /**
      * Tests Blacklist::pass
      */
-    public function testCaseSensitiveMiss()
+    public function testCaseSensitiveMiss(): void
     {
         $msg  = new CommitMessage('Foo bar baz' . PHP_EOL . PHP_EOL . 'Some Body text that is longer');
         $list = new Blacklist(true);

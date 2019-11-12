@@ -16,7 +16,7 @@ class CloverXMLTest extends TestCase
     /**
      * Tests CloverXML::getCoverage
      */
-    public function testValid()
+    public function testValid(): void
     {
         $resolver = new CloverXML(CH_PATH_FILES . '/coverage/valid.xml');
         $coverage = $resolver->getCoverage();
@@ -27,7 +27,7 @@ class CloverXMLTest extends TestCase
     /**
      * Tests CloverXML::__construct
      */
-    public function testFileNotFound()
+    public function testFileNotFound(): void
     {
         $this->expectException(\Exception::class);
 
@@ -37,7 +37,7 @@ class CloverXMLTest extends TestCase
     /**
      * Tests CloverXML::__construct
      */
-    public function testInvalidXML()
+    public function testInvalidXML(): void
     {
         $this->expectException(\Exception::class);
 
@@ -47,7 +47,7 @@ class CloverXMLTest extends TestCase
     /**
      * Tests CloverXML::__construct
      */
-    public function testInvalidMetrics()
+    public function testInvalidMetrics(): void
     {
         $this->expectException(\Exception::class);
 

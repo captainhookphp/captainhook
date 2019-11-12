@@ -20,8 +20,12 @@ class PrepareCommitMsgTest extends BaseTestRunner
     /**
      * Tests PrepareCommitMsg::run
      */
-    public function testRunHookEnabled()
+    public function testRunHookEnabled(): void
     {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
         $io           = $this->getIOMock();
         $config       = $this->getConfigMock();
         $hookConfig   = $this->getHookConfigMock();
@@ -60,7 +64,7 @@ class PrepareCommitMsgTest extends BaseTestRunner
     /**
      * Tests PrepareCommitMsg::run
      */
-    public function testRunHookNoMessageException()
+    public function testRunHookNoMessageException(): void
     {
         $this->expectException(\Exception::class);
 

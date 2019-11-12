@@ -17,8 +17,12 @@ class PreCommitTest extends BaseTestRunner
     /**
      * Tests PreCommit::run
      */
-    public function testRunHookEnabled()
+    public function testRunHookEnabled(): void
     {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
         $io           = $this->getIOMock();
         $config       = $this->getConfigMock();
         $repo         = $this->getRepositoryMock();
@@ -38,7 +42,7 @@ class PreCommitTest extends BaseTestRunner
     /**
      * Tests PreCommit::run
      */
-    public function testRunHookDisabled()
+    public function testRunHookDisabled(): void
     {
         $io           = $this->getIOMock();
         $config       = $this->getConfigMock();

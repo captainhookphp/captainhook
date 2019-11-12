@@ -20,8 +20,12 @@ class CommitMsgTest extends TestCase
     /**
      * Tests CommitMsg::run
      */
-    public function testExecute()
+    public function testExecute(): void
     {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
         $repo = new DummyRepo();
         $repo->setup();
 

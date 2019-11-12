@@ -17,7 +17,7 @@ class CapitalizeSubjectTest extends TestCase
     /**
      * Tests CapitalizeSubject::pass
      */
-    public function testPassSuccess()
+    public function testPassSuccess(): void
     {
         $msg  = new CommitMessage('Foo');
         $rule = new CapitalizeSubject();
@@ -28,7 +28,7 @@ class CapitalizeSubjectTest extends TestCase
     /**
      * Tests CapitalizeSubject::pass
      */
-    public function testPassFail()
+    public function testPassFail(): void
     {
         $msg  = new CommitMessage('foo');
         $rule = new CapitalizeSubject();
@@ -39,7 +39,7 @@ class CapitalizeSubjectTest extends TestCase
     /**
      * Tests CapitalizeSubject::pass
      */
-    public function testPassFailOnEmptyMessage()
+    public function testPassFailOnEmptyMessage(): void
     {
         $msg  = new CommitMessage('');
         $rule = new CapitalizeSubject();

@@ -17,8 +17,12 @@ class CliTest extends BaseTestRunner
     /**
      * Tests Cli::execute
      */
-    public function testExecuteSuccess()
+    public function testExecuteSuccess(): void
     {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
         $args   = [];
         $io     = $this->getIOMock();
         $action = $this->getActionConfigMock();
@@ -35,8 +39,12 @@ class CliTest extends BaseTestRunner
     /**
      * Tests Cli::execute
      */
-    public function testExecuteSuccessWithReplacements()
+    public function testExecuteSuccessWithReplacements(): void
     {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
         $args   = ['file' => 'bin', 'mode' => 'success'];
         $io     = $this->getIOMock();
         $action = $this->getActionConfigMock();
@@ -53,7 +61,7 @@ class CliTest extends BaseTestRunner
     /**
      * Tests Cli::execute
      */
-    public function testExecuteFailure()
+    public function testExecuteFailure(): void
     {
         $this->expectException(\Exception::class);
 

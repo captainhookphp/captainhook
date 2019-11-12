@@ -23,7 +23,7 @@ class ConditionTest extends TestCase
     /**
      * Tests Condition::doesConditionApply
      */
-    public function testDoesConditionApply()
+    public function testDoesConditionApply(): void
     {
         $io = $this->createIOMock();
         $io->expects($this->exactly(2))->method('getArgument')->willReturn('');
@@ -46,7 +46,7 @@ class ConditionTest extends TestCase
     /**
      * Test Condition::doesConditionApply
      */
-    public function testClassNotFound()
+    public function testClassNotFound(): void
     {
         $this->expectException(\Exception::class);
 
@@ -59,8 +59,12 @@ class ConditionTest extends TestCase
     /**
      * Test Condition::doesConditionApply
      */
-    public function testDoesConditionApplyCli()
+    public function testDoesConditionApplyCli(): void
     {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
         $io         = $this->createIOMock();
         $repository = $this->createRepositoryMock('');
 

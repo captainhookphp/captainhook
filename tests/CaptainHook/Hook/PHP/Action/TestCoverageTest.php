@@ -12,19 +12,25 @@ namespace CaptainHook\App\Hook\PHP\Action;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Hook\PHP\Action\TextCoverage;
+use CaptainHook\App\Mockery;
 use SebastianFeldmann\Git\Repository;
 use PHPUnit\Framework\TestCase;
 
 class TestCoverageTest extends TestCase
 {
+    use Mockery;
     /**
      * Tests TestCoverage::execute
      */
-    public function testCoverageViaCloverXML()
+    public function testCoverageViaCloverXML(): void
     {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
         $io       = new NullIO();
         $config   = new Config(CH_PATH_FILES . '/captainhook.json');
-        $repo     = $this->getRepoMock();
+        $repo     = $this->createRepositoryMock();
         $standard = new TestCoverage();
         $action   = new Config\Action(
             TextCoverage::class,
@@ -38,13 +44,13 @@ class TestCoverageTest extends TestCase
     /**
      * Tests TestCoverage::execute
      */
-    public function testCoverageLow()
+    public function testCoverageLow(): void
     {
         $this->expectException(\Exception::class);
 
         $io       = new NullIO();
         $config   = new Config(CH_PATH_FILES . '/captainhook.json');
-        $repo     = $this->getRepoMock();
+        $repo     = $this->createRepositoryMock();
         $standard = new TestCoverage();
         $action   = new Config\Action(
             TextCoverage::class,
@@ -59,11 +65,15 @@ class TestCoverageTest extends TestCase
     /**
      * Tests TestCoverage::execute
      */
-    public function testCoverageViaPHPUnit()
+    public function testCoverageViaPHPUnit(): void
     {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
         $io       = new NullIO();
         $config   = new Config(CH_PATH_FILES . '/captainhook.json');
-        $repo     = $this->getRepoMock();
+        $repo     = $this->createRepositoryMock();
         $standard = new TestCoverage();
         $action   = new Config\Action(
             TextCoverage::class,
@@ -72,15 +82,5 @@ class TestCoverageTest extends TestCase
         $standard->execute($config, $io, $repo, $action);
 
         $this->assertTrue(true);
-    }
-
-    /**
-     * @return \SebastianFeldmann\Git\Repository
-     */
-    private function getRepoMock()
-    {
-        return $this->getMockBuilder(Repository::class)
-                    ->disableOriginalConstructor()
-                    ->getMock();
     }
 }

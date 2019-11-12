@@ -9,6 +9,8 @@
  */
 namespace CaptainHook\App\Console\IO;
 
+use CaptainHook\App\Console\IO;
+
 trait Mockery
 {
     /**
@@ -16,7 +18,7 @@ trait Mockery
      *
      * @return \CaptainHook\App\Console\IO
      */
-    public function createIOMock()
+    public function createIOMock(): IO
     {
         return $this->getMockBuilder(DefaultIO::class)
                    ->disableOriginalConstructor()

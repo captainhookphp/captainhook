@@ -16,7 +16,7 @@ class AdvancedTest extends BaseTestRunner
     /**
      * Tests Advanced::configureHooks
      */
-    public function testConfigureCliHook()
+    public function testConfigureCliHook(): void
     {
         $io     = $this->getIOMock();
         $config = $this->getConfigMock();
@@ -30,7 +30,7 @@ class AdvancedTest extends BaseTestRunner
     /**
      * Tests Advanced::configureHooks
      */
-    public function testConfigurePHPHook()
+    public function testConfigurePHPHook(): void
     {
         $io     = $this->getIOMock();
         $config = $this->getConfigMock();

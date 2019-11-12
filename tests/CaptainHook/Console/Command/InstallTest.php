@@ -66,6 +66,10 @@ class InstallTest extends TestCase
      */
     public function testExecuteMissingRunExec(): void
     {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
         $repo = new DummyRepo();
         $repo->setup();
 
@@ -97,6 +101,10 @@ class InstallTest extends TestCase
      */
     public function testExecutePreCommit(): void
     {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
         $repo = new DummyRepo();
         $repo->setup();
 

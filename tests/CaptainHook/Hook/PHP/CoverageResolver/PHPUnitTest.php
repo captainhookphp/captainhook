@@ -16,8 +16,12 @@ class PHPUnitTest extends TestCase
     /**
      * Tests PHPUnit::getCoverage
      */
-    public function testValid()
+    public function testValid(): void
     {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
         $resolver = new PHPUnit(CH_PATH_FILES . '/bin/phpunit');
         $coverage = $resolver->getCoverage();
 
@@ -27,7 +31,7 @@ class PHPUnitTest extends TestCase
     /**
      * Tests PHPUnit::getCoverage
      */
-    public function testPHPUnitError()
+    public function testPHPUnitError(): void
     {
         $this->expectException(\Exception::class);
 

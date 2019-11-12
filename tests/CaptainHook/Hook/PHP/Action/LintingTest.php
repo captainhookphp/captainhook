@@ -12,22 +12,25 @@ namespace CaptainHook\App\Hook\PHP\Action;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Hook\PHP\Action\Linter;
+use CaptainHook\App\Mockery;
 use SebastianFeldmann\Git\Operator\Index;
 use SebastianFeldmann\Git\Repository;
 use PHPUnit\Framework\TestCase;
 
 class LintingTest extends TestCase
 {
+    use Mockery;
+
     /**
      * Tests Linter::execute
      */
-    public function testExecuteValidPHP()
+    public function testExecuteValidPHP(): void
     {
         $io       = new NullIO();
         $config   = new Config(CH_PATH_FILES . '/captainhook.json');
-        $repo     = $this->getRepoMock();
+        $repo     = $this->createRepositoryMock();
         $files    = [CH_PATH_FILES . '/php/valid.txt'];
-        $resolver = $this->getIndexOperatorMock();
+        $resolver = $this->createGitIndexOperator();
         $resolver->expects($this->once())->method('getStagedFilesOfType')->willReturn($files);
         $repo->expects($this->once())->method('getIndexOperator')->willReturn($resolver);
 
@@ -40,15 +43,15 @@ class LintingTest extends TestCase
     /**
      * Tests Linter::execute
      */
-    public function testExecuteInvalidPHP()
+    public function testExecuteInvalidPHP(): void
     {
         $this->expectException(\Exception::class);
 
         $io       = new NullIO();
         $config   = new Config(CH_PATH_FILES . '/captainhook.json');
-        $repo     = $this->getRepoMock();
+        $repo     = $this->createRepositoryMock();
         $files    = [CH_PATH_FILES . '/php/invalid.txt'];
-        $resolver = $this->getIndexOperatorMock();
+        $resolver = $this->createGitIndexOperator();
         $resolver->expects($this->once())->method('getStagedFilesOfType')->willReturn($files);
         $repo->expects($this->once())->method('getIndexOperator')->willReturn($resolver);
 
@@ -56,25 +59,5 @@ class LintingTest extends TestCase
         $action   = new Config\Action(Linter::class, []);
         $standard = new Linting();
         $standard->execute($config, $io, $repo, $action);
-    }
-
-    /**
-     * @return \SebastianFeldmann\Git\Repository
-     */
-    private function getRepoMock()
-    {
-        return $this->getMockBuilder(Repository::class)
-                    ->disableOriginalConstructor()
-                    ->getMock();
-    }
-
-    /**
-     * @return \SebastianFeldmann\Git\Operator\Index
-     */
-    private function getIndexOperatorMock()
-    {
-        return $this->getMockBuilder(Index::class)
-                    ->disableOriginalConstructor()
-                    ->getMock();
     }
 }

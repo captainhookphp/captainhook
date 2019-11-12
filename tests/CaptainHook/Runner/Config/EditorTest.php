@@ -16,7 +16,7 @@ class EditorTest extends BaseTestRunner
     /**
      * Tests Editor::run
      */
-    public function testInvalidHook()
+    public function testInvalidHook(): void
     {
         $this->expectException(\Exception::class);
 
@@ -32,7 +32,7 @@ class EditorTest extends BaseTestRunner
     /**
      * Tests Editor::run
      */
-    public function testNoHook()
+    public function testNoHook(): void
     {
         $this->expectException(\Exception::class);
 
@@ -48,7 +48,7 @@ class EditorTest extends BaseTestRunner
     /**
      * Tests Editor::run
      */
-    public function testNoChange()
+    public function testNoChange(): void
     {
         $this->expectException(\Exception::class);
 
@@ -64,7 +64,7 @@ class EditorTest extends BaseTestRunner
     /**
      * Tests Editor::run
      */
-    public function testInvalidChange()
+    public function testInvalidChange(): void
     {
         $this->expectException(\Exception::class);
 

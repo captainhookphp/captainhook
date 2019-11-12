@@ -24,37 +24,15 @@ class RulesTest extends TestCase
     use Mockery;
 
     /**
-     * @var \CaptainHook\App\Git\DummyRepo
-     */
-    private $repo;
-
-    /**
-     * Setup dummy repo.
-     */
-    public function setUp(): void
-    {
-        $this->repo = new DummyRepo();
-        $this->repo->setup();
-    }
-
-    /**
-     * Cleanup dummy repo.
-     */
-    public function tearDown(): void
-    {
-        $this->repo->cleanup();
-    }
-
-    /**
      * Tests Rulebook::execute
      */
-    public function testExecuteEmptyRules()
+    public function testExecuteEmptyRules(): void
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(Rules::class);
-        $repo   = new Repository($this->repo->getPath());
-        $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
+        $repo   = $this->createRepositoryMock();
+        $repo->method('getCommitMsg')->willReturn(new CommitMessage('Foo bar baz'));
 
         $standard = new Rules();
         $standard->execute($config, $io, $repo, $action);
@@ -65,7 +43,7 @@ class RulesTest extends TestCase
     /**
      * Tests Rulebook::execute
      */
-    public function testNoValidationOnMerging()
+    public function testNoValidationOnMerging(): void
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
@@ -82,13 +60,13 @@ class RulesTest extends TestCase
     /**
      * Tests Rulebook::execute
      */
-    public function testExecuteClassNotFound()
+    public function testExecuteClassNotFound(): void
     {
         $this->expectException(\Exception::class);
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $repo   = new Repository($this->repo->getPath());
+        $repo   = $this->createRepositoryMock();
         $action = new Config\Action(Rules::class, [Foo::class]);
 
         $standard = new Rules();
@@ -98,14 +76,14 @@ class RulesTest extends TestCase
     /**
      * Tests Rulebook::execute
      */
-    public function testExecuteInvalidClass()
+    public function testExecuteInvalidClass(): void
     {
         $this->expectException(\Exception::class);
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(Rules::class, [Validator::class]);
-        $repo   = new Repository($this->repo->getPath());
+        $repo   = $this->createRepositoryMock();
 
         $standard = new Rules();
         $standard->execute($config, $io, $repo, $action);
@@ -114,13 +92,13 @@ class RulesTest extends TestCase
     /**
      * Tests Rulebook::execute
      */
-    public function testExecuteValidRule()
+    public function testExecuteValidRule(): void
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(Rules::class, [CapitalizeSubject::class]);
-        $repo   = new Repository($this->repo->getPath());
-        $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
+        $repo   = $this->createRepositoryMock();
+        $repo->method('getCommitMsg')->willReturn(new CommitMessage('Foo bar baz'));
 
         $standard = new Rules();
         $standard->execute($config, $io, $repo, $action);
@@ -131,15 +109,15 @@ class RulesTest extends TestCase
     /**
      * Tests Rule::execute
      */
-    public function testNoRule()
+    public function testNoRule(): void
     {
         $this->expectException(\Exception::class);
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(Rules::class, [NoRule::class]);
-        $repo   = new Repository($this->repo->getPath());
-        $repo->setCommitMsg(new CommitMessage('Foo bar baz'));
+        $repo   = $this->createRepositoryMock();
+        $repo->method('getCommitMsg')->willReturn(new CommitMessage('Foo bar baz'));
 
         $standard = new Rules();
         $standard->execute($config, $io, $repo, $action);

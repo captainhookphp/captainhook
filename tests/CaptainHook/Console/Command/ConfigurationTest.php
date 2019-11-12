@@ -10,7 +10,6 @@
 namespace CaptainHook\App\Console\Command;
 
 use CaptainHook\App\Console\IO\NullIO;
-use CaptainHook\App\Git\DummyRepo;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +19,7 @@ class ConfigurationTest extends TestCase
     /**
      * Tests Configure::run
      */
-    public function testExecute()
+    public function testExecute(): void
     {
         $config    = sys_get_temp_dir() . DIRECTORY_SEPARATOR . md5(mt_rand(0, 9999)) . '.json';
         $configure = new Configuration();

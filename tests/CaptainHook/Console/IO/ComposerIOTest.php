@@ -41,7 +41,7 @@ class ComposerIOTest extends TestCase
     /**
      * Tests ComposerIO::isInteractive
      */
-    public function testIsInteractive()
+    public function testIsInteractive(): void
     {
         $this->assertFalse($this->io->isInteractive());
     }
@@ -49,7 +49,7 @@ class ComposerIOTest extends TestCase
     /**
      * Tests ComposerIO::isDebug
      */
-    public function testIsDebug()
+    public function testIsDebug(): void
     {
         $this->assertFalse($this->io->isDebug());
 
@@ -58,7 +58,7 @@ class ComposerIOTest extends TestCase
     /**
      * Tests ComposerIO::isVerbose
      */
-    public function testIsVerbose()
+    public function testIsVerbose(): void
     {
         $this->assertFalse($this->io->isVerbose());
     }
@@ -66,7 +66,7 @@ class ComposerIOTest extends TestCase
     /**
      * Tests ComposerIO::isVeryVerbose
      */
-    public function testIsVeryVerbose()
+    public function testIsVeryVerbose(): void
     {
         $this->assertFalse($this->io->isVeryVerbose());
     }
@@ -74,7 +74,7 @@ class ComposerIOTest extends TestCase
     /**
      * Tests ComposerIO::write
      */
-    public function testWrite()
+    public function testWrite(): void
     {
         $this->io->write('foo');
 
@@ -84,7 +84,7 @@ class ComposerIOTest extends TestCase
     /**
      * Tests ComposerIO::writeError
      */
-    public function testWriteError()
+    public function testWriteError(): void
     {
         $this->io->writeError('foo');
 
@@ -95,7 +95,7 @@ class ComposerIOTest extends TestCase
     /**
      * Tests ComposerIO::ask
      */
-    public function testAsk()
+    public function testAsk(): void
     {
         $this->assertEquals('bar', $this->io->ask('foo', 'bar'));
     }
@@ -103,7 +103,7 @@ class ComposerIOTest extends TestCase
     /**
      * Tests ComposerIO::askConfirmation
      */
-    public function testAskConfirmation()
+    public function testAskConfirmation(): void
     {
         $this->assertEquals(true, $this->io->askConfirmation('foo', true));
     }
@@ -111,7 +111,7 @@ class ComposerIOTest extends TestCase
     /**
      * Tests ComposerIO::askAbdValidate
      */
-    public function testAskAndValidate()
+    public function testAskAndValidate(): void
     {
         $this->assertEquals(
             true,

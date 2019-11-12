@@ -10,6 +10,7 @@
 namespace CaptainHook\App\Storage;
 
 use Exception;
+use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 
 class FileTest extends TestCase
@@ -42,7 +43,7 @@ class FileTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        $file    = new File(__FILE__ . '.absent');
+        $file = new File(__FILE__ . '.absent');
         $file->read();
     }
 
@@ -79,10 +80,8 @@ class FileTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        $path = tempnam(sys_get_temp_dir(), 'noPermission');
-        chmod($path, 0000);
-
-        $file = new File($path);
+        $root = vfsStream::setup('exampleDir', 0000);
+        $file = new File(vfsStream::url('exampleDir'));
         $file->write('test');
     }
 
@@ -93,8 +92,8 @@ class FileTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        $baseDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('basedir', true);
-        mkdir($baseDir, 0000);
+        $root    = vfsStream::setup('exampleDir', 0000);
+        $baseDir = vfsStream::url('exampleDir');
 
         $path = $baseDir . '/foo/bar.txt';
         $file = new File($path);

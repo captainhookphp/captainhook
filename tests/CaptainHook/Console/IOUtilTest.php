@@ -17,7 +17,7 @@ class IOUtilTest extends TestCase
     /**
      * Tests IOUtil::mapConfigVerbosity
      */
-    public function testMapConfigVerbosity()
+    public function testMapConfigVerbosity(): void
     {
         $this->assertEquals(OutputInterface::VERBOSITY_QUIET, IOUtil::mapConfigVerbosity('quiet'));
         $this->assertEquals(OutputInterface::VERBOSITY_NORMAL, IOUtil::mapConfigVerbosity('normal'));
@@ -28,7 +28,7 @@ class IOUtilTest extends TestCase
     /**
      * Tests IOUtil::mapConfigVerbosity
      */
-    public function testMapConfigVerbosityNotFound()
+    public function testMapConfigVerbosityNotFound(): void
     {
         $this->assertEquals(OutputInterface::VERBOSITY_NORMAL, IOUtil::mapConfigVerbosity('foobar'));
     }
@@ -36,7 +36,7 @@ class IOUtilTest extends TestCase
     /**
      * Tests IOUtil::answerToBool
      */
-    public function testAnswerToBool()
+    public function testAnswerToBool(): void
     {
         $this->assertTrue(IOUtil::answerToBool('y'));
         $this->assertTrue(IOUtil::answerToBool('yes'));

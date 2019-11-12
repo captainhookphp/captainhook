@@ -20,7 +20,7 @@ class HelpTest extends TestCase
     /**
      * Tests Help::run
      */
-    public function testExecuteNoCommand()
+    public function testExecuteNoCommand(): void
     {
         $input  = new ArrayInput([]);
         $output = new BufferedOutput();
@@ -39,7 +39,7 @@ class HelpTest extends TestCase
     /**
      * Tests Help::run
      */
-    public function testExecuteWithCommand()
+    public function testExecuteWithCommand(): void
     {
         $input  = new ArrayInput([]);
         $output = new BufferedOutput();

@@ -16,7 +16,7 @@ class OptionsTest extends TestCase
     /**
      * Tests Options::get
      */
-    public function testGet()
+    public function testGet(): void
     {
         $options = new Options(['foo' => 'bar']);
 
@@ -26,7 +26,7 @@ class OptionsTest extends TestCase
     /**
      * Tests Options::getOptions
      */
-    public function testGetAll()
+    public function testGetAll(): void
     {
         $options = new Options(['foo']);
 

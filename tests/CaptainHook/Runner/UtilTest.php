@@ -16,7 +16,7 @@ class UtilTest extends TestCase
     /**
      * Tests Util::getExecType
      */
-    public function testGetTypePHP()
+    public function testGetTypePHP(): void
     {
         $this->assertEquals('php', Util::getExecType('\\Foo\\Bar'));
         $this->assertEquals('php', Util::getExecType('\\Foo\\Bar::baz'));
@@ -26,7 +26,7 @@ class UtilTest extends TestCase
     /**
      * Tests Util::getExecType
      */
-    public function testGetTypeCli()
+    public function testGetTypeCli(): void
     {
         $this->assertEquals('cli', Util::getExecType('./my-binary'));
         $this->assertEquals('cli', Util::getExecType('phpunit'));
@@ -38,7 +38,7 @@ class UtilTest extends TestCase
     /**
      * Tests Util::isTypeValid
      */
-    public function testIsTypeValid()
+    public function testIsTypeValid(): void
     {
         $this->assertTrue(Util::isTypeValid('php'));
         $this->assertTrue(Util::isTypeValid('cli'));

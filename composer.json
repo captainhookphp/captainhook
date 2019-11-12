@@ -35,7 +35,8 @@
   },
   "require-dev": {
     "composer/composer": "~1",
-    "phpunit/phpunit": "^7.0"
+    "phpunit/phpunit": "^7.0",
+    "mikey179/vfsStream": "~1"
   },
   "bin": [
     "captainhook",

@@ -13,41 +13,22 @@ use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Git\CommitMessage;
 use CaptainHook\App\Git\DummyRepo;
+use CaptainHook\App\Mockery;
 use SebastianFeldmann\Git\Repository;
 use PHPUnit\Framework\TestCase;
 
 class CheckLockFileTest extends TestCase
 {
-    /**
-     * @var \CaptainHook\App\Git\DummyRepo
-     */
-    private $repo;
-
-    /**
-     * Setup dummy repo.
-     */
-    public function setUp(): void
-    {
-        $this->repo = new DummyRepo();
-        $this->repo->setup();
-    }
-
-    /**
-     * Cleanup dummy repo.
-     */
-    public function tearDown(): void
-    {
-        $this->repo->cleanup();
-    }
+    use Mockery;
 
     /**
      * Tests CheckLockFile::execute
      */
-    public function testExecute()
+    public function testExecute(): void
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $repo   = new Repository($this->repo->getPath());
+        $repo   = $this->createRepositoryMock();
         $action = new Config\Action(
             CheckLockFile::class,
             ['path' => CH_PATH_FILES . '/composer/valid', 'name' => 'composer.fake']
@@ -61,13 +42,13 @@ class CheckLockFileTest extends TestCase
     /**
      * Tests CheckLockFile::execute
      */
-    public function testExecuteFail()
+    public function testExecuteFail(): void
     {
         $this->expectException(\Exception::class);
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $repo   = new Repository($this->repo->getPath());
+        $repo   = $this->createRepositoryMock();
         $action = new Config\Action(
             CheckLockFile::class,
             ['path' => CH_PATH_FILES . '/composer/invalid-hash', 'name' => 'composer.fake']
@@ -81,13 +62,13 @@ class CheckLockFileTest extends TestCase
     /**
      * Tests CheckLockFile::execute
      */
-    public function testExecuteNoHash()
+    public function testExecuteNoHash(): void
     {
         $this->expectException(\Exception::class);
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $repo   = new Repository($this->repo->getPath());
+        $repo   = $this->createRepositoryMock();
         $action = new Config\Action(
             CheckLockFile::class,
             ['path' => CH_PATH_FILES . '/composer/no-hash', 'name' => 'composer.fake']
@@ -100,13 +81,13 @@ class CheckLockFileTest extends TestCase
     /**
      * Tests CheckLockFile::execute
      */
-    public function testExecuteInvalidPath()
+    public function testExecuteInvalidPath(): void
     {
         $this->expectException(\Exception::class);
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $repo   = new Repository($this->repo->getPath());
+        $repo   = $this->createRepositoryMock();
         $action = new Config\Action(
             CheckLockFile::class,
             ['path' => CH_PATH_FILES . '/composer/not-there']

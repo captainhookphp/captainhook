@@ -17,7 +17,7 @@ class NoPeriodOnSubjectEndTest extends TestCase
     /**
      * Tests NoPeriodOnSubjectEnd::pass
      */
-    public function testPassSuccess()
+    public function testPassSuccess(): void
     {
         $msg  = new CommitMessage('Foo bar');
         $rule = new NoPeriodOnSubjectEnd();
@@ -28,7 +28,7 @@ class NoPeriodOnSubjectEndTest extends TestCase
     /**
      * Tests NoPeriodOnSubjectEnd::pass
      */
-    public function testPassFail()
+    public function testPassFail(): void
     {
         $msg  = new CommitMessage('Foo bar.');
         $rule = new NoPeriodOnSubjectEnd();
