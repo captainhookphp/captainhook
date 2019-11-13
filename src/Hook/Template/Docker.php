@@ -27,6 +27,8 @@ use CaptainHook\App\Storage\Util;
  */
 class Docker implements Template
 {
+    private const BINARY = 'captainhook-run';
+
     /**
      * Path to the captainhook-run binary
      *
@@ -51,10 +53,7 @@ class Docker implements Template
     public function __construct(string $repoPath, string $vendorPath, string $command)
     {
         $this->command    = $command;
-        $this->binaryPath = ltrim(
-            Util::resolveBinaryPath($repoPath, $vendorPath, 'captainhook-run'),
-            DIRECTORY_SEPARATOR
-        );
+        $this->binaryPath = $this->resolveBinaryPath($repoPath, $vendorPath);
     }
 
     /**
@@ -66,6 +65,45 @@ class Docker implements Template
     public function getCode(string $hook): string
     {
         return '#!/usr/bin/env bash' . PHP_EOL .
-            $this->command . ' ./' . $this->binaryPath . ' ' . $hook . ' "$@"' . PHP_EOL;
+            $this->command . ' ' . $this->binaryPath . ' ' . $hook . ' "$@"' . PHP_EOL;
+    }
+
+    /**
+     * Resolves the path to the captainhook-run binary and returns it.
+     *
+     * This path is either right inside the repo itself (captainhook) or only in vendor path.
+     * Which happens if captainhook is required as dependency.
+     *
+     * @param  string $repoPath   Absolute path to the git repository root
+     * @param  string $vendorPath Absolute path to the composer vendor directory
+     * @return string
+     */
+    private function resolveBinaryPath(string $repoPath, string $vendorPath): string
+    {
+        // For docker we need to strip down the current working directory.
+        // This is caused because docker will always connect to a specific working directory
+        // where the absolute path will not be recognized.
+        // E.g.:
+        //   cwd    => /project/
+        //   path   => /project/vendor/bin/captainhook-run
+        //   docker => ./vendor/bin/captainhook-run
+
+        // check if the captainhook binary is in the repository root directory
+        // this is only the case if we work in the captainhook repository
+        if (file_exists($repoPath . '/' . self::BINARY)) {
+            return './' . self::BINARY;
+        }
+
+        $repoDir   = Util::pathToArray($repoPath);
+        $vendorDir = Util::pathToArray($vendorPath);
+
+        // if vendor dir is a subdirectory use a relative path
+        if (Util::isSubDirectoryOf($vendorDir, $repoDir)) {
+            $vendorPath = './' . Util::arrayToPath(Util::getSubPathOf($vendorDir, $repoDir));
+        }
+
+        // by default this should return something like ./vendor/bin/captainhook-run
+        // if the vendor directory is not located in your git repository it will return an absolute path
+        return $vendorPath . '/bin/' . self::BINARY;
     }
 }

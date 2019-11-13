@@ -16,29 +16,29 @@ class DockerTest extends TestCase
     /**
      * Tests Docker::getCode
      */
-    public function testTemplateFirstParty() : void
+    public function testTemplateCaptainhookDevelopment() : void
     {
-        $repoPath = realpath(__DIR__ . '/../../../files/storage');
-        $template = new Docker($repoPath, 'does/not/matter', 'docker exec captain-container');
+        $repoPath = realpath(__DIR__ . '/../../../files/template-ch');
+        $template = new Docker($repoPath, $repoPath . '/does/not/matter', 'docker exec captain-container');
         $code = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/usr/bin/env bash', $code);
         $this->assertStringContainsString('docker exec captain-container', $code);
-        $this->assertStringContainsString($repoPath . DIRECTORY_SEPARATOR . 'captainhook-run', $code);
+        $this->assertStringContainsString('./captainhook-run', $code);
     }
 
     /**
      * Tests Docker::getCode
      */
-    public function testTemplateThirdParty() : void
+    public function testTemplateCaptainHookAsLibrary() : void
     {
         $repoPath = realpath(__DIR__);
 
-        $template = new Docker($repoPath, $repoPath, 'docker exec captain-container');
+        $template = new Docker($repoPath, $repoPath . '/vendor', 'docker exec captain-container');
         $code = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/usr/bin/env bash', $code);
         $this->assertStringContainsString('docker exec captain-container', $code);
-        $this->assertStringContainsString($repoPath . '/bin/captainhook-run', $code);
+        $this->assertStringContainsString('./vendor/bin/captainhook-run', $code);
     }
 }

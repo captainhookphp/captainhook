@@ -85,6 +85,23 @@ abstract class Util
     }
 
     /**
+     * Transforms an absolute path to a relative one
+     *
+     * @param  string $subPath     Absolute path to sub directory
+     * @param  string $parentPath  Absolute path to parent directory
+     * @return string
+     */
+    public static function getRelativePath(string $subPath, string $parentPath): string
+    {
+        return Util::arrayToPath(
+            Util::getSubPathOf(
+                Util::pathToArray($subPath),
+                Util::pathToArray($parentPath)
+            )
+        );
+    }
+
+    /**
      * Return the path to the target path from inside the .git/hooks directory f.e. __DIR__ ../../vendor
      *
      * @param  string $repoDir
@@ -102,27 +119,5 @@ abstract class Util
         }
 
         return '__DIR__ . \'/../../' . implode('/', self::getSubPathOf($target, $repo));
-    }
-
-    /**
-     * Resolves the path to the captainhook-run binary and returns it.
-     *
-     * This path is either right inside the repo itself (captainhook) or only in vendor path.
-     * Which happens if captainhook is required as dependency.
-     *
-     * @param  string $repoDir
-     * @param  string $vendorPath
-     * @param  string $binary
-     * @return string
-     */
-    public static function resolveBinaryPath(string $repoDir, string $vendorPath, string $binary): string
-    {
-        $binaryPath = $repoDir . DIRECTORY_SEPARATOR . $binary;
-
-        if (!file_exists($binaryPath)) {
-            return $vendorPath . '/bin/' . $binary;
-        }
-
-        return $binaryPath;
     }
 }

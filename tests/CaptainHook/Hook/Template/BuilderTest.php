@@ -27,11 +27,11 @@ class BuilderTest extends TestCase
         $config = $this->prophesize(Config::class);
         $config->getRunMode()->willReturn('docker');
         $config->getRunExec()->willReturn('docker exec captain-container');
-        $config->getPath()->willReturn(CH_PATH_FILES . '/config/valid.json');
-        $config->getVendorDirectory()->willReturn('vendor');
+        $config->getPath()->willReturn(CH_PATH_FILES . '/template/captainhook.json');
+        $config->getVendorDirectory()->willReturn(CH_PATH_FILES . '/template/vendor');
 
         $repository = $this->prophesize(Repository::class);
-        $repository->getRoot()->willReturn(CH_PATH_FILES . '/config');
+        $repository->getRoot()->willReturn(CH_PATH_FILES . '/template');
 
         $template = Builder::build($config->reveal(), $repository->reveal());
         $this->assertInstanceOf(Docker::class, $template);
@@ -39,6 +39,7 @@ class BuilderTest extends TestCase
         $code = $template->getCode('pre-commit');
         $this->assertStringContainsString('pre-commit', $code);
         $this->assertStringContainsString('docker exec captain-container', $code);
+        $this->assertStringContainsString('./vendor/bin/captainhook-run', $code);
     }
 
     /**
@@ -46,11 +47,12 @@ class BuilderTest extends TestCase
      */
     public function testBuildDockerTemplateObservesConfig(): void
     {
-        $config = $this->prophesize(Config::class);
+        $vendorPath = realpath(__DIR__ . '/../../../../vendor');
+        $config     = $this->prophesize(Config::class);
         $config->getRunMode()->willReturn('docker');
         $config->getRunExec()->willReturn('docker exec captain-container');
         $config->getPath()->willReturn(CH_PATH_FILES . '/config/valid.json');
-        $config->getVendorDirectory()->willReturn('vendor');
+        $config->getVendorDirectory()->willReturn($vendorPath);
 
         $repository = $this->prophesize(Repository::class);
         $repository->getRoot()->willReturn(CH_PATH_FILES . '/config');
@@ -61,6 +63,7 @@ class BuilderTest extends TestCase
         $code = $template->getCode('pre-commit');
         $this->assertStringContainsString('pre-commit', $code);
         $this->assertStringContainsString('docker exec captain-container', $code);
+        $this->assertStringContainsString($vendorPath . '/bin/captainhook-run', $code);
     }
 
     /**

@@ -32,8 +32,8 @@ abstract class Builder
     /**
      * Creates a template that is responsible for the git hook template
      *
-     * @param  \CaptainHook\App\Config                         $config
-     * @param  \SebastianFeldmann\Git\Repository               $repository
+     * @param  \CaptainHook\App\Config           $config
+     * @param  \SebastianFeldmann\Git\Repository $repository
      * @return \CaptainHook\App\Hook\Template
      */
     public static function build(Config $config, Repository $repository): Template
@@ -47,18 +47,9 @@ abstract class Builder
         }
 
         if ($config->getRunMode() === Template::DOCKER) {
-            // For docker we need to strip down the current working directory.
-            // This is caused because docker will always connect to a specific working directory
-            // where the absolute path will not be recognized.
-            // E.g.:
-            //   cwd => /docker
-            //   path => /docker/captainhook-run
-            // The actual path needs to be /captainhook-run to work
-            $dockerRepoPath = self::getRelativePath($repositoryPath);
-
             return new Docker(
-                $dockerRepoPath,
-                $config->getVendorDirectory(),
+                $repositoryPath,
+                $vendorPath,
                 $config->getRunExec()
             );
         }
@@ -68,16 +59,5 @@ abstract class Builder
             $vendorPath,
             $configPath
         );
-    }
-
-    /**
-     * Transforms an absolute path to a relative one
-     *
-     * @param  string $path
-     * @return string
-     */
-    private static function getRelativePath(string $path): string
-    {
-        return Util::arrayToPath(Util::getSubPathOf(Util::pathToArray($path), Util::pathToArray((string)getcwd())));
     }
 }

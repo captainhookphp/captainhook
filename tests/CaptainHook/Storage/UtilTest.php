@@ -86,7 +86,7 @@ class UtilTest extends TestCase
     }
 
     /**
-     * Tests Template::getHookTargetPath
+     * Tests Util::getHookTargetPath
      */
     public function testGetTplTargetPath(): void
     {
@@ -108,20 +108,10 @@ class UtilTest extends TestCase
     }
 
     /**
-     * Tests Util::resolveBinaryPath
+     * Tests Util::getRelativePath
      */
-    public function testResolveBinaryPath(): void
+    public function testGetRelativeTest(): void
     {
-        $repoDir = realpath(__DIR__ . '/../../files/storage');
-        $vendorDir = realpath(__DIR__ . '/../../files/storage');
-
-        $path = Util::resolveBinaryPath($repoDir, $vendorDir, 'captainhook-run');
-        $this->assertEquals($repoDir . DIRECTORY_SEPARATOR . 'captainhook-run', $path);
-
-        $repoDir   = __DIR__;
-        $vendorDir = __DIR__;
-
-        $path = Util::resolveBinaryPath($repoDir, $vendorDir, 'captainhook-run');
-        $this->assertEquals(__DIR__ . '/bin/captainhook-run', $path);
+        $this->assertEquals('bar', Util::getRelativePath('/foo/bar', '/foo'));
     }
 }
