@@ -7,6 +7,10 @@ build:
       - wget -O composer.phar https://getcomposer.org/composer.phar
       - chmod +x composer.phar
       - ./composer.phar install
+  analysis:
+    tests:
+      override:
+        - php-scrutinizer-run
   tests:
     override:
       - command: ./vendor/bin/phpunit --coverage-clover=clover.xml
