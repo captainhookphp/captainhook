@@ -13,7 +13,7 @@ build:
         coverage:
           file:  clover.xml
           format: php-clover
-  node:
+  nodes:
     analysis:
       tests:
         override:
