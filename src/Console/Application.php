@@ -133,8 +133,8 @@ class Application extends SymfonyApplication
     public function silenceXDebug(): void
     {
         if (function_exists('ini_set') && extension_loaded('xdebug')) {
-            ini_set('xdebug.show_exception_trace', false);
-            ini_set('xdebug.scream', false);
+            ini_set('xdebug.show_exception_trace', '0');
+            ini_set('xdebug.scream', '0');
         }
     }
 }
