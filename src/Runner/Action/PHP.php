@@ -13,7 +13,6 @@ use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Action;
-use CaptainHook\App\Hook\ActionFactory;
 use SebastianFeldmann\Git\Repository;
 
 /**

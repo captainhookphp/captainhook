@@ -12,7 +12,7 @@ namespace CaptainHook\App\Runner;
 use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Exception;
 use CaptainHook\App\Hook\Template;
-use CaptainHook\App\Hook\Util;
+use CaptainHook\App\Hook\Util as HookUtil;
 use CaptainHook\App\Storage\File;
 
 /**
@@ -65,7 +65,7 @@ class Installer extends RepositoryAware
      */
     public function setHook(string $hook) : Installer
     {
-        if (!empty($hook) && !Util::isValid($hook)) {
+        if (!empty($hook) && !HookUtil::isValid($hook)) {
             throw new Exception\InvalidHookName('Invalid hook name \'' . $hook . '\'');
         }
         $this->hookToHandle = $hook;
@@ -93,7 +93,7 @@ class Installer extends RepositoryAware
      */
     public function getHooksToInstall() : array
     {
-        return empty($this->hookToHandle) ? Util::getValidHooks() : [$this->hookToHandle => false];
+        return empty($this->hookToHandle) ? HookUtil::getValidHooks() : [$this->hookToHandle => false];
     }
 
     /**
