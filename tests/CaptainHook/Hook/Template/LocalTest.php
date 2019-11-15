@@ -11,6 +11,8 @@ namespace CaptainHook\App\Hook\Template;
 
 use CaptainHook\App\Storage\Util;
 use PHPUnit\Framework\TestCase;
+use SebastianFeldmann\Camino\Path\Directory;
+use SebastianFeldmann\Camino\Path\File;
 
 class LocalTest extends TestCase
 {
@@ -19,9 +21,9 @@ class LocalTest extends TestCase
      */
     public function testTemplate() : void
     {
-        $repo     = Util::arrayToPath(['foo', 'bar'], true);
-        $vendor   = Util::arrayToPath(['foo', 'bar', 'vendor'], true);
-        $config   = Util::arrayToPath(['foo', 'bar', 'captainhook.json'], true);
+        $repo     = new Directory('/foo/bar');
+        $vendor   = new Directory('/foo/bar/vendor');
+        $config   = new File('/foo/bar/captainhook.json');
         $template = new Local($repo, $vendor, $config);
         $code     = $template->getCode('commit-msg');
 

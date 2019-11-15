@@ -13,6 +13,9 @@ namespace CaptainHook\App\Hook\Template;
 
 use CaptainHook\App\Hook\Template;
 use CaptainHook\App\Storage\Util;
+use SebastianFeldmann\Camino\Path;
+use SebastianFeldmann\Camino\Path\Directory;
+use SebastianFeldmann\Camino\Path\File;
 
 /**
  * Local class
@@ -43,14 +46,14 @@ class Local implements Template
     /**
      * Local constructor
      *
-     * @param string $repoPath
-     * @param string $vendorPath
-     * @param string $configPath
+     * @param \SebastianFeldmann\Camino\Path\Directory $repo
+     * @param \SebastianFeldmann\Camino\Path\Directory $vendor
+     * @param \SebastianFeldmann\Camino\Path\File      $config
      */
-    public function __construct(string $repoPath, string $vendorPath, string $configPath)
+    public function __construct(Directory $repo, Directory $vendor, File $config)
     {
-        $this->vendorPath = Util::getTplTargetPath($repoPath, $vendorPath);
-        $this->configPath = Util::getTplTargetPath($repoPath, $configPath);
+        $this->vendorPath = $this->getPathFromHookTo($repo, $vendor);
+        $this->configPath = $this->getPathFromHookTo($repo, $config);
     }
 
     /**
@@ -75,5 +78,21 @@ class Local implements Template
             '$app->setConfigFile($config);' . PHP_EOL .
             '$app->setRepositoryPath(dirname(dirname(__DIR__)));' . PHP_EOL .
             '$app->run();' . PHP_EOL . PHP_EOL;
+    }
+
+    /**
+     * Return the path to the target path from inside the .git/hooks directory f.e. __DIR__ ../../vendor
+     *
+     * @param  \SebastianFeldmann\Camino\Path\Directory $repo
+     * @param  \SebastianFeldmann\Camino\Path           $target
+     * @return string
+     */
+    private function getPathFromHookTo(Directory $repo, Path $target) : string
+    {
+        if (!$target->isChildOf($repo)) {
+            return $target->getPath();
+        }
+
+        return '__DIR__ . \'/../../' . $target->getRelativePathFrom($repo);
     }
 }

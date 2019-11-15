@@ -10,6 +10,7 @@
 namespace CaptainHook\App\Hook\Template;
 
 use PHPUnit\Framework\TestCase;
+use SebastianFeldmann\Camino\Path\Directory;
 
 class DockerTest extends TestCase
 {
@@ -18,8 +19,8 @@ class DockerTest extends TestCase
      */
     public function testTemplateCaptainhookDevelopment() : void
     {
-        $repoPath = realpath(__DIR__ . '/../../../files/template-ch');
-        $template = new Docker($repoPath, $repoPath . '/does/not/matter', 'docker exec captain-container');
+        $repoPath = new Directory(realpath(__DIR__ . '/../../../files/template-ch'));
+        $template = new Docker($repoPath, new Directory('/does/not/matter'), 'docker exec captain-container');
         $code = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/usr/bin/env bash', $code);
@@ -32,9 +33,9 @@ class DockerTest extends TestCase
      */
     public function testTemplateCaptainHookAsLibrary() : void
     {
-        $repoPath = realpath(__DIR__);
+        $repo = new Directory(realpath(__DIR__));
 
-        $template = new Docker($repoPath, $repoPath . '/vendor', 'docker exec captain-container');
+        $template = new Docker($repo, new Directory($repo->getPath() . '/vendor'), 'docker exec captain-container');
         $code = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/usr/bin/env bash', $code);

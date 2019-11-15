@@ -29,6 +29,7 @@
     "ext-json": "*",
     "ext-simplexml": "*",
     "ext-spl": "*",
+    "sebastianfeldmann/camino": "^0.9.1",
     "sebastianfeldmann/cli": "^3.0",
     "sebastianfeldmann/git": "^2.2",
     "symfony/console": ">=2.7"
@@ -36,7 +37,7 @@
   "require-dev": {
     "composer/composer": "~1",
     "phpunit/phpunit": "^7.0",
-    "mikey179/vfsStream": "~1"
+    "mikey179/vfsstream": "~1"
   },
   "bin": [
     "captainhook",

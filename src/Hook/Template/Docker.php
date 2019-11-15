@@ -13,6 +13,7 @@ namespace CaptainHook\App\Hook\Template;
 
 use CaptainHook\App\Hook\Template;
 use CaptainHook\App\Storage\Util;
+use SebastianFeldmann\Camino\Path\Directory;
 
 /**
  * Docker class
@@ -46,14 +47,14 @@ class Docker implements Template
     /**
      * Docker constructor
      *
-     * @param string $repoPath
-     * @param string $vendorPath
-     * @param string $command
+     * @param \SebastianFeldmann\Camino\Path\Directory $repo
+     * @param \SebastianFeldmann\Camino\Path\Directory $vendor
+     * @param string                                   $command
      */
-    public function __construct(string $repoPath, string $vendorPath, string $command)
+    public function __construct(Directory $repo, Directory $vendor, string $command)
     {
         $this->command    = $command;
-        $this->binaryPath = $this->resolveBinaryPath($repoPath, $vendorPath);
+        $this->binaryPath = $this->resolveBinaryPath($repo, $vendor);
     }
 
     /**
@@ -74,11 +75,11 @@ class Docker implements Template
      * This path is either right inside the repo itself (captainhook) or only in vendor path.
      * Which happens if captainhook is required as dependency.
      *
-     * @param  string $repoPath   Absolute path to the git repository root
-     * @param  string $vendorPath Absolute path to the composer vendor directory
+     * @param \SebastianFeldmann\Camino\Path\Directory $repo   Absolute path to the git repository root
+     * @param \SebastianFeldmann\Camino\Path\Directory $vendor Absolute path to the composer vendor directory
      * @return string
      */
-    private function resolveBinaryPath(string $repoPath, string $vendorPath): string
+    private function resolveBinaryPath(Directory $repo, Directory $vendor): string
     {
         // For docker we need to strip down the current working directory.
         // This is caused because docker will always connect to a specific working directory
@@ -90,20 +91,19 @@ class Docker implements Template
 
         // check if the captainhook binary is in the repository root directory
         // this is only the case if we work in the captainhook repository
-        if (file_exists($repoPath . '/' . self::BINARY)) {
+        if (file_exists($repo->getPath() . '/' . self::BINARY)) {
             return './' . self::BINARY;
         }
 
-        $repoDir   = Util::pathToArray($repoPath);
-        $vendorDir = Util::pathToArray($vendorPath);
+        $pathToVendor = $vendor->getPath();
 
         // if vendor dir is a subdirectory use a relative path
-        if (Util::isSubDirectoryOf($vendorDir, $repoDir)) {
-            $vendorPath = './' . Util::arrayToPath(Util::getSubPathOf($vendorDir, $repoDir));
+        // by default this should return something like ./vendor/bin/captainhook-run
+        if ($vendor->isSubDirectoryOf($repo)) {
+            $pathToVendor = './' . $vendor->getRelativePathFrom($repo);
         }
 
-        // by default this should return something like ./vendor/bin/captainhook-run
-        // if the vendor directory is not located in your git repository it will return an absolute path
-        return $vendorPath . '/bin/' . self::BINARY;
+        // if the vendor directory is not located in your git repository it will return the absolute path
+        return  $pathToVendor . '/bin/' . self::BINARY;
     }
 }

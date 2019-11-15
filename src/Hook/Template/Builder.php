@@ -15,6 +15,8 @@ use CaptainHook\App\Config;
 use CaptainHook\App\Hook\Template;
 use CaptainHook\App\Storage\Util;
 use RuntimeException;
+use SebastianFeldmann\Camino\Path\Directory;
+use SebastianFeldmann\Camino\Path\File;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -48,16 +50,16 @@ abstract class Builder
 
         if ($config->getRunMode() === Template::DOCKER) {
             return new Docker(
-                $repositoryPath,
-                $vendorPath,
+                new Directory($repositoryPath),
+                new Directory($vendorPath),
                 $config->getRunExec()
             );
         }
 
         return new Local(
-            $repositoryPath,
-            $vendorPath,
-            $configPath
+            new Directory($repositoryPath),
+            new Directory($vendorPath),
+            new File($configPath)
         );
     }
 }
