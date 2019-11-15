@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace CaptainHook\App\Hook\Template;
 
 use CaptainHook\App\Hook\Template;
-use CaptainHook\App\Storage\Util;
 use SebastianFeldmann\Camino\Path;
 use SebastianFeldmann\Camino\Path\Directory;
 use SebastianFeldmann\Camino\Path\File;

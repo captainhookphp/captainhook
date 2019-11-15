@@ -13,7 +13,6 @@ namespace CaptainHook\App\Hook\Template;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Hook\Template;
-use CaptainHook\App\Storage\Util;
 use RuntimeException;
 use SebastianFeldmann\Camino\Path\Directory;
 use SebastianFeldmann\Camino\Path\File;

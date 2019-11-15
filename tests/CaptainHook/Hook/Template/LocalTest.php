@@ -9,7 +9,6 @@
  */
 namespace CaptainHook\App\Hook\Template;
 
-use CaptainHook\App\Storage\Util;
 use PHPUnit\Framework\TestCase;
 use SebastianFeldmann\Camino\Path\Directory;
 use SebastianFeldmann\Camino\Path\File;

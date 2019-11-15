@@ -12,10 +12,8 @@ declare(strict_types=1);
 namespace CaptainHook\App\Hook\Template;
 
 use CaptainHook\App\Config;
-use CaptainHook\App\Hook\Template;
 use PHPUnit\Framework\TestCase;
 use SebastianFeldmann\Git\Repository;
-use Symfony\Component\Console\Input\InputInterface;
 
 class BuilderTest extends TestCase
 {
