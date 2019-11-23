@@ -11,7 +11,7 @@ namespace CaptainHook\App\Console\Command;
 
 use CaptainHook\App\Console\IO\NullIO;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
+use Symfony\Component\Console\Output\NullOutput;
 use PHPUnit\Framework\TestCase;
 
 class ConfigurationTest extends TestCase
@@ -23,7 +23,7 @@ class ConfigurationTest extends TestCase
     {
         $config    = sys_get_temp_dir() . DIRECTORY_SEPARATOR . md5(mt_rand(0, 9999)) . '.json';
         $configure = new Configuration();
-        $output    = new DummyOutput();
+        $output    = new NullOutput();
         $input     = new ArrayInput(['--configuration' => $config]);
 
         $configure->setIO(new NullIO());
