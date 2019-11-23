@@ -12,8 +12,8 @@ namespace CaptainHook\App\Console\Command;
 use CaptainHook\App\Console\IO\DefaultIO;
 use CaptainHook\App\Console\IO\NullIO;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Output\NullOutput;
 
 class DisableTest extends TestCase
 {
@@ -30,7 +30,7 @@ class DisableTest extends TestCase
                 '--configuration' => 'foo'
             ]
         );
-        $output  = new DummyOutput();
+        $output  = new NullOutput();
         $install = new Disable();
         $install->setIO(new NullIO());
         $install->run($input, $output);
@@ -46,7 +46,7 @@ class DisableTest extends TestCase
 
 
         $add    = new Disable();
-        $output = new DummyOutput();
+        $output = new NullOutput();
         $input  = new ArrayInput(
             [
                 'hook'            => 'pre-commit',

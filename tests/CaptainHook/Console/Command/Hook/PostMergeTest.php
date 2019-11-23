@@ -12,7 +12,7 @@ namespace CaptainHook\App\Console\Command\Hook;
 use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Git\DummyRepo;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
+use Symfony\Component\Console\Output\NullOutput;
 use PHPUnit\Framework\TestCase;
 
 class PostMergeTest extends TestCase
@@ -30,7 +30,7 @@ class PostMergeTest extends TestCase
         $repo->setup();
 
         $cmd    = new PostMerge(CH_PATH_FILES . '/config/empty.json', $repo->getPath());
-        $output = new DummyOutput();
+        $output = new NullOutput();
         $input  = new ArrayInput(
             [
                 'squash' => 0

@@ -11,12 +11,13 @@ namespace CaptainHook\App\Console\Command;
 
 use CaptainHook\App\Console\IO\DefaultIO;
 use CaptainHook\App\Console\IO\NullIO;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
 
 class EnableTest extends TestCase
 {
+
     /**
      * Tests Enable::run
      */
@@ -24,13 +25,11 @@ class EnableTest extends TestCase
     {
         $this->expectException(\Exception::class);
 
-        $input   = new ArrayInput(
-            [
+        $input = new ArrayInput([
                 'hook' => 'pre-commit',
-                '--configuration' => 'foo'
-            ]
-        );
-        $output  = new DummyOutput();
+                '--configuration' => 'foo',
+            ]);
+        $output = new NullOutput();
         $install = new Enable();
         $install->setIO(new NullIO());
         $install->run($input, $output);
@@ -44,15 +43,12 @@ class EnableTest extends TestCase
         $config = sys_get_temp_dir() . '/captainhook-enable.json';
         copy(CH_PATH_FILES . '/config/valid.json', $config);
 
-
-        $add    = new Enable();
-        $output = new DummyOutput();
-        $input  = new ArrayInput(
-            [
-                'hook'            => 'pre-push',
-                '--configuration' => $config
-            ]
-        );
+        $add = new Enable();
+        $output = new NullOutput();
+        $input = new ArrayInput([
+                'hook' => 'pre-push',
+                '--configuration' => $config,
+            ]);
 
         $io = $this->getMockBuilder(DefaultIO::class)
                    ->disableOriginalConstructor()

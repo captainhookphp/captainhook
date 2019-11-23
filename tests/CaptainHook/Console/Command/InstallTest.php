@@ -14,8 +14,8 @@ use CaptainHook\App\Git\DummyRepo;
 use CaptainHook\App\Hook\Template;
 use Exception;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Output\NullOutput;
 
 class InstallTest extends TestCase
 {
@@ -27,7 +27,7 @@ class InstallTest extends TestCase
         $this->expectException(Exception::class);
 
         $install = new Install();
-        $output  = new DummyOutput();
+        $output  = new NullOutput();
         $input   = new ArrayInput(
             [
                 'hook'            => 'pre-commit',
@@ -47,7 +47,7 @@ class InstallTest extends TestCase
         $this->expectException(Exception::class);
 
         $install = new Install();
-        $output  = new DummyOutput();
+        $output  = new NullOutput();
         $input   = new ArrayInput(
             [
                 'hook'            => 'pre-commit',
@@ -75,7 +75,7 @@ class InstallTest extends TestCase
 
         try {
             $install = new Install();
-            $output  = new DummyOutput();
+            $output  = new NullOutput();
             $input   = new ArrayInput(
                 [
                     'hook'            => 'pre-commit',
@@ -109,7 +109,7 @@ class InstallTest extends TestCase
         $repo->setup();
 
         $install = new Install();
-        $output  = new DummyOutput();
+        $output  = new NullOutput();
         $input   = new ArrayInput(
             [
                 'hook'            => 'pre-commit',
