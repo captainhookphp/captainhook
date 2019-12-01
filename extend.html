@@ -48,6 +48,10 @@
         with their fully qualified class names and you have to be sure that composer can autoload your classes.
         There are two ways of hooking your own PHP code in. Let's start with the simpler, jet not so powerful one.
       </p>
+      <p>
+        If you want to leverage other peoples coding skills you can check the list of
+        available <a href="#plugins">plugins</a>.
+      </p>
       <h3 id="rules">Custom Rules</h3>
       <p>
         <em>CaptainHook</em> offers a thing called <em class="hl">RuleBook</em> to validate commit messages.
@@ -309,6 +313,30 @@ class NotOnAnyWeekday implements Condition
     ]
   }
 }</code></pre>
+
+      <h3 id="plugins">Plugins</h3>
+
+      <p>
+        Plugins are a composer installable packages of curated <em>CaptainHook</em> <em>Actions</em>, <em>Rules</em> or
+        <em>Conditions</em>. After installing a plugin via composer you should be able to reference those in your
+        <em>CaptainHook</em> configuration.
+      </p>
+
+      <p>
+        This is the list of know plugins in alphabetical order. If you want to add your plugin just open a pull
+        request on github or drop me a line via twitter. I will happily add it to the list.
+      </p>
+
+      <ul>
+        <li><a href="https://github.com/Moxio/captainhook-eslint">ESLint</a> <span>by Moxio</span></li>
+        <li><a href="https://github.com/bitExpert/captainhook-rejectpush">Reject Push</a> <span>by bitExpert</span></li>
+        <li><a href="https://github.com/bitExpert/captainhook-validateauthor">Validate Author</a> <span>by bitExpert</span></li>
+        <li><a href="https://github.com/boesing/captainhook-vendor-resolver">Vendor Resolver</a> <span>by Maximilian B.</span></li>
+      </ul>
+
+      <p>
+        Thanks to all the plugin maintainers!
+      </p>
 
     </div>
 
