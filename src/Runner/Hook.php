@@ -90,13 +90,14 @@ abstract class Hook extends RepositoryAware
             $this->io->write($this->formatHookHeadline('Skip'), true, IO::VERBOSE);
             return;
         }
+
+        $this->io->write($this->formatHookHeadline('Execute'), true, IO::VERBOSE);
+
         // if no actions are configured do nothing
         if (count($actions) === 0) {
             $this->io->write(['', '<info>No actions to execute</info>'], true, IO::VERBOSE);
             return;
         }
-
-        $this->io->write($this->formatHookHeadline('Execute'), true, IO::VERBOSE);
         $this->beforeHook();
         foreach ($actions as $action) {
             $this->handleAction($action);
