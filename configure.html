@@ -276,7 +276,8 @@
     "includes-level": 2,
     "includes": [],
     "run-mode": "docker",
-    "run-exec": "docker exec CONTAINER_NAME"
+    "run-exec": "docker exec CONTAINER_NAME",
+    "run-path": "./vendor/bin
   }
 }</code></pre>
 
@@ -319,6 +320,11 @@
         <tr>
           <td>run-exec</td>
           <td>Docker command to spin up the container and execute a script</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>run-path</td>
+          <td>Path to the command inside your docker container</td>
           <td>-</td>
         </tr>
       </table>
