@@ -12,12 +12,32 @@ namespace CaptainHook\App\Console\Application;
 use CaptainHook\App\CH;
 use CaptainHook\App\Config;
 use CaptainHook\App\Git\DummyRepo;
+use \Exception;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use PHPUnit\Framework\TestCase;
 
 class HookTest extends TestCase
 {
+    private $repo;
+
+    /**
+     * Create fake dummy repo
+     */
+    public function setUp(): void
+    {
+        $this->repo = new DummyRepo();
+        $this->repo->setup();
+    }
+
+    /**
+     * Cleanup the fake repo
+     */
+    public function tearDown(): void
+    {
+        $this->repo->cleanup();
+    }
+
     /**
      * Tests Hook::run
      */
@@ -28,19 +48,74 @@ class HookTest extends TestCase
         }
 
         $config = new Config(CH_PATH_FILES . '/config/valid.json');
-        $repo   = new DummyRepo();
         $output = new NullOutput();
         $input  = new ArrayInput([
             'file' => CH_PATH_FILES . '/git/message/valid.txt',
         ]);
         $app = new Hook();
         $app->setConfigFile($config->getPath());
-        $app->setRepositoryPath($repo->getPath());
+        $app->setRepositoryPath($this->repo->getPath());
         $app->setHook('commit-msg');
         $app->setAutoExit(false);
         $app->run($input, $output);
 
-        $repo->cleanup();
+        $this->assertTrue(true);
+    }
+
+    /**
+     * Test new error handling
+     *
+     * @throws \Exception
+     */
+    public function testHookFailure(): void
+    {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
+        $output = $this->createMock(NullOutput::class);
+        $output->expects($this->once())->method('isDebug')->willReturn(false);
+        $output->expects($this->once())->method('isVerbose')->willReturn(true);
+        $output->expects($this->exactly(2))->method('writeLn');
+
+        $app    = new Hook();
+        $config = new Config(CH_PATH_FILES . '/config/valid-but-failing.json');
+        $input  = new ArrayInput([]);
+
+        $app->setConfigFile($config->getPath());
+        $app->setRepositoryPath($this->repo->getPath());
+        $app->setAutoExit(false);
+        $app->setHook('pre-commit');
+        $app->run($input, $output);
+
+
+        $this->assertTrue(true);
+    }
+
+
+    /**
+     * Test new error handling
+     *
+     * @throws \Exception
+     */
+    public function testHookFailureWhileDebugging(): void
+    {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
+        $output = $this->createMock(NullOutput::class);
+        $output->expects($this->once())->method('isDebug')->willReturn(true);
+
+        $app    = new Hook();
+        $config = new Config(CH_PATH_FILES . '/config/valid-but-failing.json');
+        $input  = new ArrayInput([]);
+
+        $app->setConfigFile($config->getPath());
+        $app->setRepositoryPath($this->repo->getPath());
+        $app->setAutoExit(false);
+        $app->setHook('pre-commit');
+        $app->run($input, $output);
 
         $this->assertTrue(true);
     }

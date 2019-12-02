@@ -9,10 +9,11 @@
  */
 namespace CaptainHook\App\Console\Application;
 
+use CaptainHook\App\Console\IOUtil;
+use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Util;
 use CaptainHook\App\Console\Command;
-use CaptainHook\App\Hooks;
-use RuntimeException;
+use Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -92,7 +93,15 @@ class Hook extends ConfigHandler
         $input->setInteractive(false);
 
         $command = $this->createCommand();
-        return $command->run($input, $output);
+
+        try {
+            return $command->run($input, $output);
+        } catch (ActionFailed $e) {
+            if ($output->isDebug()) {
+                throw $e;
+            }
+            return $this->handleError($output, $e);
+        }
     }
 
     /**
@@ -108,5 +117,46 @@ class Hook extends ConfigHandler
         $command->setHelperSet($this->getHelperSet());
 
         return $command;
+    }
+
+    /**
+     * Handle all hook errors
+     *
+     * @param  \Symfony\Component\Console\Output\OutputInterface $output
+     * @param  \Exception                                        $e
+     * @return int
+     */
+    private function handleError(OutputInterface $output, Exception $e): int
+    {
+        $error = '
+                  _______________________________________
+                 /                                       \
+                 | ARRRRR! Hook execution failed!         |
+                 |                                        |
+                /  Your git command did not went through! | 
+               /_                                         |  
+       /(o)\     | For further details check the output   |
+      /  ()/ /)  | or run CaptainHook in verbose or debug |
+     /.;.))\'".)  | mode.                                  |
+     //////.-\'   \_______________________________________/
+=====))=))===()  
+  ///\'
+ //
+  \'';
+        $output->writeLn('<error>' . $error . '</error>');
+
+        if ($output->isVerbose()) {
+            $output->writeLn(
+                [
+                    '',
+                    IOUtil::getLineSeparator(8)
+                      . ' Error details: <comment>Exception</comment> '
+                      . IOUtil::getLineSeparator(46),
+                    $e->getMessage(),
+                    ''
+                ]
+            );
+        }
+        return 1;
     }
 }
