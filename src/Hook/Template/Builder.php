@@ -51,7 +51,8 @@ abstract class Builder
             return new Docker(
                 new Directory($repositoryPath),
                 new Directory($vendorPath),
-                $config->getRunExec()
+                $config->getRunExec(),
+                $config->getRunPath()
             );
         }
 

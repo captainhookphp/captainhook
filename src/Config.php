@@ -30,6 +30,7 @@ class Config
     const SETTING_INCLUDES_LEVEL = 'includes-level';
     const SETTING_RUN_MODE       = 'run-mode';
     const SETTING_RUN_EXEC       = 'run-exec';
+    const SETTING_RUN_PATH       = 'run-path';
 
     /**
      * Path to the config file
@@ -166,6 +167,16 @@ class Config
     public function getRunExec() : string
     {
         return (string) ($this->settings[self::SETTING_RUN_EXEC] ?? '');
+    }
+
+    /**
+     * Get configured run-path
+     *
+     * @return string
+     */
+    public function getRunPath() : string
+    {
+        return (string) ($this->settings[self::SETTING_RUN_PATH] ?? '');
     }
 
     /**

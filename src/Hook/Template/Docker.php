@@ -44,15 +44,29 @@ class Docker implements Template
     private $command;
 
     /**
+     * Custom path to executable
+     *
+     * run-path                 executable
+     * ./vendor/bin             [/captainhook-run]
+     * /var/www/html/vendor/bin [/captainhook-run]
+     * /var/www/html/tools      [/captainhook.phar]
+     *
+     * @var string
+     */
+    private $path;
+
+    /**
      * Docker constructor
      *
      * @param \SebastianFeldmann\Camino\Path\Directory $repo
      * @param \SebastianFeldmann\Camino\Path\Directory $vendor
      * @param string                                   $command
+     * @param string                                   $path
      */
-    public function __construct(Directory $repo, Directory $vendor, string $command)
+    public function __construct(Directory $repo, Directory $vendor, string $command, string $path)
     {
         $this->command    = $command;
+        $this->path       = $path;
         $this->binaryPath = $this->resolveBinaryPath($repo, $vendor);
     }
 
@@ -80,6 +94,10 @@ class Docker implements Template
      */
     private function resolveBinaryPath(Directory $repo, Directory $vendor): string
     {
+        // if a specific path is configured use just that
+        if (!empty($this->path)) {
+            return $this->path . '/' . self::BINARY;
+        }
         // For docker we need to strip down the current working directory.
         // This is caused because docker will always connect to a specific working directory
         // where the absolute path will not be recognized.

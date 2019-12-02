@@ -77,6 +77,12 @@ class Install extends Base
                  'e',
                  InputOption::VALUE_OPTIONAL,
                  'The Docker command to start your container e.g. \'docker exec CONTAINER\''
+             )
+             ->addOption(
+                 'run-path',
+                 'p',
+                 InputOption::VALUE_OPTIONAL,
+                 'The path to the CaptainHook executable \'/var/www/html\''
              );
     }
 
@@ -93,7 +99,10 @@ class Install extends Base
         $io = $this->getIO($input, $output);
 
         // collect settings to overwrite configuration values
-        $settings = $this->fetchInputSettings($input, ['git-directory', 'run-mode', 'run-exec', 'vendor-directory']);
+        $settings = $this->fetchInputSettings(
+            $input,
+            ['git-directory', 'run-mode', 'run-exec', 'run-path', 'vendor-directory']
+        );
 
         $config = $this->getConfig(IOUtil::argToString($input->getOption('configuration')), true, $settings);
         $repo   = new Repository(dirname($config->getGitDirectory()));

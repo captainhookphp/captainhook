@@ -25,6 +25,7 @@ class BuilderTest extends TestCase
         $config = $this->prophesize(Config::class);
         $config->getRunMode()->willReturn('docker');
         $config->getRunExec()->willReturn('docker exec captain-container');
+        $config->getRunPath()->willReturn('');
         $config->getPath()->willReturn(CH_PATH_FILES . '/template/captainhook.json');
         $config->getVendorDirectory()->willReturn(CH_PATH_FILES . '/template/vendor');
 
@@ -49,6 +50,7 @@ class BuilderTest extends TestCase
         $config     = $this->prophesize(Config::class);
         $config->getRunMode()->willReturn('docker');
         $config->getRunExec()->willReturn('docker exec captain-container');
+        $config->getRunPath()->willReturn('');
         $config->getPath()->willReturn(CH_PATH_FILES . '/config/valid.json');
         $config->getVendorDirectory()->willReturn($vendorPath);
 

@@ -113,6 +113,24 @@ class ConfigTest extends TestCase
     }
 
     /**
+     * Tests Config::getRunPath
+     */
+    public function testGetRunPathEmptyByDefault(): void
+    {
+        $config = new Config('foo.json', true, ['run-mode' => 'docker', 'run-exec' => 'foo']);
+        $this->assertEquals('', $config->getRunPath());
+    }
+
+    /**
+     * Tests Config::getRunPath
+     */
+    public function testGetRunPath(): void
+    {
+        $config = new Config('foo.json', true, ['run-mode' => 'docker', 'run-exec' => 'foo', 'run-path' => '/foo']);
+        $this->assertEquals('/foo', $config->getRunPath());
+    }
+
+    /**
      * Tests Config::getJsonData
      */
     public function testGetJsonData(): void

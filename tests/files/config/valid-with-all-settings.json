@@ -4,7 +4,8 @@
     "ansi-colors": false,
     "git-directory": "../../../.git",
     "run-mode": "docker",
-    "run-exec": "docker exec CONTAINER_NAME"
+    "run-exec": "docker exec CONTAINER_NAME",
+    "run-path": "/var/www/html"
   },
   "prepare-commit-msg": {
     "enabled": true,
