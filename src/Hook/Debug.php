@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook;
 
 use CaptainHook\App\Config;
@@ -34,7 +36,7 @@ class Debug implements Action
      * @return void
      * @throws \Exception
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action) : void
+    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
     {
         $originalHookArguments = $io->getArguments();
         $currentGitTag         = $repository->getInfoOperator()->getCurrentTag();
@@ -44,18 +46,18 @@ class Debug implements Action
         $io->write('  Current git-tag: <comment>' . $currentGitTag . '</comment>');
 
         throw new ActionFailed(
-            'The \'Debug\' action is only for debugging purposes, ' .
-            'please remove the \'Debug\' action from your config'
+            'The \'Debug\' action is only for debugging purposes, '
+            . 'please remove the \'Debug\' action from your config'
         );
     }
 
     /**
      * Format output to display original hook arguments
      *
-     * @param  array $args
+     * @param  array<string> $args
      * @return string
      */
-    protected function getArgumentOutput(array $args) : string
+    protected function getArgumentOutput(array $args): string
     {
         $out = '  Original arguments:' . PHP_EOL;
         foreach ($args as $name => $value) {

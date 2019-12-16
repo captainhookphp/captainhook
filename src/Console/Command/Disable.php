@@ -1,20 +1,20 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Console\Command;
 
-use CaptainHook\App\CH;
 use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Runner\Config\Editor;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -25,26 +25,20 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 4.2.0
  */
-class Disable extends Base
+class Disable extends ConfigAware
 {
     /**
      * Configure the command
      *
      * @return void
      */
-    protected function configure() : void
+    protected function configure(): void
     {
+        parent::configure();
         $this->setName('disable')
              ->setDescription('Disable a hook execution')
              ->setHelp('This command will disable a hook configuration for a given hook')
-             ->addArgument('hook', InputArgument::REQUIRED, 'Hook you want to disable')
-             ->addOption(
-                 'configuration',
-                 'c',
-                 InputOption::VALUE_OPTIONAL,
-                 'Path to your json configuration',
-                 getcwd() . DIRECTORY_SEPARATOR . CH::CONFIG
-             );
+             ->addArgument('hook', InputArgument::REQUIRED, 'Hook you want to disable');
     }
 
     /**
@@ -54,11 +48,12 @@ class Disable extends Base
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
      * @return int|null
      * @throws \CaptainHook\App\Exception\InvalidHookName
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io     = $this->getIO($input, $output);
-        $config = $this->getConfig(IOUtil::argToString($input->getOption('configuration')), true);
+        $config = $this->createConfig($input, true);
 
         $editor = new Editor($io, $config);
         $editor->setHook(IOUtil::argToString($input->getArgument('hook')))

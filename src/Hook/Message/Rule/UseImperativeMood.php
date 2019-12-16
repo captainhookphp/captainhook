@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\Message\Rule;
 
 /**
@@ -43,7 +45,7 @@ class UseImperativeMood extends Blacklist
 
         if ($checkOnlyBeginning) {
             // overwrite the detection logic to only check the beginning og the string
-            $this->stringDetection = function (string $content, string $term) : bool {
+            $this->stringDetection = function (string $content, string $term): bool {
                 return strpos($content, $term) === 0;
             };
         }

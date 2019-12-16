@@ -1,26 +1,37 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Runner\Config\Setup;
 
-use CaptainHook\App\Runner\BaseTestRunner;
+use CaptainHook\App\Config\Mockery as ConfigMockery;
+use CaptainHook\App\Console\IO\Mockery as IOMockery;
+use CaptainHook\App\Mockery as CHMockery;
+use PHPUnit\Framework\TestCase;
 
-class AdvancedTest extends BaseTestRunner
+class AdvancedTest extends TestCase
 {
+    use ConfigMockery;
+    use IOMockery;
+    use CHMockery;
+
     /**
      * Tests Advanced::configureHooks
+     *
+     * @throws \Exception
      */
     public function testConfigureCliHook(): void
     {
-        $io     = $this->getIOMock();
-        $config = $this->getConfigMock();
-        $config->expects($this->exactly(7))->method('getHookConfig')->willReturn($this->getHookConfigMock());
+        $io     = $this->createIOMock();
+        $config = $this->createConfigMock();
+        $config->expects($this->exactly(7))->method('getHookConfig')->willReturn($this->createHookConfigMock());
         $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', 'echo \'foo\'', 'n'));
 
         $setup  = new Advanced($io);
@@ -29,12 +40,14 @@ class AdvancedTest extends BaseTestRunner
 
     /**
      * Tests Advanced::configureHooks
+     *
+     * @throws \Exception
      */
     public function testConfigurePHPHook(): void
     {
-        $io     = $this->getIOMock();
-        $config = $this->getConfigMock();
-        $config->method('getHookConfig')->willReturn($this->getHookConfigMock());
+        $io     = $this->createIOMock();
+        $config = $this->createConfigMock();
+        $config->method('getHookConfig')->willReturn($this->createHookConfigMock());
         $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', '\\Foo\\Bar', 'y', 'n'));
         $io->expects($this->once())->method('askAndValidate')->willReturn('foo:bar');
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of SebastianFeldmann\Git.
  *
@@ -20,7 +21,7 @@ final class Util
     /**
      * List of valid action types
      *
-     * @var array
+     * @var array<bool>
      */
     private static $validTypes = ['php' => true, 'cli' => true];
 
@@ -31,7 +32,7 @@ final class Util
      * @param  string $type
      * @return bool
      */
-    public static function isTypeValid(string $type) : bool
+    public static function isTypeValid(string $type): bool
     {
         return isset(self::$validTypes[$type]);
     }
@@ -42,7 +43,7 @@ final class Util
      * @param  string $action
      * @return string
      */
-    public static function getExecType(string $action) : string
+    public static function getExecType(string $action): string
     {
         return substr($action, 0, 1) === '\\' ? 'php' : 'cli';
     }

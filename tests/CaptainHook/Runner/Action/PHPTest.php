@@ -1,31 +1,37 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Runner\Action;
 
-use CaptainHook\App\Runner\BaseTestRunner;
-use CaptainHook\App\Runner\Action\DummyPHPSuccess;
-use CaptainHook\App\Runner\Action\DummyPHPFailure;
-use CaptainHook\App\Runner\Action\DummyPHPError;
-use CaptainHook\App\Runner\Action\DummyNoAction;
+use CaptainHook\App\Config\Mockery as ConfigMockery;
+use CaptainHook\App\Console\IO\Mockery as IOMockery;
+use CaptainHook\App\Mockery as CHMockery;
+use Exception;
+use PHPUnit\Framework\TestCase;
 
-class PHPTest extends BaseTestRunner
+class PHPTest extends TestCase
 {
+    use ConfigMockery;
+    use IOMockery;
+    use CHMockery;
+
     /**
      * Tests PHP::execute
      */
     public function testExecuteSuccess(): void
     {
-        $config = $this->getConfigMock();
-        $io     = $this->getIOMock();
-        $repo   = $this->getRepositoryMock();
-        $action = $this->getActionConfigMock();
+        $config = $this->createConfigMock();
+        $io     = $this->createIOMock();
+        $repo   = $this->createRepositoryMock();
+        $action = $this->createActionConfigMock();
         $class  = DummyPHPSuccess::class;
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
@@ -36,15 +42,17 @@ class PHPTest extends BaseTestRunner
 
     /**
      * Tests PHP::execute
+     *
+     * @throws \CaptainHook\App\Exception\ActionFailed
      */
     public function testExecuteFailure(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
-        $config = $this->getConfigMock();
-        $io     = $this->getIOMock();
-        $repo   = $this->getRepositoryMock();
-        $action = $this->getActionConfigMock();
+        $config = $this->createConfigMock();
+        $io     = $this->createIOMock();
+        $repo   = $this->createRepositoryMock();
+        $action = $this->createActionConfigMock();
         $class  = DummyPHPFailure::class;
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
@@ -55,15 +63,17 @@ class PHPTest extends BaseTestRunner
 
     /**
      * Tests PHP::execute
+     *
+     * @throws \CaptainHook\App\Exception\ActionFailed
      */
     public function testExecuteError(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
-        $config = $this->getConfigMock();
-        $io     = $this->getIOMock();
-        $repo   = $this->getRepositoryMock();
-        $action = $this->getActionConfigMock();
+        $config = $this->createConfigMock();
+        $io     = $this->createIOMock();
+        $repo   = $this->createRepositoryMock();
+        $action = $this->createActionConfigMock();
         $class  = DummyPHPError::class;
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
@@ -74,15 +84,17 @@ class PHPTest extends BaseTestRunner
 
     /**
      * Tests PHP::execute
+     *
+     * @throws \CaptainHook\App\Exception\ActionFailed
      */
     public function testExecuteNoAction(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
-        $config = $this->getConfigMock();
-        $io     = $this->getIOMock();
-        $repo   = $this->getRepositoryMock();
-        $action = $this->getActionConfigMock();
+        $config = $this->createConfigMock();
+        $io     = $this->createIOMock();
+        $repo   = $this->createRepositoryMock();
+        $action = $this->createActionConfigMock();
         $class  = DummyNoAction::class;
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
@@ -93,15 +105,17 @@ class PHPTest extends BaseTestRunner
 
     /**
      * Tests PHP::executeStatic
+     *
+     * @throws \CaptainHook\App\Exception\ActionFailed
      */
     public function testExecuteStaticClassNotFound(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
-        $config = $this->getConfigMock();
-        $io     = $this->getIOMock();
-        $repo   = $this->getRepositoryMock();
-        $action = $this->getActionConfigMock();
+        $config = $this->createConfigMock();
+        $io     = $this->createIOMock();
+        $repo   = $this->createRepositoryMock();
+        $action = $this->createActionConfigMock();
 
         $class = '\\Fiz::baz';
 
@@ -113,15 +127,17 @@ class PHPTest extends BaseTestRunner
 
     /**
      * Tests PHP::executeStatic
+     *
+     * @throws \CaptainHook\App\Exception\ActionFailed
      */
     public function testExecuteStaticMethodNotFound(): void
     {
-        $this->expectException(\Exception::class);
-        
-        $config = $this->getConfigMock();
-        $io     = $this->getIOMock();
-        $repo   = $this->getRepositoryMock();
-        $action = $this->getActionConfigMock();
+        $this->expectException(Exception::class);
+
+        $config = $this->createConfigMock();
+        $io     = $this->createIOMock();
+        $repo   = $this->createRepositoryMock();
+        $action = $this->createActionConfigMock();
 
         $class = '\\CaptainHook\\App\\Runner\\Action\\DummyNoAction::foo';
 
@@ -134,13 +150,15 @@ class PHPTest extends BaseTestRunner
 
     /**
      * Tests PHP::executeStatic
+     *
+     * @throws \CaptainHook\App\Exception\ActionFailed
      */
     public function testExecuteStaticSuccess(): void
     {
-        $config = $this->getConfigMock();
-        $io     = $this->getIOMock();
-        $repo   = $this->getRepositoryMock();
-        $action = $this->getActionConfigMock();
+        $config = $this->createConfigMock();
+        $io     = $this->createIOMock();
+        $repo   = $this->createRepositoryMock();
+        $action = $this->createActionConfigMock();
 
         $class = '\\CaptainHook\\App\\Runner\\Action\\DummyPHPSuccess::executeStatic';
 

@@ -1,15 +1,16 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App;
 
-use CaptainHook\App\Config\Hook;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -44,6 +45,15 @@ class ConfigTest extends TestCase
     }
 
     /**
+     * Tests Config::getGitDirectory
+     */
+    public function testAssumeCwdAsGitDir(): void
+    {
+        $config = new Config('./no-config.json');
+        $this->assertEquals(getcwd() . '/.git', $config->getGitDirectory());
+    }
+
+    /**
      * Tests Config::getPath
      */
     public function testGetPath(): void
@@ -55,25 +65,25 @@ class ConfigTest extends TestCase
     }
 
     /**
-     * Tests Config::getVendorDirectory
+     * Tests Config::getBootstrap
      */
-    public function testGetVendorDirectoryDefault(): void
+    public function testGetBootstrapDefault(): void
     {
         $path   = realpath(__DIR__ . '/../files/config/valid.json');
         $config = new Config($path);
 
-        $this->assertEquals(getcwd() . DIRECTORY_SEPARATOR . 'vendor', $config->getVendorDirectory());
+        $this->assertEquals('vendor/autoload.php', $config->getBootstrap());
     }
 
     /**
-     * Tests Config::getVendorDirectory
+     * Tests Config::getBootstrap
      */
-    public function testGetVendorDirectorySetting(): void
+    public function testGetBootstrapSetting(): void
     {
         $path   = realpath(__DIR__ . '/../files/config/valid.json');
-        $config = new Config($path, true, ['vendor-directory' => 'libs/composer']);
+        $config = new Config($path, true, ['bootstrap' => 'libs/autoload.php']);
 
-        $this->assertEquals(dirname($path) . DIRECTORY_SEPARATOR . 'libs/composer', $config->getVendorDirectory());
+        $this->assertEquals('libs/autoload.php', $config->getBootstrap());
     }
 
     /**

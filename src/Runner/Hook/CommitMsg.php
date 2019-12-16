@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Runner\Hook;
 
 use CaptainHook\App\Hooks;
@@ -33,7 +35,7 @@ class CommitMsg extends Hook
     /**
      * Read the commit message from file
      */
-    public function beforeHook() : void
+    public function beforeHook(): void
     {
         $commentChar = $this->repository->getConfigOperator()->getSafely('core.commentchar', '#');
         $commitMsg   = Git\CommitMessage::createFromFile($this->io->getArgument('file', ''), $commentChar);

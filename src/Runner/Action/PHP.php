@@ -1,18 +1,22 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Runner\Action;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Action;
+use Exception;
+use RuntimeException;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -35,7 +39,7 @@ class PHP
      * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action) : void
+    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
     {
         $class = $action->getAction();
 
@@ -47,7 +51,7 @@ class PHP
 
             $exe = $this->createAction($class);
             $exe->execute($config, $io, $repository, $action);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new ActionFailed(
                 'Execution failed: ' . PHP_EOL .
                 $e->getMessage() . ' in ' . $e->getFile() . ' line ' . $e->getLine()
@@ -63,14 +67,14 @@ class PHP
      * @param  string $class
      * @return string
      */
-    protected function executeStatic(string $class) : string
+    protected function executeStatic(string $class): string
     {
-        list($class, $method) = explode('::', $class);
+        [$class, $method] = explode('::', $class);
         if (!class_exists($class)) {
-            throw new \RuntimeException('could not find class: ' . $class);
+            throw new RuntimeException('could not find class: ' . $class);
         }
         if (!method_exists($class, $method)) {
-            throw new \RuntimeException('could not find method in class: ' . $method);
+            throw new RuntimeException('could not find method in class: ' . $method);
         }
         ob_start();
         $class::$method();
@@ -84,7 +88,7 @@ class PHP
      * @return \CaptainHook\App\Hook\Action
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    protected function createAction(string $class) : Action
+    protected function createAction(string $class): Action
     {
         $action = new $class();
         if (!$action instanceof Action) {
@@ -101,7 +105,7 @@ class PHP
      * @param  string $class
      * @return bool
      */
-    protected function isStaticMethodCall(string $class) : bool
+    protected function isStaticMethodCall(string $class): bool
     {
         return (bool)preg_match('#^\\\\.+::.+$#i', $class);
     }

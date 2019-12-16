@@ -1,18 +1,21 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Runner\Config;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Exception;
 use CaptainHook\App\Hook\Util;
 use CaptainHook\App\Runner;
+use RuntimeException;
 
 /**
  * Class Editor
@@ -43,7 +46,7 @@ class Editor extends Runner
      * @return \CaptainHook\App\Runner\Config\Editor
      * @throws \CaptainHook\App\Exception\InvalidHookName
      */
-    public function setHook(string $hook) : Editor
+    public function setHook(string $hook): Editor
     {
         if (!Util::isValid($hook)) {
             throw new Exception\InvalidHookName('Invalid hook name \'' . $hook . '\'');
@@ -58,7 +61,7 @@ class Editor extends Runner
      * @param  string $change
      * @return \CaptainHook\App\Runner\Config\Editor
      */
-    public function setChange(string $change) : Editor
+    public function setChange(string $change): Editor
     {
         $this->change = $change;
         return $this;
@@ -73,7 +76,7 @@ class Editor extends Runner
     public function run(): void
     {
         if (!$this->config->isLoadedFromFile()) {
-            throw new \RuntimeException('No configuration to edit');
+            throw new RuntimeException('No configuration to edit');
         }
 
         $this->checkHook();
@@ -92,11 +95,11 @@ class Editor extends Runner
      * @return \CaptainHook\App\Runner\Config\Change
      * @throws \RuntimeException
      */
-    private function createChange() : Change
+    private function createChange(): Change
     {
         $changeClass = '\\CaptainHook\\App\\Runner\\Config\\Change\\' . $this->change;
         if (!class_exists($changeClass)) {
-            throw new \RuntimeException('Invalid change requested');
+            throw new RuntimeException('Invalid change requested');
         }
 
         return new $changeClass($this->io, $this->hookToEdit);
@@ -108,10 +111,10 @@ class Editor extends Runner
      * @return void
      * @throws \RuntimeException
      */
-    private function checkHook() : void
+    private function checkHook(): void
     {
         if (empty($this->hookToEdit)) {
-            throw new \RuntimeException('No hook set');
+            throw new RuntimeException('No hook set');
         }
     }
 
@@ -121,10 +124,10 @@ class Editor extends Runner
      * @return void
      * @throws \RuntimeException
      */
-    private function checkChange() : void
+    private function checkChange(): void
     {
         if (empty($this->change)) {
-            throw new \RuntimeException('No change set');
+            throw new RuntimeException('No change set');
         }
     }
 }

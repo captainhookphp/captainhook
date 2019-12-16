@@ -15,10 +15,13 @@ jobs:
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
-    
+
+    - name: Install tooling
+      run: tools/phive --home ./.phive install --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192,8E730BA25823D8B5 --force-accept-unsigned
+
     - name: Execute unit tests
-      run: vendor/bin/phpunit
-       
+      run: tools/phpunit
+
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 

@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Config;
 
 use CaptainHook\App\Hook\Util as HookUtil;
@@ -32,7 +34,7 @@ abstract class Util
      * @return void
      * @throws \RuntimeException
      */
-    public static function validateJsonConfiguration(array $json) : void
+    public static function validateJsonConfiguration(array $json): void
     {
         foreach (HookUtil::getValidHooks() as $hook => $class) {
             if (isset($json[$hook])) {
@@ -48,7 +50,7 @@ abstract class Util
      * @return void
      * @throws \RuntimeException
      */
-    public static function validateHookConfig(array $json) : void
+    public static function validateHookConfig(array $json): void
     {
         if (!self::keysExist(['enabled', 'actions'], $json)) {
             throw new RuntimeException('Config error: invalid hook configuration');
@@ -66,7 +68,7 @@ abstract class Util
      * @return void
      * @throws \RuntimeException
      */
-    public static function validateActionsConfig(array $json) : void
+    public static function validateActionsConfig(array $json): void
     {
         foreach ($json as $action) {
             if (!self::keysExist(['action'], $action)) {
@@ -87,7 +89,7 @@ abstract class Util
      * @param  array $json
      * @throws \RuntimeException
      */
-    public static function validateConditionsConfig(array $json) : void
+    public static function validateConditionsConfig(array $json): void
     {
         foreach ($json as $condition) {
             if (!self::keysExist(['exec'], $condition) || empty($condition['exec'])) {
@@ -105,7 +107,7 @@ abstract class Util
      * @param  \CaptainHook\App\Config $config
      * @return void
      */
-    public static function writeToDisk(Config $config) : void
+    public static function writeToDisk(Config $config): void
     {
         $filePath = $config->getPath();
         $file     = new Json($filePath);
@@ -119,7 +121,7 @@ abstract class Util
      * @param  array $subject
      * @return bool
      */
-    private static function keysExist(array $keys, array $subject) : bool
+    private static function keysExist(array $keys, array $subject): bool
     {
         foreach ($keys as $key) {
             if (!isset($subject[$key])) {

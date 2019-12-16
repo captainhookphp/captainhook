@@ -1,69 +1,94 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 declare(strict_types=1);
 
 namespace CaptainHook\App\Hook\Template;
 
-use CaptainHook\App\Config;
+use CaptainHook\App\Config\Mockery as ConfigMockery;
+use CaptainHook\App\Git\DummyRepo;
+use CaptainHook\App\Mockery as AppMockery;
+use Exception;
 use PHPUnit\Framework\TestCase;
-use SebastianFeldmann\Git\Repository;
 
 class BuilderTest extends TestCase
 {
+    use AppMockery;
+    use ConfigMockery;
+
     /**
      * Tests Builder::build
      */
     public function testBuildDockerTemplate(): void
     {
-        $config = $this->prophesize(Config::class);
-        $config->getRunMode()->willReturn('docker');
-        $config->getRunExec()->willReturn('docker exec captain-container');
-        $config->getRunPath()->willReturn('');
-        $config->getPath()->willReturn(CH_PATH_FILES . '/template/captainhook.json');
-        $config->getVendorDirectory()->willReturn(CH_PATH_FILES . '/template/vendor');
+        $repo = new DummyRepo(
+            [],
+            [
+                'captainhook.json' => '{}',
+                'vendor' => [
+                    'autoload.php' => '',
+                    'bin' => [
+                        'captainhook' => ''
+                    ]
+                ]
+            ]
+        );
 
-        $repository = $this->prophesize(Repository::class);
-        $repository->getRoot()->willReturn(CH_PATH_FILES . '/template');
+        $executable = $repo->getRoot() . '/vendor/bin/captainhook';
+        $repository = $this->createRepositoryMock($repo->getRoot());
+        $config     = $this->createConfigMock(true, $repo->getRoot() . '/captainhook.json');
+        $config->method('getRunMode')->willReturn('docker');
+        $config->method('getRunExec')->willReturn('docker exec captain-container');
+        $config->method('getRunPath')->willReturn('');
+        $config->method('getBootstrap')->willReturn('vendor/autoload.php');
 
-        $template = Builder::build($config->reveal(), $repository->reveal());
+        $template = Builder::build($config, $repository, $executable, false);
         $this->assertInstanceOf(Docker::class, $template);
 
         $code = $template->getCode('pre-commit');
         $this->assertStringContainsString('pre-commit', $code);
         $this->assertStringContainsString('docker exec captain-container', $code);
-        $this->assertStringContainsString('./vendor/bin/captainhook-run', $code);
+        $this->assertStringContainsString('vendor/bin/captainhook', $code);
     }
 
     /**
      * Tests Builder::build
      */
-    public function testBuildDockerTemplateObservesConfig(): void
+    public function testBuildDockerTemplateWithBinaryOutsideRepo(): void
     {
-        $vendorPath = realpath(__DIR__ . '/../../../../vendor');
-        $config     = $this->prophesize(Config::class);
-        $config->getRunMode()->willReturn('docker');
-        $config->getRunExec()->willReturn('docker exec captain-container');
-        $config->getRunPath()->willReturn('');
-        $config->getPath()->willReturn(CH_PATH_FILES . '/config/valid.json');
-        $config->getVendorDirectory()->willReturn($vendorPath);
+        $repo = new DummyRepo(
+            [],
+            [
+                'captainhook.json' => '{}',
+                'vendor' => [
+                    'autoload.php' => '',
+                ]
+            ]
+        );
 
-        $repository = $this->prophesize(Repository::class);
-        $repository->getRoot()->willReturn(CH_PATH_FILES . '/config');
+        $executable = realpath(__DIR__ . '/../../../../bin/captainhook');
+        $repository = $this->createRepositoryMock($repo->getRoot());
+        $config     = $this->createConfigMock(true, $repo->getRoot() . '/captainhook.json');
+        $config->method('getRunMode')->willReturn('docker');
+        $config->method('getRunExec')->willReturn('docker exec captain-container');
+        $config->method('getRunPath')->willReturn('');
+        $config->method('getBootstrap')->willReturn('vendor/autoload.php');
 
-        $template = Builder::build($config->reveal(), $repository->reveal());
+        $template = Builder::build($config, $repository, $executable, false);
+        $code     = $template->getCode('pre-commit');
+
         $this->assertInstanceOf(Docker::class, $template);
-
-        $code = $template->getCode('pre-commit');
         $this->assertStringContainsString('pre-commit', $code);
         $this->assertStringContainsString('docker exec captain-container', $code);
-        $this->assertStringContainsString($vendorPath . '/bin/captainhook-run', $code);
+        $this->assertStringContainsString($executable, $code);
     }
 
     /**
@@ -71,21 +96,18 @@ class BuilderTest extends TestCase
      */
     public function testBuildLocalTemplate(): void
     {
-        $config = $this->prophesize(Config::class);
-        $config->getRunMode()->willReturn('local');
-        $config->getRunExec()->willReturn('');
-        $config->getPath()->willReturn(CH_PATH_FILES . '/config/valid.json');
-        $config->getVendorDirectory()->willReturn('vendor');
+        $repository = $this->createRepositoryMock(CH_PATH_FILES);
+        $config     = $this->createConfigMock(true, CH_PATH_FILES . '/template/captainhook.json');
+        $config->method('getRunMode')->willReturn('local');
+        $config->method('getRunExec')->willReturn('');
+        $config->method('getBootstrap')->willReturn('vendor/autoload.php');
 
-        $repository = $this->prophesize(Repository::class);
-        $repository->getRoot()->willReturn(CH_PATH_FILES . '/config');
-
-        $template = Builder::build($config->reveal(), $repository->reveal());
+        $template = Builder::build($config, $repository, CH_PATH_FILES . '/bin/captainhook', false);
         $this->assertInstanceOf(Local::class, $template);
 
         $code = $template->getCode('pre-commit');
         $this->assertStringContainsString('pre-commit', $code);
-        $this->assertStringContainsString('$app->setHook', $code);
+        $this->assertStringContainsString('$captainHook->run', $code);
     }
 
     /**
@@ -93,17 +115,14 @@ class BuilderTest extends TestCase
      */
     public function testBuildInvalidVendor(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
-        $config = $this->prophesize(Config::class);
-        $config->getRunMode()->willReturn('local');
-        $config->getRunExec()->willReturn('');
-        $config->getPath()->willReturn(CH_PATH_FILES . '/config/valid.json');
-        $config->getVendorDirectory()->willReturn('vendor-fail');
+        $repository = $this->createRepositoryMock(CH_PATH_FILES . '/config');
+        $config     = $this->createConfigMock(true, CH_PATH_FILES . '/config/valid.json');
+        $config->method('getRunMode')->willReturn('local');
+        $config->method('getRunExec')->willReturn('');
+        $config->method('getBootstrap')->willReturn('file-not-there.php');
 
-        $repository = $this->prophesize(Repository::class);
-        $repository->getRoot()->willReturn(CH_PATH_FILES . '/config');
-
-        $template = Builder::build($config->reveal(), $repository->reveal());
+        Builder::build($config, $repository, './captainhook', false);
     }
 }

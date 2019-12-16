@@ -1,14 +1,17 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Config;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class UtilTest extends TestCase
@@ -18,7 +21,7 @@ class UtilTest extends TestCase
      */
     public function testEnabledMissing(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         Util::validateJsonConfiguration(['pre-commit' => ['actions' => []]]);
     }
@@ -28,7 +31,7 @@ class UtilTest extends TestCase
      */
     public function testActionsMissing(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         Util::validateJsonConfiguration(['pre-commit' => ['enabled' => true]]);
     }
@@ -38,7 +41,7 @@ class UtilTest extends TestCase
      */
     public function testActionsNoArray(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         Util::validateJsonConfiguration(['pre-commit' => ['enabled' => true, 'actions' => false]]);
     }
@@ -48,7 +51,7 @@ class UtilTest extends TestCase
      */
     public function testActionMissing(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         Util::validateJsonConfiguration(
             [
@@ -69,7 +72,7 @@ class UtilTest extends TestCase
      */
     public function testActionEmpty(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         Util::validateJsonConfiguration(
             [
@@ -88,7 +91,7 @@ class UtilTest extends TestCase
      */
     public function testConditionExecMissing(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         Util::validateJsonConfiguration(
             [
@@ -117,7 +120,7 @@ class UtilTest extends TestCase
      */
     public function testConditionArgsNoArray(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         Util::validateJsonConfiguration(
             [

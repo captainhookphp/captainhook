@@ -1,15 +1,16 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\Message;
 
-use CaptainHook\App\Exception\ActionFailed;
 use SebastianFeldmann\Git\CommitMessage;
 
 /**
@@ -35,7 +36,7 @@ class RuleBook
      * @param  \CaptainHook\App\Hook\Message\Rule[] $rules
      * @return \CaptainHook\App\Hook\Message\RuleBook
      */
-    public function setRules(array $rules) : RuleBook
+    public function setRules(array $rules): RuleBook
     {
         $this->rules = $rules;
         return $this;
@@ -47,7 +48,7 @@ class RuleBook
      * @param  \CaptainHook\App\Hook\Message\Rule $rule
      * @return \CaptainHook\App\Hook\Message\RuleBook
      */
-    public function addRule(Rule $rule) : RuleBook
+    public function addRule(Rule $rule): RuleBook
     {
         $this->rules[] = $rule;
         return $this;
@@ -60,9 +61,9 @@ class RuleBook
      * If the list is empty the message is valid.
      *
      * @param  \SebastianFeldmann\Git\CommitMessage $msg
-     * @return array
+     * @return array<string>
      */
-    public function validate(CommitMessage $msg) : array
+    public function validate(CommitMessage $msg): array
     {
         $problems = [];
         foreach ($this->rules as $rule) {

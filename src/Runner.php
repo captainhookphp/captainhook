@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App;
 
 use CaptainHook\App\Console\IO;
@@ -46,5 +48,5 @@ abstract class Runner
     /**
      * Executes the Runner.
      */
-    abstract public function run() : void;
+    abstract public function run(): void;
 }

@@ -1,19 +1,19 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\Message\Action;
 
 use CaptainHook\App\CH;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
-use CaptainHook\App\Git\DummyRepo;
-use CaptainHook\App\Mockery;
 use SebastianFeldmann\Git\CommitMessage;
 use SebastianFeldmann\Git\Repository;
 use PHPUnit\Framework\TestCase;
@@ -22,6 +22,8 @@ class PrepareTest extends TestCase
 {
     /**
      * Tests RegexCheck::execute
+     *
+     * @throws \Exception
      */
     public function testExecutePrepareMessage(): void
     {

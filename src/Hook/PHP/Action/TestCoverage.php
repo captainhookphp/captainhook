@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\PHP\Action;
 
 use CaptainHook\App\Config;
@@ -57,7 +59,7 @@ class TestCoverage implements Action
      * @return void
      * @throws \Exception
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action) : void
+    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
     {
         $io->write('checking coverage:', true, IO::VERBOSE);
         $this->handleOptions($action->getOptions());
@@ -76,7 +78,7 @@ class TestCoverage implements Action
      * @return void
      * @throws \RuntimeException
      */
-    protected function handleOptions(Config\Options $options) : void
+    protected function handleOptions(Config\Options $options): void
     {
         $this->cloverXmlFile = $options->get('cloverXml');
         $this->phpUnit       = $options->get('phpUnit', 'phpunit');
@@ -88,7 +90,7 @@ class TestCoverage implements Action
      *
      * @return \CaptainHook\App\Hook\PHP\CoverageResolver
      */
-    protected function getCoverageResolver() : CoverageResolver
+    protected function getCoverageResolver(): CoverageResolver
     {
         // if clover xml is configured use it to read coverage data
         if (null !== $this->cloverXmlFile) {
@@ -106,7 +108,7 @@ class TestCoverage implements Action
      * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    protected function verifyCoverage($coverage) : void
+    protected function verifyCoverage($coverage): void
     {
         if ($coverage < $this->minCoverage) {
             throw new ActionFailed(

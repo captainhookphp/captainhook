@@ -7,6 +7,13 @@
 # ignore PHPUnit result cache
 .phpunit.result.cache
 
+# phive home directory
+.phive
+tools/box
+tools/phpcs
+tools/phpunit
+tools/phpstan
+
 # Ignore composer libs
 /vendor/
 /composer.lock
@@ -15,4 +22,6 @@
 /captainhook.json
 
 # Ignore the build directory
-/build
+/build/coverage
+/build/logs
+/build/phar

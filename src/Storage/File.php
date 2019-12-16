@@ -1,13 +1,17 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Storage;
+
+use RuntimeException;
 
 /**
  * Class File
@@ -41,7 +45,7 @@ class File
      *
      * @return string
      */
-    public function getPath() : string
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -51,7 +55,7 @@ class File
      *
      * @return bool
      */
-    public function exists() : bool
+    public function exists(): bool
     {
         return is_file($this->path);
     }
@@ -64,7 +68,7 @@ class File
     public function read()
     {
         if (!file_exists($this->path)) {
-            throw new \RuntimeException('Could not read ' . $this->path);
+            throw new RuntimeException('Could not read ' . $this->path);
         }
         return file_get_contents($this->path);
     }
@@ -75,7 +79,7 @@ class File
      * @param  string $content
      * @throws \RuntimeException
      */
-    public function write($content) : void
+    public function write($content): void
     {
         $this->checkFile();
         $this->checkDir();
@@ -89,10 +93,10 @@ class File
      * @return void
      * @throws \RuntimeException
      */
-    private function checkFile() : void
+    private function checkFile(): void
     {
         if (file_exists($this->path) && !is_writable($this->path)) {
-            throw new \RuntimeException('File exists and is not writable');
+            throw new RuntimeException('File exists and is not writable');
         }
     }
 
@@ -102,15 +106,15 @@ class File
      * @return void
      * @throws \RuntimeException
      */
-    private function checkDir() : void
+    private function checkDir(): void
     {
         $dir = dirname($this->path);
         if (!is_dir($dir)) {
             if (file_exists($dir)) {
-                throw new \RuntimeException($dir . ' exists and is not a directory.');
+                throw new RuntimeException($dir . ' exists and is not a directory.');
             }
             if (!@mkdir($dir, 0755, true)) {
-                throw new \RuntimeException($dir . ' does not exist and could not be created.');
+                throw new RuntimeException($dir . ' does not exist and could not be created.');
             }
         }
     }

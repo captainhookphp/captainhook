@@ -1,20 +1,20 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\PHP\Action;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
-use CaptainHook\App\Hook\PHP\Action\Linter;
 use CaptainHook\App\Mockery;
-use SebastianFeldmann\Git\Operator\Index;
-use SebastianFeldmann\Git\Repository;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class LintingTest extends TestCase
@@ -23,6 +23,8 @@ class LintingTest extends TestCase
 
     /**
      * Tests Linter::execute
+     *
+     * @throws \Exception
      */
     public function testExecuteValidPHP(): void
     {
@@ -35,17 +37,19 @@ class LintingTest extends TestCase
         $repo->expects($this->once())->method('getIndexOperator')->willReturn($resolver);
 
 
-        $action   = new Config\Action(Linter::class, []);
+        $action   = new Config\Action(Linting::class, []);
         $standard = new Linting();
         $standard->execute($config, $io, $repo, $action);
     }
 
     /**
      * Tests Linter::execute
+     *
+     * @throws \Exception
      */
     public function testExecuteInvalidPHP(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $io       = new NullIO();
         $config   = new Config(CH_PATH_FILES . '/captainhook.json');
@@ -56,7 +60,7 @@ class LintingTest extends TestCase
         $repo->expects($this->once())->method('getIndexOperator')->willReturn($resolver);
 
 
-        $action   = new Config\Action(Linter::class, []);
+        $action   = new Config\Action(Linting::class, []);
         $standard = new Linting();
         $standard->execute($config, $io, $repo, $action);
     }

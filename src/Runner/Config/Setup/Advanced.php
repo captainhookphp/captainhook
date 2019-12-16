@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Runner\Config\Setup;
 
 use CaptainHook\App\Config;
@@ -32,7 +34,7 @@ class Advanced extends Guided implements Setup
      * @return void
      * @throws \Exception
      */
-    public function configureHooks(Config $config) : void
+    public function configureHooks(Config $config): void
     {
         foreach (HookUtil::getHooks() as $hook) {
             $this->configureHook($config->getHookConfig($hook), $hook);
@@ -47,7 +49,7 @@ class Advanced extends Guided implements Setup
      * @return void
      * @throws \Exception
      */
-    public function configureHook(Config\Hook $config, string $name) : void
+    public function configureHook(Config\Hook $config, string $name): void
     {
         $answer = $this->io->ask('  <info>Enable \'' . $name . '\' hook?</info> <comment>[y,n]</comment> ', 'n');
         $enable = IOUtil::answerToBool($answer);
@@ -74,7 +76,7 @@ class Advanced extends Guided implements Setup
      * @return \CaptainHook\App\Config\Action
      * @throws \Exception
      */
-    public function getActionConfig() : Config\Action
+    public function getActionConfig(): Config\Action
     {
         $call    = $this->io->ask('  <info>PHP class or shell command to execute?</info> ');
         $options = $this->getActionOptions(RunnerUtil::getExecType($call));
@@ -89,7 +91,7 @@ class Advanced extends Guided implements Setup
      * @return array
      * @throws \Exception
      */
-    public function getActionOptions(string $type) : array
+    public function getActionOptions(string $type): array
     {
         return 'php' === $type ? $this->getPHPActionOptions() : [];
     }
@@ -100,7 +102,7 @@ class Advanced extends Guided implements Setup
      * @return array
      * @throws \Exception
      */
-    protected function getPHPActionOptions() : array
+    protected function getPHPActionOptions(): array
     {
         $options = [];
         $addOption = $this->io->ask('  <info>Add a validator option?</info> <comment>[y,n]</comment> ', 'n');
@@ -118,7 +120,7 @@ class Advanced extends Guided implements Setup
      * @return array
      * @throws \Exception
      */
-    protected function getPHPActionOption() : array
+    protected function getPHPActionOption(): array
     {
         $result = [];
         $answer = $this->io->askAndValidate(

@@ -1,6 +1,7 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
@@ -8,6 +9,5 @@
  * file that was distributed with this source code.
  */
 
-define('CH_PATH_FILES', realpath(__DIR__ . '/files'));
-
+require __DIR__ . '/constants.php';
 require __DIR__ . '/../vendor/autoload.php';

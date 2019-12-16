@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook;
 
 use CaptainHook\App\Hooks;
@@ -28,7 +30,7 @@ abstract class Util
      * @param  string $hook
      * @return bool
      */
-    public static function isValid(string $hook) : bool
+    public static function isValid(string $hook): bool
     {
         return isset(Hooks::getValidHooks()[$hook]);
     }
@@ -36,9 +38,9 @@ abstract class Util
     /**
      * Returns list of valid hooks
      *
-     * @return array
+     * @return array<string>
      */
-    public static function getValidHooks() : array
+    public static function getValidHooks(): array
     {
         return Hooks::getValidHooks();
     }
@@ -49,7 +51,7 @@ abstract class Util
      * @param  string $hook
      * @return string
      */
-    public static function getHookCommand(string $hook) : string
+    public static function getHookCommand(string $hook): string
     {
         if (!self::isValid($hook)) {
             throw new RuntimeException(sprintf('Hook \'%s\' is not supported', $hook));
@@ -60,9 +62,9 @@ abstract class Util
     /**
      * Get a list of all supported hooks
      *
-     * @return array
+     * @return array<string>
      */
-    public static function getHooks() : array
+    public static function getHooks(): array
     {
         return array_keys(Hooks::getValidHooks());
     }

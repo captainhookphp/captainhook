@@ -1,20 +1,23 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Composer;
 
 use CaptainHook\App\CH;
+use CaptainHook\App\Console\Application\Composer as ComposerApplication;
 use Composer\IO\IOInterface;
 use Composer\Script\Event;
-use CaptainHook\App\Console\Command\Configuration;
-use CaptainHook\App\Console\Command\Install;
+use RuntimeException;
 use Symfony\Component\Console\Input\ArrayInput;
+use function dirname;
 
 /**
  * Class Cmd
@@ -33,26 +36,30 @@ abstract class Cmd
      * @return void
      * @throws \Exception
      */
-    public static function setup(Event $event) : void
+    public static function setup(Event $event): void
     {
+        $io     = $event->getIO();
         $extra  = self::getExtraConfig($event);
         $config = self::extract(CH::COMPOSER_CONFIG, $extra, CH::CONFIG);
-        $app    = self::createApplication($event->getIO(), $config);
+        $app    = ComposerApplication::create($io);
 
-        self::configure($app, $config);
+        self::configure($io, $app, $config);
         self::install($app, $config);
     }
 
     /**
-     * @param  \CaptainHook\App\Composer\Application $app
-     * @param  string                                $config
+     * Execute guided setup
+     *
+     * @param  \Composer\IO\IOInterface                      $io
+     * @param  \CaptainHook\App\Console\Application\Composer $app
+     * @param  string                                        $config
      * @return void
      * @throws \Exception
      */
-    private static function configure(Application $app, string $config)
+    private static function configure(IOInterface $io, ComposerApplication $app, string $config)
     {
         if (file_exists($config)) {
-            $app->getIO()->write(('  <info>Using CaptainHook config: ' . $config . '</info>'));
+            $io->write(('  <info>Using CaptainHook config: ' . $config . '</info>'));
             return;
         }
         $options = [
@@ -65,16 +72,17 @@ abstract class Cmd
     /**
      * Installs the hooks to your local repository
      *
-     * @param  \CaptainHook\App\Composer\Application $app
-     * @param  string                                $config
+     * @param  \CaptainHook\App\Console\Application\Composer $app
+     * @param  string                                        $config
      * @return void
      * @throws \Exception
      */
-    private static function install(Application $app, string $config) : void
+    private static function install(ComposerApplication $app, string $config): void
     {
         $options = [
             'command'         => 'install',
             '--configuration' => $config,
+            '--git-directory' => self::findGitDir($config),
             '-f'              => true
         ];
         $app->run(new ArrayInput($options));
@@ -84,47 +92,43 @@ abstract class Cmd
      * Return Composer extra config, make sure it is an array
      *
      * @param \Composer\Script\Event $event
-     * @return array
+     * @return array<string, string>
      */
-    private static function getExtraConfig(Event $event) : array
+    private static function getExtraConfig(Event $event): array
     {
         return $event->getComposer()->getPackage()->getExtra();
     }
 
     /**
-     * Create a CaptainHook Composer application
+     * Extract a value from an array if not set it returns the given default
      *
-     * @param  \Composer\IO\IOInterface $io
-     * @param  string                   $config
-     * @return \CaptainHook\App\Composer\Application
+     * @param  string                 $key
+     * @param  array<string, string>  $array
+     * @param  string                 $default
+     * @return string
      */
-    private static function createApplication(IOInterface $io, string $config) : Application
+    private static function extract(string $key, array $array, string $default = ''): string
     {
-        $app = new Application();
-        $app->setAutoExit(false);
-        $app->setConfigFile($config);
-        $app->setProxyIO($io);
-
-        $install = new Install();
-        $install->setIO($app->getIO());
-        $app->add($install);
-
-        $configuration = new Configuration();
-        $configuration->setIO($app->getIO());
-        $app->add($configuration);
-        return $app;
+        return isset($array[$key]) ? $array[$key] : $default;
     }
 
     /**
-     * Extract a value from an array if not set it returns the given default
+     * Search for the git repository to store the hooks in
      *
-     * @param  string $key
-     * @param  array  $array
-     * @param  string $default
+     * @param  string $config
      * @return string
      */
-    private static function extract(string $key, array $array, string $default = '') : string
+    private static function findGitDir(string $config): string
     {
-        return isset($array[$key]) ? $array[$key] : $default;
+        $path = dirname($config);
+
+        while (file_exists($path)) {
+            $possibleGitDir = $path . '/.git';
+            if (file_exists($possibleGitDir)) {
+                return $possibleGitDir;
+            }
+            $path = dirname($path);
+        }
+        throw new RuntimeException('git directory not found');
     }
 }

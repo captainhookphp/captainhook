@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Config;
 
 /**
@@ -58,7 +60,7 @@ class Hook
      *
      * @return string
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -69,7 +71,7 @@ class Hook
      * @param  bool $enabled
      * @return void
      */
-    public function setEnabled(bool $enabled) : void
+    public function setEnabled(bool $enabled): void
     {
         $this->isEnabled = $enabled;
     }
@@ -79,7 +81,7 @@ class Hook
      *
      * @return bool
      */
-    public function isEnabled() : bool
+    public function isEnabled(): bool
     {
         return $this->isEnabled;
     }
@@ -90,7 +92,7 @@ class Hook
      * @param  \CaptainHook\App\Config\Action $action
      * @return void
      */
-    public function addAction(Action $action) : void
+    public function addAction(Action $action): void
     {
         $this->actions[] = $action;
     }
@@ -100,7 +102,7 @@ class Hook
      *
      * @return \CaptainHook\App\Config\Action[]
      */
-    public function getActions() : array
+    public function getActions(): array
     {
         return $this->actions;
     }
@@ -110,7 +112,7 @@ class Hook
      *
      * @return array
      */
-    public function getJsonData() : array
+    public function getJsonData(): array
     {
         $config = ['enabled' => $this->isEnabled, 'actions' => []];
         foreach ($this->actions as $action) {

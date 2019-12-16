@@ -1,20 +1,22 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Console\Command;
 
-use CaptainHook\App\CH;
 use CaptainHook\App\Console\IOUtil;
+use CaptainHook\App\Console\Runtime\Resolver;
 use CaptainHook\App\Hook\Template;
 use CaptainHook\App\Runner\Installer;
 use RuntimeException;
-use SebastianFeldmann\Git\Repository;
+use SebastianFeldmann\Camino\Check;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -28,25 +30,42 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 0.9.0
  */
-class Install extends Base
+class Install extends RepositoryAware
 {
+    /**
+     * Currently called executable
+     *
+     * @var string
+     */
+    private $executable;
+
+    /**
+     * Install constructor
+     *
+     * @param \CaptainHook\App\Console\Runtime\Resolver $resolver
+     * @param string                                    $executable
+     */
+    public function __construct(Resolver $resolver, string $executable = 'vendor/bin/captainhook')
+    {
+        $this->executable = Check::isAbsolutePath($executable) ? $executable : getcwd() . '/' . $executable;
+        parent::__construct($resolver);
+    }
+
     /**
      * Configure the command
      *
      * @return void
      */
-    protected function configure() : void
+    protected function configure(): void
     {
+        parent::configure();
         $this->setName('install')
              ->setDescription('Install git hooks')
              ->setHelp('This command will install the git hooks to your .git directory')
-             ->addArgument('hook', InputArgument::OPTIONAL, 'Hook you want to install')
-             ->addOption(
-                 'configuration',
-                 'c',
-                 InputOption::VALUE_OPTIONAL,
-                 'Path to your json configuration',
-                 getcwd() . DIRECTORY_SEPARATOR . CH::CONFIG
+             ->addArgument(
+                 'hook',
+                 InputArgument::OPTIONAL,
+                 'Limit the hook you want to install. By default all hooks get installed.'
              )
              ->addOption(
                  'force',
@@ -55,16 +74,10 @@ class Install extends Base
                  'Force to overwrite existing hooks'
              )
              ->addOption(
-                 'git-directory',
-                 'g',
-                 InputOption::VALUE_OPTIONAL,
-                 'Path to your .git directory'
-             )
-             ->addOption(
-                 'vendor-directory',
+                 'bootstrap',
                  null,
                  InputOption::VALUE_OPTIONAL,
-                 'Path to composers vendor directory'
+                 'Path to composers vendor/autoload.php'
              )
              ->addOption(
                  'run-mode',
@@ -93,19 +106,13 @@ class Install extends Base
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
      * @return int|null
      * @throws \CaptainHook\App\Exception\InvalidHookName
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io = $this->getIO($input, $output);
-
-        // collect settings to overwrite configuration values
-        $settings = $this->fetchInputSettings(
-            $input,
-            ['git-directory', 'run-mode', 'run-exec', 'run-path', 'vendor-directory']
-        );
-
-        $config = $this->getConfig(IOUtil::argToString($input->getOption('configuration')), true, $settings);
-        $repo   = new Repository(dirname($config->getGitDirectory()));
+        $io     = $this->getIO($input, $output);
+        $config = $this->createConfig($input, true, ['git-directory', 'run-mode', 'run-exec', 'run-path', 'bootstrap']);
+        $repo   = $this->createRepository(dirname($config->getGitDirectory()));
 
         if ($config->getRunMode() === Template::DOCKER && empty($config->getRunExec())) {
             throw new RuntimeException(
@@ -116,7 +123,9 @@ class Install extends Base
         $installer = new Installer($io, $config, $repo);
         $installer->setForce(IOUtil::argToBool($input->getOption('force')))
                   ->setHook(IOUtil::argToString($input->getArgument('hook')))
-                  ->setTemplate(Template\Builder::build($config, $repo))
+                  ->setTemplate(
+                      Template\Builder::build($config, $repo, $this->executable, $this->resolver->isPharRelease())
+                  )
                   ->run();
 
         return 0;

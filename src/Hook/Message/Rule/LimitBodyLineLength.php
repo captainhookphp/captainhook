@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\Message\Rule;
 
 use SebastianFeldmann\Git\CommitMessage;
@@ -45,7 +47,7 @@ class LimitBodyLineLength extends Base
      * @param  \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool
      */
-    public function pass(CommitMessage $msg) : bool
+    public function pass(CommitMessage $msg): bool
     {
         $lineNr = 1;
         foreach ($msg->getBodyLines() as $line) {

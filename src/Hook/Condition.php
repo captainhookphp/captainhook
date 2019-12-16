@@ -1,15 +1,16 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook;
 
-use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
 use SebastianFeldmann\Git\Repository;
 
@@ -30,5 +31,5 @@ interface Condition
      * @param  \SebastianFeldmann\Git\Repository $repository
      * @return bool
      */
-    public function isTrue(IO $io, Repository $repository) : bool;
+    public function isTrue(IO $io, Repository $repository): bool;
 }

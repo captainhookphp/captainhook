@@ -1,20 +1,21 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\Message\Action;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
-use CaptainHook\App\Git\DummyRepo;
 use CaptainHook\App\Mockery;
+use Exception;
 use SebastianFeldmann\Git\CommitMessage;
-use SebastianFeldmann\Git\Repository;
 use PHPUnit\Framework\TestCase;
 
 class RegexTest extends TestCase
@@ -23,6 +24,8 @@ class RegexTest extends TestCase
 
     /**
      * Tests RegexCheck::execute
+     *
+     * @throws \Exception
      */
     public function testExecuteDefaultSuccess(): void
     {
@@ -43,6 +46,8 @@ class RegexTest extends TestCase
 
     /**
      * Tests RegexCheck::execute
+     *
+     * @throws \Exception
      */
     public function testExecuteCustomSuccess(): void
     {
@@ -70,10 +75,12 @@ class RegexTest extends TestCase
 
     /**
      * Tests RegexCheck::execute
+     *
+     * @throws \Exception
      */
     public function testExecuteInvalidOption(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
@@ -87,6 +94,8 @@ class RegexTest extends TestCase
 
     /**
      * Tests RegexCheck::execute
+     *
+     * @throws \Exception
      */
     public function testMerging(): void
     {
@@ -104,10 +113,12 @@ class RegexTest extends TestCase
 
     /**
      * Tests RegexCheck::execute
+     *
+     * @throws \Exception
      */
     public function testExecuteNoMatchCustomErrorMessage(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('No match for #FooBarBaz#');
 
         $io     = new NullIO();

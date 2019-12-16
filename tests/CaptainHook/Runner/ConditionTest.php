@@ -1,19 +1,23 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Runner;
 
 use CaptainHook\App\Hook\Condition\FileChanged\Any;
+use Exception;
 use PHPUnit\Framework\TestCase;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
 use CaptainHook\App\Mockery as CHMockery;
+use function defined;
 
 class ConditionTest extends TestCase
 {
@@ -48,7 +52,7 @@ class ConditionTest extends TestCase
      */
     public function testClassNotFound(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $conditionConfig = new Config\Condition('\\NotFoundForSure', []);
 
@@ -61,7 +65,7 @@ class ConditionTest extends TestCase
      */
     public function testDoesConditionApplyCli(): void
     {
-        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
 

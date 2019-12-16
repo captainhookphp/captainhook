@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\Template;
 
 use PHPUnit\Framework\TestCase;
@@ -18,18 +20,34 @@ class LocalTest extends TestCase
     /**
      * Tests Local::getCode
      */
-    public function testTemplate() : void
+    public function testSrcTemplate(): void
     {
-        $repo     = new Directory('/foo/bar');
-        $vendor   = new Directory('/foo/bar/vendor');
-        $config   = new File('/foo/bar/captainhook.json');
-        $template = new Local($repo, $vendor, $config);
-        $code     = $template->getCode('commit-msg');
+        $repo       = new Directory('/foo/bar');
+        $config     = new File('/foo/bar/captainhook.json');
+        $bootstrap  = new File('/foo/bar/vendor/autoload.php');
+        $executable = new File('/foo/bar/vendor/bin/captainhook');
+        $template   = new Local($repo, $config, $bootstrap, $executable, false);
+        $code       = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/usr/bin/env php', $code);
-        $this->assertStringContainsString('$app->setHook(\'commit-msg\');', $code);
-        $this->assertStringContainsString('$app->run();', $code);
-        $this->assertStringContainsString('__DIR__ . \'/../../captain', $code);
-        $this->assertStringContainsString('__DIR__ . \'/../../vendor', $code);
+        $this->assertStringContainsString('commit-msg', $code);
+        $this->assertStringContainsString('$captainHook->run(', $code);
+    }
+
+    /**
+     * Tests Local::getCode
+     */
+    public function testPharTemplate(): void
+    {
+        $repo       = new Directory('/foo/bar');
+        $config     = new File('/foo/bar/captainhook.json');
+        $bootstrap  = new File('/foo/bar/vendor/autoload.php');
+        $executable = new File('/foo/bar/tools/captainhook.phar');
+        $template   = new Local($repo, $config, $bootstrap, $executable, true);
+        $code       = $template->getCode('commit-msg');
+
+        $this->assertStringContainsString('#!/usr/bin/env php', $code);
+        $this->assertStringContainsString('hook:commit-msg', $code);
+        $this->assertStringContainsString('tools/captainhook.phar', $code);
     }
 }

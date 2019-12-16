@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\Message\Rule;
 
 use SebastianFeldmann\Git\CommitMessage;
@@ -32,7 +34,7 @@ abstract class Base implements Rule
     /**
      * @return string
      */
-    public function getHint() : string
+    public function getHint(): string
     {
         return $this->hint;
     }
@@ -41,5 +43,5 @@ abstract class Base implements Rule
      * @param  \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool
      */
-    abstract public function pass(CommitMessage $msg) : bool;
+    abstract public function pass(CommitMessage $msg): bool;
 }

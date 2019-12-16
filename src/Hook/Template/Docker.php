@@ -1,18 +1,22 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 declare(strict_types=1);
 
 namespace CaptainHook\App\Hook\Template;
 
 use CaptainHook\App\Hook\Template;
+use CaptainHook\App\Hook\Template\Docker\Config as DockerConfig;
 use SebastianFeldmann\Camino\Path\Directory;
+use SebastianFeldmann\Camino\Path\File;
 
 /**
  * Docker class
@@ -27,47 +31,43 @@ use SebastianFeldmann\Camino\Path\Directory;
  */
 class Docker implements Template
 {
-    private const BINARY = 'captainhook-run';
+    private const BINARY = 'captainhook';
 
     /**
-     * Path to the captainhook-run binary
+     * Original bootstrap option, relative path from the config file
+     *
+     * @var string
+     */
+    private $bootstrap;
+
+    /**
+     * Docker configuration with run-command & run-path
+     *
+     * @var \CaptainHook\App\Hook\Template\Docker\Config
+     */
+    private $dockerConfig;
+
+    /**
+     * Path to the CaptainHook binary script or PHAR
      *
      * @var string
      */
     private $binaryPath;
 
     /**
-     * Command to spin up the container
-     *
-     * @var string
-     */
-    private $command;
-
-    /**
-     * Custom path to executable
-     *
-     * run-path                 executable
-     * ./vendor/bin             [/captainhook-run]
-     * /var/www/html/vendor/bin [/captainhook-run]
-     * /var/www/html/tools      [/captainhook.phar]
-     *
-     * @var string
-     */
-    private $path;
-
-    /**
      * Docker constructor
      *
-     * @param \SebastianFeldmann\Camino\Path\Directory $repo
-     * @param \SebastianFeldmann\Camino\Path\Directory $vendor
-     * @param string                                   $command
-     * @param string                                   $path
+     * @param \SebastianFeldmann\Camino\Path\Directory     $repo
+     * @param \SebastianFeldmann\Camino\Path\File          $config
+     * @param \SebastianFeldmann\Camino\Path\File          $captain
+     * @param \CaptainHook\App\Hook\Template\Docker\Config $docker
+     * @param string                                       $bootstrap
      */
-    public function __construct(Directory $repo, Directory $vendor, string $command, string $path)
+    public function __construct(Directory $repo, File $config, File $captain, DockerConfig $docker, string $bootstrap)
     {
-        $this->command    = $command;
-        $this->path       = $path;
-        $this->binaryPath = $this->resolveBinaryPath($repo, $vendor);
+        $this->bootstrap    = $bootstrap;
+        $this->dockerConfig = $docker;
+        $this->binaryPath   = $this->resolveBinaryPath($repo, $captain);
     }
 
     /**
@@ -79,7 +79,7 @@ class Docker implements Template
     public function getCode(string $hook): string
     {
         return '#!/usr/bin/env bash' . PHP_EOL .
-            $this->command . ' ' . $this->binaryPath . ' ' . $hook . ' "$@"' . PHP_EOL;
+            $this->dockerConfig->getDockerCommand() . ' ' . $this->binaryPath . ' ' . $hook . ' "$@"' . PHP_EOL;
     }
 
     /**
@@ -88,16 +88,23 @@ class Docker implements Template
      * This path is either right inside the repo itself (captainhook) or only in vendor path.
      * Which happens if captainhook is required as dependency.
      *
-     * @param \SebastianFeldmann\Camino\Path\Directory $repo   Absolute path to the git repository root
-     * @param \SebastianFeldmann\Camino\Path\Directory $vendor Absolute path to the composer vendor directory
+     * @param  \SebastianFeldmann\Camino\Path\Directory     $repo       Absolute path to the git repository root
+     * @param  \SebastianFeldmann\Camino\Path\File          $executable Absolute path to the executable
      * @return string
      */
-    private function resolveBinaryPath(Directory $repo, Directory $vendor): string
+    private function resolveBinaryPath(Directory $repo, File $executable): string
     {
-        // if a specific path is configured use just that
-        if (!empty($this->path)) {
-            return $this->path . '/' . self::BINARY;
+        // if a specific executable is configured use just that
+        if (!empty($this->dockerConfig->getPathToCaptainHookExecutable())) {
+            return $this->dockerConfig->getPathToCaptainHookExecutable();
         }
+
+        // check if the captainhook binary is in the repository bin directory
+        // this is only the case if we work in the captainhook repository
+        if (file_exists($repo->getPath() . '/bin/' . self::BINARY)) {
+            return './bin/' . self::BINARY;
+        }
+
         // For docker we need to strip down the current working directory.
         // This is caused because docker will always connect to a specific working directory
         // where the absolute path will not be recognized.
@@ -105,22 +112,15 @@ class Docker implements Template
         //   cwd    => /project/
         //   path   => /project/vendor/bin/captainhook-run
         //   docker => ./vendor/bin/captainhook-run
+        $pathToExecutable = $executable->getPath();
 
-        // check if the captainhook binary is in the repository root directory
-        // this is only the case if we work in the captainhook repository
-        if (file_exists($repo->getPath() . '/' . self::BINARY)) {
-            return './' . self::BINARY;
+        // if executable is located inside the repository use a relative path
+        // by default this should return something like ./vendor/bin/captainhook
+        if ($executable->isChildOf($repo)) {
+            $pathToExecutable = './' . $executable->getRelativePathFrom($repo);
         }
 
-        $pathToVendor = $vendor->getPath();
-
-        // if vendor dir is a subdirectory use a relative path
-        // by default this should return something like ./vendor/bin/captainhook-run
-        if ($vendor->isSubDirectoryOf($repo)) {
-            $pathToVendor = './' . $vendor->getRelativePathFrom($repo);
-        }
-
-        // if the vendor directory is not located in your git repository it will return the absolute path
-        return  $pathToVendor . '/bin/' . self::BINARY;
+        // if the executable is not located in your git repository it will return the absolute path
+        return $pathToExecutable;
     }
 }

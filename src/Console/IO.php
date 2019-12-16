@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Console;
 
 /**
@@ -21,18 +23,18 @@ namespace CaptainHook\App\Console;
  */
 interface IO
 {
-    const QUIET = 1;
-    const NORMAL = 2;
-    const VERBOSE = 4;
-    const VERY_VERBOSE = 8;
-    const DEBUG = 16;
+    public const QUIET = 1;
+    public const NORMAL = 2;
+    public const VERBOSE = 4;
+    public const VERY_VERBOSE = 8;
+    public const DEBUG = 16;
 
     /**
      * Return the original cli arguments
      *
      * @return array
      */
-    public function getArguments() : array;
+    public function getArguments(): array;
 
     /**
      * Return the original cli argument or a given default
@@ -41,7 +43,7 @@ interface IO
      * @param  string $default
      * @return string
      */
-    public function getArgument(string $name, string $default = '') : string;
+    public function getArgument(string $name, string $default = ''): string;
 
     /**
      * Is this input interactive?

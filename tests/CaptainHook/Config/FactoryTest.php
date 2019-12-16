@@ -1,24 +1,28 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Config;
 
-use CaptainHook\App\Config;
 use Exception;
 use PHPUnit\Framework\TestCase;
+use function dirname;
 
 class FactoryTest extends TestCase
 {
     /**
      * Tests Factory::create
+     *
+     * @throws \Exception
      */
-    public function testCreate() : void
+    public function testCreate(): void
     {
         $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid.json'));
 
@@ -28,8 +32,10 @@ class FactoryTest extends TestCase
 
     /**
      * Tests Factory::create
+     *
+     * @throws \Exception
      */
-    public function testCreateWithAbsoluteGitDir() : void
+    public function testCreateWithAbsoluteGitDir(): void
     {
         $config = Factory::create(
             realpath(__DIR__ . '/../../files/config/valid.json'),
@@ -43,21 +49,25 @@ class FactoryTest extends TestCase
 
     /**
      * Tests Factory::create
+     *
+     * @throws \Exception
      */
-    public function testCreateWithRelativeGitDir() : void
+    public function testCreateWithRelativeGitDir(): void
     {
         $path   = realpath(__DIR__ . '/../../files/config/valid.json');
         $config = Factory::create($path, ['git-directory' => '../.git']);
 
         $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
         $this->assertCount(1, $config->getHookConfig('pre-commit')->getActions());
-        $this->assertEquals(\dirname($path) . DIRECTORY_SEPARATOR . '../.git', $config->getGitDirectory());
+        $this->assertEquals(dirname($path) . DIRECTORY_SEPARATOR . '../.git', $config->getGitDirectory());
     }
 
     /**
      * Tests Factory::create
+     *
+     * @throws \Exception
      */
-    public function testCreateWithConditions() : void
+    public function testCreateWithConditions(): void
     {
         $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-conditions.json'));
 
@@ -67,11 +77,13 @@ class FactoryTest extends TestCase
 
     /**
      * Tests Factory::create
+     *
+     * @throws \Exception
      */
-    public function testCreateWithAllSetting() : void
+    public function testCreateWithAllSetting(): void
     {
         $path   = realpath(__DIR__ . '/../../files/config/valid-with-all-settings.json');
-        $gitDir = \dirname($path) .DIRECTORY_SEPARATOR . '../../../.git';
+        $gitDir = dirname($path) . DIRECTORY_SEPARATOR . '../../../.git';
         $config = Factory::create($path);
 
         $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
@@ -85,8 +97,10 @@ class FactoryTest extends TestCase
 
     /**
      * Tests Factory::create
+     *
+     * @throws \Exception
      */
-    public function testCreateWithIncludes() : void
+    public function testCreateWithIncludes(): void
     {
         $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-includes.json'));
 
@@ -96,8 +110,10 @@ class FactoryTest extends TestCase
 
     /**
      * Tests Factory::create
+     *
+     * @throws \Exception
      */
-    public function testCreateWithValidNestedIncludes() : void
+    public function testCreateWithValidNestedIncludes(): void
     {
         $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-nested-includes.json'));
 
@@ -107,8 +123,10 @@ class FactoryTest extends TestCase
 
     /**
      * Tests Factory::create
+     *
+     * @throws \Exception
      */
-    public function testCreateWithInvalidNestedIncludes() : void
+    public function testCreateWithInvalidNestedIncludes(): void
     {
         $config = Factory::create(realpath(__DIR__ . '/../../files/config/invalid-with-nested-includes.json'));
 
@@ -118,8 +136,10 @@ class FactoryTest extends TestCase
 
     /**
      * Tests Factory::create
+     *
+     * @throws \Exception
      */
-    public function testCreateWithInvalidIncludes() : void
+    public function testCreateWithInvalidIncludes(): void
     {
         $this->expectException(Exception::class);
         Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-invalid-includes.json'));
@@ -127,8 +147,10 @@ class FactoryTest extends TestCase
 
     /**
      * Tests Factory::create
+     *
+     * @throws \Exception
      */
-    public function testCreateEmptyWithIncludes() : void
+    public function testCreateEmptyWithIncludes(): void
     {
         $config = Factory::create(realpath(__DIR__ . '/../../files/config/empty-with-includes.json'));
 
@@ -138,8 +160,10 @@ class FactoryTest extends TestCase
 
     /**
      * Tests Factory::create
+     *
+     * @throws \Exception
      */
-    public function testWithMainConfigurationOverridingInclude() : void
+    public function testWithMainConfigurationOverridingInclude(): void
     {
         $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-disabled-action.json'));
 

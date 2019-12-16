@@ -1,17 +1,20 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\Composer\Action;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Hook\Action;
+use Exception;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -27,7 +30,7 @@ class CheckLockFile implements Action
     /**
      * Composer configuration keys that are relevant for the 'content-hash' creation
      *
-     * @var array
+     * @var array<string>
      */
     private $relevantKeys = [
         'name',
@@ -52,7 +55,7 @@ class CheckLockFile implements Action
      * @param  \CaptainHook\App\Config\Action    $action
      * @throws \Exception
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action) : void
+    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
     {
         $path           = $action->getOptions()->get('path', getcwd());
         $name           = $action->getOptions()->get('name', 'composer');
@@ -61,7 +64,7 @@ class CheckLockFile implements Action
         $configFileHash = $this->getConfigFileHash($pathname . '.json');
 
         if ($lockFileHash !== $configFileHash) {
-            throw new \Exception('Your composer.lock file is out of date');
+            throw new Exception('Your composer.lock file is out of date');
         }
 
         $io->write('<info>Your composer.lock file is up to date</info>');
@@ -74,13 +77,13 @@ class CheckLockFile implements Action
      * @return string
      * @throws \Exception
      */
-    private function getLockFileHash(string $composerLock) : string
+    private function getLockFileHash(string $composerLock): string
     {
         $lockFile = json_decode($this->loadFile($composerLock));
         $hashKey  = 'content-hash';
 
         if (!isset($lockFile->$hashKey)) {
-            throw new \Exception('could not find content hash, please update composer to the latest version');
+            throw new Exception('could not find content hash, please update composer to the latest version');
         }
 
         return $lockFile->$hashKey;
@@ -96,7 +99,7 @@ class CheckLockFile implements Action
      * @return string
      * @throws \Exception
      */
-    private function getConfigFileHash(string $composerJson) : string
+    private function getConfigFileHash(string $composerJson): string
     {
         $content         = json_decode($this->loadFile($composerJson), true);
         $relevantContent = [];
@@ -119,10 +122,10 @@ class CheckLockFile implements Action
      * @return string
      * @throws \Exception
      */
-    private function loadFile(string $file) : string
+    private function loadFile(string $file): string
     {
         if (!file_exists($file)) {
-            throw new \Exception($file . ' not found');
+            throw new Exception($file . ' not found');
         }
         return (string)file_get_contents($file);
     }

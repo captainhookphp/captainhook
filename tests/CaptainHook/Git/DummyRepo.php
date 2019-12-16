@@ -1,59 +1,114 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Git;
+
+use org\bovigo\vfs\vfsStream;
 
 class DummyRepo
 {
+    /**
+     * Path to fake git repository
+     *
+     * @var string
+     */
     private $path;
 
-    private $gitDir;
+    /**
+     * Default empty hook git dir structure
+     *
+     * @var array
+     */
+    private static $defaultStructure = [
+        'config' => '# fake git config',
+        'hooks'  => [
+            'pre-commit.sample' => '# fake pre-commit sample file',
+            'pre-push.sample'   => '# fake pre-push sample file',
+        ]
+    ];
 
-    public function __construct($name = null)
+    /**
+     * Fake stream directory structure
+     *
+     * @var \org\bovigo\vfs\vfsStreamDirectory
+     */
+    private $repo;
+
+    /**
+     * DummyRepo constructor
+     *
+     * @param array $gitDir
+     * @param array $files
+     */
+    public function __construct(array $gitDir = [], array $files = [])
     {
-        $name         = empty($name) ? md5(mt_rand(0, 9999)) : $name;
-        $this->path   = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $name;
-        $this->gitDir = $this->path . DIRECTORY_SEPARATOR . '.git';
+        $this->repo  = vfsStream::setup('root', null, $this->setupRepo($gitDir, $files));
+        $this->path  = $this->repo->url();
     }
 
-    public function setup()
+    /**
+     * Return the fake directory structure starting at '/repo-name'
+     *
+     * @param  array $gitDir
+     * @param  array $files
+     * @return array
+     */
+    private function setupRepo(array $gitDir, array $files)
     {
-        mkdir($this->gitDir . DIRECTORY_SEPARATOR . 'hooks', 0777, true);
+        $dotGit = empty($gitDir) ? self::$defaultStructure : $gitDir;
+
+        return array_merge(
+            ['.git' => $dotGit],
+            $files
+        );
     }
 
-    public function touchHook($name, $content = '# dummy hook')
+    /**
+     * Tells if a hook exists
+     *
+     * @param  string $hook
+     * @return bool
+     */
+    public function hookExists(string $hook): bool
     {
-        file_put_contents($this->gitDir . DIRECTORY_SEPARATOR . 'hooks' . DIRECTORY_SEPARATOR . $name, $content);
+        return $this->repo->hasChild('.git/hooks/' . $hook);
     }
 
-    public function merge()
-    {
-        file_put_contents($this->gitDir . DIRECTORY_SEPARATOR . 'MERGE_MSG', '# merge file');
-    }
-
-    public function getPath()
+    /**
+     * Return the path to the fake repository
+     *
+     * @return string
+     */
+    public function getRoot()
     {
         return $this->path;
     }
 
+    /**
+     * Return path to fake .git dir
+     *
+     * @return string
+     */
     public function getGitDir()
     {
-        return $this->getPath() . DIRECTORY_SEPARATOR . '.git';
+        return $this->getRoot() . '/.git';
     }
 
+    /**
+     * Return path to the fake hook dir
+     *
+     * @return string
+     */
     public function getHookDir()
     {
-        return $this->getGitDir() . DIRECTORY_SEPARATOR . 'hooks';
-    }
-
-    public function cleanup()
-    {
-        system('rm -rf ' . $this->path);
+        return $this->getGitDir() . '/hooks';
     }
 }

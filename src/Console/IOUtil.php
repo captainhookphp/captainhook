@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Console;
 
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,7 +26,7 @@ abstract class IOUtil
     /**
      * Maps config values to Symfony verbosity values
      *
-     * @var array
+     * @var array<string, int>
      */
     private static $verbosityMap = [
         'quiet'        => OutputInterface::VERBOSITY_QUIET,
@@ -40,7 +42,7 @@ abstract class IOUtil
      * @param  string $verbosity
      * @return int
      */
-    public static function mapConfigVerbosity(string $verbosity) : int
+    public static function mapConfigVerbosity(string $verbosity): int
     {
         return self::$verbosityMap[strtolower($verbosity)] ?? OutputInterface::VERBOSITY_NORMAL;
     }
@@ -51,7 +53,7 @@ abstract class IOUtil
      * @param  string $answer
      * @return bool
      */
-    public static function answerToBool($answer) : bool
+    public static function answerToBool($answer): bool
     {
         return in_array($answer, ['y', 'yes', 'ok']);
     }
@@ -63,7 +65,7 @@ abstract class IOUtil
      * @param  string $char
      * @return string
      */
-    public static function getLineSeparator(int $length = 80, string $char = '=') : string
+    public static function getLineSeparator(int $length = 80, string $char = '='): string
     {
         return str_repeat($char, $length);
     }
@@ -75,7 +77,7 @@ abstract class IOUtil
      * @param  string                         $default
      * @return string
      */
-    public static function argToString($arg, $default = '') : string
+    public static function argToString($arg, $default = ''): string
     {
         return is_string($arg) ? $arg : $default;
     }
@@ -87,7 +89,7 @@ abstract class IOUtil
      * @param  bool                           $default
      * @return bool
      */
-    public static function argToBool($arg, $default = false) : bool
+    public static function argToBool($arg, $default = false): bool
     {
         return is_bool($arg) ? $arg : $default;
     }

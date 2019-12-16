@@ -1,0 +1,23 @@
+{
+  "alias": "captainhook",
+  "banner": [
+    "This file is part of CaptainHook",
+    "",
+    "(c) Sebastian Feldmann <sf@sebastian.feldmann.info>",
+    "",
+    "For the full copyright and license information, please view the LICENSE",
+    "file that was distributed with this source code."
+  ],
+  "files":[
+    "LICENSE"
+  ],
+  "base-path": null,
+  "output": "build/phar/captainhook.phar",
+  "compactors": [
+    "KevinGH\\Box\\Compactor\\PhpScoper"
+  ],
+  "replacements": {
+    "runtime": "PHAR"
+  },
+  "php-scoper": "build/scoper.inc.php"
+}

@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of CaptainHook
+ *
+ * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace CaptainHook\App\Console\IO;
 
 use Composer\IO\IOInterface;
@@ -52,7 +61,6 @@ class ComposerIOTest extends TestCase
     public function testIsDebug(): void
     {
         $this->assertFalse($this->io->isDebug());
-
     }
 
     /**
@@ -89,7 +97,6 @@ class ComposerIOTest extends TestCase
         $this->io->writeError('foo');
 
         $this->assertTrue(true);
-
     }
 
     /**
@@ -110,6 +117,8 @@ class ComposerIOTest extends TestCase
 
     /**
      * Tests ComposerIO::askAbdValidate
+     *
+     * @throws \Exception
      */
     public function testAskAndValidate(): void
     {
@@ -117,7 +126,7 @@ class ComposerIOTest extends TestCase
             true,
             $this->io->askAndValidate(
                 'foo',
-                function() {
+                function () {
                     return true;
                 },
                 null,

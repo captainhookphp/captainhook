@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Config;
 
 use CaptainHook\App\CH;
@@ -48,7 +50,7 @@ final class Factory
      * @return \CaptainHook\App\Config
      * @throws \Exception
      */
-    public function createConfig(string $path = '', array $settings = []) : Config
+    public function createConfig(string $path = '', array $settings = []): Config
     {
         $path = $path ?: getcwd() . DIRECTORY_SEPARATOR . CH::CONFIG;
         $file = new Json($path);
@@ -57,11 +59,13 @@ final class Factory
     }
 
     /**
+     * Includes a external captainhook configuration
+     *
      * @param  string $path
      * @return \CaptainHook\App\Config
      * @throws \Exception
      */
-    private function includeConfig(string $path) : Config
+    private function includeConfig(string $path): Config
     {
         $file = new Json($path);
         if (!$file->exists()) {
@@ -69,7 +73,6 @@ final class Factory
         }
         return $this->setupConfig($file);
     }
-
 
     /**
      * Return a configuration with data loaded from json file it it exists
@@ -79,7 +82,7 @@ final class Factory
      * @return \CaptainHook\App\Config
      * @throws \Exception
      */
-    private function setupConfig(Json $file, array $settings = []) : Config
+    private function setupConfig(Json $file, array $settings = []): Config
     {
         return $file->exists()
             ? $this->loadConfigFromFile($file, $settings)
@@ -94,7 +97,7 @@ final class Factory
      * @return \CaptainHook\App\Config
      * @throws \Exception
      */
-    private function loadConfigFromFile(Json $file, array $settings) : Config
+    private function loadConfigFromFile(Json $file, array $settings): Config
     {
         $json = $file->readAssoc();
         Util::validateJsonConfiguration($json);
@@ -118,7 +121,7 @@ final class Factory
      * @param  array $json
      * @return array
      */
-    private function extractSettings(array $json) : array
+    private function extractSettings(array $json): array
     {
         return isset($json['config']) && is_array($json['config']) ? $json['config'] : [];
     }
@@ -131,7 +134,7 @@ final class Factory
      * @return void
      * @throws \Exception
      */
-    private function configureHook(Config\Hook $config, array $json) : void
+    private function configureHook(Config\Hook $config, array $json): void
     {
         $config->setEnabled($json['enabled']);
         foreach ($json['actions'] as $actionJson) {
@@ -169,7 +172,7 @@ final class Factory
      *
      * @param array $json
      */
-    private function readMaxIncludeLevel(array $json) : void
+    private function readMaxIncludeLevel(array $json): void
     {
         // read the include level setting only for the actual configuration
         if ($this->includeLevel === 0 && isset($json['config'][Config::SETTING_INCLUDES_LEVEL])) {
@@ -184,7 +187,7 @@ final class Factory
      * @param  \CaptainHook\App\Config[]    $includes
      * @return void
      */
-    private function mergeHookConfigFromIncludes(Hook $hook, array $includes) : void
+    private function mergeHookConfigFromIncludes(Hook $hook, array $includes): void
     {
         foreach ($includes as $includedConfig) {
             $includedHook = $includedConfig->getHookConfig($hook->getName());
@@ -203,7 +206,7 @@ final class Factory
      * @return \CaptainHook\App\Config[]
      * @throws \Exception
      */
-    protected function loadIncludedConfigs(array $json, string $path) : array
+    protected function loadIncludedConfigs(array $json, string $path): array
     {
         $includes  = [];
         $directory = dirname($path);
@@ -239,7 +242,7 @@ final class Factory
      * @return \CaptainHook\App\Config
      * @throws \Exception
      */
-    public static function create(string $path = '', array $settings = []) : Config
+    public static function create(string $path = '', array $settings = []): Config
     {
         $factory = new static();
         return $factory->createConfig($path, $settings);

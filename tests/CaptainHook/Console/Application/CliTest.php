@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * This file is part of CaptainHook
+ *
+ * (c) Sebastian Feldmann <sf@sebastian-feldmann.info>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace CaptainHook\App\Console\Application;
+
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
+
+class CliTest extends TestCase
+{
+    /**
+     * Tests Cli::run
+     *
+     * @throws \Exception
+     */
+    public function testVersionOutput(): void
+    {
+        $input = new ArrayInput(['--version' => true]);
+        $output = $this->getMockBuilder(NullOutput::class)
+                       ->disableOriginalConstructor()
+                       ->getMock();
+
+        $output->expects($this->once())->method('writeLn');
+
+
+        $app = new Cli('captainhook');
+        $app->setAutoExit(false);
+        $app->run($input, $output);
+    }
+
+    /**
+     * Tests Cli::run
+     *
+     * @throws \Exception
+     */
+    public function testExecuteList(): void
+    {
+        $input = new ArrayInput(['command' => 'list']);
+        $output = $this->getMockBuilder(NullOutput::class)
+                       ->disableOriginalConstructor()
+                       ->getMock();
+
+        $output->expects($this->atLeastOnce())->method('write');
+
+        $app = new Cli('captainhook');
+        $app->setAutoExit(false);
+        $app->run($input, $output);
+    }
+}

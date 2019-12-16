@@ -1,12 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+declare(strict_types=1);
+
 namespace CaptainHook\App;
 
 /**
@@ -38,9 +42,9 @@ final class Hooks
     /**
      * Returns the list of valid hooks
      *
-     * @return array
+     * @return array<string>
      */
-    public static function getValidHooks() : array
+    public static function getValidHooks(): array
     {
         return [
             self::COMMIT_MSG         => 'CommitMsg',

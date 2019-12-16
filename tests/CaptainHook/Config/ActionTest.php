@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Config;
 
 use PHPUnit\Framework\TestCase;
@@ -46,6 +48,8 @@ class ActionTest extends TestCase
 
     /**
      * Tests Action::getJsonData
+     *
+     * @throws \Exception
      */
     public function testConditions(): void
     {
@@ -61,6 +65,8 @@ class ActionTest extends TestCase
 
     /**
      * Tests Action::getConditions
+     *
+     * @throws \Exception
      */
     public function testGetConditions(): void
     {

@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+
 /**
  * CaptainHook
  *
@@ -35,59 +36,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-// check installation [composer default, composer bin, git clone]
-foreach ([__DIR__ . '/../../autoload.php', __DIR__ . '/../autoload.php', __DIR__ . '/vendor/autoload.php'] as $file) {
-    if (file_exists($file)) {
-        define('CAPTAINHOOK_COMPOSER_AUTOLOAD', $file);
-        break;
+
+use CaptainHook\App\Console\Application\Cli as CaptainHook;
+use Symfony\Component\Console\Input\ArgvInput;
+
+(static function($argv)
+{
+    // check installation type [composer bin dir, git clone / phar, composer package dir]
+    $composerAutoloadLocations = [
+        __DIR__ . '/../../autoload.php',
+        __DIR__ . '/../vendor/autoload.php',
+        __DIR__ . '/../../../autoload.php'
+    ];
+
+    foreach ($composerAutoloadLocations as $file) {
+        if (file_exists($file)) {
+            define('CAPTAINHOOK_COMPOSER_AUTOLOAD', $file);
+        }
     }
-}
+    unset($file);
 
-if (!defined('CAPTAINHOOK_COMPOSER_AUTOLOAD')) {
-    fwrite(STDERR,
-        'You need to set up the project dependencies using the following commands:' . PHP_EOL .
-        'wget http://getcomposer.org/composer.phar' . PHP_EOL .
-        'php composer.phar install' . PHP_EOL
-    );
-    exit(1);
-}
-
-$arguments = $_SERVER['argv'] ?? [];
-$hook = $arguments[1] ?? null;
-
-if ($hook === null) {
-    fwrite(
-        STDERR,
-        sprintf('Expected at least the hook parameters but got %d', count($_SERVER['argv']))
-    );
-    exit(1);
-}
-
-array_splice($_SERVER['argv'], 1, 1);
-
-require CAPTAINHOOK_COMPOSER_AUTOLOAD;
-
-// check captainhook.json
-foreach ([__DIR__ . '/../../../captainhook.json', __DIR__ . '/captainhook.json'] as $file) {
-    if (file_exists($file)) {
-        define('CAPTAINHOOK_CONFIG', $file);
-        break;
+    if (!defined('CAPTAINHOOK_COMPOSER_AUTOLOAD')) {
+        fwrite(STDERR,
+            'You need to set up the project dependencies using the following commands:' . PHP_EOL .
+            'wget http://getcomposer.org/composer.phar' . PHP_EOL .
+            'php composer.phar install' . PHP_EOL
+        );
+        exit(1);
     }
-}
-unset($file);
 
-if (!defined('CAPTAINHOOK_CONFIG')) {
-    fwrite(
-        STDERR,
-        'Configuration "captainhook.json" not found.' . PHP_EOL .
-        'Run vendor/bin/captainhook configure to create one.'
-    );
-    exit(1);
-}
+    require CAPTAINHOOK_COMPOSER_AUTOLOAD;
 
-$config = realpath(CAPTAINHOOK_CONFIG);
-$app    = new CaptainHook\App\Console\Application\Hook();
-$app->setHook($hook);
-$app->setConfigFile($config);
-$app->run();
+    $captainHook = new CaptainHook($argv[0]);
+    $captainHook->run(new ArgvInput($argv));
+}
+)($argv);
+
 

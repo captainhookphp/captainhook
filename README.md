@@ -8,7 +8,7 @@
 
 # CaptainHook
 
-<img src="https://captainhookphp.github.io/captainhook/gfx/ch.png" align="right" width="200"/>
+<img src="https://captainhookphp.github.io/captainhook/gfx/ch.png" alt="CaptainHook logo" align="right" width="200"/>
 
 *CaptainHook* is an easy to use and very flexible git hook library for php developers.
 It enables you to configure your git hook actions in a simple json file.
@@ -85,3 +85,6 @@ Here's an example *captainhook.json* configuration file.
   }
 }
 ```
+
+
+tools/phive --home ./.phive install --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192 --force-accept-unsigned

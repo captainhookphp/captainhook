@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Storage\File;
 
 use CaptainHook\App\Storage\File;
@@ -42,7 +44,7 @@ class Json extends File
      *
      * @return array
      */
-    public function readAssoc() : array
+    public function readAssoc(): array
     {
         return (array) ($this->read(true) ?? []);
     }
@@ -54,7 +56,7 @@ class Json extends File
      * @param  int   $options
      * @return void
      */
-    public function write($content, $options = 448) : void
+    public function write($content, $options = 448): void
     {
         $json = json_encode($content, $options) . ($options & JSON_PRETTY_PRINT ? "\n" : '');
         parent::write($json);

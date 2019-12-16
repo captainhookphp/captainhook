@@ -9,7 +9,8 @@ interface Change
     /**
      * Apply changes to the given config
      *
-     * @param \CaptainHook\App\Config $config
+     * @param  \CaptainHook\App\Config $config
+     * @return void
      */
-    public function applyTo(Config $config);
+    public function applyTo(Config $config): void;
 }

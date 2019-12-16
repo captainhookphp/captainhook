@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Runner\Config\Setup;
 
 use CaptainHook\App\Config;
@@ -30,7 +32,7 @@ class Express extends Guided implements Setup
      * @param  \CaptainHook\App\Config $config
      * @throws \Exception
      */
-    public function configureHooks(Config $config) : void
+    public function configureHooks(Config $config): void
     {
         $msgHook = $config->getHookConfig(Hooks::COMMIT_MSG);
         $preHook = $config->getHookConfig(Hooks::PRE_COMMIT);
@@ -50,7 +52,7 @@ class Express extends Guided implements Setup
      * @return void
      * @throws \Exception
      */
-    private function setupMessageHook(Config\Hook $config) : void
+    private function setupMessageHook(Config\Hook $config): void
     {
         $answer = $this->io->ask(
             '  <info>Do you want to validate your commit messages?</info> <comment>[y,n]</comment> ',
@@ -71,7 +73,7 @@ class Express extends Guided implements Setup
      * @return void
      * @throws \Exception
      */
-    private function setupPHPLintingHook(Config\Hook $config) : void
+    private function setupPHPLintingHook(Config\Hook $config): void
     {
         $answer = $this->io->ask(
             '  <info>Do you want to check your files for syntax errors?</info> <comment>[y,n]</comment> ',
@@ -91,7 +93,7 @@ class Express extends Guided implements Setup
      * @return void
      * @throws \Exception
      */
-    private function setupPHPUnitHook(Config\Hook $config) : void
+    private function setupPHPUnitHook(Config\Hook $config): void
     {
         $answer = $this->io->ask(
             '  <info>Do you want to run phpunit before committing?</info> <comment>[y,n]</comment> ',
@@ -114,7 +116,7 @@ class Express extends Guided implements Setup
      * @return void
      * @throws \Exception
      */
-    private function setupPHPCodesnifferHook(Config\Hook $config) : void
+    private function setupPHPCodesnifferHook(Config\Hook $config): void
     {
         $answer = $this->io->ask(
             '  <info>Do you want to run phpcs before committing?</info> <comment>[y,n]</comment> ',

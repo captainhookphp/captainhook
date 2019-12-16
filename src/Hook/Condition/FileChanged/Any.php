@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\Condition\FileChanged;
 
 use CaptainHook\App\Console\IO;
@@ -47,7 +49,7 @@ class Any extends FileChanged
      * @param  \SebastianFeldmann\Git\Repository $repository
      * @return bool
      */
-    public function isTrue(IO $io, Repository $repository) : bool
+    public function isTrue(IO $io, Repository $repository): bool
     {
         return $this->didAnyFileChange($this->getChangedFiles($io, $repository));
     }
@@ -57,10 +59,10 @@ class Any extends FileChanged
      *
      * Important: If no files are configured this condition is always false.
      *
-     * @param  array $changedFiles
+     * @param  array<string> $changedFiles
      * @return bool
      */
-    private function didAnyFileChange(array $changedFiles) : bool
+    private function didAnyFileChange(array $changedFiles): bool
     {
         foreach ($this->filesToWatch as $file) {
             if (in_array($file, $changedFiles)) {

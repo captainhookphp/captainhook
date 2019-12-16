@@ -1,16 +1,19 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Console\Command;
 
 use CaptainHook\App\Console\IO\DefaultIO;
 use CaptainHook\App\Console\IO\NullIO;
+use Exception;
 use Symfony\Component\Console\Input\ArrayInput;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\NullOutput;
@@ -19,10 +22,12 @@ class AddTest extends TestCase
 {
     /**
      * Tests Add::run
+     *
+     * @throws \Exception
      */
     public function testExecuteNoConfig(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $input   = new ArrayInput(
             [

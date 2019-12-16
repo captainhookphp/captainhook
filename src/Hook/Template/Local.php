@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 declare(strict_types=1);
 
 namespace CaptainHook\App\Hook\Template;
@@ -29,13 +31,6 @@ use SebastianFeldmann\Camino\Path\File;
 class Local implements Template
 {
     /**
-     * Path to the vendor directory
-     *
-     * @var string
-     */
-    private $vendorPath;
-
-    /**
      * Path to the captainhook configuration
      *
      * @var string
@@ -43,16 +38,50 @@ class Local implements Template
     private $configPath;
 
     /**
+     * Original bootstrap option
+     *
+     * @var string
+     */
+    private $bootstrap;
+
+    /**
+     * Path to the vendor directory
+     *
+     * @var string
+     */
+    private $bootstrapPath;
+
+    /**
+     * Path to the captainhook executable
+     *
+     * @var string
+     */
+    private $executablePath;
+
+    /**
+     * Is the executable a phar file
+     *
+     * @var bool
+     */
+    private $isPhar;
+
+    /**
      * Local constructor
      *
      * @param \SebastianFeldmann\Camino\Path\Directory $repo
-     * @param \SebastianFeldmann\Camino\Path\Directory $vendor
      * @param \SebastianFeldmann\Camino\Path\File      $config
+     * @param \SebastianFeldmann\Camino\Path\File      $captainHook
+     * @param string                                   $bootstrap
+     * @param bool                                     $isPhar
      */
-    public function __construct(Directory $repo, Directory $vendor, File $config)
+    public function __construct(Directory $repo, File $config, File $captainHook, string $bootstrap, bool $isPhar)
     {
-        $this->vendorPath = $this->getPathFromHookTo($repo, $vendor);
-        $this->configPath = $this->getPathFromHookTo($repo, $config);
+        $bootstrapDir         = new Directory($config->getDirectory()->getPath() . '/' . $bootstrap);
+        $this->bootstrap      = $bootstrap;
+        $this->bootstrapPath  = $this->getPathFromHookTo($repo, $bootstrapDir);
+        $this->configPath     = $this->getPathFromHookTo($repo, $config);
+        $this->executablePath = $this->getPathFromHookTo($repo, $captainHook);
+        $this->isPhar         = $isPhar;
     }
 
     /**
@@ -63,20 +92,79 @@ class Local implements Template
      */
     public function getCode(string $hook): string
     {
-        return '#!/usr/bin/env php' . PHP_EOL .
-            '<?php' . PHP_EOL .
-            '$autoLoader = ' . $this->vendorPath . '/autoload.php\';' . PHP_EOL . PHP_EOL .
-            'if (!file_exists($autoLoader)) {' . PHP_EOL .
-            '    fwrite(STDERR, \'Composer autoload.php could not be found\');' . PHP_EOL .
-            '    exit(1);' . PHP_EOL .
-            '}' . PHP_EOL .
-            'require $autoLoader;' . PHP_EOL .
-            '$config = realpath(' . $this->configPath . '\');' . PHP_EOL .
-            '$app    = new CaptainHook\App\Console\Application\Hook();' . PHP_EOL .
-            '$app->setHook(\'' . $hook . '\');' . PHP_EOL .
-            '$app->setConfigFile($config);' . PHP_EOL .
-            '$app->setRepositoryPath(dirname(dirname(__DIR__)));' . PHP_EOL .
-            '$app->run();' . PHP_EOL . PHP_EOL;
+        $lines = $this->isPhar ? $this->getPharHookLines($hook) : $this->getLocalHookLines($hook);
+
+        return implode(PHP_EOL, $lines) . PHP_EOL;
+    }
+
+    /**
+     * Returns lines of code for the local src installation
+     *
+     * @param  string $hook
+     * @return array<string>
+     */
+    private function getLocalHookLines(string $hook): array
+    {
+        return [
+            '#!/usr/bin/env php',
+            '<?php',
+            '',
+            'use CaptainHook\App\Console\Application\Cli as CaptainHook;',
+            'use Symfony\Component\Console\Input\ArgvInput;',
+            '',
+            '(static function($argv)',
+            '{',
+            '    $bootstrap = ' . $this->bootstrapPath . ';',
+            '    if (!file_exists($bootstrap)) {',
+            '        fwrite(STDERR, \'Boostrap file \\\'\' . $bootstrap . \'\\\' could not be found\');',
+            '        exit(1);',
+            '    }',
+            '    require $bootstrap;',
+            '',
+            '    $argv = array_merge(',
+            '        [',
+            '            $argv[0],',
+            '            \'hook:' . $hook . '\',',
+            '            \'--configuration=\' . ' . $this->configPath . ',',
+            '            \'--git-directory=\' . dirname(__DIR__, 2) . \'/.git\',',
+            '        ],',
+            '        array_slice($argv, 1)',
+            '    );',
+            '    $captainHook = new CaptainHook($argv[0]);',
+            '    $captainHook->run(new ArgvInput($argv));',
+            '}',
+            ')($argv);',
+        ];
+    }
+
+    /**
+     * Returns the lines of code for the local phar installation
+     *
+     * @param  string $hook
+     * @return array<string>
+     */
+    private function getPharHookLines(string $hook): array
+    {
+        return [
+            '#!/usr/bin/env php',
+            '<?php',
+            '',
+            '(static function($argv)',
+            '{',
+            '    $argv = array_merge(',
+            '        [',
+            '            $argv[0],',
+            '            \'hook:' . $hook . '\',',
+            '            \'--configuration=\' . ' . $this->configPath . ',',
+            '            \'--git-directory=\' . dirname(__DIR__, 2) . \'/.git\',',
+            '            \'--bootstrap=' . $this->bootstrap . '\',',
+            '        ],',
+            '        array_slice($argv, 1)',
+            '    );',
+            '    include ' . $this->executablePath . ';',
+            '}',
+            ')($argv);',
+        ];
     }
 
     /**
@@ -86,12 +174,12 @@ class Local implements Template
      * @param  \SebastianFeldmann\Camino\Path           $target
      * @return string
      */
-    private function getPathFromHookTo(Directory $repo, Path $target) : string
+    private function getPathFromHookTo(Directory $repo, Path $target): string
     {
         if (!$target->isChildOf($repo)) {
-            return $target->getPath();
+            return '\'' . $target->getPath() . '\'';
         }
 
-        return '__DIR__ . \'/../../' . $target->getRelativePathFrom($repo);
+        return '__DIR__ . \'/../../' . $target->getRelativePathFrom($repo) . '\'';
     }
 }

@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Console\IO;
 
 use CaptainHook\App\Console\IO;
@@ -26,7 +28,7 @@ abstract class Base implements IO
      *
      * @return array
      */
-    public function getArguments() : array
+    public function getArguments(): array
     {
         return [];
     }
@@ -38,7 +40,7 @@ abstract class Base implements IO
      * @param  string $default
      * @return string
      */
-    public function getArgument(string $name, string $default = '') : string
+    public function getArgument(string $name, string $default = ''): string
     {
         return $default;
     }

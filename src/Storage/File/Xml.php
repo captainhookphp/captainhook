@@ -1,15 +1,18 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Storage\File;
 
 use CaptainHook\App\Storage\File;
+use RuntimeException;
 
 /**
  * Class Xml
@@ -34,7 +37,7 @@ class Xml extends File
         libxml_use_internal_errors($old);
 
         if (count($errors) || $xml === false) {
-            throw new \RuntimeException('xml file \'' . $this->path . '\': ' . $errors[0]->message);
+            throw new RuntimeException('xml file \'' . $this->path . '\': ' . $errors[0]->message);
         }
         return $xml;
     }

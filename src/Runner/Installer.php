@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Runner;
 
 use CaptainHook\App\Console\IOUtil;
@@ -50,7 +52,7 @@ class Installer extends RepositoryAware
      * @param  bool $force
      * @return \CaptainHook\App\Runner\Installer
      */
-    public function setForce(bool $force) : Installer
+    public function setForce(bool $force): Installer
     {
         $this->force = $force;
         return $this;
@@ -63,7 +65,7 @@ class Installer extends RepositoryAware
      * @return \CaptainHook\App\Runner\Installer
      * @throws \CaptainHook\App\Exception\InvalidHookName
      */
-    public function setHook(string $hook) : Installer
+    public function setHook(string $hook): Installer
     {
         if (!empty($hook) && !HookUtil::isValid($hook)) {
             throw new Exception\InvalidHookName('Invalid hook name \'' . $hook . '\'');
@@ -77,7 +79,7 @@ class Installer extends RepositoryAware
      *
      * @return void
      */
-    public function run() : void
+    public function run(): void
     {
         $hooks = $this->getHooksToInstall();
 
@@ -89,9 +91,9 @@ class Installer extends RepositoryAware
     /**
      * Return list of hooks to install
      *
-     * @return array
+     * @return array<string>
      */
-    public function getHooksToInstall() : array
+    public function getHooksToInstall(): array
     {
         return empty($this->hookToHandle) ? HookUtil::getValidHooks() : [$this->hookToHandle => false];
     }
@@ -121,7 +123,7 @@ class Installer extends RepositoryAware
      * @param  string $hook
      * @return void
      */
-    public function writeHookFile(string $hook) : void
+    public function writeHookFile(string $hook): void
     {
         $hooksDir = $this->repository->getHooksDir();
         $hookFile = $hooksDir . DIRECTORY_SEPARATOR . $hook;
@@ -149,7 +151,7 @@ class Installer extends RepositoryAware
      * @param  string $hook
      * @return string
      */
-    protected function getHookSourceCode(string $hook) : string
+    protected function getHookSourceCode(string $hook): string
     {
         return $this->template->getCode($hook);
     }
@@ -160,7 +162,7 @@ class Installer extends RepositoryAware
      * @param  string $hook The name of the hook to check
      * @return bool
      */
-    protected function needInstallConfirmation(string $hook) : bool
+    protected function needInstallConfirmation(string $hook): bool
     {
         return $this->repository->hookExists($hook) && !$this->force;
     }
@@ -172,7 +174,7 @@ class Installer extends RepositoryAware
      *
      * @return Installer
      */
-    public function setTemplate(Template $template) : Installer
+    public function setTemplate(Template $template): Installer
     {
         $this->template = $template;
         return $this;

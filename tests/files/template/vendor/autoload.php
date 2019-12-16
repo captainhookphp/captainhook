@@ -1,0 +1,2 @@
+<?php
+// fake autoload file

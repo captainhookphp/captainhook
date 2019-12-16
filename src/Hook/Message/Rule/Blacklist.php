@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\Message\Rule;
 
 use SebastianFeldmann\Git\CommitMessage;
@@ -31,7 +33,7 @@ class Blacklist extends Base
     /**
      * Blacklisted words
      *
-     * @var array
+     * @var array<array<string>>
      */
     protected $blacklist = [
         'subject' => [],
@@ -52,7 +54,7 @@ class Blacklist extends Base
     {
         $this->isCaseSensitive = $caseSensitive;
         $this->hint            = 'Commit message should not contain blacklisted words';
-        $this->stringDetection = function (string $content, string $term) : bool {
+        $this->stringDetection = function (string $content, string $term): bool {
             return strpos($content, $term) !== false;
         };
     }
@@ -60,10 +62,10 @@ class Blacklist extends Base
     /**
      * Set body blacklist
      *
-     * @param  array $list
+     * @param  array<string> $list
      * @return void
      */
-    public function setBodyBlacklist(array $list) : void
+    public function setBodyBlacklist(array $list): void
     {
         $this->setBlacklist($list, 'body');
     }
@@ -71,10 +73,10 @@ class Blacklist extends Base
     /**
      * Set subject blacklist
      *
-     * @param  array $list
+     * @param  array<string> $list
      * @return void
      */
-    public function setSubjectBlacklist(array $list) : void
+    public function setSubjectBlacklist(array $list): void
     {
         $this->setBlacklist($list, 'subject');
     }
@@ -82,11 +84,11 @@ class Blacklist extends Base
     /**
      * Blacklist setter
      *
-     * @param  array  $list
-     * @param  string $type
+     * @param  array<string> $list
+     * @param  string        $type
      * @return void
      */
-    protected function setBlacklist(array $list, string $type) : void
+    protected function setBlacklist(array $list, string $type): void
     {
         $this->blacklist[$type] = $list;
     }
@@ -97,7 +99,7 @@ class Blacklist extends Base
      * @param  \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool
      */
-    public function pass(CommitMessage $msg) : bool
+    public function pass(CommitMessage $msg): bool
     {
         return $this->isSubjectValid($msg) && $this->isBodyValid($msg);
     }
@@ -108,7 +110,7 @@ class Blacklist extends Base
      * @param \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool
      */
-    protected function isSubjectValid(CommitMessage $msg) : bool
+    protected function isSubjectValid(CommitMessage $msg): bool
     {
         return !$this->containsBlacklistedWord($this->blacklist['subject'], $msg->getSubject());
     }
@@ -119,7 +121,7 @@ class Blacklist extends Base
      * @param \SebastianFeldmann\Git\CommitMessage $msg
      * @return bool
      */
-    protected function isBodyValid(CommitMessage $msg) : bool
+    protected function isBodyValid(CommitMessage $msg): bool
     {
         return !$this->containsBlacklistedWord($this->blacklist['body'], $msg->getBody());
     }
@@ -127,11 +129,11 @@ class Blacklist extends Base
     /**
      * Contains blacklisted word
      *
-     * @param  array  $list
-     * @param  string $content
+     * @param  array<string> $list
+     * @param  string        $content
      * @return bool
      */
-    protected function containsBlacklistedWord(array $list, string $content) : bool
+    protected function containsBlacklistedWord(array $list, string $content): bool
     {
         if (!$this->isCaseSensitive) {
             $content = strtolower($content);

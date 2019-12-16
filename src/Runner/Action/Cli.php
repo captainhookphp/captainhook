@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Runner\Action;
 
 use CaptainHook\App\Config;
@@ -32,7 +34,7 @@ class Cli
      * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    public function execute(IO $io, Config\Action $action) : void
+    public function execute(IO $io, Config\Action $action): void
     {
         $processor = new Processor();
         $result    = $processor->run($this->formatCommand($action->getAction(), $io->getArguments()));
@@ -54,11 +56,11 @@ class Cli
      *  - post-checkout      => PREVIOUSHEAD, NEWHEAD, MODE
      *  - post-merge         => SQUASH
      *
-     * @param  string $command
-     * @param  array  $args
+     * @param  string        $command
+     * @param  array<string> $args
      * @return string
      */
-    protected function formatCommand(string $command, array $args) : string
+    protected function formatCommand(string $command, array $args): string
     {
         foreach ($args as $key => $value) {
             $command = str_replace('{' . strtoupper($key) . '}', $value, $command);

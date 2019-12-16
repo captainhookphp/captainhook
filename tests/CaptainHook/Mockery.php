@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App;
 
 use SebastianFeldmann\Git\Operator\Diff;
@@ -20,7 +22,7 @@ trait Mockery
      * Create repository mock
      *
      * @param  string $root
-     * @return \SebastianFeldmann\Git\Repository
+     * @return \SebastianFeldmann\Git\Repository&\PHPUnit\Framework\MockObject\MockObject
      */
     public function createRepositoryMock(string $root = ''): Repository
     {
@@ -38,7 +40,7 @@ trait Mockery
      * Create info operator mock
      *
      * @param  string $tag
-     * @return \SebastianFeldmann\Git\Operator\Info
+     * @return \SebastianFeldmann\Git\Operator\Info&\PHPUnit\Framework\MockObject\MockObject
      */
     public function createGitInfoOperator(string $tag = 'v1.0.0'): Info
     {
@@ -55,7 +57,7 @@ trait Mockery
      * Create diff operator mock
      *
      * @param  array $changedFiles
-     * @return \SebastianFeldmann\Git\Operator\Diff
+     * @return \SebastianFeldmann\Git\Operator\Diff&\PHPUnit\Framework\MockObject\MockObject
      */
     public function createGitDiffOperator(array $changedFiles = []): Diff
     {
@@ -72,7 +74,7 @@ trait Mockery
      * Create index operator mock
      *
      * @param  array $stagedFiles
-     * @return \SebastianFeldmann\Git\Operator\Index
+     * @return \SebastianFeldmann\Git\Operator\Index&\PHPUnit\Framework\MockObject\MockObject
      */
     public function createGitIndexOperator(array $stagedFiles = []): Index
     {

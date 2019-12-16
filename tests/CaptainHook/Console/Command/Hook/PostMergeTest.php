@@ -1,15 +1,17 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Console\Command\Hook;
 
-use CaptainHook\App\Console\IO\NullIO;
+use CaptainHook\App\Console\Runtime\Resolver;
 use CaptainHook\App\Git\DummyRepo;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
@@ -19,28 +21,23 @@ class PostMergeTest extends TestCase
 {
     /**
      * Tests PostMerge::run
+     *
+     * @throws \Exception
      */
     public function testExecute(): void
     {
-        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
-            $this->markTestSkipped('not tested on windows');
-        }
-
-        $repo = new DummyRepo();
-        $repo->setup();
-
-        $cmd    = new PostMerge(CH_PATH_FILES . '/config/empty.json', $repo->getPath());
+        $repo   = new DummyRepo();
         $output = new NullOutput();
         $input  = new ArrayInput(
             [
-                'squash' => 0
+                '--configuration' => CH_PATH_FILES . '/config/valid.json',
+                '--git-directory' => $repo->getGitDir(),
+                'squash'          => 0
             ]
         );
 
-        $cmd->setIO(new NullIO());
+        $cmd = new PostMerge(new Resolver());
         $cmd->run($input, $output);
-
-        $repo->cleanup();
 
         $this->assertTrue(true);
     }

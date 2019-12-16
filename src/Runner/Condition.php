@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of SebastianFeldmann\Git.
  *
@@ -58,7 +59,7 @@ class Condition
      * @param  \CaptainHook\App\Config\Condition $config
      * @return bool
      */
-    public function doesConditionApply(Config\Condition $config) : bool
+    public function doesConditionApply(Config\Condition $config): bool
     {
         $condition = $this->createCondition($config);
         return $condition->isTrue($this->io, $this->repository);
@@ -74,7 +75,7 @@ class Condition
      * @return \CaptainHook\App\Hook\Condition
      * @throws \RuntimeException
      */
-    private function createCondition(Config\Condition $config) : ConditionInterface
+    private function createCondition(Config\Condition $config): ConditionInterface
     {
         if (Util::getExecType($config->getExec()) === 'cli') {
             return new Cli(new Processor(), $config->getExec());

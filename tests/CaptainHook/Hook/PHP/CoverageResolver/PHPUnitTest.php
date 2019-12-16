@@ -1,15 +1,19 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\PHP\CoverageResolver;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
+use function defined;
 
 class PHPUnitTest extends TestCase
 {
@@ -18,7 +22,7 @@ class PHPUnitTest extends TestCase
      */
     public function testValid(): void
     {
-        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
 
@@ -33,7 +37,7 @@ class PHPUnitTest extends TestCase
      */
     public function testPHPUnitError(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $resolver = new PHPUnit(CH_PATH_FILES . '/bin/failure');
         $resolver->getCoverage();

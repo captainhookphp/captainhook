@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\Message;
 
 use CaptainHook\App\Hook\Message\Rule\CapitalizeSubject;
@@ -27,7 +29,6 @@ class RuleBookTest extends TestCase
 
         $v->validate($msg);
         $this->assertTrue(true);
-
     }
 
     /**

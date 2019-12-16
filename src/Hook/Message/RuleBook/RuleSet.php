@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\Message\RuleBook;
 
 use CaptainHook\App\Hook\Message\Rule;
@@ -33,7 +35,7 @@ abstract class RuleSet
         int $subjectLength = 50,
         int $bodyLineLength = 72,
         bool $checkImperativeBeginningOnly = false
-    ) : array {
+    ): array {
         return [
             new Rule\CapitalizeSubject(),
             new Rule\LimitSubjectLength($subjectLength),

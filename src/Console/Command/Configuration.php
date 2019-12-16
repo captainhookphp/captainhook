@@ -1,15 +1,16 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Console\Command;
 
-use CaptainHook\App\CH;
 use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Runner\Config\Creator;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,15 +25,16 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 0.9.0
  */
-class Configuration extends Base
+class Configuration extends ConfigAware
 {
     /**
      * Configure the command
      *
      * @return void
      */
-    protected function configure() : void
+    protected function configure(): void
     {
+        parent::configure();
         $this->setName('configure')
              ->setDescription('Configure your hooks')
              ->setHelp('This command creates or updates your captainhook configuration')
@@ -40,17 +42,10 @@ class Configuration extends Base
              ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing configuration file')
              ->addOption('advanced', 'a', InputOption::VALUE_NONE, 'More options, but more to type')
              ->addOption(
-                 'configuration',
-                 'c',
-                 InputOption::VALUE_OPTIONAL,
-                 'Path to your json configuration',
-                 './' . CH::CONFIG
-             )
-             ->addOption(
-                 'vendor-directory',
+                 'bootstrap',
                  null,
                  InputOption::VALUE_OPTIONAL,
-                 'Path to composers vendor directory'
+                 'Path to composers vendor/autoload.php'
              );
     }
 
@@ -65,8 +60,7 @@ class Configuration extends Base
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io       = $this->getIO($input, $output);
-        $settings = $this->fetchInputSettings($input, ['vendor-directory']);
-        $config   = $this->getConfig(IOUtil::argToString($input->getOption('configuration')), false, $settings);
+        $config   = $this->createConfig($input, false, ['bootstrap']);
 
         $configurator = new Creator($io, $config);
         $configurator->force(IOUtil::argToBool($input->getOption('force')))

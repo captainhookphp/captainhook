@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Config;
 
 /**
@@ -61,7 +63,7 @@ class Action
      *
      * @param array $options
      */
-    private function setupOptions(array $options) : void
+    private function setupOptions(array $options): void
     {
         $this->options = new Options($options);
     }
@@ -71,7 +73,7 @@ class Action
      *
      * @param array $conditions
      */
-    private function setupConditions(array $conditions) : void
+    private function setupConditions(array $conditions): void
     {
         foreach ($conditions as $condition) {
             $this->conditions[] = new Condition($condition['exec'], $condition['args'] ?? []);
@@ -83,7 +85,7 @@ class Action
      *
      * @return string
      */
-    public function getAction() : string
+    public function getAction(): string
     {
         return $this->action;
     }
@@ -93,7 +95,7 @@ class Action
      *
      * @return \CaptainHook\App\Config\Options
      */
-    public function getOptions() : Options
+    public function getOptions(): Options
     {
         return $this->options;
     }
@@ -103,7 +105,7 @@ class Action
      *
      * @return \CaptainHook\App\Config\Condition[]
      */
-    public function getConditions() : array
+    public function getConditions(): array
     {
         return $this->conditions;
     }
@@ -113,7 +115,7 @@ class Action
      *
      * @return array
      */
-    public function getJsonData() : array
+    public function getJsonData(): array
     {
         return [
             'action'     => $this->action,
@@ -127,7 +129,7 @@ class Action
      *
      * @return array
      */
-    private function getConditionJsonData() : array
+    private function getConditionJsonData(): array
     {
         $json = [];
         foreach ($this->conditions as $condition) {

@@ -1,38 +1,49 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Runner\Hook;
 
-use CaptainHook\App\Config;
-use CaptainHook\App\Runner\BaseTestRunner;
+use CaptainHook\App\Config\Mockery as ConfigMockery;
+use CaptainHook\App\Console\IO\Mockery as IOMockery;
+use CaptainHook\App\Mockery as CHMockery;
+use Exception;
+use PHPUnit\Framework\TestCase;
+use SebastianFeldmann\Git\Operator\Config as ConfigOperator;
+use function defined;
 
-class CommitMsgTest extends BaseTestRunner
+class CommitMsgTest extends TestCase
 {
+    use ConfigMockery;
+    use IOMockery;
+    use CHMockery;
+
     /**
      * Tests CommitMsg::run
      */
     public function testRunHookEnabled(): void
     {
-        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
 
-        $io       = $this->getIOMock();
-        $config   = $this->getConfigMock();
-        $configOp = $this->createMock(\SebastianFeldmann\Git\Operator\Config::class);
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock();
+        $configOp = $this->createMock(ConfigOperator::class);
         $configOp->expects($this->once())->method('getSafely')->willReturn('#');
 
-        $repo = $this->getRepositoryMock();
+        $repo = $this->createRepositoryMock();
         $repo->expects($this->once())->method('getConfigOperator')->willReturn($configOp);
 
-        $hookConfig   = $this->getHookConfigMock();
-        $actionConfig = $this->getActionConfigMock();
+        $hookConfig   = $this->createHookConfigMock();
+        $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
         $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
@@ -46,16 +57,18 @@ class CommitMsgTest extends BaseTestRunner
 
     /**
      * Tests CommitMsg::run
+     *
+     * @throws \Exception
      */
     public function testRunWithoutCommitMsgFile(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
-        $io           = $this->getIOMock();
-        $config       = $this->getConfigMock();
-        $hookConfig   = $this->getHookConfigMock();
-        $repo         = $this->getRepositoryMock();
-        $actionConfig = $this->getActionConfigMock();
+        $io           = $this->createIOMock();
+        $config       = $this->createConfigMock();
+        $hookConfig   = $this->createHookConfigMock();
+        $repo         = $this->createRepositoryMock();
+        $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
         $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);

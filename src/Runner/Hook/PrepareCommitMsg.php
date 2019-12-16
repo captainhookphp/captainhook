@@ -1,6 +1,7 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
@@ -12,6 +13,7 @@ namespace CaptainHook\App\Runner\Hook;
 
 use CaptainHook\App\Hooks;
 use CaptainHook\App\Runner\Hook;
+use RuntimeException;
 use SebastianFeldmann\Git;
 
 /**
@@ -62,7 +64,7 @@ class PrepareCommitMsg extends Hook
      *
      * @return void
      */
-    public function beforeHook() : void
+    public function beforeHook(): void
     {
         $this->commentChar = $this->repository->getConfigOperator()->getSafely('core.commentchar', '#');
         $this->file        = (string)$this->io->getArgument('file');
@@ -70,7 +72,7 @@ class PrepareCommitMsg extends Hook
         $this->hash        = (string)$this->io->getArgument('hash');
 
         if (empty($this->file)) {
-            throw new \RuntimeException('commit message file argument is missing');
+            throw new RuntimeException('commit message file argument is missing');
         }
 
         parent::beforeHook();
@@ -81,7 +83,7 @@ class PrepareCommitMsg extends Hook
      *
      * @return void
      */
-    public function beforeAction() : void
+    public function beforeAction(): void
     {
         $this->repository->setCommitMsg(Git\CommitMessage::createFromFile($this->file, $this->commentChar));
         parent::beforeAction();
@@ -92,7 +94,7 @@ class PrepareCommitMsg extends Hook
      *
      * @return void
      */
-    public function afterAction() : void
+    public function afterAction(): void
     {
         file_put_contents($this->file, $this->repository->getCommitMsg()->getRawContent());
         parent::afterAction();

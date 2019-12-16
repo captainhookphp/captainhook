@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\PHP\CoverageResolver;
 
 use RuntimeException;
@@ -51,7 +53,7 @@ class CloverXML implements CoverageResolver
      * @return void
      * @throws \RuntimeException
      */
-    private function validateXml() : void
+    private function validateXml(): void
     {
         if (!isset($this->xml->project) || !isset($this->xml->project->metrics)) {
             throw new RuntimeException('invalid clover xml file');
@@ -63,7 +65,7 @@ class CloverXML implements CoverageResolver
      *
      * @return float
      */
-    public function getCoverage() : float
+    public function getCoverage(): float
     {
         $statements = (string) $this->xml->project->metrics->attributes()->statements;
         $covered    = (string) $this->xml->project->metrics->attributes()->coveredstatements;

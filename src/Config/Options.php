@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Config;
 
 /**
@@ -23,14 +25,14 @@ class Options
     /**
      * Map of options
      *
-     * @var array
+     * @var array<string, string>
      */
     private $options;
 
     /**
      * Options constructor
      *
-     * @param array $options
+     * @param array<string, string> $options
      */
     public function __construct(array $options)
     {
@@ -52,9 +54,9 @@ class Options
     /**
      * Return all options
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function getAll() : array
+    public function getAll(): array
     {
         return $this->options;
     }

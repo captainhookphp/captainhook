@@ -1,17 +1,17 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Runner\Config\Change;
 
 use CaptainHook\App\Config;
-use CaptainHook\App\Console\IO;
-use CaptainHook\App\Runner\Config\Change;
 use CaptainHook\App\Runner\Config\Setup\Advanced;
 
 /**
@@ -28,9 +28,10 @@ class AddAction extends Hook
      * Apply changes to the given config
      *
      * @param  \CaptainHook\App\Config $config
+     * @return void
      * @throws \Exception
      */
-    public function applyTo(Config $config)
+    public function applyTo(Config $config): void
     {
         $hookConfig   = $config->getHookConfig($this->hookToChange);
         $setup        = new Advanced($this->io);

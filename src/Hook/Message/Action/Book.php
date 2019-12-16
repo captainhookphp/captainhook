@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\Message\Action;
 
 use CaptainHook\App\Config;
@@ -38,7 +40,7 @@ abstract class Book implements Action
      * @return void
      * @throws \Exception
      */
-    abstract public function execute(Config $config, IO $io, Repository $repository, Config\Action $action) : void;
+    abstract public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void;
 
     /**
      * Validate the message
@@ -49,7 +51,7 @@ abstract class Book implements Action
      * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    protected function validate(RuleBook $ruleBook, Repository $repository, IO $io) : void
+    protected function validate(RuleBook $ruleBook, Repository $repository, IO $io): void
     {
         // if this is a merge commit skip enforcing message rules
         if ($repository->isMerging()) {
@@ -68,11 +70,11 @@ abstract class Book implements Action
     /**
      * Format the error output
      *
-     * @param  array                             $problems
+     * @param  array<string>                     $problems
      * @param  \SebastianFeldmann\Git\Repository $repository
      * @return string
      */
-    private function getErrorOutput(array $problems, Repository $repository) : string
+    private function getErrorOutput(array $problems, Repository $repository): string
     {
         $err  = count($problems);
         $head = [
@@ -98,7 +100,7 @@ abstract class Book implements Action
      * @param  string $problem
      * @return string
      */
-    private function formatProblem(string $problem) : string
+    private function formatProblem(string $problem): string
     {
         $lines  = explode(PHP_EOL, $problem);
         $amount = count($lines);

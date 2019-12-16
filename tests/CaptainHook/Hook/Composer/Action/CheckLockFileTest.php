@@ -1,20 +1,20 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Hook\Composer\Action;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
-use CaptainHook\App\Git\CommitMessage;
-use CaptainHook\App\Git\DummyRepo;
 use CaptainHook\App\Mockery;
-use SebastianFeldmann\Git\Repository;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class CheckLockFileTest extends TestCase
@@ -23,6 +23,8 @@ class CheckLockFileTest extends TestCase
 
     /**
      * Tests CheckLockFile::execute
+     *
+     * @throws \Exception
      */
     public function testExecute(): void
     {
@@ -41,10 +43,12 @@ class CheckLockFileTest extends TestCase
 
     /**
      * Tests CheckLockFile::execute
+     *
+     * @throws \Exception
      */
     public function testExecuteFail(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
@@ -61,10 +65,12 @@ class CheckLockFileTest extends TestCase
 
     /**
      * Tests CheckLockFile::execute
+     *
+     * @throws \Exception
      */
     public function testExecuteNoHash(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
@@ -80,10 +86,12 @@ class CheckLockFileTest extends TestCase
 
     /**
      * Tests CheckLockFile::execute
+     *
+     * @throws \Exception
      */
     public function testExecuteInvalidPath(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');

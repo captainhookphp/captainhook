@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Console\Command\Hook;
 
 use CaptainHook\App\Console\Command\Hook;
@@ -28,14 +30,14 @@ class PrePush extends Hook
      *
      * @var string
      */
-    protected $name = Hooks::PRE_PUSH;
+    protected $hookName = Hooks::PRE_PUSH;
 
     /**
      * Configure the command
      *
      * @return void
      */
-    protected function configure() : void
+    protected function configure(): void
     {
         parent::configure();
         $this->addArgument('target', InputArgument::OPTIONAL, 'Target repository name');

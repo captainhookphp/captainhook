@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Composer;
 
 use CaptainHook\App\CH;
@@ -15,78 +17,116 @@ use Composer\Composer;
 use Composer\IO\NullIO;
 use Composer\Package\Package;
 use Composer\Script\Event;
-use PHPUnit\Framework\MockObject\MockObject;
+use Exception;
+use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 
 class CmdTest extends TestCase
 {
     /**
      * Tests Cmd::setup
+     *
+     * @throws \Exception
      */
     public function testSetupConfigExists(): void
     {
-        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
-            $this->markTestSkipped('not tested on windows');
-        }
+        $repo = new DummyRepo(
+            [],
+            [
+                'composer'   => [
+                    'autoload.php' => ''
+                ],
+                CH::CONFIG => '{"config":{"bootstrap": "composer/autoload.php"}}'
+            ]
+        );
 
-        $repo = new DummyRepo();
-        $repo->setup();
-
-        $config = $repo->getPath() . DIRECTORY_SEPARATOR . CH::CONFIG;
-        $old    = getcwd();
-        file_put_contents($config, '{}');
-        mkdir($repo->getPath() . DIRECTORY_SEPARATOR . 'vendor');
-        chdir($repo->getPath());
-
-        $event = $this->getEventMock([]);
+        $config = $repo->getRoot() . '/' . CH::CONFIG;
+        $event  = $this->createEventMock(['captainhook-config' => $config]);
 
         Cmd::setup($event);
 
-        $this->assertFileExists($repo->getHookDir() . DIRECTORY_SEPARATOR . 'pre-commit', 'pre-commit');
-        $this->assertFileExists($repo->getHookDir() . DIRECTORY_SEPARATOR . 'pre-push', 'pre-push');
-        $this->assertFileExists($repo->getHookDir() . DIRECTORY_SEPARATOR . 'commit-msg', 'commit-msg');
-
-        $repo->cleanup();
-        chdir($old);
+        $this->assertFileExists($repo->getHookDir() . '/pre-commit');
+        $this->assertFileExists($repo->getHookDir() . '/pre-push');
+        $this->assertFileExists($repo->getHookDir() . '/commit-msg');
     }
 
     /**
      * Tests Cmd::setup
+     *
+     * @throws \Exception
+     */
+    public function testSubDirectoryInstall(): void
+    {
+        $repo = new DummyRepo(
+            [],
+            [
+                'app' => [
+                    'custom' => [
+                        'autoload.php' => ''
+                    ],
+                    CH::CONFIG => '{"config":{"bootstrap": "custom/autoload.php"}}'
+                ]
+            ]
+        );
+
+        $config = $repo->getRoot() . '/app/' . CH::CONFIG;
+        $event  = $this->createEventMock(['captainhook-config' => $config]);
+
+        Cmd::setup($event);
+
+        $this->assertFileExists($repo->getHookDir() . '/pre-commit');
+        $this->assertFileExists($repo->getHookDir() . '/pre-push');
+        $this->assertFileExists($repo->getHookDir() . '/commit-msg');
+    }
+
+    /**
+     * Tests Cmd::setup
+     *
+     * @throws \Exception
+     */
+    public function testGitDirectoryNotFound(): void
+    {
+        $this->expectException(Exception::class);
+
+        $fakeConfig = vfsStream::setup('root', null, [CH::CONFIG => '{}']);
+        $event      = $this->createEventMock(['captainhook-config' => $fakeConfig->url() . '/' . CH::CONFIG]);
+
+        Cmd::setup($event);
+    }
+
+    /**
+     * Tests Cmd::setup
+     *
+     * @throws \Exception
      */
     public function testSetupNoConfig(): void
     {
-        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
-            $this->markTestSkipped('not tested on windows');
-        }
+        $repo   = new DummyRepo(
+            [],
+            [
+                'vendor' => [
+                    'autoload.php' => ''
+                ]
+            ]
+        );
+        $config = $repo->getRoot() . '/' . CH::CONFIG;
+        $extra  = ['captainhook-config' => $config];
+        $event  = $this->createEventMock($extra);
 
-        $repo  = new DummyRepo();
-        $repo->setup();
-
-        mkdir($repo->getPath() . DIRECTORY_SEPARATOR . 'vendor');
-
-        $config = $repo->getPath() . DIRECTORY_SEPARATOR . CH::CONFIG;
-        $old    = getcwd();
-        chdir($repo->getPath());
-
-        $extra = ['captainhook-config' => $config];
-        $event = $this->getEventMock($extra);
         Cmd::setup($event);
 
         $this->assertFileExists($extra['captainhook-config']);
-
-        $repo->cleanup();
-        chdir($old);
     }
 
     /**
      * Create event mock to test composer scripts
      *
      * @param  array $extra
-     * @return \Composer\Script\Event&MockObject
+     * @return \Composer\Script\Event&\PHPUnit\Framework\MockObject\MockObject
      */
-    private function getEventMock(array $extra = [])
+    private function createEventMock(array $extra = [])
     {
-        $composer = $this->getComposerMock($extra);
+        $composer = $this->createComposerMock($extra);
         $event    = $this->getMockBuilder(Event::class)
                          ->disableOriginalConstructor()
                          ->getMock();
@@ -101,9 +141,9 @@ class CmdTest extends TestCase
      * Create composer mock to return composer extra config
      *
      * @param  array $extra
-     * @return \Composer\Composer&MockObject
+     * @return \Composer\Composer&\PHPUnit\Framework\MockObject\MockObject
      */
-    private function getComposerMock(array $extra = [])
+    private function createComposerMock(array $extra = [])
     {
         $package = $this->getMockBuilder(Package::class)
                         ->disableOriginalConstructor()

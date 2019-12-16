@@ -1,12 +1,14 @@
 <?php
+
 /**
- * This file is part of CaptainHook.
+ * This file is part of CaptainHook
  *
  * (c) Sebastian Feldmann <sf@sebastian.feldmann.info>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CaptainHook\App\Config;
 
 /**
@@ -51,7 +53,7 @@ class Condition
      *
      * @return string
      */
-    public function getExec() : string
+    public function getExec(): string
     {
         return $this->exec;
     }
@@ -61,7 +63,7 @@ class Condition
      *
      * @return array
      */
-    public function getArgs() : array
+    public function getArgs(): array
     {
         return $this->args;
     }
@@ -71,7 +73,7 @@ class Condition
      *
      * @return array
      */
-    public function getJsonData() : array
+    public function getJsonData(): array
     {
         return [
             'exec' => $this->exec,
