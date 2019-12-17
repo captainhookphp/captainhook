@@ -86,4 +86,6 @@ trait Mockery
 
         return $operator;
     }
+
+    public abstract function getMockBuilder($type);
 }

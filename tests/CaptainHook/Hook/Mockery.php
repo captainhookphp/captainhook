@@ -24,4 +24,6 @@ trait Mockery
                     ->disableOriginalConstructor()
                     ->getMock();
     }
+
+    public abstract function getMockBuilder($type);
 }
