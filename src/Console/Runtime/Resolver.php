@@ -21,7 +21,7 @@ class Resolver
     /**
      * PHAR flag, replaced by box during PHAR building
      *
-     * @var bool
+     * @var string
      */
     private $runtime = '@runtime@';
 
