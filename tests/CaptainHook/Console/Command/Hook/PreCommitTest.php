@@ -106,7 +106,7 @@ class PreCommitTest extends TestCase
     public function testExecuteFailingActionInDebugMode(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('sh: foobarbaz: command not found');
+        $this->expectExceptionMessageRegExp('#sh: foobarbaz: .*#');
 
         $output = $this->createMock(NullOutput::class);
         $output->expects($this->once())->method('isDebug')->willReturn(true);
