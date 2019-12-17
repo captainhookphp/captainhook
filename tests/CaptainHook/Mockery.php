@@ -87,5 +87,9 @@ trait Mockery
         return $operator;
     }
 
+    /**
+     * @param  $type
+     * @return \PHPUnit\Framework\MockObject\MockBuilder
+     */
     public abstract function getMockBuilder($type);
 }
