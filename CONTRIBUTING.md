@@ -11,7 +11,7 @@ So you'd like to contribute to the `CaptainHook` library? Excellent! Thank you v
 	- [Style and formatting](#Style-and-formatting)
 - [Documentation](#Documentation)
 	- [Write doc comments](#Write-doc-comments)
-	- [Update the README](#Update-the-README)
+	- [Update the docs](#Update-the-docs)
 - [Before submitting your pull request](#Before-submitting-your-pull-request)
 - [After submitting your PR](#After-submitting-your-PR)
 - [The code review process](#The-code-review-process)
@@ -107,11 +107,12 @@ if no one knows it exists, or how to use it.
 
 ## Write doc comments
 
-Any functions or methods you write should have useful documentation comments in the standard `PHPDoc` format.
-Specifically, they should say what inputs the function takes, what it does (in detail),
-and what outputs it returns. If it returns an error value, explain under what circumstances this happens.
+Any functions or methods you write should have useful documentation comments in the standard `PHPDoc`
+format. Specifically, they should say what inputs the function takes, what it does (in detail),
+and what outputs it returns. If it returns an error value or throw an exception,
+explain under what circumstances this happens.
 
-## Update the README
+## Update the docs
 
 Any change to the `CaptainHook` feature addition should also be accompanied by an update to the documentation.
 If you add a new feature, add it in the documentation as well.
