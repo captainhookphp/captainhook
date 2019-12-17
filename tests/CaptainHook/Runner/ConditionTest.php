@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
 use CaptainHook\App\Mockery as CHMockery;
-use function defined;
 
 class ConditionTest extends TestCase
 {
@@ -65,7 +64,7 @@ class ConditionTest extends TestCase
      */
     public function testDoesConditionApplyCli(): void
     {
-        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
 

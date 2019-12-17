@@ -17,7 +17,6 @@ use CaptainHook\App\Mockery as CHMockery;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use SebastianFeldmann\Git\Operator\Config as ConfigOperator;
-use function defined;
 
 class CommitMsgTest extends TestCase
 {
@@ -30,7 +29,7 @@ class CommitMsgTest extends TestCase
      */
     public function testRunHookEnabled(): void
     {
-        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
 

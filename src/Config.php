@@ -13,7 +13,6 @@ namespace CaptainHook\App;
 
 use InvalidArgumentException;
 use SebastianFeldmann\Camino\Check;
-use function dirname;
 
 /**
  * Class Config
@@ -116,7 +115,7 @@ class Config
         // if repo path is absolute use it otherwise create an absolute path relative to the configuration file
         return Check::isAbsolutePath($this->settings[self::SETTING_GIT_DIR])
             ? $this->settings[self::SETTING_GIT_DIR]
-            : dirname($this->path) . '/' . $this->settings[self::SETTING_GIT_DIR];
+            : \dirname($this->path) . '/' . $this->settings[self::SETTING_GIT_DIR];
     }
 
     /**

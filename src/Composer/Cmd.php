@@ -17,7 +17,6 @@ use Composer\IO\IOInterface;
 use Composer\Script\Event;
 use RuntimeException;
 use Symfony\Component\Console\Input\ArrayInput;
-use function dirname;
 
 /**
  * Class Cmd
@@ -120,14 +119,14 @@ abstract class Cmd
      */
     private static function findGitDir(string $config): string
     {
-        $path = dirname($config);
+        $path = \dirname($config);
 
         while (file_exists($path)) {
             $possibleGitDir = $path . '/.git';
             if (file_exists($possibleGitDir)) {
                 return $possibleGitDir;
             }
-            $path = dirname($path);
+            $path = \dirname($path);
         }
         throw new RuntimeException('git directory not found');
     }

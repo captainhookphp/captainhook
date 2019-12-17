@@ -13,7 +13,6 @@ namespace CaptainHook\App\Config;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
-use function dirname;
 
 class FactoryTest extends TestCase
 {
@@ -83,7 +82,7 @@ class FactoryTest extends TestCase
     public function testCreateWithAllSetting(): void
     {
         $path   = realpath(__DIR__ . '/../../files/config/valid-with-all-settings.json');
-        $gitDir = dirname($path) . DIRECTORY_SEPARATOR . '../../../.git';
+        $gitDir = \dirname($path) . DIRECTORY_SEPARATOR . '../../../.git';
         $config = Factory::create($path);
 
         $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());

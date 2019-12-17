@@ -16,7 +16,6 @@ use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Mockery;
 use Exception;
 use PHPUnit\Framework\TestCase;
-use function defined;
 
 class TestCoverageTest extends TestCase
 {
@@ -29,7 +28,7 @@ class TestCoverageTest extends TestCase
      */
     public function testCoverageViaCloverXML(): void
     {
-        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
 
@@ -76,7 +75,7 @@ class TestCoverageTest extends TestCase
      */
     public function testCoverageViaPHPUnit(): void
     {
-        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
 

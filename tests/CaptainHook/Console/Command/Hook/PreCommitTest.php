@@ -66,7 +66,7 @@ class PreCommitTest extends TestCase
         $cmd->run($input, $output);
 
         $this->assertTrue(true);
-        $this->assertTrue(defined('CH_BOOTSTRAP_WORKED'));
+        $this->assertTrue(\defined('CH_BOOTSTRAP_WORKED'));
     }
 
     /**

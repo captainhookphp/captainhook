@@ -16,7 +16,6 @@ use CaptainHook\App\Console\IO\Mockery as IOMockery;
 use CaptainHook\App\Mockery as CHMockery;
 use Exception;
 use PHPUnit\Framework\TestCase;
-use function defined;
 
 class CliTest extends TestCase
 {
@@ -31,7 +30,7 @@ class CliTest extends TestCase
      */
     public function testExecuteSuccess(): void
     {
-        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
 
@@ -55,7 +54,7 @@ class CliTest extends TestCase
      */
     public function testExecuteSuccessWithReplacements(): void
     {
-        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
 

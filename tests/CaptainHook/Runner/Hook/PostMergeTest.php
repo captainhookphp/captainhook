@@ -16,7 +16,6 @@ use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
 use CaptainHook\App\Mockery as CHMockery;
 use PHPUnit\Framework\TestCase;
-use function defined;
 
 class PostMergeTest extends TestCase
 {
@@ -31,7 +30,7 @@ class PostMergeTest extends TestCase
      */
     public function testRunHookEnabled(): void
     {
-        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
 
