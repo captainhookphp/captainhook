@@ -85,3 +85,10 @@ Here's an example *captainhook.json* configuration file.
   }
 }
 ```
+
+## Contributing
+
+So you'd like to contribute to the `CaptainHook` library? Excellent! Thank you very much.
+I can absolutely use your help.
+
+Have a look at the [contribution guidelines](CONTRIBUTING.md).
