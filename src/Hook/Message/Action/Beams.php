@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace CaptainHook\App\Hook\Message\Action;
 
 use CaptainHook\App\Config;
@@ -41,9 +43,9 @@ class Beams extends Book
         $options = $action->getOptions();
         $book    = new RuleBook();
         $book->setRules(RuleBook\RuleSet::beams(
-            $options->get('subjectLength', 50),
-            $options->get('bodyLineLength', 72),
-            $options->get('checkImperativeBeginningOnly', false)
+            (int)  $options->get('subjectLength', 50),
+            (int)  $options->get('bodyLineLength', 72),
+            (bool) $options->get('checkImperativeBeginningOnly', false)
         ));
 
         $this->validate($book, $repository, $io);

@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace CaptainHook\App\Runner;
 
 use CaptainHook\App\Console\IOUtil;
@@ -91,11 +93,13 @@ class Installer extends RepositoryAware
     /**
      * Return list of hooks to install
      *
-     * @return array<string>
+     * @return array<string, bool>
      */
     public function getHooksToInstall(): array
     {
-        return empty($this->hookToHandle) ? HookUtil::getValidHooks() : [$this->hookToHandle => false];
+        return empty($this->hookToHandle)
+            ? array_map(function() { return true; }, HookUtil::getValidHooks())
+            : [$this->hookToHandle => false];
     }
 
     /**

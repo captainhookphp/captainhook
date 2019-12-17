@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace CaptainHook\App\Hook\PHP\Action;
 
 use CaptainHook\App\Config;
@@ -45,7 +47,7 @@ class TestCoverage implements Action
     /**
      * Minimum coverage in percent
      *
-     * @var float
+     * @var string
      */
     private $minCoverage;
 
@@ -82,7 +84,7 @@ class TestCoverage implements Action
     {
         $this->cloverXmlFile = $options->get('cloverXml');
         $this->phpUnit       = $options->get('phpUnit', 'phpunit');
-        $this->minCoverage   = $options->get('minCoverage', 80);
+        $this->minCoverage   = (int) $options->get('minCoverage', 80);
     }
 
     /**
