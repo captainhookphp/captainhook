@@ -85,6 +85,3 @@ Here's an example *captainhook.json* configuration file.
   }
 }
 ```
-
-
-tools/phive --home ./.phive install --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192 --force-accept-unsigned
