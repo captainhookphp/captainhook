@@ -46,7 +46,9 @@ class Linting implements Action
         foreach ($changedPHPFiles as $file) {
             $io->write('  - ' . $file, true, IO::VERBOSE);
             if ($this->hasSyntaxErrors($file)) {
-                throw new ActionFailed('syntax errors in file: ' . $file);
+                $error = 'syntax errors in file: ' . $file;
+                $io->write($error, true, IO::NORMAL);
+                throw new ActionFailed($error);
             }
         }
         $io->write('<info>No syntax errors detected</info>');

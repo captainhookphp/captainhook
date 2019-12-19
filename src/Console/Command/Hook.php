@@ -134,6 +134,7 @@ abstract class Hook extends RepositoryAware
   ///\'
  //
   \'';
+
         $output->writeLn('<error>' . $error . '</error>');
 
         if ($output->isVerbose()) {
