@@ -20,7 +20,7 @@ trait Mockery
      */
     public function createTemplateMock(): Template
     {
-        return $this->getMockBuilder(Template\Local::class)
+        return $this->getMockBuilder(Template\Local\PHP::class)
                     ->disableOriginalConstructor()
                     ->getMock();
     }

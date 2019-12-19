@@ -15,6 +15,8 @@ namespace CaptainHook\App\Hook\Template;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Hook\Template;
+use CaptainHook\App\Hook\Template\Local\PHP;
+use CaptainHook\App\Hook\Template\Local\Shell;
 use RuntimeException;
 use SebastianFeldmann\Camino\Check;
 use SebastianFeldmann\Camino\Path\Directory;
@@ -53,23 +55,32 @@ abstract class Builder
             throw new RuntimeException('bootstrap file not found: \'' . $bootstrapPath . '\'');
         }
 
-        if ($config->getRunMode() === Template::DOCKER) {
-            return new Docker(
-                new Directory($repositoryPath),
-                new File($configPath),
-                new File($captainPath),
-                new Docker\Config($config->getRunExec(), $config->getRunPath()),
-                $config->getBootstrap()
-            );
+        switch ($config->getRunMode()) {
+            case Template::DOCKER:
+                return new Docker(
+                    new Directory($repositoryPath),
+                    new File($configPath),
+                    new File($captainPath),
+                    new Docker\Config($config->getRunExec(), $config->getRunPath()),
+                    $config->getBootstrap()
+                );
+            case Template::PHP:
+                return new PHP(
+                    new Directory($repositoryPath),
+                    new File($configPath),
+                    new File($captainPath),
+                    $config->getBootstrap(),
+                    $isPhar
+                );
+            default:
+                return new Shell(
+                    new Directory($repositoryPath),
+                    new File($configPath),
+                    new File($captainPath),
+                    $config->getBootstrap(),
+                    $isPhar
+                );
         }
-
-        return new Local(
-            new Directory($repositoryPath),
-            new File($configPath),
-            new File($captainPath),
-            $config->getBootstrap(),
-            $isPhar
-        );
     }
 
     /**

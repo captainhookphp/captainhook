@@ -98,12 +98,12 @@ class BuilderTest extends TestCase
     {
         $repository = $this->createRepositoryMock(CH_PATH_FILES);
         $config     = $this->createConfigMock(true, CH_PATH_FILES . '/template/captainhook.json');
-        $config->method('getRunMode')->willReturn('local');
+        $config->method('getRunMode')->willReturn('php');
         $config->method('getRunExec')->willReturn('');
         $config->method('getBootstrap')->willReturn('vendor/autoload.php');
 
         $template = Builder::build($config, $repository, CH_PATH_FILES . '/bin/captainhook', false);
-        $this->assertInstanceOf(Local::class, $template);
+        $this->assertInstanceOf(Local\PHP::class, $template);
 
         $code = $template->getCode('pre-commit');
         $this->assertStringContainsString('pre-commit', $code);
@@ -119,7 +119,7 @@ class BuilderTest extends TestCase
 
         $repository = $this->createRepositoryMock(CH_PATH_FILES . '/config');
         $config     = $this->createConfigMock(true, CH_PATH_FILES . '/config/valid.json');
-        $config->method('getRunMode')->willReturn('local');
+        $config->method('getRunMode')->willReturn('php');
         $config->method('getRunExec')->willReturn('');
         $config->method('getBootstrap')->willReturn('file-not-there.php');
 

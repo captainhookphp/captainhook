@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CaptainHook\App\Hook\Template;
 
+use CaptainHook\App\CH;
 use CaptainHook\App\Hook\Template;
 use CaptainHook\App\Hook\Template\Docker\Config as DockerConfig;
 use SebastianFeldmann\Camino\Path\Directory;
@@ -78,8 +79,15 @@ class Docker implements Template
      */
     public function getCode(string $hook): string
     {
-        return '#!/usr/bin/env bash' . PHP_EOL .
-            $this->dockerConfig->getDockerCommand() . ' ' . $this->binaryPath . ' ' . $hook . ' "$@"' . PHP_EOL;
+        $lines = [
+            '#!/usr/bin/env bash',
+            '',
+            '# installed by CaptainHook ' . CH::VERSION,
+            '',
+            $this->dockerConfig->getDockerCommand() . ' ' . $this->binaryPath . ' ' . $hook . ' "$@"'
+        ];
+
+         return implode(PHP_EOL, $lines);
     }
 
     /**
@@ -88,8 +96,8 @@ class Docker implements Template
      * This path is either right inside the repo itself (captainhook) or only in vendor path.
      * Which happens if captainhook is required as dependency.
      *
-     * @param  \SebastianFeldmann\Camino\Path\Directory     $repo       Absolute path to the git repository root
-     * @param  \SebastianFeldmann\Camino\Path\File          $executable Absolute path to the executable
+     * @param  \SebastianFeldmann\Camino\Path\Directory $repo       Absolute path to the git repository root
+     * @param  \SebastianFeldmann\Camino\Path\File      $executable Absolute path to the executable
      * @return string
      */
     private function resolveBinaryPath(Directory $repo, File $executable): string

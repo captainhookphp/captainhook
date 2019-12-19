@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace CaptainHook\App\Hook\Template;
+namespace CaptainHook\App\Hook\Template\Local;
 
 use PHPUnit\Framework\TestCase;
 use SebastianFeldmann\Camino\Path\Directory;
 use SebastianFeldmann\Camino\Path\File;
 
-class LocalTest extends TestCase
+class PHPTest extends TestCase
 {
     /**
-     * Tests Local::getCode
+     * Tests PHP::getCode
      */
     public function testSrcTemplate(): void
     {
@@ -26,7 +26,7 @@ class LocalTest extends TestCase
         $config     = new File('/foo/bar/captainhook.json');
         $bootstrap  = new File('/foo/bar/vendor/autoload.php');
         $executable = new File('/foo/bar/vendor/bin/captainhook');
-        $template   = new Local($repo, $config, $bootstrap, $executable, false);
+        $template   = new PHP($repo, $config, $executable, $bootstrap, false);
         $code       = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/usr/bin/env php', $code);
@@ -35,7 +35,24 @@ class LocalTest extends TestCase
     }
 
     /**
-     * Tests Local::getCode
+     * Tests PHP::getCode
+     */
+    public function testSrcTemplateExtExecutable(): void
+    {
+        $repo       = new Directory('/foo/bar');
+        $config     = new File('/foo/bar/captainhook.json');
+        $bootstrap  = new File('/foo/bar/vendor/autoload.php');
+        $executable = new File('/usr/local/bin/captainhook');
+        $template   = new PHP($repo, $config, $executable, $bootstrap, false);
+        $code       = $template->getCode('commit-msg');
+
+        $this->assertStringContainsString('#!/usr/bin/env php', $code);
+        $this->assertStringContainsString('commit-msg', $code);
+        $this->assertStringContainsString('$captainHook->run(', $code);
+    }
+
+    /**
+     * Tests PHP::getCode
      */
     public function testPharTemplate(): void
     {
@@ -43,7 +60,7 @@ class LocalTest extends TestCase
         $config     = new File('/foo/bar/captainhook.json');
         $bootstrap  = new File('/foo/bar/vendor/autoload.php');
         $executable = new File('/foo/bar/tools/captainhook.phar');
-        $template   = new Local($repo, $config, $bootstrap, $executable, true);
+        $template   = new PHP($repo, $config, $executable, $bootstrap, true);
         $code       = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/usr/bin/env php', $code);
