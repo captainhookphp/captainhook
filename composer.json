@@ -24,8 +24,6 @@
       "CaptainHook\\App\\": "tests/CaptainHook/"
     }
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "require": {
     "php": "^7.2",
     "ext-json": "*",
@@ -45,9 +43,8 @@
   ],
   "extra": {
     "captainhook-config": "captainhook.json",
-    "captainhook-git-dir": ".git",
     "branch-alias": {
-      "dev-master": "4.3.x-dev"
+      "dev-master": "5.0.x-dev"
     }
   },
   "replace" : {
