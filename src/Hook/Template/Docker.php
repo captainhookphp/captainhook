@@ -80,11 +80,11 @@ class Docker implements Template
     public function getCode(string $hook): string
     {
         $lines = [
-            '#!/usr/bin/env bash',
+            '#!/bin/sh',
             '',
             '# installed by CaptainHook ' . CH::VERSION,
             '',
-            $this->dockerConfig->getDockerCommand() . ' ' . $this->binaryPath . ' ' . $hook . ' "$@"'
+            $this->dockerConfig->getDockerCommand() . ' ' . $this->binaryPath . ' hook:' . $hook . ' "$@"'
         ];
 
          return implode(PHP_EOL, $lines);

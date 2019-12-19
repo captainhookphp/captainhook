@@ -54,14 +54,14 @@ class Shell extends Template\Local
     protected function getHookLines(string $hook): array
     {
         return [
-            '#!/usr/bin/sh',
+            '#!/bin/sh',
             '',
             '# installed by CaptainHook ' . CH::VERSION,
             '',
             $this->executablePath
                 . ' --configuration=' . $this->configPath
                 . ' --bootstrap=' . $this->bootstrap
-                . ' ' . $hook . ' "$@"',
+                . ' hook:' . $hook . ' "$@"',
         ];
     }
 }

@@ -30,7 +30,7 @@ class ShellTest extends TestCase
         $template = new Shell($repo, $config, $executable, $bootstrap, false);
         $code     = $template->getCode('commit-msg');
 
-        $this->assertStringContainsString('#!/usr/bin/sh', $code);
+        $this->assertStringContainsString('#!/bin/sh', $code);
         $this->assertStringContainsString('commit-msg', $code);
         $this->assertStringContainsString('vendor/bin/captainhook', $code);
     }
@@ -48,7 +48,7 @@ class ShellTest extends TestCase
         $template = new Shell($repo, $config, $executable, $bootstrap, false);
         $code     = $template->getCode('commit-msg');
 
-        $this->assertStringContainsString('#!/usr/bin/sh', $code);
+        $this->assertStringContainsString('#!/bin/sh', $code);
         $this->assertStringContainsString('commit-msg', $code);
         $this->assertStringContainsString('/usr/local/bin/captainhook', $code);
     }

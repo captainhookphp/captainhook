@@ -31,7 +31,7 @@ class DockerTest extends TestCase
         $template = new Docker($repo, $config, $executable, $docker, 'vendor/autoload.php');
         $code     = $template->getCode('commit-msg');
 
-        $this->assertStringContainsString('#!/usr/bin/env bash', $code);
+        $this->assertStringContainsString('#!/bin/sh', $code);
         $this->assertStringContainsString('docker exec cap-container', $code);
         $this->assertStringContainsString('./bin/captainhook', $code);
     }
@@ -49,7 +49,7 @@ class DockerTest extends TestCase
         $template   = new Docker($repo, $config, $executable, $docker, 'vendor/autoload.php');
         $code       = $template->getCode('commit-msg');
 
-        $this->assertStringContainsString('#!/usr/bin/env bash', $code);
+        $this->assertStringContainsString('#!/bin/sh', $code);
         $this->assertStringContainsString('docker exec cap-container', $code);
         $this->assertStringContainsString('./vendor/bin/captainhook', $code);
     }
@@ -67,7 +67,7 @@ class DockerTest extends TestCase
         $template = new Docker($repo, $config, $executable, $docker, 'vendor/autoload.php');
         $code     = $template->getCode('commit-msg');
 
-        $this->assertStringContainsString('#!/usr/bin/env bash', $code);
+        $this->assertStringContainsString('#!/bin/sh', $code);
         $this->assertStringContainsString('docker exec cap-container', $code);
         $this->assertStringContainsString('./foo/captainhook', $code);
     }
