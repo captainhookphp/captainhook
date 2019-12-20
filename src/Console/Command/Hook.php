@@ -136,19 +136,16 @@ abstract class Hook extends RepositoryAware
   \'';
 
         $output->writeLn('<error>' . $error . '</error>');
-
-        if ($output->isVerbose()) {
-            $output->writeLn(
-                [
-                    '',
-                    IOUtil::getLineSeparator(8)
-                    . ' Error details: <comment>Exception</comment> '
-                    . IOUtil::getLineSeparator(46),
-                    $e->getMessage(),
-                    ''
-                ]
-            );
-        }
+        $output->writeLn(
+            [
+                '',
+                IOUtil::getLineSeparator(8)
+                . ' Error details: <comment>Exception</comment> '
+                . IOUtil::getLineSeparator(46),
+                $e->getMessage(),
+                ''
+            ]
+        );
         return 1;
     }
 }
