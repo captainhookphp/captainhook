@@ -25,7 +25,7 @@ Fork the project to your own github account. Clone the forked repository to your
 Then run the following two commands to setup the project.
 
     $ composer install
-    $ tools/phive --home ./.phive install --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192 --force-accept-unsigned
+    $ tools/phive --home ./.phive install --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192,8E730BA25823D8B5 --force-accept-unsigned
 
 Here are some hints on a good workflow for contributing to the project.
 
