@@ -31,49 +31,44 @@ class InstallerTest extends TestCase
      *
      * @throws \CaptainHook\App\Exception\InvalidHookName
      */
-    public function testSetHookInvalid(): void
+    public function testSetInvalidHook(): void
     {
         $this->expectException(InvalidHookName::class);
 
-        $io     = $this->createIOMock();
-        $config = $this->createConfigMock();
-        $repo   = $this->createRepositoryMock();
-        $runner = new Installer($io, $config, $repo);
-        $runner->setHook('iDoNotExist');
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock();
+        $repo     = $this->createRepositoryMock();
+        $template = $this->createTemplateMock();
+
+        $runner = new Installer($io, $config, $repo, $template);
+        $runner->setHook('itDoNotExist');
     }
 
     /**
-     * Tests Installer::installHook
+     * Tests Installer::run
      */
-    public function testInstallHook(): void
+    public function testHookInstallationDeclined(): void
     {
-        $io     = $this->createIOMock();
-        $config = $this->createConfigMock();
-        $repo   = $this->createRepositoryMock();
-        $runner = new Installer($io, $config, $repo);
-        $io->expects($this->once())->method('ask')->willReturn('no');
-        $runner->installHook('pre-push', true);
-    }
+        $fakeRepo = new DummyRepo();
 
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock();
+        $repo     = $this->createRepositoryMock($fakeRepo->getRoot());
+        $template = $this->createTemplateMock();
 
-    /**
-     * Tests Installer::installHook
-     */
-    public function testWriteHookFile(): void
-    {
-        $io     = $this->createIOMock();
-        $config = $this->createConfigMock();
-        $repo   = $this->createRepositoryMock();
-        $runner = new Installer($io, $config, $repo);
-        $repo->expects($this->once())->method('hookExists')->willReturn(true);
-        $io->expects($this->once())->method('ask')->willReturn('no');
-        $runner->writeHookFile('pre-push');
+        $io->expects($this->atLeast(5))->method('ask')->willReturn('n');
+
+        $runner = new Installer($io, $config, $repo, $template);
+        $runner->run();
+
+        $this->assertFileNotExists($fakeRepo->getHookDir() . '/pre-commit');
+        $this->assertFileNotExists($fakeRepo->getHookDir() . '/pre-push');
     }
 
     /**
-     * Tests Installer::writeHookFile
+     * Tests Installer::run
      */
-    public function testTemplate(): void
+    public function testWriteHook(): void
     {
         $fakeRepo = new DummyRepo();
 
@@ -87,10 +82,47 @@ class InstallerTest extends TestCase
                  ->with('pre-commit')
                  ->willReturn('');
 
-        $runner = new Installer($io, $config, $repo);
-        $runner->setTemplate($template);
-        $runner->writeHookFile('pre-commit');
+        $runner = new Installer($io, $config, $repo, $template);
+        $runner->setHook('pre-commit');
+        $runner->run('pre-commit');
 
         $this->assertFileExists($fakeRepo->getHookDir() . '/pre-commit');
+    }
+
+    /**
+     * Tests Installer::writeHookFile
+     */
+    public function testSkipExisting(): void
+    {
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock();
+        $repo     = $this->createRepositoryMock();
+        $template = $this->createTemplateMock();
+
+        $io->expects($this->atLeast(1))->method('write');
+        $repo->expects($this->once())->method('hookExists')->willReturn(true);
+
+        $runner = new Installer($io, $config, $repo, $template);
+        $runner->setSkipExisting(true);
+        $runner->setHook('pre-commit');
+        $runner->run();
+    }
+
+    /**
+     * Tests Installer::writeHookFile
+     */
+    public function testDeclineOverwrite(): void
+    {
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock();
+        $repo     = $this->createRepositoryMock();
+        $template = $this->createTemplateMock();
+
+        $io->expects($this->once())->method('ask')->willReturn('n');
+        $repo->expects($this->once())->method('hookExists')->willReturn(true);
+
+        $runner = new Installer($io, $config, $repo, $template);
+        $runner->setHook('pre-commit');
+        $runner->run();
     }
 }

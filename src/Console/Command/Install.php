@@ -71,11 +71,17 @@ class Install extends RepositoryAware
                  'force',
                  'f',
                  InputOption::VALUE_NONE,
-                 'Force to overwrite existing hooks'
+                 'Force install without confirmation'
+             )
+             ->addOption(
+                 'skip-existing',
+                 's',
+                 InputOption::VALUE_NONE,
+                 'Do not overwrite existing hooks'
              )
              ->addOption(
                  'bootstrap',
-                 null,
+                 'b',
                  InputOption::VALUE_OPTIONAL,
                  'Path to composers vendor/autoload.php'
              )
@@ -95,7 +101,7 @@ class Install extends RepositoryAware
                  'run-path',
                  'p',
                  InputOption::VALUE_OPTIONAL,
-                 'The path to the CaptainHook executable \'/var/www/html\''
+                 'The path to the CaptainHook executable \'/usr/bin/captainhook\''
              );
     }
 
@@ -104,7 +110,7 @@ class Install extends RepositoryAware
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return int|null
+     * @return int
      * @throws \CaptainHook\App\Exception\InvalidHookName
      * @throws \Exception
      */
@@ -120,12 +126,11 @@ class Install extends RepositoryAware
             );
         }
 
-        $installer = new Installer($io, $config, $repo);
+        $template  = Template\Builder::build($config, $repo, $this->executable, $this->resolver->isPharRelease());
+        $installer = new Installer($io, $config, $repo, $template);
         $installer->setForce(IOUtil::argToBool($input->getOption('force')))
+                  ->setSkipExisting(IOUtil::argToBool($input->getOption('skip-existing')))
                   ->setHook(IOUtil::argToString($input->getArgument('hook')))
-                  ->setTemplate(
-                      Template\Builder::build($config, $repo, $this->executable, $this->resolver->isPharRelease())
-                  )
                   ->run();
 
         return 0;

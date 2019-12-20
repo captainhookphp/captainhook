@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace CaptainHook\App\Runner;
 
+use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO;
 use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Exception;
 use CaptainHook\App\Hook\Template;
 use CaptainHook\App\Hook\Util as HookUtil;
 use CaptainHook\App\Storage\File;
+use SebastianFeldmann\Git\Repository;
 
 /**
  * Class Installer
@@ -30,11 +33,18 @@ use CaptainHook\App\Storage\File;
 class Installer extends RepositoryAware
 {
     /**
-     * Overwrite hook
+     * Install hooks brute force
      *
      * @var bool
      */
-    private $force;
+    private $force = false;
+
+    /**
+     * Don't overwrite existing hooks
+     *
+     * @var bool
+     */
+    private $skipExisting = false;
 
     /**
      * Hook that should be handled.
@@ -51,12 +61,43 @@ class Installer extends RepositoryAware
     private $template;
 
     /**
+     * Git repository.
+     *
+     * @var \SebastianFeldmann\Git\Repository
+     */
+    protected $repository;
+
+    /**
+     * HookHandler constructor.
+     *
+     * @param \CaptainHook\App\Console\IO       $io
+     * @param \CaptainHook\App\Config           $config
+     * @param \SebastianFeldmann\Git\Repository $repository
+     * @param \CaptainHook\App\Hook\Template    $template
+     */
+    public function __construct(IO $io, Config $config, Repository $repository, Template $template)
+    {
+        $this->template = $template;
+        parent::__construct($io, $config, $repository);
+    }
+
+    /**
      * @param  bool $force
      * @return \CaptainHook\App\Runner\Installer
      */
     public function setForce(bool $force): Installer
     {
         $this->force = $force;
+        return $this;
+    }
+
+    /**
+     * @param  bool $skip
+     * @return \CaptainHook\App\Runner\Installer
+     */
+    public function setSkipExisting(bool $skip): Installer
+    {
+        $this->skipExisting = $skip;
         return $this;
     }
 
@@ -120,8 +161,13 @@ class Installer extends RepositoryAware
      * @param string $hook
      * @param bool   $ask
      */
-    public function installHook(string $hook, bool $ask): void
+    private function installHook(string $hook, bool $ask): void
     {
+        if ($this->shouldHookBeSkipped($hook)) {
+            $this->io->write($hook . ' is already installed, remove the --skip-existing option to overwrite.');
+            return;
+        }
+
         $doIt = true;
         if ($ask) {
             $answer = $this->io->ask('  <info>Install \'' . $hook . '\' hook?</info> <comment>[y,n]</comment> ', 'y');
@@ -134,12 +180,23 @@ class Installer extends RepositoryAware
     }
 
     /**
+     * Check if the hook is installed and should be skipped
+     *
+     * @param  string $hook
+     * @return bool
+     */
+    private function shouldHookBeSkipped(string $hook): bool
+    {
+        return $this->skipExisting && $this->repository->hookExists($hook);
+    }
+
+    /**
      * Write given hook to .git/hooks directory
      *
      * @param  string $hook
      * @return void
      */
-    public function writeHookFile(string $hook): void
+    private function writeHookFile(string $hook): void
     {
         $hooksDir = $this->repository->getHooksDir();
         $hookFile = $hooksDir . DIRECTORY_SEPARATOR . $hook;
@@ -167,7 +224,7 @@ class Installer extends RepositoryAware
      * @param  string $hook
      * @return string
      */
-    protected function getHookSourceCode(string $hook): string
+    private function getHookSourceCode(string $hook): string
     {
         return $this->template->getCode($hook);
     }
@@ -178,21 +235,8 @@ class Installer extends RepositoryAware
      * @param  string $hook The name of the hook to check
      * @return bool
      */
-    protected function needInstallConfirmation(string $hook): bool
+    private function needInstallConfirmation(string $hook): bool
     {
         return $this->repository->hookExists($hook) && !$this->force;
-    }
-
-    /**
-     * Set used hook template
-     *
-     * @param Template $template
-     *
-     * @return Installer
-     */
-    public function setTemplate(Template $template): Installer
-    {
-        $this->template = $template;
-        return $this;
     }
 }
