@@ -35,6 +35,13 @@ class Docker implements Template
     private const BINARY = 'captainhook';
 
     /**
+     * Path to the configuration file
+     *
+     * @var \SebastianFeldmann\Camino\Path\File
+     */
+    private $config;
+
+    /**
      * Original bootstrap option, relative path from the config file
      *
      * @var string
@@ -66,6 +73,7 @@ class Docker implements Template
      */
     public function __construct(Directory $repo, File $config, File $captain, DockerConfig $docker, string $bootstrap)
     {
+        $this->config       = $config;
         $this->bootstrap    = $bootstrap;
         $this->dockerConfig = $docker;
         $this->binaryPath   = $this->resolveBinaryPath($repo, $captain);
@@ -86,8 +94,7 @@ class Docker implements Template
             '',
             $this->dockerConfig->getDockerCommand() . ' ' . $this->binaryPath . ' hook:' . $hook . ' "$@"'
         ];
-
-         return implode(PHP_EOL, $lines);
+        return implode(PHP_EOL, $lines) . PHP_EOL;
     }
 
     /**
