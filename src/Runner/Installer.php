@@ -93,12 +93,24 @@ class Installer extends RepositoryAware
     /**
      * Return list of hooks to install
      *
+     * [
+     *   string    => bool
+     *   HOOK_NAME => ASK_USER_TO_CONFIRM_INSTALL
+     * ]
+     *
      * @return array<string, bool>
      */
     public function getHooksToInstall(): array
     {
+        // callback to write bool true to all array entries
+        // to make sure the user will be asked to confirm every hook installation
+        // unless the user provided the force option
+        $callback = function () {
+            return true;
+        };
+        // if a specific hook is set the user chose it so don't ask for permission anymore
         return empty($this->hookToHandle)
-            ? array_map(function() { return true; }, HookUtil::getValidHooks())
+            ? array_map($callback, HookUtil::getValidHooks())
             : [$this->hookToHandle => false];
     }
 
