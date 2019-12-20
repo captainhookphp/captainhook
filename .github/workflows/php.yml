@@ -21,3 +21,9 @@ jobs:
 
     - name: Execute unit tests
       run: tools/phpunit
+
+    - name: Check coding style
+      run: tools/phpcs --standard=psr12 src tests
+
+    - name: Static code analysis
+      run: tools/phpstan analyse
