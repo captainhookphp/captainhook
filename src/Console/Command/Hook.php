@@ -122,9 +122,9 @@ abstract class Hook extends RepositoryAware
         $error = '
                   _______________________________________
                  /                                       \
-                 | ARRRRR! Hook execution failed!         |
+                 | Avast! Hook execution failed!          |
                  |                                        |
-                /  Your git command did not went through! | 
+                /  Yer git command did not went through!  | 
                /_                                         |  
        /(o)\     | For further details check the output   |
       /  ()/ /)  | or run CaptainHook in verbose or debug |
