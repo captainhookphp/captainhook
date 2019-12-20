@@ -47,7 +47,7 @@ class TestCoverage implements Action
     /**
      * Minimum coverage in percent
      *
-     * @var string
+     * @var int
      */
     private $minCoverage;
 
@@ -110,7 +110,7 @@ class TestCoverage implements Action
      * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    protected function verifyCoverage($coverage): void
+    protected function verifyCoverage(float $coverage): void
     {
         if ($coverage < $this->minCoverage) {
             throw new ActionFailed(
