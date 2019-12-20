@@ -26,6 +26,11 @@ For more information have a look at the [documentation](https://captainhookphp.g
 
 ## Installation
 
+Install the *CaptainHook* PHAR using *Phive*.
+```bash
+    $ phive install captainhook
+```
+
 Use *Composer* to install *CaptainHook*.
 ```bash
     $ composer require --dev captainhook/captainhook
@@ -36,6 +41,12 @@ installation and activation you should use the *CaptainHook* `composer-plugin` i
     $ composer require --dev captainhook/plugin-composer
 ```
 The plugin will make sure that the hooks get activated after every `composer install` or `update`.
+If you are using the `PHAR` you should put this in your `composer.json` instead of using the `composer-plugin`.
+```json
+  "scripts": {
+    "post-autoload-dump": "path/to/captainhook.phar install"
+  }
+```
 
 ## Setup
 After installing CaptainHook you can use the *captainhook* executable to create a configuration.
