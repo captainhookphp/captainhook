@@ -50,8 +50,16 @@ class All extends FileChanged
      */
     private function didAllFilesChange(array $changedFiles): bool
     {
-        foreach ($this->filesToWatch as $file) {
-            if (!in_array($file, $changedFiles)) {
+        foreach ($this->filesToWatch as $filePattern) {
+            $foundPattern = false;
+            foreach($changedFiles as $changedFile) {
+                if (fnmatch($filePattern, $changedFile)) {
+                    $foundPattern = true;
+                    break;
+                }
+            }
+
+            if(!$foundPattern) {
                 return false;
             }
         }
