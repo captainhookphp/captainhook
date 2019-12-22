@@ -50,6 +50,22 @@ class AnyTest extends TestCase
     /**
      * Tests Any::isTrue
      */
+    public function testWithWildcardIsTrue(): void
+    {
+        $io = $this->createIOMock();
+        $io->expects($this->exactly(2))->method('getArgument')->willReturn('');
+        $operator   = $this->createGitDiffOperator(['fiz.php', 'baz.php', 'foo.php']);
+        $repository = $this->createRepositoryMock('');
+        $repository->expects($this->once())->method('getDiffOperator')->willReturn($operator);
+
+        $fileChange = new Any(['foo.*', 'bar.php']);
+
+        $this->assertTrue($fileChange->isTrue($io, $repository));
+    }
+
+    /**
+     * Tests Any::isTrue
+     */
     public function testIsFalse(): void
     {
         $io = $this->createIOMock();
@@ -59,6 +75,22 @@ class AnyTest extends TestCase
         $repository->expects($this->once())->method('getDiffOperator')->willReturn($operator);
 
         $fileChange = new Any(['foo.php', 'bar.php']);
+
+        $this->assertFalse($fileChange->isTrue($io, $repository));
+    }
+
+    /**
+     * Tests Any::isTrue
+     */
+    public function testWithWildcardIsFalse(): void
+    {
+        $io = $this->createIOMock();
+        $io->expects($this->exactly(2))->method('getArgument')->willReturn('');
+        $operator   = $this->createGitDiffOperator(['fiz.php', 'baz.php']);
+        $repository = $this->createRepositoryMock('');
+        $repository->expects($this->once())->method('getDiffOperator')->willReturn($operator);
+
+        $fileChange = new Any(['fo?.php', 'bar.*']);
 
         $this->assertFalse($fileChange->isTrue($io, $repository));
     }
