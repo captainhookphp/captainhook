@@ -70,4 +70,21 @@ abstract class FileChanged implements Condition
 
         return $repository->getDiffOperator()->getChangedFiles($oldHash, $newHash);
     }
+
+    /**
+     * Check if a file matching a `fnmatch` pattern was changed
+     *
+     * @param  array  $changedFiles
+     * @param  string $pattern
+     * @return bool
+     */
+    protected function didMatchingFileChange(array $changedFiles, string $pattern): bool
+    {
+        foreach ($changedFiles as $file) {
+            if (fnmatch($pattern, $file)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

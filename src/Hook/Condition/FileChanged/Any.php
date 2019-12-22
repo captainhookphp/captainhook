@@ -65,10 +65,8 @@ class Any extends FileChanged
     private function didAnyFileChange(array $changedFiles): bool
     {
         foreach ($this->filesToWatch as $filePattern) {
-            foreach($changedFiles as $changedFile) {
-                if (fnmatch($filePattern, $changedFile)) {
-                    return true;
-                }
+            if ($this->didMatchingFileChange($changedFiles, $filePattern)) {
+                return true;
             }
         }
         return false;
