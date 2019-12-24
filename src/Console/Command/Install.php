@@ -107,7 +107,7 @@ class Install extends RepositoryAware
             );
         }
 
-        $template  = Template\Builder::build($config, $repo, $this->executablePath(), $this->resolver->isPharRelease());
+        $template  = Template\Builder::build($config, $repo, $this->resolver);
         $installer = new Installer($io, $config, $repo, $template);
         $installer->setForce(IOUtil::argToBool($input->getOption('force')))
                   ->setSkipExisting(IOUtil::argToBool($input->getOption('skip-existing')))
@@ -115,16 +115,5 @@ class Install extends RepositoryAware
                   ->run();
 
         return 0;
-    }
-
-    /**
-     * Return the absolute path to the currently executed 'binary'
-     *
-     * @return string
-     */
-    private function executablePath(): string
-    {
-        $executable = $this->resolver->getExecutable();
-        return Check::isAbsolutePath($executable) ? $executable : getcwd() . '/' . $executable;
     }
 }

@@ -11,6 +11,7 @@
 
 namespace CaptainHook\App;
 
+use CaptainHook\App\Console\Runtime\Resolver;
 use SebastianFeldmann\Git\Operator\Diff;
 use SebastianFeldmann\Git\Operator\Index;
 use SebastianFeldmann\Git\Operator\Info;
@@ -18,6 +19,25 @@ use SebastianFeldmann\Git\Repository;
 
 trait Mockery
 {
+    /**
+     * Create resolver mock
+     *
+     * @param  string $executable
+     * @param  bool   $isPhar
+     * @return \CaptainHook\App\Console\Runtime\Resolver&\PHPUnit\Framework\MockObject\MockObject
+     */
+    public function createResolverMock(string $executable = 'vendor/bin/captainhook', bool $isPhar = false): Resolver
+    {
+        $repo = $this->getMockBuilder(Resolver::class)
+                     ->disableOriginalConstructor()
+                     ->getMock();
+
+        $repo->method('getExecutable')->willReturn($executable);
+        $repo->method('isPharRelease')->willReturn($isPhar);
+
+        return $repo;
+    }
+
     /**
      * Create repository mock
      *

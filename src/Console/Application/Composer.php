@@ -42,11 +42,12 @@ class Composer extends ConsoleApplication
      * Create a minimalistic composer application utilizing the composer IOInterface
      *
      * @param  \Composer\IO\IOInterface $io
+     * @param  string                   $executable
      * @return \CaptainHook\App\Console\Application\Composer
      */
-    public static function create(IOInterface $io): Composer
+    public static function create(IOInterface $io, string $executable = 'vendor/bin/captainhook'): Composer
     {
-        $resolver = new Resolver();
+        $resolver = new Resolver($executable);
         $proxyIO  = new ComposerIO($io);
         $app      = new self();
 

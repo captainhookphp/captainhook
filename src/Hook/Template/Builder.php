@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CaptainHook\App\Hook\Template;
 
 use CaptainHook\App\Config;
+use CaptainHook\App\Console\Runtime\Resolver;
 use CaptainHook\App\Hook\Template;
 use CaptainHook\App\Hook\Template\Local\PHP;
 use CaptainHook\App\Hook\Template\Local\Shell;
@@ -38,18 +39,17 @@ abstract class Builder
     /**
      * Creates a template that is responsible for the git hook sourcecode
      *
-     * @param  \CaptainHook\App\Config           $config
-     * @param  \SebastianFeldmann\Git\Repository $repository
-     * @param  string                            $executable
-     * @param  bool                              $isPhar
+     * @param  \CaptainHook\App\Config                   $config
+     * @param  \SebastianFeldmann\Git\Repository         $repository
+     * @param  \CaptainHook\App\Console\Runtime\Resolver $resolver
      * @return \CaptainHook\App\Hook\Template
      */
-    public static function build(Config $config, Repository $repository, string $executable, bool $isPhar): Template
+    public static function build(Config $config, Repository $repository, Resolver $resolver): Template
     {
         $repositoryPath = self::toAbsolutePath($repository->getRoot());
         $configPath     = self::toAbsolutePath($config->getPath());
         $bootstrapPath  = dirname($configPath) . '/' . $config->getBootstrap();
-        $captainPath    = self::toAbsolutePath($executable);
+        $captainPath    = self::toAbsolutePath($resolver->getExecutable());
 
         if (!file_exists($bootstrapPath)) {
             throw new RuntimeException('bootstrap file not found: \'' . $bootstrapPath . '\'');
@@ -70,7 +70,7 @@ abstract class Builder
                     new File($configPath),
                     new File($captainPath),
                     $config->getBootstrap(),
-                    $isPhar
+                    $resolver->isPharRelease()
                 );
             default:
                 return new Shell(
@@ -78,7 +78,7 @@ abstract class Builder
                     new File($configPath),
                     new File($captainPath),
                     $config->getBootstrap(),
-                    $isPhar
+                    $resolver->isPharRelease()
                 );
         }
     }
@@ -94,6 +94,6 @@ abstract class Builder
         if (Check::isAbsolutePath($path)) {
             return $path;
         }
-        return (string) realpath($path);
+        return getcwd() . '/' . $path;
     }
 }

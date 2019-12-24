@@ -40,7 +40,7 @@ class InstallTest extends TestCase
             ]
         );
 
-        $install = new Install(new Resolver(), CH_PATH_FILES . '/bin/captainhook');
+        $install = new Install(new Resolver(CH_PATH_FILES . '/bin/captainhook'));
         $install->run($input, $output);
     }
 
@@ -62,7 +62,7 @@ class InstallTest extends TestCase
             ]
         );
 
-        $install = new Install(new Resolver(), CH_PATH_FILES . '/bin/captainhook');
+        $install = new Install(new Resolver(CH_PATH_FILES . '/bin/captainhook'));
         $install->setIO(new NullIO());
         $install->run($input, $output);
     }
@@ -87,7 +87,7 @@ class InstallTest extends TestCase
             ]
         );
 
-        $install = new Install(new Resolver(), CH_PATH_FILES . '/bin/captainhook');
+        $install = new Install(new Resolver(CH_PATH_FILES . '/bin/captainhook'));
         $install->run($input, $output);
     }
 
@@ -109,7 +109,7 @@ class InstallTest extends TestCase
             ]
         );
 
-        $install = new Install(new Resolver(), CH_PATH_FILES . '/bin/captainhook');
+        $install = new Install(new Resolver(CH_PATH_FILES . '/bin/captainhook'));
         $install->run($input, $output);
 
         $this->assertTrue($repo->hookExists('pre-commit'));
