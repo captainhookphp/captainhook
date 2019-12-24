@@ -30,6 +30,7 @@ class CmdTest extends TestCase
      */
     public function testSetupConfigExists(): void
     {
+        $cwd  = getcwd();
         $repo = new DummyRepo(
             [],
             [
@@ -43,11 +44,14 @@ class CmdTest extends TestCase
         $config = $repo->getRoot() . '/' . CH::CONFIG;
         $event  = $this->createEventMock(['captainhook-config' => $config]);
 
-        Cmd::setup($event);
+        chdir(CH_PATH_FILES . '/composer');
 
+        Cmd::setup($event);
         $this->assertFileExists($repo->getHookDir() . '/pre-commit');
         $this->assertFileExists($repo->getHookDir() . '/pre-push');
         $this->assertFileExists($repo->getHookDir() . '/commit-msg');
+
+        chdir($cwd);
     }
 
     /**
@@ -57,6 +61,7 @@ class CmdTest extends TestCase
      */
     public function testSubDirectoryInstall(): void
     {
+        $cwd  = getcwd();
         $repo = new DummyRepo(
             [],
             [
@@ -72,11 +77,14 @@ class CmdTest extends TestCase
         $config = $repo->getRoot() . '/app/' . CH::CONFIG;
         $event  = $this->createEventMock(['captainhook-config' => $config]);
 
-        Cmd::setup($event);
+        chdir(CH_PATH_FILES . '/composer');
 
+        Cmd::setup($event);
         $this->assertFileExists($repo->getHookDir() . '/pre-commit');
         $this->assertFileExists($repo->getHookDir() . '/pre-push');
         $this->assertFileExists($repo->getHookDir() . '/commit-msg');
+
+        chdir($cwd);
     }
 
     /**
@@ -101,6 +109,7 @@ class CmdTest extends TestCase
      */
     public function testSetupNoConfig(): void
     {
+        $cwd    = getcwd();
         $repo   = new DummyRepo(
             [],
             [
@@ -113,9 +122,12 @@ class CmdTest extends TestCase
         $extra  = ['captainhook-config' => $config];
         $event  = $this->createEventMock($extra);
 
-        Cmd::setup($event);
+        chdir(CH_PATH_FILES . '/composer');
 
+        Cmd::setup($event);
         $this->assertFileExists($extra['captainhook-config']);
+
+        chdir($cwd);
     }
 
     /**

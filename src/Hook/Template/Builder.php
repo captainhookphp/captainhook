@@ -94,6 +94,6 @@ abstract class Builder
         if (Check::isAbsolutePath($path)) {
             return $path;
         }
-        return getcwd() . '/' . $path;
+        return (string) realpath($path);
     }
 }
