@@ -13,6 +13,7 @@ namespace CaptainHook\App\Console\Command;
 
 use CaptainHook\App\Console\IO\DefaultIO;
 use CaptainHook\App\Console\IO\NullIO;
+use CaptainHook\App\Console\Runtime\Resolver;
 use Exception;
 use Symfony\Component\Console\Input\ArrayInput;
 use PHPUnit\Framework\TestCase;
@@ -29,14 +30,16 @@ class DisableTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        $input   = new ArrayInput(
+        $resolver = new Resolver();
+        $output   = new NullOutput();
+        $input    = new ArrayInput(
             [
                 'hook' => 'pre-commit',
                 '--configuration' => 'foo'
             ]
         );
-        $output  = new NullOutput();
-        $install = new Disable();
+
+        $install  = new Disable($resolver);
         $install->setIO(new NullIO());
         $install->run($input, $output);
     }
@@ -46,11 +49,12 @@ class DisableTest extends TestCase
      */
     public function testExecuteEnablePrePush(): void
     {
-        $config = sys_get_temp_dir() . '/captainhook-enable.json';
+        $resolver = new Resolver();
+        $config   = sys_get_temp_dir() . '/captainhook-enable.json';
         copy(CH_PATH_FILES . '/config/valid.json', $config);
 
 
-        $add    = new Disable();
+        $add    = new Disable($resolver);
         $output = new NullOutput();
         $input  = new ArrayInput(
             [

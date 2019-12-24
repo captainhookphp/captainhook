@@ -13,6 +13,7 @@ namespace CaptainHook\App\Console\Command;
 
 use CaptainHook\App\Console\IO\DefaultIO;
 use CaptainHook\App\Console\IO\NullIO;
+use CaptainHook\App\Console\Runtime\Resolver;
 use Exception;
 use Symfony\Component\Console\Input\ArrayInput;
 use PHPUnit\Framework\TestCase;
@@ -29,14 +30,16 @@ class AddTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        $input   = new ArrayInput(
+        $resolver = new Resolver();
+        $input    = new ArrayInput(
             [
                 'hook' => 'pre-commit',
                 '--configuration' => 'foo'
             ]
         );
+
         $output  = new NullOutput();
-        $install = new Add();
+        $install = new Add($resolver);
         $install->setIO(new NullIO());
         $install->run($input, $output);
     }
@@ -46,11 +49,12 @@ class AddTest extends TestCase
      */
     public function testExecutePreCommit(): void
     {
-        $config = sys_get_temp_dir() . '/captainhook-add.json';
+        $resolver = new Resolver();
+        $config   = sys_get_temp_dir() . '/captainhook-add.json';
         copy(CH_PATH_FILES . '/config/valid.json', $config);
 
 
-        $add    = new Add();
+        $add    = new Add($resolver);
         $output = new NullOutput();
         $input  = new ArrayInput(
             [

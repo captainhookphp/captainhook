@@ -11,6 +11,7 @@
 
 namespace CaptainHook\App\Console;
 
+use CaptainHook\App\Console\Runtime\Resolver;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,6 +32,24 @@ abstract class Command extends SymfonyCommand
      * @var \CaptainHook\App\Console\IO
      */
     private $io;
+
+    /**
+     * Runtime resolver
+     *
+     * @var \CaptainHook\App\Console\Runtime\Resolver
+     */
+    protected $resolver;
+
+    /**
+     * Command constructor
+     *
+     * @param \CaptainHook\App\Console\Runtime\Resolver $resolver
+     */
+    public function __construct(Resolver $resolver)
+    {
+        $this->resolver = $resolver;
+        parent::__construct();
+    }
 
     /**
      * IO setter

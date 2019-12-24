@@ -32,17 +32,6 @@ class RepositoryAware extends ConfigAware
     protected $resolver;
 
     /**
-     * RepositoryAware constructor
-     *
-     * @param \CaptainHook\App\Console\Runtime\Resolver $resolver
-     */
-    public function __construct(Resolver $resolver)
-    {
-        $this->resolver = $resolver;
-        parent::__construct();
-    }
-
-    /**
      * Configure method to setup the git-directory command option
      *
      * @return void

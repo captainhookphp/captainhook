@@ -33,25 +33,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Install extends RepositoryAware
 {
     /**
-     * Currently called executable
-     *
-     * @var string
-     */
-    private $executable;
-
-    /**
-     * Install constructor
-     *
-     * @param \CaptainHook\App\Console\Runtime\Resolver $resolver
-     * @param string                                    $executable
-     */
-    public function __construct(Resolver $resolver, string $executable = 'vendor/bin/captainhook')
-    {
-        $this->executable = Check::isAbsolutePath($executable) ? $executable : getcwd() . '/' . $executable;
-        parent::__construct($resolver);
-    }
-
-    /**
      * Configure the command
      *
      * @return void
@@ -126,7 +107,7 @@ class Install extends RepositoryAware
             );
         }
 
-        $template  = Template\Builder::build($config, $repo, $this->executable, $this->resolver->isPharRelease());
+        $template  = Template\Builder::build($config, $repo, $this->executablePath(), $this->resolver->isPharRelease());
         $installer = new Installer($io, $config, $repo, $template);
         $installer->setForce(IOUtil::argToBool($input->getOption('force')))
                   ->setSkipExisting(IOUtil::argToBool($input->getOption('skip-existing')))
@@ -134,5 +115,16 @@ class Install extends RepositoryAware
                   ->run();
 
         return 0;
+    }
+
+    /**
+     * Return the absolute path to the currently executed 'binary'
+     *
+     * @return string
+     */
+    private function executablePath(): string
+    {
+        $executable = $this->resolver->getExecutable();
+        return Check::isAbsolutePath($executable) ? $executable : getcwd() . '/' . $executable;
     }
 }

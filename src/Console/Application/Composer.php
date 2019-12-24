@@ -46,14 +46,15 @@ class Composer extends ConsoleApplication
      */
     public static function create(IOInterface $io): Composer
     {
-        $proxyIO = new ComposerIO($io);
-        $app     = new self();
+        $resolver = new Resolver();
+        $proxyIO  = new ComposerIO($io);
+        $app      = new self();
 
-        $install = new Install(new Resolver());
+        $install = new Install($resolver);
         $install->setIO($proxyIO);
         $app->add($install);
 
-        $configuration = new Configuration();
+        $configuration = new Configuration($resolver);
         $configuration->setIO($proxyIO);
         $app->add($configuration);
 

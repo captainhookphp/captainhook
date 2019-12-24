@@ -51,16 +51,16 @@ class Cli extends Application
      */
     public function getDefaultCommands(): array
     {
-        $resolver = new Resolver();
+        $resolver = new Resolver($this->executable);
 
         return array_merge(
             parent::getDefaultCommands(),
             [
-                new Cmd\Install($resolver, $this->executable),
-                new Cmd\Configuration(),
-                new Cmd\Add(),
-                new Cmd\Disable(),
-                new Cmd\Enable(),
+                new Cmd\Install($resolver),
+                new Cmd\Configuration($resolver),
+                new Cmd\Add($resolver),
+                new Cmd\Disable($resolver),
+                new Cmd\Enable($resolver),
                 new Cmd\Hook\CommitMsg($resolver),
                 new Cmd\Hook\PostCheckout($resolver),
                 new Cmd\Hook\PostCommit($resolver),

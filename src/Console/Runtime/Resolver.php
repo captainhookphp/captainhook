@@ -26,6 +26,33 @@ class Resolver
     private $runtime = '@runtime@';
 
     /**
+     * Path to the currently executed 'binary'
+     *
+     * @var string
+     */
+    private $executable;
+
+    /**
+     * Resolver constructor.
+     *
+     * @param string $executable
+     */
+    public function __construct(string $executable = 'bin/vendor/captainhook')
+    {
+        $this->executable = $executable;
+    }
+
+    /**
+     * Return current executed 'binary'
+     *
+     * @return string
+     */
+    public function getExecutable(): string
+    {
+        return $this->executable;
+    }
+
+    /**
      * Check if the current runtime is executed via PHAR
      *
      * @return bool

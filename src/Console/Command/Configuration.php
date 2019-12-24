@@ -12,6 +12,7 @@
 namespace CaptainHook\App\Console\Command;
 
 use CaptainHook\App\Console\IOUtil;
+use CaptainHook\App\Console\Runtime\Resolver;
 use CaptainHook\App\Runner\Config\Creator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -66,6 +67,7 @@ class Configuration extends ConfigAware
         $configurator->force(IOUtil::argToBool($input->getOption('force')))
                      ->extend(IOUtil::argToBool($input->getOption('extend')))
                      ->advanced(IOUtil::argToBool($input->getOption('advanced')))
+                     ->setExecutable($this->resolver->getExecutable())
                      ->run();
         return 0;
     }

@@ -47,6 +47,13 @@ class Creator extends Runner
     private $advanced;
 
     /**
+     * Path to the currently executed 'binary'
+     *
+     * @var string
+     */
+    protected $executable;
+
+    /**
      * Execute the configurator
      *
      * @return void
@@ -62,7 +69,7 @@ class Creator extends Runner
         $this->io->write(
             [
                 '<info>Configuration created successfully</info>',
-                'Run <comment>\'vendor/bin/captainhook install\'</comment> to activate your hook configuration',
+                'Run <comment>\'' . $this->getExecutable() . ' install\'</comment> to activate your hook configuration',
             ]
         );
     }
@@ -100,6 +107,18 @@ class Creator extends Runner
     public function advanced(bool $advanced): Creator
     {
         $this->advanced = $advanced;
+        return $this;
+    }
+
+    /**
+     * Set the currently executed 'binary'
+     *
+     * @param  string $executable
+     * @return \CaptainHook\App\Runner\Config\Creator
+     */
+    public function setExecutable(string $executable): Creator
+    {
+        $this->executable = $executable;
         return $this;
     }
 
@@ -152,5 +171,15 @@ class Creator extends Runner
         if ($this->config->isLoadedFromFile() && !$this->force) {
             throw new RuntimeException('Configuration file exists, use -f to overwrite, or -e to extend');
         }
+    }
+
+    /**
+     * Return path to currently executed 'binary'
+     *
+     * @return string
+     */
+    private function getExecutable()
+    {
+        return $this->executable ?? 'vendor/bin/captainhook';
     }
 }
