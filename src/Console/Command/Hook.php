@@ -124,7 +124,7 @@ abstract class Hook extends RepositoryAware
                  /                                       \
                  | Avast! Hook execution failed!          |
                  |                                        |
-                /  Yer git command did not went through!  | 
+                /  Yer git command did not go through!    | 
                /_                                         |  
        /(o)\     | For further details check the output   |
       /  ()/ /)  | or run CaptainHook in verbose or debug |
