@@ -5,6 +5,7 @@
 [![Build Status](https://github.com/captainhookphp/captainhook/workflows/CI%20Build/badge.svg)](https://github.com/captainhookphp/captainhook/actions)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/captainhookphp/captainhook/badges/quality-score.png?b=master&v=1)](https://scrutinizer-ci.com/g/captainhookphp/captainhook/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/captainhookphp/captainhook/badges/coverage.png?b=master&v=1)](https://scrutinizer-ci.com/g/captainhookphp/captainhook/?branch=master)
+[![Twitter](https://img.shields.io/badge/Twitter-%40captainhookphp-blue.svg)](https://twitter.com/intent/user?screen_name=captainhookphp)
 
 # CaptainHook
 
@@ -26,6 +27,11 @@ For more information have a look at the [documentation](https://captainhookphp.g
 
 ## Installation
 
+Install the *CaptainHook* PHAR using *[Phive](https://phar.io/)*.
+```bash
+    $ phive install captainhook
+```
+
 Use *Composer* to install *CaptainHook*.
 ```bash
     $ composer require --dev captainhook/captainhook
@@ -36,7 +42,6 @@ installation and activation you should use the *CaptainHook* `composer-plugin` i
     $ composer require --dev captainhook/plugin-composer
 ```
 The plugin will make sure that the hooks get activated after every `composer install` or `update`.
-
 
 ## Setup
 After installing CaptainHook you can use the *captainhook* executable to create a configuration.
