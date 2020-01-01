@@ -61,8 +61,7 @@ abstract class Builder
                     new Directory($repositoryPath),
                     new File($configPath),
                     new File($captainPath),
-                    new Docker\Config($config->getRunExec(), $config->getRunPath()),
-                    $config->getBootstrap()
+                    new Docker\Config($config->getRunExec(), $config->getRunPath())
                 );
             case Template::PHP:
                 return new PHP(

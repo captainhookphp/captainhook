@@ -23,7 +23,7 @@ use SebastianFeldmann\Camino\Path\File;
  * Docker class
  *
  * Generates the bash scripts placed in .git/hooks/* for every hook
- * to execute CaptainHook inside of a Docker container.
+ * to execute CaptainHook inside a Docker container.
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
@@ -32,7 +32,12 @@ use SebastianFeldmann\Camino\Path\File;
  */
 class Docker implements Template
 {
-    private const BINARY = 'captainhook';
+    /**
+     * Path to the repository root
+     *
+     * @var \SebastianFeldmann\Camino\Path\Directory
+     */
+    private $repository;
 
     /**
      * Path to the configuration file
@@ -40,13 +45,6 @@ class Docker implements Template
      * @var \SebastianFeldmann\Camino\Path\File
      */
     private $config;
-
-    /**
-     * Original bootstrap option, relative path from the config file
-     *
-     * @var string
-     */
-    private $bootstrap;
 
     /**
      * Docker configuration with run-command & run-path
@@ -69,12 +67,11 @@ class Docker implements Template
      * @param \SebastianFeldmann\Camino\Path\File          $config
      * @param \SebastianFeldmann\Camino\Path\File          $captain
      * @param \CaptainHook\App\Hook\Template\Docker\Config $docker
-     * @param string                                       $bootstrap
      */
-    public function __construct(Directory $repo, File $config, File $captain, DockerConfig $docker, string $bootstrap)
+    public function __construct(Directory $repo, File $config, File $captain, DockerConfig $docker)
     {
+        $this->repository   = $repo;
         $this->config       = $config;
-        $this->bootstrap    = $bootstrap;
         $this->dockerConfig = $docker;
         $this->binaryPath   = $this->resolveBinaryPath($repo, $captain);
     }
@@ -87,21 +84,21 @@ class Docker implements Template
      */
     public function getCode(string $hook): string
     {
+        $path2Config = $this->config->getRelativePathFrom($this->repository);
+        $config      = $path2Config !== CH::CONFIG ? ' --configuration=' . escapeshellarg($path2Config) : '';
+
         $lines = [
             '#!/bin/sh',
             '',
             '# installed by CaptainHook ' . CH::VERSION,
             '',
-            $this->dockerConfig->getDockerCommand() . ' ' . $this->binaryPath . ' hook:' . $hook . ' "$@"'
+            $this->dockerConfig->getDockerCommand() . ' ' . $this->binaryPath . ' hook:' . $hook . $config . ' "$@"'
         ];
         return implode(PHP_EOL, $lines) . PHP_EOL;
     }
 
     /**
-     * Resolves the path to the captainhook-run binary and returns it.
-     *
-     * This path is either right inside the repo itself (captainhook) or only in vendor path.
-     * Which happens if captainhook is required as dependency.
+     * Resolves the path to the captainhook binary and returns it
      *
      * @param  \SebastianFeldmann\Camino\Path\Directory $repo       Absolute path to the git repository root
      * @param  \SebastianFeldmann\Camino\Path\File      $executable Absolute path to the executable
@@ -116,8 +113,8 @@ class Docker implements Template
 
         // check if the captainhook binary is in the repository bin directory
         // this is only the case if we work in the captainhook repository
-        if (file_exists($repo->getPath() . '/bin/' . self::BINARY)) {
-            return './bin/' . self::BINARY;
+        if (file_exists($repo->getPath() . '/bin/captainhook')) {
+            return './bin/captainhook';
         }
 
         // For docker we need to strip down the current working directory.
@@ -125,8 +122,8 @@ class Docker implements Template
         // where the absolute path will not be recognized.
         // E.g.:
         //   cwd    => /project/
-        //   path   => /project/vendor/bin/captainhook-run
-        //   docker => ./vendor/bin/captainhook-run
+        //   path   => /project/vendor/bin/captainhook
+        //   docker => ./vendor/bin/captainhook
         $pathToExecutable = $executable->getPath();
 
         // if executable is located inside the repository use a relative path

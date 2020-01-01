@@ -28,7 +28,7 @@ class DockerTest extends TestCase
         $config     = new File($repo->getPath() . '/captainhook.json');
         $docker     = new DockerConfig('docker exec cap-container', '');
 
-        $template = new Docker($repo, $config, $executable, $docker, 'vendor/autoload.php');
+        $template = new Docker($repo, $config, $executable, $docker);
         $code     = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);
@@ -46,8 +46,8 @@ class DockerTest extends TestCase
         $config     = new File($repo->getPath() . '/captainhook.json');
         $docker     = new DockerConfig('docker exec cap-container', '');
 
-        $template   = new Docker($repo, $config, $executable, $docker, 'vendor/autoload.php');
-        $code       = $template->getCode('commit-msg');
+        $template = new Docker($repo, $config, $executable, $docker);
+        $code     = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);
         $this->assertStringContainsString('docker exec cap-container', $code);
@@ -64,7 +64,7 @@ class DockerTest extends TestCase
         $config     = new File($repo->getPath() . '/captainhook.json');
         $docker     = new DockerConfig('docker exec cap-container', './foo/captainhook');
 
-        $template = new Docker($repo, $config, $executable, $docker, 'vendor/autoload.php');
+        $template = new Docker($repo, $config, $executable, $docker);
         $code     = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);
