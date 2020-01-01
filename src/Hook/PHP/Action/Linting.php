@@ -46,6 +46,7 @@ class Linting implements Action
         foreach ($changedPHPFiles as $file) {
             $io->write('  - ' . $file, true, IO::VERBOSE);
             if ($this->hasSyntaxErrors($file)) {
+                $io->write('    syntax error detected in ' . $file, true, IO::VERBOSE);
                 throw new ActionFailed('linting failed: PHP syntax errors in ' . $file);
             }
         }
