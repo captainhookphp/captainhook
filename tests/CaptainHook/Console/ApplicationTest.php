@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace CaptainHook\App\Console\Application;
+namespace CaptainHook\App\Console;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 
-class CliTest extends TestCase
+class ApplicationTest extends TestCase
 {
     /**
      * Tests Cli::run
@@ -32,7 +32,7 @@ class CliTest extends TestCase
         $output->expects($this->once())->method('writeLn');
 
 
-        $app = new Cli('captainhook');
+        $app = new Application('captainhook');
         $app->setAutoExit(false);
         $app->run($input, $output);
     }
@@ -51,7 +51,7 @@ class CliTest extends TestCase
 
         $output->expects($this->atLeastOnce())->method('write');
 
-        $app = new Cli('captainhook');
+        $app = new Application('captainhook');
         $app->setAutoExit(false);
         $app->run($input, $output);
     }

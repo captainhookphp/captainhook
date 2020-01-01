@@ -12,6 +12,8 @@
 namespace CaptainHook\App\Console;
 
 use CaptainHook\App\CH;
+use CaptainHook\App\Console\Command as Cmd;
+use CaptainHook\App\Console\Runtime\Resolver;
 use Symfony\Component\Console\Application as SymfonyApplication;
 
 /**
@@ -25,14 +27,53 @@ use Symfony\Component\Console\Application as SymfonyApplication;
 class Application extends SymfonyApplication
 {
     /**
-     * Cli constructor
+     * Path to captainhook binary
+     *
+     * @var string
      */
-    public function __construct()
+    protected $executable;
+
+    /**
+     * Cli constructor.
+     *
+     * @param string $executable
+     */
+    public function __construct(string $executable)
     {
+        $this->executable = $executable;
+
         parent::__construct('CaptainHook', CH::VERSION);
 
         $this->setDefaultCommand('list');
         $this->silenceXDebug();
+    }
+
+    /**
+     * Initializes all the CaptainHook commands
+     *
+     * @return \Symfony\Component\Console\Command\Command[]
+     */
+    public function getDefaultCommands(): array
+    {
+        $resolver = new Resolver($this->executable);
+
+        return array_merge(
+            parent::getDefaultCommands(),
+            [
+                new Cmd\Install($resolver),
+                new Cmd\Configuration($resolver),
+                new Cmd\Add($resolver),
+                new Cmd\Disable($resolver),
+                new Cmd\Enable($resolver),
+                new Cmd\Hook\CommitMsg($resolver),
+                new Cmd\Hook\PostCheckout($resolver),
+                new Cmd\Hook\PostCommit($resolver),
+                new Cmd\Hook\PostMerge($resolver),
+                new Cmd\Hook\PreCommit($resolver),
+                new Cmd\Hook\PrepareCommitMsg($resolver),
+                new Cmd\Hook\PrePush($resolver),
+            ]
+        );
     }
 
     /**
@@ -55,7 +96,7 @@ class Application extends SymfonyApplication
      *
      * @return void
      */
-    public function silenceXDebug(): void
+    private function silenceXDebug(): void
     {
         if (function_exists('ini_set') && extension_loaded('xdebug')) {
             ini_set('xdebug.show_exception_trace', '0');

@@ -37,7 +37,7 @@
  *
  */
 
-use CaptainHook\App\Console\Application\Cli as CaptainHook;
+use CaptainHook\App\Console\Application as CaptainHook;
 use Symfony\Component\Console\Input\ArgvInput;
 
 (static function($argv)
