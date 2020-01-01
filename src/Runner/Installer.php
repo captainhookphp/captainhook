@@ -164,7 +164,8 @@ class Installer extends RepositoryAware
     private function installHook(string $hook, bool $ask): void
     {
         if ($this->shouldHookBeSkipped($hook)) {
-            $this->io->write($hook . ' is already installed, remove the --skip-existing option to overwrite.');
+            $hint = $this->io->isVerbose() ? ', remove the --skip-existing option to overwrite.' : '';
+            $this->io->write('  <comment>' . $hook . '</comment> is already installed' . $hint);
             return;
         }
 
