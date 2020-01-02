@@ -27,12 +27,12 @@ For more information have a look at the [documentation](https://captainhookphp.g
 
 ## Installation
 
-Install the *CaptainHook* PHAR using *[Phive](https://phar.io/)*.
+Install the *CaptainHook* PHAR using [Phive](https://phar.io/) or download it from the [release page](https://github.com/captainhookphp/captainhook/releases/latest).
 ```bash
     $ phive install captainhook
 ```
 
-Use *Composer* to install *CaptainHook*.
+Or use *Composer* to install *CaptainHook*.
 ```bash
     $ composer require --dev captainhook/captainhook
 ```
@@ -44,7 +44,7 @@ After installing CaptainHook you can use the *captainhook* executable to create 
 ```
 Now there should be a *captainhook.json* configuration file.
 
-If you are not using the `composer-plugin` you have to activate the hooks manually by installing them to
+If you are not using the `composer-plugin` yet you have to activate the hooks manually by installing them to
 your local .git repository. To do so just run the following *captainhook* command.
 ```bash
     $ vendor/bin/captainhook install
