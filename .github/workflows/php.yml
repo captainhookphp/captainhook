@@ -4,16 +4,20 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ${{ matrix.operating-system }}
-      strategy:
-        max-parallel: 3
-        matrix:
-          operating-system: [ubuntu-latest]
-          php-versions: ['7.1', '7.2', '7.3', '7.4']
-
+    strategy:
+      max-parallel: 3
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ['7.1', '7.2', '7.3', '7.4']
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@master
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@master
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: xdebug
 
     - name: Validate composer.json and composer.lock
       run: composer validate
