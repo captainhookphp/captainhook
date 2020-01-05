@@ -36,7 +36,41 @@ class PHPTest extends TestCase
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
-        $php = new PHP();
+        $php = new PHP('pre-commit');
+        $php->execute($config, $io, $repo, $action);
+    }
+
+    /**
+     * Tests PHP::execute
+     */
+    public function testExecuteConstraintApplicable(): void
+    {
+        $config = $this->createConfigMock();
+        $io     = $this->createIOMock();
+        $repo   = $this->createRepositoryMock();
+        $action = $this->createActionConfigMock();
+        $class  = DummyPHPConstraint::class;
+
+        $action->expects($this->once())->method('getAction')->willReturn($class);
+
+        $php = new PHP('pre-commit');
+        $php->execute($config, $io, $repo, $action);
+    }
+
+    /**
+     * Tests PHP::execute
+     */
+    public function testExecuteConstraintNotApplicable(): void
+    {
+        $config = $this->createConfigMock();
+        $io     = $this->createIOMock();
+        $repo   = $this->createRepositoryMock();
+        $action = $this->createActionConfigMock();
+        $class  = DummyPHPConstraint::class;
+
+        $action->expects($this->once())->method('getAction')->willReturn($class);
+
+        $php = new PHP('pre-push');
         $php->execute($config, $io, $repo, $action);
     }
 
@@ -57,7 +91,7 @@ class PHPTest extends TestCase
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
-        $php = new PHP();
+        $php = new PHP('pre-commit');
         $php->execute($config, $io, $repo, $action);
     }
 
@@ -78,7 +112,7 @@ class PHPTest extends TestCase
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
-        $php = new PHP();
+        $php = new PHP('pre-commit');
         $php->execute($config, $io, $repo, $action);
     }
 
@@ -99,7 +133,7 @@ class PHPTest extends TestCase
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
-        $php = new PHP();
+        $php = new PHP('pre-commit');
         $php->execute($config, $io, $repo, $action);
     }
 
@@ -121,7 +155,7 @@ class PHPTest extends TestCase
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
-        $php = new PHP();
+        $php = new PHP('pre-commit');
         $php->execute($config, $io, $repo, $action);
     }
 
@@ -143,7 +177,7 @@ class PHPTest extends TestCase
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
-        $php = new PHP();
+        $php = new PHP('pre-commit');
         $php->execute($config, $io, $repo, $action);
     }
 
@@ -164,7 +198,7 @@ class PHPTest extends TestCase
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
-        $php = new PHP();
+        $php = new PHP('pre-commit');
         $php->execute($config, $io, $repo, $action);
     }
 }

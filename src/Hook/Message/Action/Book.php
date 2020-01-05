@@ -16,7 +16,10 @@ use CaptainHook\App\Console\IO;
 use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Action;
+use CaptainHook\App\Hook\Constrained;
 use CaptainHook\App\Hook\Message\RuleBook;
+use CaptainHook\App\Hook\Restriction;
+use CaptainHook\App\Hooks;
 use SebastianFeldmann\Cli\Output\Util as OutputUtil;
 use SebastianFeldmann\Git\Repository;
 
@@ -28,8 +31,18 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 0.9.0
  */
-abstract class Book implements Action
+abstract class Book implements Action, Constrained
 {
+    /**
+     * Returns a list of applicable hooks
+     *
+     * @return \CaptainHook\App\Hook\Restriction
+     */
+    public static function getRestriction(): Restriction
+    {
+        return Restriction::fromArray([Hooks::COMMIT_MSG]);
+    }
+
     /**
      * Execute the configured action
      *

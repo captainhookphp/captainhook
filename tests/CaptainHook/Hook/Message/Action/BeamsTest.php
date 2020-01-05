@@ -23,6 +23,15 @@ class BeamsTest extends TestCase
     use Mockery;
 
     /**
+     * Tests Beams::getRestriction
+     */
+    public function testConstraint(): void
+    {
+        $this->assertTrue(Beams::getRestriction()->isApplicableFor('commit-msg'));
+        $this->assertFalse(Beams::getRestriction()->isApplicableFor('pre-push'));
+    }
+
+    /**
      * Tests Beams::execute
      *
      * @throws \Exception

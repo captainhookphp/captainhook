@@ -139,7 +139,7 @@ abstract class Hook extends RepositoryAware
     protected function executePhpAction(Config\Action $action): void
     {
         $this->beforeAction();
-        $runner = new Action\PHP();
+        $runner = new Action\PHP($this->hook);
         $runner->execute($this->config, $this->io, $this->repository, $action);
         $this->afterAction();
     }

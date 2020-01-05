@@ -23,6 +23,15 @@ class RegexTest extends TestCase
     use Mockery;
 
     /**
+     * Tests Regex::getRestriction
+     */
+    public function testConstraint(): void
+    {
+        $this->assertTrue(Regex::getRestriction()->isApplicableFor('commit-msg'));
+        $this->assertFalse(Regex::getRestriction()->isApplicableFor('pre-push'));
+    }
+
+    /**
      * Tests RegexCheck::execute
      *
      * @throws \Exception

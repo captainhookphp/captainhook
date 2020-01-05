@@ -28,14 +28,14 @@ abstract class FileChanged implements Condition
     /**
      * List of file to watch
      *
-     * @var string[]
+     * @var array<string>
      */
     protected $filesToWatch;
 
     /**
      * FileChange constructor
      *
-     * @param string[] $files
+     * @param array<string> $files
      */
     public function __construct(array $files)
     {
@@ -61,7 +61,7 @@ abstract class FileChanged implements Condition
      *
      * @param  \CaptainHook\App\Console\IO       $io
      * @param  \SebastianFeldmann\Git\Repository $repository
-     * @return array|string[]
+     * @return array<string>
      */
     protected function getChangedFiles(IO $io, Repository $repository)
     {
@@ -74,8 +74,8 @@ abstract class FileChanged implements Condition
     /**
      * Check if a file matching a `fnmatch` pattern was changed
      *
-     * @param  array  $changedFiles
-     * @param  string $pattern
+     * @param  array<string> $changedFiles
+     * @param  string        $pattern
      * @return bool
      */
     protected function didMatchingFileChange(array $changedFiles, string $pattern): bool
