@@ -26,6 +26,8 @@ class Restriction
     /**
      * List of applicable hooks
      *
+     * Map HookName => isApplicable to not have to scan the whole array for hook names.
+     *
      * @var array<string, bool>
      */
     private $applicableHooks;
@@ -45,8 +47,12 @@ class Restriction
     /**
      * Add an allowed hook to the restriction
      *
+     * If the Restrictions is already applicable it returns itself
+     * if not the current instance get cloned and the new hook is
+     * added to the applicable hook list.
+     *
      * @param  string $hook
-     * @return $this
+     * @return \CaptainHook\App\Hook\Restriction
      */
     public function with(string $hook): self
     {
