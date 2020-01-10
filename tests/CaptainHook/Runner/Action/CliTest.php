@@ -36,6 +36,7 @@ class CliTest extends TestCase
 
         $args   = [];
         $io     = $this->createIOMock();
+        $repo   = $this->createRepositoryMock();
         $action = $this->createActionConfigMock();
         $cmd    = CH_PATH_FILES . '/bin/success';
 
@@ -44,7 +45,7 @@ class CliTest extends TestCase
         $action->expects($this->once())->method('getAction')->willReturn($cmd);
 
         $cli = new Cli();
-        $cli->execute($io, $action);
+        $cli->execute($io, $repo, $action);
     }
 
     /**
@@ -60,15 +61,16 @@ class CliTest extends TestCase
 
         $args   = ['file' => 'bin', 'mode' => 'success'];
         $io     = $this->createIOMock();
+        $repo   = $this->createRepositoryMock();
         $action = $this->createActionConfigMock();
-        $cmd    = CH_PATH_FILES . '/{FILE}/{MODE}';
+        $cmd    = CH_PATH_FILES . '/{$FILE}/{$MODE}';
 
         $io->expects($this->once())->method('getArguments')->willReturn($args);
         $io->expects($this->once())->method('write');
         $action->expects($this->once())->method('getAction')->willReturn($cmd);
 
         $cli = new Cli();
-        $cli->execute($io, $action);
+        $cli->execute($io, $repo, $action);
     }
 
     /**
@@ -82,6 +84,7 @@ class CliTest extends TestCase
 
         $args   = [];
         $io     = $this->createIOMock();
+        $repo   = $this->createRepositoryMock();
         $action = $this->createActionConfigMock();
         $cmd    = CH_PATH_FILES . '/bin/failure';
 
@@ -89,6 +92,6 @@ class CliTest extends TestCase
         $action->expects($this->once())->method('getAction')->willReturn($cmd);
 
         $cli = new Cli();
-        $cli->execute($io, $action);
+        $cli->execute($io, $repo, $action);
     }
 }
