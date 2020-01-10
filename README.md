@@ -27,7 +27,7 @@ For more information have a look at the [documentation](https://captainhookphp.g
 
 ## Installation
 
-Install the *CaptainHook* PHAR using [Phive](https://phar.io/) or download it from the [release page](https://github.com/captainhookphp/captainhook/releases/latest).
+Install the *CaptainHook* PHAR using [Phive](https://phar.io/) or download the PHAR from the github [release page](https://github.com/captainhookphp/captainhook/releases/latest).
 ```bash
     $ phive install captainhook
 ```
