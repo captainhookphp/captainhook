@@ -42,13 +42,13 @@ class Cli
         $processor    = new Processor();
         $cmdOriginal  = $action->getAction();
         $cmdFormatted = $this->formatCommand($repository, $cmdOriginal, $io->getArguments());
-        $result       = $processor->run($cmdFormatted);
 
         // if any placeholders got replaced output the finally executed command
         if ($cmdFormatted !== $cmdOriginal) {
-            $io->write('Executed: <comment>' . $cmdFormatted . '</comment>', true, IO::VERBOSE);
+            $io->write('Execute: <comment>' . $cmdFormatted . '</comment>', true, IO::VERBOSE);
         }
 
+        $result = $processor->run($cmdFormatted);
         if (!$result->isSuccessful()) {
             throw new Exception\ActionFailed($result->getStdOut() . PHP_EOL . $result->getStdErr());
         }
