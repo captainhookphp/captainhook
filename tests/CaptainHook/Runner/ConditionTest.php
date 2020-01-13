@@ -26,7 +26,7 @@ class ConditionTest extends TestCase
     /**
      * Tests Condition::doesConditionApply
      */
-    public function testDoesConditionApply(): void
+    public function testPHPConditionApply(): void
     {
         $io = $this->createIOMock();
         $io->expects($this->exactly(2))->method('getArgument')->willReturn('');
@@ -42,7 +42,27 @@ class ConditionTest extends TestCase
             ]
         );
 
-        $runner = new Condition($io, $repository);
+        $runner = new Condition($io, $repository, 'post-checkout');
+        $this->assertTrue($runner->doesConditionApply($conditionConfig));
+    }
+
+    /**
+     * Tests Condition::doesConditionApply
+     */
+    public function testConditionNotExecutedDueToConstraint(): void
+    {
+        $io         = $this->createIOMock();
+        $repository = $this->createRepositoryMock('');
+        $repository->expects($this->never())->method('getDiffOperator');
+
+        $conditionConfig = new Config\Condition(
+            '\\' . Any::class,
+            [
+                ['foo.php', 'bar.php']
+            ]
+        );
+
+        $runner = new Condition($io, $repository, 'pre-commit');
         $this->assertTrue($runner->doesConditionApply($conditionConfig));
     }
 
@@ -55,7 +75,7 @@ class ConditionTest extends TestCase
 
         $conditionConfig = new Config\Condition('\\NotFoundForSure', []);
 
-        $runner = new Condition($this->createIOMock(), $this->createRepositoryMock());
+        $runner = new Condition($this->createIOMock(), $this->createRepositoryMock(), 'pre-commit');
         $runner->doesConditionApply($conditionConfig);
     }
 
@@ -73,7 +93,7 @@ class ConditionTest extends TestCase
 
         $conditionConfig = new Config\Condition(CH_PATH_FILES . '/bin/phpunit');
 
-        $runner = new Condition($io, $repository);
+        $runner = new Condition($io, $repository, 'pre-commit');
         $this->assertTrue($runner->doesConditionApply($conditionConfig));
     }
 }

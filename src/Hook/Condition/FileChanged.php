@@ -13,6 +13,9 @@ namespace CaptainHook\App\Hook\Condition;
 
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Hook\Condition;
+use CaptainHook\App\Hook\Constrained;
+use CaptainHook\App\Hook\Restriction;
+use CaptainHook\App\Hooks;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -23,7 +26,7 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 4.2.0
  */
-abstract class FileChanged implements Condition
+abstract class FileChanged implements Condition, Constrained
 {
     /**
      * List of file to watch
@@ -40,6 +43,16 @@ abstract class FileChanged implements Condition
     public function __construct(array $files)
     {
         $this->filesToWatch = $files;
+    }
+
+    /**
+     * Return the hook restriction information
+     *
+     * @return \CaptainHook\App\Hook\Restriction
+     */
+    public static function getRestriction(): Restriction
+    {
+        return Restriction::fromArray([Hooks::POST_CHECKOUT, Hooks::POST_MERGE]);
     }
 
     /**

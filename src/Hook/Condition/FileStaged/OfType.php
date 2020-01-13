@@ -13,6 +13,9 @@ namespace CaptainHook\App\Hook\Condition\FileStaged;
 
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Hook\Condition;
+use CaptainHook\App\Hook\Constrained;
+use CaptainHook\App\Hook\Restriction;
+use CaptainHook\App\Hooks;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -35,7 +38,7 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.0.0
  */
-class OfType implements Condition
+class OfType implements Condition, Constrained
 {
     /**
      * File type to check e.g. 'php' or 'html'
@@ -52,6 +55,16 @@ class OfType implements Condition
     public function __construct(string $type)
     {
         $this->suffix = $type;
+    }
+
+    /**
+     * Return the hook restriction information
+     *
+     * @return \CaptainHook\App\Hook\Restriction
+     */
+    public static function getRestriction(): Restriction
+    {
+        return Restriction::fromArray([Hooks::PRE_COMMIT]);
     }
 
     /**

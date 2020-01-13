@@ -15,6 +15,7 @@ use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Hook\Condition as ConditionInterface;
 use CaptainHook\App\Hook\Condition\Cli;
+use CaptainHook\App\Hook\Constrained;
 use SebastianFeldmann\Cli\Processor\ProcOpen as Processor;
 use SebastianFeldmann\Git\Repository;
 use RuntimeException;
@@ -42,15 +43,24 @@ class Condition
     private $repository;
 
     /**
+     * Currently executed hook
+     *
+     * @var string
+     */
+    private $hook;
+
+    /**
      * Condition constructor.
      *
      * @param \CaptainHook\App\Console\IO       $io
      * @param \SebastianFeldmann\Git\Repository $repository
+     * @param string                            $hook
      */
-    public function __construct(IO $io, Repository $repository)
+    public function __construct(IO $io, Repository $repository, string $hook)
     {
         $this->io         = $io;
         $this->repository = $repository;
+        $this->hook       = $hook;
     }
 
     /**
@@ -62,6 +72,11 @@ class Condition
     public function doesConditionApply(Config\Condition $config): bool
     {
         $condition = $this->createCondition($config);
+        // check for any given restrictions
+        if (!$this->isApplicable($condition)) {
+            $this->io->write('Condition skipped due to hook constraint', true, IO::VERBOSE);
+            return true;
+        }
         return $condition->isTrue($this->io, $this->repository);
     }
 
@@ -86,5 +101,20 @@ class Condition
             throw new RuntimeException('could not find condition class: ' . $class);
         }
         return new $class(...$config->getArgs());
+    }
+
+
+    /**
+     * Make sure the condition can be used during this hook
+     *
+     * @param  \CaptainHook\App\Hook\Condition $condition
+     * @return bool
+     */
+    private function isApplicable(ConditionInterface $condition)
+    {
+        if ($condition instanceof Constrained) {
+            return $condition->getRestriction()->isApplicableFor($this->hook);
+        }
+        return true;
     }
 }

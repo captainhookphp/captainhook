@@ -21,6 +21,15 @@ class OfTypeTest extends TestCase
     use IOMockery;
 
     /**
+     * Tests OfType::getRestriction
+     */
+    public function testPreCommitRestriction(): void
+    {
+        $this->assertTrue(OfType::getRestriction()->isApplicableFor('pre-commit'));
+        $this->assertFalse(OfType::getRestriction()->isApplicableFor('pre-push'));
+    }
+
+    /**
      * Tests OfType::isTrue
      */
     public function testStagedTrue(): void
