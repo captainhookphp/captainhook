@@ -44,7 +44,7 @@ use Symfony\Component\Console\Input\ArgvInput;
 {
     // check installation type [composer bin dir, git clone / phar, composer package dir]
     $composerAutoloadLocations = [
-        __DIR__ . '/../../autoload.php',
+        __DIR__ . '/../autoload.php',
         __DIR__ . '/../vendor/autoload.php',
         __DIR__ . '/../../../autoload.php'
     ];
@@ -52,6 +52,7 @@ use Symfony\Component\Console\Input\ArgvInput;
     foreach ($composerAutoloadLocations as $file) {
         if (file_exists($file)) {
             define('CAPTAINHOOK_COMPOSER_AUTOLOAD', $file);
+            break;
         }
     }
     unset($file);
