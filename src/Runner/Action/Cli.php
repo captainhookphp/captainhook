@@ -40,7 +40,10 @@ class Cli
     public function execute(IO $io, Repository $repository, Config\Action $action): void
     {
         $processor = new Processor();
-        $result    = $processor->run($this->formatCommand($repository, $action->getAction(), $io->getArguments()));
+        $command   = $this->formatCommand($repository, $action->getAction(), $io->getArguments());
+        $result    = $processor->run($command);
+
+        $io->write('Executed: ' . $command, true, IO::VERBOSE);
 
         if (!$result->isSuccessful()) {
             throw new Exception\ActionFailed($result->getStdOut() . PHP_EOL . $result->getStdErr());

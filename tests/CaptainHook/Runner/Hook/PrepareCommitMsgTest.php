@@ -51,7 +51,7 @@ class PrepareCommitMsgTest extends TestCase
         $commitMessageFile = $repoDir->getGitDir() . '/prepare-commit-msg';
         file_put_contents($commitMessageFile, 'Commit Message');
 
-        $io->expects($this->exactly(2))->method('write');
+        $io->expects($this->atLeast(1))->method('write');
         $io->expects($this->exactly(3))->method('getArgument')->willReturnOnConsecutiveCalls(
             $commitMessageFile,
             '',

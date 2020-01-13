@@ -37,7 +37,7 @@ class PrePushTest extends TestCase
         $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
-        $io->expects($this->exactly(3))->method('write');
+        $io->expects($this->atLeast(1))->method('write');
 
         $runner = new PreCommit($io, $config, $repo);
         $runner->run();
@@ -56,7 +56,7 @@ class PrePushTest extends TestCase
         $repo         = $this->createRepositoryMock();
         $hookConfig->expects($this->once())->method('isEnabled')->willReturn(false);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
-        $io->expects($this->once())->method('write');
+        $io->expects($this->atLeast(1))->method('write');
 
         $runner = new PreCommit($io, $config, $repo);
         $runner->run();
