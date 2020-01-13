@@ -39,11 +39,15 @@ class Cli
      */
     public function execute(IO $io, Repository $repository, Config\Action $action): void
     {
-        $processor = new Processor();
-        $command   = $this->formatCommand($repository, $action->getAction(), $io->getArguments());
-        $result    = $processor->run($command);
+        $processor    = new Processor();
+        $cmdOriginal  = $action->getAction();
+        $cmdFormatted = $this->formatCommand($repository, $cmdOriginal, $io->getArguments());
+        $result       = $processor->run($cmdFormatted);
 
-        $io->write('Executed: ' . $command, true, IO::VERBOSE);
+        // if any placeholders got replaced output the finally executed command
+        if ($cmdFormatted !== $cmdOriginal) {
+            $io->write('Executed: <comment>' . $cmdFormatted . '</comment>', true, IO::VERBOSE);
+        }
 
         if (!$result->isSuccessful()) {
             throw new Exception\ActionFailed($result->getStdOut() . PHP_EOL . $result->getStdErr());
