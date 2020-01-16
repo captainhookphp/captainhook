@@ -1,0 +1,111 @@
+name: "Continuous Deployment"
+
+on:
+  push:
+    tags:
+      - "**"
+
+jobs:
+  release:
+    name: "Release"
+
+    runs-on: "ubuntu-latest"
+
+    strategy:
+      matrix:
+        php-version:
+          - "7.3"
+
+        dependencies:
+          - "locked"
+
+    env:
+      PHAR: "build/phar/captainhook.phar"
+      PHAR_SIGNATURE: "build/phar/captainhook.phar.asc"
+      GPG_KEYS: "build/captainhook-signing-keys.asc"
+      GPG_KEYS_ENCRYPTED: "build/captainhook-signing-keys.asc.gpg"
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2.0.0"
+
+      - name: "Install PHP with extensions"
+        uses: "shivammathur/setup-php@1.7.1"
+        with:
+          coverage: "none"
+          extensions: "mbstring"
+          php-version: "${{ matrix.php-version }}"
+
+      - name: "Install dependencies"
+        run: "composer install --prefer-dist --no-dev --no-interaction --no-progress --no-suggest"
+
+      - name: "Install tooling"
+        run: "tools/phive --home ./.phive install --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192,8E730BA25823D8B5 --force-accept-unsigned"
+
+      - name: "Validate configuration for humbug/box"
+        run: "tools/box validate box.json"
+
+      - name: "Compile phar with humbug/box"
+        run: "tools/box compile"
+
+      - name: "Show info about generated phar with humbug/box"
+        run: "tools/box info ${{ env.PHAR }}"
+
+      - name: "Run phar"
+        run: "${{ env.PHAR }} --help"
+
+      - name: "Show gpg version"
+        run: "gpg --version"
+
+      - name: "Decrypt signing key with gpg"
+        run: "gpg --batch --output ${{ env.GPG_KEYS }} --passphrase \"${{ secrets.GPG_DECRYPT_PASSPHRASE }}\" --yes --ignore-mdc-error --decrypt ${{ env.GPG_KEYS_ENCRYPTED }}"
+
+      - name: "Import keys with gpg"
+        run: "gpg --batch --import ${{ env.GPG_KEYS }}"
+
+      - name: "Sign phar with gpg"
+        run: "gpg --armor --local-user \"${{ secrets.GPG_KEY_EMAIL }}\" --output ${{ env.PHAR_SIGNATURE }} --passphrase \"${{ secrets.GPG_KEY_PASSPHRASE }}\" --pinentry-mode loopback --yes --detach-sig ${{ env.PHAR }}"
+
+      - name: "Receive key with gpg"
+        run: "gpg --keyserver pgp.mit.edu --receive-key \"${{ secrets.GPG_KEY_ID }}\""
+
+      - name: "Verify signature with gpg"
+        run: "gpg --verify ${{ env.PHAR_SIGNATURE }} ${{ env.PHAR }}"
+
+      - name: "Remove decrypted keys"
+        run: "rm ${{ env.GPG_KEYS }}"
+
+      - name: "Determine tag"
+        id: "determine-tag"
+        run: "echo \"::set-output name=tag::${GITHUB_REF#refs/tags/}\""
+
+      - name: "Create release"
+        id: "create-release"
+        uses: "actions/create-release@v1.0.0"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_API_TOKEN }}"
+        with:
+          draft: false
+          prerelease: false
+          release_name: "${{ steps.determine-tag.outputs.tag }}"
+          tag_name: "${{ steps.determine-tag.outputs.tag }}"
+
+      - name: "Upload captainhook.phar"
+        uses: "actions/upload-release-asset@v1.0.1"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_API_TOKEN }}"
+        with:
+          asset_content_type: "text/plain"
+          asset_name: "captainhook.phar"
+          asset_path: "${{ env.PHAR }}"
+          upload_url: "${{ steps.create-release.outputs.upload_url }}"
+
+      - name: "Upload captainhook.phar.asc"
+        uses: "actions/upload-release-asset@v1.0.1"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_API_TOKEN }}"
+        with:
+          asset_content_type: "text/plain"
+          asset_name: "captainhook.phar.asc"
+          asset_path: "${{ env.PHAR_SIGNATURE }}"
+          upload_url: "${{ steps.create-release.outputs.upload_url }}"
