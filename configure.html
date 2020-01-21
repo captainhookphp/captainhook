@@ -45,7 +45,7 @@
       <h1>Configuration</h1>
       <p>
         If you look at a <em class="hl">captainhook.json</em> configuration, it consists of a config block for each
-        hook and an optional <a href="#settings"><em>config</em></a> section to tweak some setting.
+        hook and an optional <a href="#settings"><em>config</em></a> section to tweak some custom settings.
       </p>
 
       <pre><code class="javascript">{
@@ -86,7 +86,7 @@
     "enabled": true,
     "actions": [
       {
-        "action": "phpunit.phar --configuration=phpunit.git.xml"
+        "action": "tools/phpunit.phar --configuration=phpunit.git.xml"
       }
     ]
   }
@@ -96,6 +96,87 @@
         Using the example above in a <em>pre-commit</em> hook will prevent you from committing code that
         breaks any unit test.
       </p>
+
+      <h5>Placeholders</h5>
+      <p>
+        You can use placeholders in CLI actions that will get replaced by the Cap'n before execution. This way you can
+        access the the original hook arguments and some other neat stuff.
+      </p>
+      <table class="table">
+        <tr>
+          <th>Placeholder</th>
+          <th>Hook</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>{$FILE}</td>
+          <td>commit-message</td>
+          <td>The path to the file containing the commit message.</td>
+        </tr>
+        <tr>
+          <td>{$FILE}</td>
+          <td style="word-break: keep-all">prepare-commit-message</td>
+          <td>The path to the file containing the commit message.</td>
+        </tr>
+        <tr>
+          <td>{$MODE}</td>
+          <td style="word-break: keep-all">prepare-commit-message</td>
+          <td>Source of the commit message e.g. file, template ...</td>
+        </tr>
+        <tr>
+          <td>{$HASH}</td>
+          <td style="word-break: keep-all">prepare-commit-message</td>
+          <td>Hash of commit e.g. if --amend is used.</td>
+        </tr>
+        <tr>
+          <td>{$TARGET}</td>
+          <td>pre-push</td>
+          <td>The push target name.</td>
+        </tr>
+        <tr>
+          <td>{$URL}</td>
+          <td>pre-push</td>
+          <td>The target url.</td>
+        </tr>
+        <tr>
+          <td>{$PREVIOUSHEAD}</td>
+          <td>post-checkout</td>
+          <td>Old version hash.</td>
+        </tr>
+        <tr>
+          <td>{$NEWHEAD}</td>
+          <td>post-checkout</td>
+          <td>New version hash (can be the same as the old head).</td>
+        </tr>
+        <tr>
+          <td>{$MODE}</td>
+          <td>post-checkout</td>
+          <td>A flag indicating whether the checkout was a branch checkout.</td>
+        </tr>
+        <tr>
+          <td>{$SQUASH}</td>
+          <td>post-merge</td>
+          <td>A flag specifying whether or not the merge being done was a squash merge.</td>
+        </tr>
+        <tr>
+          <td>{$STAGED_FILES}</td>
+          <td>pre-commit</td>
+          <td>List of files that get committed. You can use it like this {$STAGED_FILES|of-type:php|separated-by:, }.</td>
+        </tr>
+      </table>
+
+      <pre><code class="javascript">{
+  "pre-commit": {
+    "enabled": true,
+    "actions": [
+      {
+        "action": "tools/phpcs.phar --standard=psr12 {$STAGED_FILES|of-type:php}"
+      }
+    ]
+  }
+}</code></pre>
+
+
       <h4>PHP scripts</h4>
       <p>
         Secondly you can execute any PHP class implementing an interfaces defined by <em>CaptainHook</em>.
@@ -187,10 +268,18 @@
   }
 }</code></pre>
       <p>Here's a list of all built-in conditions</p>
-      <h5>post-merge / post-checkout</h5>
+      <h5>All hooks</h5>
       <ul>
-        <li>\CaptainHook\App\Hook\Condition\FileChange\Any</a><br>Check if <strong>any</strong> of the configured files is changed</li>
-        <li>\CaptainHook\App\Hook\Condition\FileChange\All</a><br>Check if <strong>all</strong> of the configured files are changed</li>
+        <li>\CaptainHook\App\Hook\Condition\OnBranch<br>Check if we are on a particular branch</li>
+      </ul>
+      <h5>pre-commit</h5>
+      <ul>
+        <li>\CaptainHook\App\Hook\Condition\FileStaged\OfType<br>Check is a file of a given type is staged for commit</li>
+      </ul>
+      <h5>post-checkout / post-merge</h5>
+      <ul>
+        <li>\CaptainHook\App\Hook\Condition\FileChange\Any<br>Check if <strong>any</strong> of the configured files is changed</li>
+        <li>\CaptainHook\App\Hook\Condition\FileChange\All<br>Check if <strong>all</strong> of the configured files are changed</li>
       </ul>
       <p>
         You can build your own conditions. You can either use simple scripts or binaries which have to return an exit code.
@@ -277,7 +366,7 @@
     "includes": [],
     "run-mode": "docker",
     "run-exec": "docker exec CONTAINER_NAME",
-    "run-path": "./vendor/bin
+    "run-path": "vendor/bin/captainhook
   }
 }</code></pre>
 

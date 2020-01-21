@@ -44,18 +44,29 @@
 
       <a name="installation"></a>
       <h1>Installation</h1>
+      <h4>Using the PHAR release</h4>
       <p>
-        The easiest way to install <em>CaptainHook</em> is by using composer. You can either edit your
-        composer.json manually and put <em class="hl">"captainhook/captainhook": "^4.0"</em> in your
-        <em class="hl">require-dev</em> package list, or run the following command.
+        The easiest way to install <em>CaptainHook</em> is by using the PHAR file and install it using <a href="https://phar.io">PHIVE</a>.
+        You can also download the PHAR manually from the <em>CaptainHook</em> <a href="https://github.com/CaptainHookPhp/captainhook/releases/latest">release page</a>.
+      </p>
+      <pre><code class="bash">$ phive install captainhook</code></pre>
+      <h4>Install using Composer</h4>
+      <p>
+        Installing <em>CaptainHook</em> via composer is also supported.
+        You can either edit your composer.json manually and put <em class="hl">"captainhook/captainhook": "^5.0"</em>
+        in your <em class="hl">require-dev</em> package list, or run the following command.
       </p>
       <pre><code class="bash">$ composer require --dev captainhook/captainhook</code></pre>
       <p>
         This will install the package itself and a bin-script to you composer bin directory, usually located under
-        <em class="hl">vendor/bin</em>.<br>
-        Next, you have to create a configuration file, to define the actions you want to execute for
+        <em class="hl">vendor/bin</em>.
+      </p>
+      <h2>Setup</h2>
+      <p>
+        The next step is to create a configuration file, to define the actions you want to execute for
         each git hook. You can either use a sample configuration from the documentation, or create one by running
-        the following command. Be aware, that if you changed your composer bin directory, you have to adjust the path.
+        the following command. Be aware, that if you changed your composer bin directory or use the PHAR,
+        you have to adjust the path.
       </p>
       <pre><code class="bash">$ vendor/bin/captainhook configure</code></pre>
       <p>
@@ -77,30 +88,10 @@
         Have a closer look at thee <a href="configure.html">configuration file</a> to setup yer git hooks.
       </p>
 
-      <h2>Composer integration</h2>
       <p>
-        If you do not want to handle the <em>configuration</em> and <em>install</em> command manually you can use the
-        <em>CaptainHook</em> Composer plugin that handles all of this automatically.
+        There are more options to further integrate <em>CaptainHook</em> with Composer. For details check the
+        <a href="composer.html">Composer integration</a> page.
       </p>
-      <pre><code class="bash">$ composer require --dev captainhook/plugin-composer</code></pre>
-      <p>
-        Installing the plugin <em>CaptainHook</em> gets installed. If you do not have a <em>captainhook.json</em>
-        file <em>CaptainHook</em>is guiding you through the configuration process by asking some yes or no questions.
-        After finishing the configuration the plugin will activate the hooks automatically.
-      </p>
-      <p>
-        Another advantage using the Composer plugin is that after every composer install or update command
-        <em>CaptainHook</em> makes sure the hooks are activated. This ensures your whole team can use the same hooks.
-      </p>
-      <p>
-        You can still ensure the hook activation without using the Composer plugin. To do so you have to add the
-        following lines to your composer.json
-      </p>
-      <pre><code class="javascript">{
-  "scripts": {
-    "post-autoload-dump": "\\CaptainHook\\App\\Composer\\Cmd::setup"
-  }
-}</code></pre>
 
       <a name="docker"></a>
       <h2>Using Docker</h2>

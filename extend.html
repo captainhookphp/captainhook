@@ -123,6 +123,10 @@ class DoNotYell implements Rule
     ]
   }
 }</code></pre>
+      <p>
+        This is most likely the easiest way to execute custom php code via git hook. But if you need access to the
+        original hook arguments or some git status information I would recommend implementing a custom <em>Action</em>.
+      </p>
 
       <h4>Custom Action Class</h4>
       <pre><code class="javascript">{
@@ -303,7 +307,7 @@ class NotOnAnyWeekday implements Condition
         "action": "\\MyName\\GitHook\\MyAction::execute",
         "conditions": [
           {
-            "exec:"\\MyName\\HookConditions\\NotOnMonday",
+            "exec:"\\MyName\\HookConditions\\NotOnWeekday",
             "args": [
               ["Mon", "Sat"]
             ]
@@ -312,6 +316,53 @@ class NotOnAnyWeekday implements Condition
       }
     ]
   }
+}</code></pre>
+
+      <h3>Hook Constrained</h3>
+
+      <p>
+        It is possible that your <em>Actions</em> or <em>Conditions</em> are only applicable for certain hooks.
+        For example CaptainHooks commit message validation hooks are only applicable for the <em>commit-message</em>
+        hook. If you want to constrain your <em>Actions</em> or <em>Conditions</em> to specific hooks you can implement
+        the <em>Constrained</em> interface and implement the required <em>getRestrictions</em> method.
+      </p>
+      <p>
+        In the following example the condition will only be executed during <em>pre-commit</em> hooks.
+      </p>
+
+      <pre><code class="php">&lt;?php
+
+namespace MyName\HookConditions;
+
+use CaptainHook\App\Console\IO;
+use CaptainHook\App\Hook\Condition;
+use CaptainHook\App\Hook\Constrained;
+use CaptainHook\App\Hook\Restriction;
+use SebastianFeldmann\Git\Repository;
+
+class RandomFail implements Condition, Constrained
+{
+    /**
+     * Return the hook restriction information
+     *
+     * @return \CaptainHook\App\Hook\Restriction
+     */
+    public static function getRestriction(): Restriction
+    {
+        return Restriction::fromArray([Hooks::PRE_COMMIT]);
+    }
+
+    /**
+     * Fail 50% of the time randomly ;)
+     *
+     * @param  \CaptainHook\App\Console\IO       $io
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @return bool
+     */
+    public function isTrue(IO $io, Repository $repository) : bool
+    {
+        return rand(0, 10)%2 === 0;
+    }
 }</code></pre>
 
       <h3 id="plugins">Plugins</h3>

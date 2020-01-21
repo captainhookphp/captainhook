@@ -46,9 +46,12 @@
 
       <ul>
         <li><a href="#pre-commit">pre-commit</a></li>
+        <li><a href="#pre-push">pre-push</a></li>
         <li><a href="#prepare-commit-msg">prepare-commit-msg</a></li>
         <li><a href="#commit-msg">commit-message</a></li>
-        <li><a href="#pre-push">pre-push</a></li>
+        <li><a href="#post-commit">post-commit</a></li>
+        <li><a href="#post-checkout">post-checkout</a></li>
+        <li><a href="#post-merge">post-merge</a></li>
       </ul>
 
       <h3 id="pre-commit">pre-commit</h3>
@@ -163,7 +166,7 @@ class NoEmptyCommitMessages implements HookAction
 
       <h3 id="pre-push">pre-push</h3>
       <p>
-        This hook will run before git executes a push. Failing during this commit aborts the current push.
+        This hook will run before git executes a push. Failing during this hook aborts the current push.
         You can run unit tests, style checker or linter during this hook to make sure nobody pushes 'broken' code.
       </p>
       <pre><code class="javascript">"pre-push": {
@@ -171,6 +174,45 @@ class NoEmptyCommitMessages implements HookAction
   "actions": [
     {
       "action": "vendor/bin/phpunit"
+    }
+  ]
+}</code></pre>
+
+      <h3 id="post-commit">post-commit</h3>
+      <p>
+        This hook will run after a successful commit. Failing during this hook has no effect on the commit.
+      </p>
+      <pre><code class="javascript">"post-commit": {
+  "enabled": true,
+  "actions": [
+    {
+      "action": "do/some/post-commit-action"
+    }
+  ]
+}</code></pre>
+
+      <h3 id="post-checkout">post-checkout</h3>
+      <p>
+        This hook will run after a successful checkout. Failing during this hook has no effect on the checkout.
+      </p>
+      <pre><code class="javascript">"post-commit": {
+  "enabled": true,
+  "actions": [
+    {
+      "action": "do/some/post-checkout-action"
+    }
+  ]
+}</code></pre>
+
+      <h3 id="post-merge">post-merge</h3>
+      <p>
+        This hook will run after a successful merge. Failing during this hook has no effect on the merge.
+      </p>
+      <pre><code class="javascript">"post-commit": {
+  "enabled": true,
+  "actions": [
+    {
+      "action": "do/some/post-merge-action"
     }
   ]
 }</code></pre>
