@@ -1,0 +1,39 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * Script to generate the release notes in markdown
+ *
+ * Changes
+ *
+ *  - Change 1
+ *  - Change 2
+ */
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use SebastianFeldmann\Git\Repository;
+
+$repo        = new Repository(dirname(__DIR__));
+$gitInfo     = $repo->getInfoOperator();
+$gitLog      = $repo->getLogOperator();
+
+$currentTag  = $gitInfo->getMostRecentTag();
+$previousTag = $gitInfo->getMostRecentTagBefore($currentTag);
+$log         = $gitLog->getCommitsBetween($previousTag, $currentTag);
+
+$headline = '## Changes' . PHP_EOL . PHP_EOL;
+$body     = '';
+
+/** @var $commit \SebastianFeldmann\Git\Log\Commit */
+foreach ($log as $commit) {
+    // skip merge commits
+    if (strpos($commit->getDescription(), 'Merge ') !== false) {
+        continue;
+    }
+    $body .= ' - ' . $commit->getDescription() . ' (by ' .  $commit->getAuthor() . ')' . PHP_EOL;
+}
+
+echo $headline . $body;
+
+

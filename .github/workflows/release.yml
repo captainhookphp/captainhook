@@ -69,9 +69,6 @@ jobs:
       - name: "Sign phar with gpg"
         run: "gpg --armor --local-user \"${{ secrets.GPG_KEY_EMAIL }}\" --output ${{ env.PHAR_SIGNATURE }} --passphrase \"${{ secrets.GPG_KEY_PASSPHRASE }}\" --pinentry-mode loopback --yes --detach-sig ${{ env.PHAR }}"
 
-      - name: "Receive key with gpg"
-        run: "gpg --keyserver pgp.mit.edu --receive-key \"${{ secrets.GPG_KEY_ID }}\""
-
       - name: "Verify signature with gpg"
         run: "gpg --verify ${{ env.PHAR_SIGNATURE }} ${{ env.PHAR }}"
 
@@ -82,16 +79,37 @@ jobs:
         id: "determine-tag"
         run: "echo \"::set-output name=tag::${GITHUB_REF#refs/tags/}\""
 
+      - name: "Fetch all"
+        run: git fetch --all && git fetch --tags --force
+
+      - name: "Determine previous tag"
+        id: "determine-prev-tag"
+        run: echo "##[set-output name=tag;]$(git describe --abbrev=0 ${{ steps.determine-tag.outputs.tag }})^"
+
+      - name: "Prepare release notes"
+        id: "changelog"
+        run: |
+          changelog=$(php build/release-notes)
+          echo $changelog
+          changelog="${changelog//'%'/'%25'}"
+          changelog="${changelog//$'\n'/'%0A'}"
+          changelog="${changelog//$'\r'/'%0D'}"
+          echo "::set-output name=changelog::$changelog"
+
+      - name: "Check release notes"
+        run: "echo \"${{ steps.changelog.outputs.changelog }}\""
+
       - name: "Create release"
         id: "create-release"
-        uses: "actions/create-release@v1.0.0"
+        uses: "actions/create-release@master"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_API_TOKEN }}"
         with:
           draft: false
           prerelease: false
-          release_name: "${{ steps.determine-tag.outputs.tag }}"
           tag_name: "${{ steps.determine-tag.outputs.tag }}"
+          release_name: "${{ steps.determine-tag.outputs.tag }}"
+          body: "${{ steps.changelog.outputs.changelog }}"
 
       - name: "Upload captainhook.phar"
         uses: "actions/upload-release-asset@v1.0.1"
