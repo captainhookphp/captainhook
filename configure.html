@@ -45,7 +45,7 @@
       <h1>Configuration</h1>
       <p>
         If you look at a <em class="hl">captainhook.json</em> configuration, it consists of a config block for each
-        hook and an optional <a href="#settings"><em>config</em></a> section to tweak some custom settings.
+        hook and an optional <a href="#settings"><em>config</em></a> section to tweak some <em>CaptainHook</em> settings.
       </p>
 
       <pre><code class="javascript">{
@@ -355,10 +355,13 @@
       <a name="settings"></a>
       <h2>Settings</h2>
       <p>
-       For example if your .git directory is not located on the same level as your captainhook.json.
+       You can configure some basic CaptainHook behaviour by overwriting the defaults in your configuration file.
+        For example if your .git directory is not located on the same level as your captainhook.json or
+        you like a more verbose output.
       </p>
       <pre><code class="javascript">{
   "config": {
+    "bootstrap": "../vendor/autoload.php",
     "git-directory": "../../.git",
     "verbosity": "verbose",
     "ansi-colors": false,
@@ -375,6 +378,11 @@
           <th>Setting</th>
           <th>Description</th>
           <th>Default</th>
+        </tr>
+        <tr>
+          <td>bootstrap</td>
+          <td>Path to your bootstrap / autoloader file.</td>
+          <td>vendor/autoload.php</td>
         </tr>
         <tr>
           <td>git-directory</td>
