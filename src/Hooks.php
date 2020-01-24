@@ -56,4 +56,24 @@ final class Hooks
             self::POST_CHECKOUT      => 'PostCheckout',
         ];
     }
+
+    /**
+     * Returns the argument placeholders for a given hook
+     *
+     * @param  string $hook
+     * @return string
+     */
+    public static function getOriginalHookArguments(string $hook): string
+    {
+        static $arguments = [
+            Hooks::COMMIT_MSG         => ' {$FILE}',
+            Hooks::POST_MERGE         => ' {$SQUASH}',
+            Hooks::PRE_COMMIT         => '',
+            Hooks::PRE_PUSH           => ' {$TARGET} {$URL}',
+            Hooks::PREPARE_COMMIT_MSG => ' {$FILE} {$MODE} {$HASH}',
+            Hooks::POST_CHECKOUT      => ' {$PREVIOUSHEAD} {$NEWHEAD} {$MODE}',
+        ];
+
+        return $arguments[$hook];
+    }
 }

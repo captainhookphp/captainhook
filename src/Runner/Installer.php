@@ -19,7 +19,11 @@ use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Exception;
 use CaptainHook\App\Hook\Template;
 use CaptainHook\App\Hook\Util as HookUtil;
+use CaptainHook\App\Hooks;
 use CaptainHook\App\Storage\File;
+use RuntimeException;
+use SebastianFeldmann\Camino\Check;
+use SebastianFeldmann\Camino\Path;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -45,6 +49,13 @@ class Installer extends RepositoryAware
      * @var bool
      */
     private $skipExisting = false;
+
+    /**
+     * Path where the existing hooks should be moved to
+     *
+     * @var string
+     */
+    private $moveExistingTo = '';
 
     /**
      * Hook that should be handled.
@@ -97,7 +108,25 @@ class Installer extends RepositoryAware
      */
     public function setSkipExisting(bool $skip): Installer
     {
+        if ($skip && !empty($this->moveExistingTo)) {
+            throw new RuntimeException('choose --move-existing-to or --skip-existing');
+        }
         $this->skipExisting = $skip;
+        return $this;
+    }
+
+    /**
+     * Set the path where the current hooks should be moved to
+     *
+     * @param  string $backup
+     * @return \CaptainHook\App\Runner\Installer
+     */
+    public function setMoveExistingTo(string $backup): Installer
+    {
+        if (!empty($backup) && $this->skipExisting) {
+            throw new RuntimeException('choose --skip-existing or --move-existing-to');
+        }
+        $this->moveExistingTo = $backup;
         return $this;
     }
 
@@ -145,7 +174,7 @@ class Installer extends RepositoryAware
     {
         // callback to write bool true to all array entries
         // to make sure the user will be asked to confirm every hook installation
-        // unless the user provided the force option
+        // unless the user provided the force or skip option
         $callback = function () {
             return true;
         };
@@ -176,6 +205,9 @@ class Installer extends RepositoryAware
         }
 
         if ($doIt) {
+            if ($this->shouldHookBeMoved()) {
+                $this->backupHook($hook);
+            }
             $this->writeHookFile($hook);
         }
     }
@@ -189,6 +221,46 @@ class Installer extends RepositoryAware
     private function shouldHookBeSkipped(string $hook): bool
     {
         return $this->skipExisting && $this->repository->hookExists($hook);
+    }
+
+    /**
+     * If a path to incorporate the existing hook is set we should incorporate existing hooks
+     *
+     * @return bool
+     */
+    private function shouldHookBeMoved(): bool
+    {
+        return !empty($this->moveExistingTo);
+    }
+
+    /**
+     * Move the existing hook to the configured location
+     *
+     * @param string $hook
+     */
+    private function backupHook(string $hook)
+    {
+        // no hook to move just leave
+        if (!$this->repository->hookExists($hook)) {
+            return;
+        }
+
+        $hookFileOrig   = $this->repository->getHooksDir() . DIRECTORY_SEPARATOR . $hook;
+        $hookCmd        = rtrim($this->moveExistingTo, '/\\') . DIRECTORY_SEPARATOR . $hook;
+        $hookCmdArgs    = $hookCmd . Hooks::getOriginalHookArguments($hook);
+        $hookFileTarget = !Check::isAbsolutePath($this->moveExistingTo)
+                        ? dirname($this->config->getPath()) . DIRECTORY_SEPARATOR . $hookCmd
+                        : $hookCmd;
+
+        $this->moveExistingHook($hookFileOrig, $hookFileTarget);
+
+        $this->io->write(
+            [
+                '  Moved existing ' . $hook . ' hook to ' . $hookCmd,
+                '  Add <comment>\'' . $hookCmdArgs . '\'</comment> to your '
+                . $hook . ' configuration to execute it.'
+            ]
+        );
     }
 
     /**
@@ -239,5 +311,29 @@ class Installer extends RepositoryAware
     private function needInstallConfirmation(string $hook): bool
     {
         return $this->repository->hookExists($hook) && !$this->force;
+    }
+
+    /**
+     * Move the existing hook script to the new location
+     *
+     * @param  string $originalLocation
+     * @param  string $newLocation
+     * @return void
+     * @throws \RuntimeException
+     */
+    private function moveExistingHook(string $originalLocation, string $newLocation): void
+    {
+        $dir = dirname($newLocation);
+        // make sure the target directory isn't a file
+        if (file_exists($dir) && !is_dir($dir)) {
+            throw new RuntimeException($dir . ' is not a directory');
+        }
+        // create the directory if it does not exist
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+
+        // move the hook into the target directory
+        rename($originalLocation, $newLocation);
     }
 }

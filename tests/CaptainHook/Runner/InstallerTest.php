@@ -18,6 +18,7 @@ use CaptainHook\App\Git\DummyRepo;
 use CaptainHook\App\Hook\Mockery as HookMockery;
 use CaptainHook\App\Mockery as CHMockery;
 use PHPUnit\Framework\TestCase;
+use SebastianFeldmann\Git\Repository;
 
 class InstallerTest extends TestCase
 {
@@ -42,6 +43,46 @@ class InstallerTest extends TestCase
 
         $runner = new Installer($io, $config, $repo, $template);
         $runner->setHook('itDoNotExist');
+    }
+
+    /**
+     * Tests Installer::setHook
+     *
+     * @throws \CaptainHook\App\Exception\InvalidHookName
+     */
+    public function testMoveAfterSkippingFail(): void
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock();
+        $repo     = $this->createRepositoryMock();
+        $template = $this->createTemplateMock();
+
+        $runner = new Installer($io, $config, $repo, $template);
+        $runner->setHook('pre-commit');
+        $runner->setSkipExisting(true);
+        $runner->setMoveExistingTo('/tmp/');
+    }
+
+    /**
+     * Tests Installer::setHook
+     *
+     * @throws \CaptainHook\App\Exception\InvalidHookName
+     */
+    public function testSkipAfterMovingFail(): void
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock();
+        $repo     = $this->createRepositoryMock();
+        $template = $this->createTemplateMock();
+
+        $runner = new Installer($io, $config, $repo, $template);
+        $runner->setHook('pre-commit');
+        $runner->setMoveExistingTo('/tmp/');
+        $runner->setSkipExisting(true);
     }
 
     /**
@@ -87,6 +128,115 @@ class InstallerTest extends TestCase
         $runner->run();
 
         $this->assertFileExists($fakeRepo->getHookDir() . '/pre-commit');
+    }
+
+    /**
+     * Tests Installer::run
+     */
+    public function testMoveExistingHook(): void
+    {
+        $fakeRepo = new DummyRepo(
+            // git repo
+            [
+                'config' => '# fake git config',
+                'hooks'  => [
+                    'pre-commit' => '# fake pre-commit file',
+                    'pre-push'   => '# fake pre-push file',
+                ]
+            ],
+            // files
+            [
+                'foo' => []
+            ]
+        );
+
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock(true, $fakeRepo->getRoot() . '/captainhook.json');
+        $template = $this->createTemplateMock();
+        $repo     = new Repository($fakeRepo->getRoot());
+
+        $template->expects($this->once())
+                 ->method('getCode')
+                 ->with('pre-commit')
+                 ->willReturn('');
+
+        $runner = new Installer($io, $config, $repo, $template);
+        $runner->setHook('pre-commit')
+               ->setMoveExistingTo('foo/bar/')
+               ->run();
+
+        $this->assertFileExists($fakeRepo->getHookDir() . '/pre-commit');
+        $this->assertFileExists($fakeRepo->getRoot() . '/foo/bar/pre-commit');
+    }
+
+    /**
+     * Tests Installer::run
+     */
+    public function testMoveNotExistingHook(): void
+    {
+        $fakeRepo = new DummyRepo(
+            // git repo
+            [
+                'config' => '# fake git config',
+                'hooks'  => [
+                    'pre-push' => '# fake pre-push file',
+                ]
+            ],
+            // files
+            [
+                'foo' => []
+            ]
+        );
+
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock(true, $fakeRepo->getRoot() . '/captainhook.json');
+        $template = $this->createTemplateMock();
+        $repo     = new Repository($fakeRepo->getRoot());
+
+        $template->expects($this->once())
+                 ->method('getCode')
+                 ->with('pre-commit')
+                 ->willReturn('');
+
+        $runner = new Installer($io, $config, $repo, $template);
+        $runner->setHook('pre-commit')
+               ->setMoveExistingTo('foo/bar/')
+               ->run();
+
+        $this->assertFileExists($fakeRepo->getHookDir() . '/pre-commit');
+    }
+
+    /**
+     * Tests Installer::run
+     */
+    public function testMoveExistingHookTargetIsFile(): void
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $fakeRepo = new DummyRepo(
+            // git repo
+            [
+                'config' => '# fake git config',
+                'hooks'  => [
+                    'pre-commit' => '# fake pre-commit file',
+                    'pre-push'   => '# fake pre-push file',
+                ]
+            ],
+            // files
+            [
+                'foo' => '# some random file'
+            ]
+        );
+
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock(true, $fakeRepo->getRoot() . '/captainhook.json');
+        $template = $this->createTemplateMock();
+        $repo     = new Repository($fakeRepo->getRoot());
+
+        $runner = new Installer($io, $config, $repo, $template);
+        $runner->setHook('pre-commit')
+               ->setMoveExistingTo('foo')
+               ->run();
     }
 
     /**

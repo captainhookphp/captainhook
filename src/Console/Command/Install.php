@@ -61,6 +61,12 @@ class Install extends RepositoryAware
                  'Do not overwrite existing hooks'
              )
              ->addOption(
+                 'move-existing-to',
+                 null,
+                 InputOption::VALUE_OPTIONAL,
+                 'Move existing hooks to given directory'
+             )
+             ->addOption(
                  'bootstrap',
                  'b',
                  InputOption::VALUE_OPTIONAL,
@@ -92,7 +98,6 @@ class Install extends RepositoryAware
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
      * @return int
-     * @throws \CaptainHook\App\Exception\InvalidHookName
      * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -111,6 +116,7 @@ class Install extends RepositoryAware
         $installer = new Installer($io, $config, $repo, $template);
         $installer->setForce(IOUtil::argToBool($input->getOption('force')))
                   ->setSkipExisting(IOUtil::argToBool($input->getOption('skip-existing')))
+                  ->setMoveExistingTo(IOUtil::argToString($input->getOption('move-existing-to')))
                   ->setHook(IOUtil::argToString($input->getArgument('hook')))
                   ->run();
 
