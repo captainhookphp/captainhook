@@ -7,9 +7,7 @@ build:
       - wget -O composer.phar https://getcomposer.org/composer.phar
       - chmod +x composer.phar
       - ./composer.phar install
-      - wget -O phive.phar https://phar.io/releases/phive.phar
-      - chmod +x phive.phar
-      - ./phive.phar install
+      - ./tools/phive --home ./.phive install --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192,8E730BA25823D8B5 --force-accept-unsigned
   tests:
     override:
       - command: ./tools/phpunit --coverage-clover=clover.xml
