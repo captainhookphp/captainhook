@@ -43,7 +43,7 @@ jobs:
         run: "composer install --prefer-dist --no-dev --no-interaction --no-progress --no-suggest"
 
       - name: "Install tooling"
-        run: "tools/phive --home ./.phive install --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192,8E730BA25823D8B5 --force-accept-unsigned"
+        run: "tools/phive --no-progress --home ./.phive install --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192,8E730BA25823D8B5,CF1A108D0E7AE720 --force-accept-unsigned"
 
       - name: "Validate configuration for humbug/box"
         run: "tools/box validate box.json"
