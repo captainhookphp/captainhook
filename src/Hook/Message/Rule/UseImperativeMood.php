@@ -37,6 +37,7 @@ class UseImperativeMood extends Blacklist
                 'created',
                 'deleted',
                 'fixed',
+                'reformatted',
                 'removed',
                 'updated',
                 'uploaded'
