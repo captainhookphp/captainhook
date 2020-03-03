@@ -15,7 +15,7 @@ use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Exception;
 use CaptainHook\App\Runner\Action\Cli\Command\Formatter;
-use SebastianFeldmann\Cli\Processor\ProcOpen as Processor;
+use SebastianFeldmann\Cli\Processor\Symfony as Processor;
 use SebastianFeldmann\Git\Repository;
 
 /**
