@@ -14,6 +14,12 @@
   "support": {
     "issues": "https://github.com/captainhookphp/captainhook/issues"
   },
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/sebastianfeldmann"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "CaptainHook\\App\\": "src/"
