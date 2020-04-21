@@ -29,7 +29,7 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-suggest
 
     - name: Install tooling
-      run: tools/phive --no-progress --home ./.phive install --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192,8E730BA25823D8B5,CF1A108D0E7AE720 --force-accept-unsigned
+      run: GITHUB_AUTH_TOKEN=${{ secrets.GITHUB_API_TOKEN }} tools/phive --no-progress --home ./.phive install --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192,8E730BA25823D8B5,CF1A108D0E7AE720 --force-accept-unsigned
 
     - name: Execute unit tests
       run: tools/phpunit
