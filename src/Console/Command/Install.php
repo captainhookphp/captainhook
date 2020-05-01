@@ -106,6 +106,9 @@ class Install extends RepositoryAware
         $config = $this->createConfig($input, true, ['git-directory', 'run-mode', 'run-exec', 'run-path', 'bootstrap']);
         $repo   = $this->createRepository(dirname($config->getGitDirectory()));
 
+        // use the configured verbosity to manage general output verbosity
+        $output->setVerbosity(IOUtil::mapConfigVerbosity($config->getVerbosity()));
+
         if ($config->getRunMode() === Template::DOCKER && empty($config->getRunExec())) {
             throw new RuntimeException(
                 'Option "run-exec" missing for run-mode docker.'
