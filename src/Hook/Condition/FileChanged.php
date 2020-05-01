@@ -26,7 +26,7 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 4.2.0
  */
-abstract class FileChanged implements Condition, Constrained
+abstract class FileChanged extends File
 {
     /**
      * List of file to watch
@@ -82,22 +82,5 @@ abstract class FileChanged implements Condition, Constrained
         $newHash = $io->getArgument('newHead', 'HEAD');
 
         return $repository->getDiffOperator()->getChangedFiles($oldHash, $newHash);
-    }
-
-    /**
-     * Check if a file matching a `fnmatch` pattern was changed
-     *
-     * @param  array<string> $changedFiles
-     * @param  string        $pattern
-     * @return bool
-     */
-    protected function didMatchingFileChange(array $changedFiles, string $pattern): bool
-    {
-        foreach ($changedFiles as $file) {
-            if (fnmatch($pattern, $file)) {
-                return true;
-            }
-        }
-        return false;
     }
 }

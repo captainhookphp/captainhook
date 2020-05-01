@@ -9,52 +9,38 @@
  * file that was distributed with this source code.
  */
 
-namespace CaptainHook\App\Hook\Condition\FileStaged;
+namespace CaptainHook\App\Hook\Condition;
 
 use CaptainHook\App\Console\IO;
-use CaptainHook\App\Hook\Condition;
-use CaptainHook\App\Hook\Constrained;
 use CaptainHook\App\Hook\Restriction;
 use CaptainHook\App\Hooks;
 use SebastianFeldmann\Git\Repository;
 
 /**
- * Class OfType
- *
- * All FileStaged conditions are only applicable for `pre-commit` hooks.
- *
- * Example configuration:
- *
- * "action": "some-action"
- * "conditions": [
- *   {"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
- *    "args": [
- *      "php"
- *    ]}
- * ]
+ * Class FileChange
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
- * @since   Class available since Release 5.0.0
+ * @since   Class available since Release 5.2.0
  */
-class OfType implements Condition, Constrained
+abstract class FileStaged extends File
 {
     /**
-     * File type to check e.g. 'php' or 'html'
+     * List of file to watch
      *
-     * @var string
+     * @var array<string>
      */
-    private $suffix;
+    protected $filesToWatch;
 
     /**
-     * OfType constructor
+     * FileChange constructor
      *
-     * @param string $type
+     * @param array<string> $files
      */
-    public function __construct(string $type)
+    public function __construct(array $files)
     {
-        $this->suffix = $type;
+        $this->filesToWatch = $files;
     }
 
     /**
@@ -68,15 +54,22 @@ class OfType implements Condition, Constrained
     }
 
     /**
-     * Evaluates the condition
+     * Evaluates a condition
      *
      * @param  \CaptainHook\App\Console\IO       $io
      * @param  \SebastianFeldmann\Git\Repository $repository
      * @return bool
      */
-    public function isTrue(IO $io, Repository $repository): bool
+    abstract public function isTrue(IO $io, Repository $repository): bool;
+
+    /**
+     * Use 'diff-index --cached' to find the staged files before the commit
+     *
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @return array<string>
+     */
+    protected function getStagedFiles(Repository $repository)
     {
-        $files = $repository->getIndexOperator()->getStagedFilesOfType($this->suffix);
-        return count($files) > 0;
+        return $repository->getIndexOperator()->getStagedFiles();
     }
 }

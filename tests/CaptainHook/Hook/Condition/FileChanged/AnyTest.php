@@ -15,17 +15,6 @@ use CaptainHook\App\Console\IO\Mockery as IOMockery;
 use CaptainHook\App\Mockery as CHMockery;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class All
- *
- * The FileChange condition is applicable for `post-merge` and `post-checkout` hooks.
- * It makes sure all configured files are updated before executing the action.
- *
- * @package CaptainHook
- * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/captainhookphp/captainhook
- * @since   Class available since Release 4.2.0
- */
 class AnyTest extends TestCase
 {
     use IOMockery;

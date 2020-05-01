@@ -43,7 +43,9 @@ use SebastianFeldmann\Git\Repository;
 class Any extends FileChanged
 {
     /**
-     * Evaluates the condition
+     * Check if any of the configured files was changed within the applied change set
+     *
+     * IMPORTANT: If no files are configured this condition is always false.
      *
      * @param  \CaptainHook\App\Console\IO       $io
      * @param  \SebastianFeldmann\Git\Repository $repository
@@ -51,24 +53,6 @@ class Any extends FileChanged
      */
     public function isTrue(IO $io, Repository $repository): bool
     {
-        return $this->didAnyFileChange($this->getChangedFiles($io, $repository));
-    }
-
-    /**
-     * Check if any of the configured files was changed within the applied change set
-     *
-     * Important: If no files are configured this condition is always false.
-     *
-     * @param  array<string> $changedFiles
-     * @return bool
-     */
-    private function didAnyFileChange(array $changedFiles): bool
-    {
-        foreach ($this->filesToWatch as $filePattern) {
-            if ($this->didMatchingFileChange($changedFiles, $filePattern)) {
-                return true;
-            }
-        }
-        return false;
+        return $this->anyFileInHaystack($this->filesToWatch, $this->getChangedFiles($io, $repository));
     }
 }
