@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>CaptainHook Documentation</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/layout.css" rel="stylesheet">
+    <link href="css/atom-one-dark.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="https://github.com/captainhookphp/captainhook">CaptainHook</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="install.html">Install</a></li>
+            <li class="active"><a href="configure.html">Configure</a></li>
+            <li><a href="hooks.html">Hooks</a></li>
+            <li><a href="extend.html">Extend</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container theme-showcase" role="main">
+
+      <h1>Conditions</h1>
+
+      <p>Here's a list of all built-in conditions</p>
+      <table class="table">
+        <tr>
+          <th colspan="2">All hooks</th>
+        </tr>
+        <tr>
+          <td><a href="#on-branch">\CaptainHook\App\Hook\Condition\OnBranch</a></td>
+          <td>Check if we are on a particular branch</td>
+        </tr>
+        <tr>
+          <th colspan="2">pre-commit</th>
+        </tr>
+        <tr>
+          <td><a href="#file-staged-all">\CaptainHook\App\Hook\Condition\FileStaged\All</a></td>
+          <td>Check if <strong>all</strong> of the configured files are staged for commit</td>
+        </tr>
+        <tr>
+          <td><a href="#file-staged-any">\CaptainHook\App\Hook\Condition\FileStaged\Any</a></td>
+          <td>Check if <strong>any</strong> of the configured files is staged for commit</td>
+        </tr>
+        <tr>
+          <td><a href="#file-staged-of-type">\CaptainHook\App\Hook\Condition\FileStaged\OfType</a></td>
+          <td>Check is a file of a given type is staged for commit</td>
+        </tr>
+        <tr>
+          <th colspan="2">post-checkout / post-merge</th>
+        </tr>
+        <tr>
+          <td><a href="#file-changed-all">\CaptainHook\App\Hook\Condition\FileChange\All</a></td>
+          <td>Check if <strong>all</strong> of the configured files are changed</td>
+        </tr>
+        <tr>
+          <td><a href="#file-staged-any">\CaptainHook\App\Hook\Condition\FileChange\Any</a></td>
+          <td>Check if <strong>any</strong> of the configured files is changed</td>
+        </tr>
+      </table>
+
+      <p>
+        You can build your own conditions. You can either use simple scripts or binaries which have to return an exit code.
+        The exit code 0 means the condition applies, any exit code other then 0 means the condition does not apply.
+      </p>
+      <p>
+        Or you can build custom PHP <em>Conditions</em>. For an exact guide have a look at the
+        <a href="extend.html#conditions">"how to extend CaptainHook"</a> section.
+      </p>
+
+      <h3 id="on-branch">OnBranch</h3>
+      <p><em class="hl">all hooks</em></p>
+      <p>This <em>Condition</em> expects just one argument, the name of the branch.</p>
+      <pre><code class="javascript">{
+  "conditions": [
+    {
+      "exec": "\\CaptainHook\\App\\Hook\\Condition\\OnBranch",
+      "args": [
+        "master"
+      ]
+    }
+  ]
+}</code></pre>
+
+      <h3 id="file-staged-all">FileStaged\All</h3>
+      <p><em class="hl">pre-commit</em></p>
+      <p>Expecting a list of file names or pattern.</p>
+      <pre><code class="javascript">{
+  "conditions": [
+    {
+      "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\All",
+      "args": [
+        ["foo.html", "bar.html", "*.php"]
+      ]
+    }
+  ]
+}</code></pre>
+
+      <h3 id="file-staged-any">FileStaged\Any</h3>
+      <p><em class="hl">pre-commit</em></p>
+      <p>Expecting a list of file names or pattern.</p>
+      <pre><code class="javascript">{
+  "conditions": [
+    {
+      "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\Any",
+      "args": [
+        ["foo.html", "bar.html", "*.php"]
+      ]
+    }
+  ]
+}</code></pre>
+
+      <h3 id="file-staged-of-type">FileStaged\OfType</h3>
+      <p><em class="hl">pre-commit</em></p>
+      <p>Expecting just the type of file you want to watch as string.</p>
+      <pre><code class="javascript">{
+  "conditions": [
+    {
+      "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
+      "args": [
+        "php"
+      ]
+    }
+  ]
+}</code></pre>
+
+      <h3 id="file-changed-all">FileChanged\All</h3>
+      <p><em class="hl">post-checkout</em> <em class="hl">post-merge</em></p>
+      <p>Expecting a list of file names or pattern.</p>
+      <pre><code class="javascript">{
+  "conditions": [
+    {
+      "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileChanged\\All",
+      "args": [
+        ["foo.html", "bar.html", "*.php"]
+      ]
+    }
+  ]
+}</code></pre>
+
+      <h3 id="file-changed-any">FileChanged\Any</h3>
+      <p><em class="hl">post-checkout</em> <em class="hl">post-merge</em></p>
+      <p>Expecting a list of file names or pattern.</p>
+      <pre><code class="javascript">{
+  "conditions": [
+    {
+      "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileChanged\\Any‚",
+      "args": [
+        ["foo.html", "bar.html", "*.php"]
+      ]
+    }
+  ]
+}</code></pre>
+
+
+
+      <h3 id="includes">Include other configuration files</h3>
+      <p>
+        If you have a lot of projects you maybe want to define a set of default hooks for all of them. To maintain
+        such a default configuration CaptainHook version 4.4.0 introduced the possibility to include other <em>CaptainHook</em> configurations like this.
+      </p>
+      <pre><code class="javascript">{
+  "config": {
+    "includes": [
+      "some-other-captainhook-config.json"
+    ]
+  },
+  "pre-commit": {
+    "enabled": true,
+    "actions": [
+      {
+        "action"0: "\\CaptainHook\\App\\Hook\\Message\\Action\\Regex",
+        "options": {
+          "regex": "#.*#"
+        }
+      }
+    ]
+  }
+}</code></pre>
+      <p>
+        The idea is to create a separate <em>composer</em> package e.g. <em class="hl">my-git-hooks</em> that is structured like this.
+      </p>
+      <pre><code class="javascript">my-git-hooks/
+├── composer.json
+├── msg-validation.json
+└── crazy-workflow.json</code></pre>
+      <p>
+        Inside your composer.json you require all libs and plugins you need to execute the configured actions plus <em>captainhook/captainhook</em>
+        or <em>captainhook/plugin-composer</em>. The only thing you have to do in your projects is to require your <em class="hl">my-git-hooks</em>
+        package and add something like this to your local project <em>captainhook.json</em> file.
+      </p>
+      <pre><code class="javascript">{
+  "config": {
+    "includes": [
+      "vendor/my-company/my-git-hooks/msg-validation.json",
+      "vendor/my-company/my-git-hooks/crazy-workflow.json"
+    ]
+  }
+}</code></pre>
+      <p>
+        To update the base configuration you create a new version for your <em class="hl">my-git-hooks</em> package and run composer update in your projects.
+      </p>
+
+      <h4>Include Level</h4>
+      <p>
+        By default you can't include configurations in included configurations. But if you really want to shoot yourself in the foot, who am I to judge you.
+        You can increase the maximum levels of inclusion in your project configuration. Be aware, that setting this in any included configuration will have no effect.
+      </p>
+      <pre><code class="javascript">{
+  "config": {
+    "includes-level": 2,
+    "includes": [
+      "vendor/my-company/my-git-hooks/msg-validation.json",
+      "vendor/my-company/my-git-hooks/crazy-workflow.json"
+    ]
+  }
+}</code></pre>
+
+      <a name="settings"></a>
+      <h2>Settings</h2>
+      <p>
+       You can configure some basic CaptainHook behaviour by overwriting the defaults in your configuration file.
+        For example if your .git directory is not located on the same level as your captainhook.json or
+        you like a more verbose output.
+      </p>
+      <pre><code class="javascript">{
+  "config": {
+    "bootstrap": "../vendor/autoload.php",
+    "git-directory": "../../.git",
+    "verbosity": "verbose",
+    "ansi-colors": false,
+    "includes-level": 2,
+    "includes": [],
+    "run-mode": "docker",
+    "run-exec": "docker exec CONTAINER_NAME",
+    "run-path": "vendor/bin/captainhook
+  }
+}</code></pre>
+
+      <table class="table">
+        <tr>
+          <th>Setting</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+        <tr>
+          <td>bootstrap</td>
+          <td>Path to your bootstrap / autoloader file.</td>
+          <td>vendor/autoload.php</td>
+        </tr>
+        <tr>
+          <td>git-directory</td>
+          <td>Custom path to your repositories .git directory (relative from the configuration file)</td>
+          <td>.git</td>
+        </tr>
+        <tr>
+          <td>verbosity</td>
+          <td>Define the output verbosity [quiet|normal|verbose|debug]</td>
+          <td>verbose</td>
+        </tr>
+        <tr>
+          <td>ansi-colors</td>
+          <td>Enable or disable ANSI color output</td>
+          <td>true</td>
+        </tr>
+        <tr>
+          <td>includes</td>
+          <td>A list of CaptainHook configuration files to include</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>includes-level</td>
+          <td>Nesting level of allowed config file inclusion</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>run-mode</td>
+          <td>CaptainHook execution mode (local|docker)</td>
+          <td>local</td>
+        </tr>
+        <tr>
+          <td>run-exec</td>
+          <td>Docker command to spin up the container and execute a script</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>run-path</td>
+          <td>Path to the command inside your docker container</td>
+          <td>-</td>
+        </tr>
+      </table>
+
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          Found a typo or a bug?
+          Please open an <a href="https://github.com/captainhookphp/captainhook/issues">issue</a>
+          or pull request for the <em>gh-pages</em>
+          branch of <a href="https://github.com/captainhookphp/captainhook/tree/gh-pages">CaptainHook</a>
+        </p>
+        <p>
+          &copy; <a href="https://github.com/sebastianfeldmann">Sebastian Feldmann</a>
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>

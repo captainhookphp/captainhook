@@ -204,21 +204,43 @@
         message doesn't match your regular expression your commit fails.
       </p>
       <p>Here's a list of all built-in actions</p>
-      <h5>Commit-Message</h5>
-      <ul>
-        <li><a href="actions.html#regex">\CaptainHook\App\Hook\Message\Action\Regex</a><br>Simple regex matching</li>
-        <li><a href="actions.html#rules">\CaptainHook\App\Hook\Message\Action\Rules</a><br>Execute a list of <em>Rules</em></li>
-        <li><a href="actions.html#beams">\CaptainHook\App\Hook\Message\Action\Beams</a><br>Enforces the <a href="http://chris.beams.io/posts/git-commit/" target="_blank">Beams-Rules</a></li>
-      </ul>
-      <h5>Pre-Commit</h5>
-      <ul>
-        <li><a href="actions.html#check-lock-file">\CaptainHook\App\Hook\Composer\Action\CheckLockFile</a><br>Make sure your composer.lock file is up to date</li>
-        <li><a href="actions.html#linting">\CaptainHook\App\Hook\PHP\Action\Linting</a><br>Check php files for syntax errors</li>
-        <li><a href="actions.html#test-coverage">\CaptainHook\App\Hook\PHP\Action\TestCoverage</a><br>Monitors your test coverage</li>
-      </ul>
+      <table class="table">
+        <tr>
+          <th colspan="2">Commit-Message</th>
+        </tr>
+        <tr>
+          <td><a href="actions.html#regex">\CaptainHook\App\Hook\Message\Action\Regex</a></td>
+          <td>Simple regex matching</td>
+        </tr>
+        <tr>
+          <td><a href="actions.html#rules">\CaptainHook\App\Hook\Message\Action\Rules</a></td>
+          <td>Execute a list of <em>Rules</em></td>
+        </tr>
+        <tr>
+          <td><a href="actions.html#beams">\CaptainHook\App\Hook\Message\Action\Beams</a></td>
+          <td>Enforces the <a href="http://chris.beams.io/posts/git-commit/" target="_blank">Beams-Rules</a></td>
+        </tr>
+        <tr>
+          <th colspan="2">Pre-Commit</th>
+        </tr>
+        <tr>
+          <td><a href="actions.html#check-lock-file">\CaptainHook\App\Hook\Composer\Action\CheckLockFile</a></td>
+          <td>Make sure your composer.lock file is up to date</td>
+        </tr>
+        <tr>
+          <td><a href="actions.html#linting">\CaptainHook\App\Hook\PHP\Action\Linting</a></td>
+          <td>Check php files for syntax errors</td>
+        </tr>
+        <tr>
+          <td><a href="actions.html#test-coverage">\CaptainHook\App\Hook\PHP\Action\TestCoverage</a></td>
+          <td>Monitors your test coverage</td>
+        </tr>
+      </table>
+
       <p>
         You can easily build your own action classes. Have a look on how to <a href="extend.html">extend</a> CaptainHook.
       </p>
+
       <h3 id="conditions">Conditions</h3>
       <p>
         You can add conditions to an <em>action</em> configuration. Only if all configured conditions apply the action gets executed.
@@ -267,29 +289,9 @@
     ]
   }
 }</code></pre>
-      <p>Here's a list of all built-in conditions</p>
-      <h5>All hooks</h5>
-      <ul>
-        <li>\CaptainHook\App\Hook\Condition\OnBranch<br>Check if we are on a particular branch</li>
-      </ul>
-      <h5>pre-commit</h5>
-      <ul>
-        <li>\CaptainHook\App\Hook\Condition\FileStaged\All<br>Check if <strong>all</strong> of the configured files are staged for commit</li>
-        <li>\CaptainHook\App\Hook\Condition\FileStaged\Any<br>Check if <strong>any</strong> of the configured files is staged for commit</li>
-        <li>\CaptainHook\App\Hook\Condition\FileStaged\OfType<br>Check is a file of a given type is staged for commit</li>
-      </ul>
-      <h5>post-checkout / post-merge</h5>
-      <ul>
-        <li>\CaptainHook\App\Hook\Condition\FileChange\All<br>Check if <strong>all</strong> of the configured files are changed</li>
-        <li>\CaptainHook\App\Hook\Condition\FileChange\Any<br>Check if <strong>any</strong> of the configured files is changed</li>
-      </ul>
       <p>
-        You can build your own conditions. You can either use simple scripts or binaries which have to return an exit code.
-        The exit code 0 means the condition applies, any exit code other then 0 means the condition does not apply.
-      </p>
-      <p>
-        Or you can build custom PHP <em>Conditions</em>. For an exact guide have a look at the
-        <a href="extend.html#conditions">"how to extend CaptainHook"</a> section.
+        For a full list of all available <em>Conditions</em> and some example configurations check
+        the <a href="conditions.html"><em>Conditions</em> Section</a>.
       </p>
 
       <h3 id="includes">Include other configuration files</h3>
