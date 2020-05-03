@@ -1,0 +1,21 @@
+{
+  "config": {
+    "verbosity": "verbose"
+  },
+  "prepare-commit-msg": {
+    "enabled": true,
+    "actions": []
+  },
+  "commit-msg": {
+    "enabled": true,
+    "actions": []
+  },
+  "pre-commit": {
+    "enabled": true,
+    "actions": []
+  },
+  "pre-push": {
+    "enabled": false,
+    "actions": []
+  }
+}

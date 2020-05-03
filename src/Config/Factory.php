@@ -102,6 +102,7 @@ final class Factory
         $json = $file->readAssoc();
         Util::validateJsonConfiguration($json);
 
+        $settings = $this->combineArgumentsAndSettingFile($file, $settings);
         $settings = array_merge($this->extractSettings($json), $settings);
         $config   = new Config($file->getPath(), true, $settings);
 
@@ -113,6 +114,33 @@ final class Factory
             }
         }
         return $config;
+    }
+
+    /**
+     * Read settings from a local 'config' file
+     *
+     * If you prefer a different verbosity or use a different run mode locally then your team mates do.
+     * You can create a 'captainhook.config.json' in the same directory as your captainhook
+     * configuration file and use it to overwrite the 'config' settings of that configuration file.
+     * Exclude the 'captainhook.config.json' from version control and you don't have to edit the
+     * version controlled configuration for your local specifics anymore.
+     *
+     * Settings provided as arguments still overrule config file settings:
+     *
+     * ARGUMENTS > SETTINGS_FILE > CONFIGURATION
+     *
+     * @param \CaptainHook\App\Storage\File\Json $file
+     * @param array                              $settings
+     * @return array
+     */
+    private function combineArgumentsAndSettingFile(Json $file, array $settings)
+    {
+        $settingsFile = new Json(dirname($file->getPath()) . '/captainhook.config.json');
+        if ($settingsFile->exists()) {
+            $fileSettings = $settingsFile->readAssoc();
+            $settings     = array_merge($fileSettings, $settings);
+        }
+        return $settings;
     }
 
     /**

@@ -34,6 +34,18 @@ class FactoryTest extends TestCase
      *
      * @throws \Exception
      */
+    public function testOverwriteConfigSettingsBySettingsConfigFile(): void
+    {
+        $config = Factory::create(realpath(__DIR__ . '/../../files/config/config-file/captainhook.json'));
+
+        $this->assertEquals('quiet', $config->getVerbosity());
+    }
+
+    /**
+     * Tests Factory::create
+     *
+     * @throws \Exception
+     */
     public function testCreateWithAbsoluteGitDir(): void
     {
         $config = Factory::create(
