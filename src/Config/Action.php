@@ -18,7 +18,6 @@ namespace CaptainHook\App\Config;
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 0.9.0
- * @internal
  */
 class Action
 {
