@@ -14,6 +14,7 @@ namespace CaptainHook\App\Hook\Message\Action;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Hook\Message\Rule\CapitalizeSubject;
+use CaptainHook\App\Hook\Message\Rule\LimitSubjectLength;
 use CaptainHook\App\Mockery;
 use Exception;
 use SebastianFeldmann\Git\CommitMessage;
@@ -115,6 +116,30 @@ class RulesTest extends TestCase
     }
 
     /**
+     * Tests Rulebook::execute
+     *
+     * @throws \Exception
+     */
+    public function testExecuteValidRuleWithArguments(): void
+    {
+        $io     = new NullIO();
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
+        $action = new Config\Action(Rules::class, [[LimitSubjectLength::class, [10]]]);
+        $repo   = $this->createRepositoryMock();
+        $repo->method('getCommitMsg')->willReturn(new CommitMessage('Foo bar baz'));
+
+        try {
+            $standard = new Rules();
+            $standard->execute($config, $io, $repo, $action);
+
+            // exception should be thrown before this
+            $this->assterTrue(false);
+        } catch (Exception $e) {
+            $this->assertTrue(true);
+        }
+    }
+
+    /**
      * Tests Rule::execute
      *
      * @throws \Exception
@@ -128,6 +153,24 @@ class RulesTest extends TestCase
         $action = new Config\Action(Rules::class, [NoRule::class]);
         $repo   = $this->createRepositoryMock();
         $repo->method('getCommitMsg')->willReturn(new CommitMessage('Foo bar baz'));
+
+        $standard = new Rules();
+        $standard->execute($config, $io, $repo, $action);
+    }
+
+    /**
+     * Tests Rule::execute
+     *
+     * @throws \Exception
+     */
+    public function testInvalidComplexRule(): void
+    {
+        $this->expectException(Exception::class);
+
+        $io     = new NullIO();
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
+        $action = new Config\Action(Rules::class, [[LimitSubjectLength::class, 'foo']]);
+        $repo   = $this->createRepositoryMock();
 
         $standard = new Rules();
         $standard->execute($config, $io, $repo, $action);

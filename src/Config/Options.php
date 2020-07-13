@@ -54,7 +54,7 @@ class Options
     /**
      * Return all options
      *
-     * @return array<string, string>
+     * @return array
      */
     public function getAll(): array
     {

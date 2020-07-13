@@ -16,6 +16,7 @@ use CaptainHook\App\Console\IO;
 use CaptainHook\App\Hook\Message\Rule;
 use CaptainHook\App\Hook\Message\RuleBook;
 use Exception;
+use RuntimeException;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -42,27 +43,32 @@ class Rules extends Book
     {
         $rules = $action->getOptions()->getAll();
         $book  = new RuleBook();
-        foreach ($rules as $class) {
-            $book->addRule($this->createRule($class));
+        foreach ($rules as $rule) {
+            if (is_string($rule)) {
+                $book->addRule($this->createRule($rule));
+                continue;
+            }
+            $book->addRule($this->createRuleFromConfig($rule));
         }
         $this->validate($book, $repository, $io);
     }
 
     /**
-     * Create a new rule.
+     * Create a new rule
      *
      * @param  string $class
+     * @param  array  $args
      * @return \CaptainHook\App\Hook\Message\Rule
      * @throws \Exception
      */
-    protected function createRule(string $class): Rule
+    protected function createRule(string $class, array $args = []): Rule
     {
         // make sure the class is available
         if (!class_exists($class)) {
             throw new Exception('Unknown rule: ' . $class);
         }
 
-        $rule = new $class();
+        $rule = empty($args) ? new $class() : new $class(...$args);
 
         // make sure the class implements the Rule interface
         if (!$rule instanceof Rule) {
@@ -70,5 +76,20 @@ class Rules extends Book
         }
 
         return $rule;
+    }
+
+    /**
+     * Create a rule from a argument containing configuration
+     *
+     * @param  array $config
+     * @return \CaptainHook\App\Hook\Message\Rule
+     * @throws \Exception
+     */
+    private function createRuleFromConfig(array $config): Rule
+    {
+        if (!is_string($config[0]) || !is_array($config[1])) {
+            throw new RuntimeException('Invalid rule configuration');
+        }
+        return $this->createRule($config[0], $config[1]);
     }
 }
