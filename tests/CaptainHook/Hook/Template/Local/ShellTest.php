@@ -32,7 +32,8 @@ class ShellTest extends TestCase
 
         $this->assertStringContainsString('#!/bin/sh', $code);
         $this->assertStringContainsString('commit-msg', $code);
-        $this->assertStringContainsString('vendor/bin/captainhook', $code);
+        $this->assertStringContainsString('vendor/bin/captainhook $INTERACTIVE', $code);
+        $this->assertStringContainsString($this->getTtyRedirectionLines(), $code);
     }
 
     /**
@@ -50,6 +51,20 @@ class ShellTest extends TestCase
 
         $this->assertStringContainsString('#!/bin/sh', $code);
         $this->assertStringContainsString('commit-msg', $code);
-        $this->assertStringContainsString('/usr/local/bin/captainhook', $code);
+        $this->assertStringContainsString('/usr/local/bin/captainhook $INTERACTIVE', $code);
+        $this->assertStringContainsString($this->getTtyRedirectionLines(), $code);
+    }
+
+    private function getTtyRedirectionLines(): string
+    {
+        return <<<'EOD'
+INTERACTIVE="--no-interaction"
+if [ -t 1 ]; then
+    # If we're in a terminal, redirect stdout and stderr to /dev/tty and
+    # read stdin from /dev/tty. Allow interactive mode for CaptainHook.
+    exec >/dev/tty 2>/dev/tty </dev/tty
+    INTERACTIVE=""
+fi
+EOD;
     }
 }
