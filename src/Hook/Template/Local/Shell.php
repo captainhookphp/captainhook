@@ -58,7 +58,16 @@ class Shell extends Template\Local
             '',
             '# installed by CaptainHook ' . CH::VERSION,
             '',
+            'INTERACTIVE="--no-interaction"',
+            'if [ -t 1 ]; then',
+            '    # If we\'re in a terminal, redirect stdout and stderr to /dev/tty and',
+            '    # read stdin from /dev/tty. Allow interactive mode for CaptainHook.',
+            '    exec >/dev/tty 2>/dev/tty </dev/tty',
+            '    INTERACTIVE=""',
+            'fi',
+            '',
             $this->executablePath
+                . ' $INTERACTIVE'
                 . ' --configuration=' . $this->configPath
                 . ' --bootstrap=' . $this->bootstrap
                 . ' hook:' . $hook . ' "$@"',
