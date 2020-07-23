@@ -40,7 +40,7 @@ class DebugTest extends TestCase
         $infoOperator = $this->createGitInfoOperator('1.0.0');
 
         $io->expects($this->once())->method('getArguments')->willReturn(['foo' => 'bar']);
-        $io->expects($this->exactly(3))->method('write');
+        $io->expects($this->atLeast(3))->method('write');
         $repository->expects($this->exactly(1))->method('getInfoOperator')->willReturn($infoOperator);
 
         $debug = new Debug();

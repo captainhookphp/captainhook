@@ -44,6 +44,7 @@ class Debug implements Action
         $io->write('<info>Executing Dummy action</info>');
         $io->write($this->getArgumentOutput($originalHookArguments));
         $io->write('  Current git-tag: <comment>' . $currentGitTag . '</comment>');
+        $io->write('StandardInput:' . PHP_EOL . implode(PHP_EOL, $io->getStandardInput()));
 
         throw new ActionFailed(
             'The \'Debug\' action is only for debugging purposes, '
