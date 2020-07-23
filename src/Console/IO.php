@@ -46,6 +46,13 @@ interface IO
     public function getArgument(string $name, string $default = ''): string;
 
     /**
+     * Returns the piped in standard input
+     *
+     * @return string[]
+     */
+    public function getStandardInput(): array;
+
+    /**
      * Is this input interactive?
      *
      * @return bool

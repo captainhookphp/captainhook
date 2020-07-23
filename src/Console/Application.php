@@ -69,6 +69,7 @@ class Application extends SymfonyApplication
                 new Cmd\Hook\PostCheckout($resolver),
                 new Cmd\Hook\PostCommit($resolver),
                 new Cmd\Hook\PostMerge($resolver),
+                new Cmd\Hook\PostRewrite($resolver),
                 new Cmd\Hook\PreCommit($resolver),
                 new Cmd\Hook\PrepareCommitMsg($resolver),
                 new Cmd\Hook\PrePush($resolver),

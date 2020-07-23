@@ -20,6 +20,7 @@ namespace CaptainHook\App;
  *
  * @package CaptainHook
  * @author  Andrea Heigl <andreas@heigl.org>
+ * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 3.0.1
  */
@@ -39,6 +40,17 @@ final class Hooks
 
     public const POST_CHECKOUT = 'post-checkout';
 
+    public const POST_REWRITE = 'post-rewrite';
+
+    public const POST_CHANGE = 'post-change';
+
+
+    private static $virtualHooks = [
+        self::POST_CHECKOUT => self::POST_CHANGE,
+        self::POST_MERGE    => self::POST_CHANGE,
+        self::POST_REWRITE  => self::POST_CHANGE,
+    ];
+
     /**
      * Returns the list of valid hooks
      *
@@ -54,6 +66,8 @@ final class Hooks
             self::POST_COMMIT        => 'PostCommit',
             self::POST_MERGE         => 'PostMerge',
             self::POST_CHECKOUT      => 'PostCheckout',
+            self::POST_REWRITE       => 'PostRewrite',
+            self::POST_CHANGE        => 'PostChange'
         ];
     }
 
@@ -72,8 +86,34 @@ final class Hooks
             Hooks::PRE_PUSH           => ' {$TARGET} {$URL}',
             Hooks::PREPARE_COMMIT_MSG => ' {$FILE} {$MODE} {$HASH}',
             Hooks::POST_CHECKOUT      => ' {$PREVIOUSHEAD} {$NEWHEAD} {$MODE}',
+            Hooks::POST_REWRITE       => ' {$GIT-COMMAND}',
         ];
 
         return $arguments[$hook];
+    }
+
+    /**
+     * Tell if the given hook should trigger a virtual hook
+     *
+     * @param  string $hook
+     * @return bool
+     */
+    public static function triggersVirtualHook(string $hook): bool
+    {
+        return isset(self::$virtualHooks[$hook]);
+    }
+
+    /**
+     * Return the virtual hook name that should be triggered by given hook
+     *
+     * @param  string $hook
+     * @return string
+     */
+    public static function getVirtualHook(string $hook)
+    {
+        if (!self::triggersVirtualHook($hook)) {
+            throw new \RuntimeException('no virtual hooks for ' . $hook);
+        }
+        return self::$virtualHooks[$hook];
     }
 }

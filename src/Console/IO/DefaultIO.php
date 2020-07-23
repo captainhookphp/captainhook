@@ -13,6 +13,7 @@ namespace CaptainHook\App\Console\IO;
 
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Console\IOUtil;
+use SebastianFeldmann\Cli\Reader\StandardInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
@@ -91,6 +92,21 @@ class DefaultIO extends Base
     public function getArgument(string $name, string $default = ''): string
     {
         return (string)($this->getArguments()[$name] ?? $default);
+    }
+
+    /**
+     * Return the piped in standard input
+     *
+     * @return string[]
+     */
+    public function getStandardInput(): array
+    {
+        $iterator = new StandardInput(STDIN);
+        $stdIn    = [];
+        foreach ($iterator as $line) {
+            $stdIn[] = $line;
+        }
+        return $stdIn;
     }
 
     /**

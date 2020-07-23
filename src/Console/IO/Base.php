@@ -44,4 +44,14 @@ abstract class Base implements IO
     {
         return $default;
     }
+
+    /**
+     * Return the piped in standard input
+     *
+     * @return string[]
+     */
+    public function getStandardInput(): array
+    {
+        return [];
+    }
 }

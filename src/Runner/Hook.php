@@ -14,6 +14,7 @@ namespace CaptainHook\App\Runner;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Console\IOUtil;
+use CaptainHook\App\Hooks;
 use RuntimeException;
 
 /**
@@ -81,9 +82,7 @@ abstract class Hook extends RepositoryAware
      */
     public function run(): void
     {
-        /** @var \CaptainHook\App\Config\Hook $hookConfig */
         $hookConfig = $this->config->getHookConfig($this->hook);
-        $actions    = $hookConfig->getActions();
 
         // if hook is not enabled in captainhook configuration skip the execution
         if (!$hookConfig->isEnabled()) {
@@ -92,6 +91,8 @@ abstract class Hook extends RepositoryAware
         }
 
         $this->io->write($this->formatHookHeadline('Execute'), true, IO::VERBOSE);
+
+        $actions = $this->getActionsToExecute($hookConfig);
 
         // if no actions are configured do nothing
         if (count($actions) === 0) {
@@ -103,6 +104,30 @@ abstract class Hook extends RepositoryAware
             $this->handleAction($action);
         }
         $this->afterHook();
+    }
+
+    /**
+     * Return all the actions to execute
+     *
+     * Returns all actions from the triggered hook but also any actions of virtual hooks that might be triggered.
+     * E.g. 'post-rewrite' or 'post-checkout' trigger the virtual/artificial 'post-change' hook.
+     * Virtual hooks are special hooks to simplify configuration.
+     *
+     * @param  \CaptainHook\App\Config\Hook $hookConfig
+     * @return \CaptainHook\App\Config\Action[]
+     */
+    private function getActionsToExecute(Config\Hook $hookConfig)
+    {
+        $actions = $hookConfig->getActions();
+        if (!Hooks::triggersVirtualHook($hookConfig->getName())) {
+            return $actions;
+        }
+
+        $virtualHookConfig = $this->config->getHookConfig(Hooks::getVirtualHook($hookConfig->getName()));
+        if (!$virtualHookConfig->isEnabled()) {
+            return $actions;
+        }
+        return array_merge($actions, $virtualHookConfig->getActions());
     }
 
     /**

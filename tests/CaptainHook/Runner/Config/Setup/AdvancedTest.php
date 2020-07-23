@@ -31,7 +31,7 @@ class AdvancedTest extends TestCase
     {
         $io     = $this->createIOMock();
         $config = $this->createConfigMock();
-        $config->expects($this->exactly(7))->method('getHookConfig')->willReturn($this->createHookConfigMock());
+        $config->expects($this->exactly(9))->method('getHookConfig')->willReturn($this->createHookConfigMock());
         $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', 'echo \'foo\'', 'n'));
 
         $setup  = new Advanced($io);
