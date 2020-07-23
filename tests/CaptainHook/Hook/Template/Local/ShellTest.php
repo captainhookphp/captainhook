@@ -33,7 +33,6 @@ class ShellTest extends TestCase
         $this->assertStringContainsString('#!/bin/sh', $code);
         $this->assertStringContainsString('commit-msg', $code);
         $this->assertStringContainsString('vendor/bin/captainhook $INTERACTIVE', $code);
-        $this->assertStringContainsString($this->getTtyRedirectionLines(), $code);
     }
 
     /**
@@ -52,13 +51,36 @@ class ShellTest extends TestCase
         $this->assertStringContainsString('#!/bin/sh', $code);
         $this->assertStringContainsString('commit-msg', $code);
         $this->assertStringContainsString('/usr/local/bin/captainhook $INTERACTIVE', $code);
+        $this->assertStringNotContainsString($this->getTtyRedirectionLines(), $code);
+    }
+
+    /**
+     * Tests Shell::getCode
+     */
+    public function testTemplateExtExecutableWithUserInput(): void
+    {
+        $repo       = new Directory('/foo/bar');
+        $config     = new File('/foo/bar/captainhook.json');
+        $executable = new File('/usr/local/bin/captainhook');
+        $bootstrap  = 'vendor/autoload.php';
+
+        $template = new Shell($repo, $config, $executable, $bootstrap, false);
+        $code     = $template->getCode('prepare-commit-msg');
+
+        $this->assertStringContainsString('#!/bin/sh', $code);
+        $this->assertStringContainsString('commit-msg', $code);
+        $this->assertStringContainsString('/usr/local/bin/captainhook $INTERACTIVE', $code);
         $this->assertStringContainsString($this->getTtyRedirectionLines(), $code);
     }
 
+    /**
+     * Returns the expected TTY redirection lines
+     *
+     * @return string
+     */
     private function getTtyRedirectionLines(): string
     {
         return <<<'EOD'
-INTERACTIVE="--no-interaction"
 if [ -t 1 ]; then
     # If we're in a terminal, redirect stdout and stderr to /dev/tty and
     # read stdin from /dev/tty. Allow interactive mode for CaptainHook.

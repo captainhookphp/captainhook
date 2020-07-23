@@ -31,6 +31,15 @@ use SebastianFeldmann\Camino\Path\Directory;
 class Shell extends Template\Local
 {
     /**
+     * Does the hook allow user input
+     *
+     * @var bool[]
+     */
+    private $allowUserInput = [
+        'prepare-commit-msg' => true
+    ];
+
+    /**
      * Return the path to the target path from the git repository root f.e. vendor/bin/captainhook
      *
      * @param  \SebastianFeldmann\Camino\Path\Directory $repo
@@ -53,24 +62,39 @@ class Shell extends Template\Local
      */
     protected function getHookLines(string $hook): array
     {
-        return [
-            '#!/bin/sh',
-            '',
-            '# installed by CaptainHook ' . CH::VERSION,
-            '',
-            'INTERACTIVE="--no-interaction"',
-            'if [ -t 1 ]; then',
-            '    # If we\'re in a terminal, redirect stdout and stderr to /dev/tty and',
-            '    # read stdin from /dev/tty. Allow interactive mode for CaptainHook.',
-            '    exec >/dev/tty 2>/dev/tty </dev/tty',
-            '    INTERACTIVE=""',
-            'fi',
-            '',
-            $this->executablePath
-                . ' $INTERACTIVE'
-                . ' --configuration=' . $this->configPath
-                . ' --bootstrap=' . $this->bootstrap
-                . ' hook:' . $hook . ' "$@"',
-        ];
+        $useStdIn = ' <&0';
+        $useTTY   = [];
+
+        if (isset($this->allowUserInput[$hook])) {
+            $useStdIn = '';
+            $useTTY   = [
+                'if [ -t 1 ]; then',
+                '    # If we\'re in a terminal, redirect stdout and stderr to /dev/tty and',
+                '    # read stdin from /dev/tty. Allow interactive mode for CaptainHook.',
+                '    exec >/dev/tty 2>/dev/tty </dev/tty',
+                '    INTERACTIVE=""',
+                'fi',
+            ];
+        }
+
+
+        return array_merge(
+            [
+                '#!/bin/sh',
+                '',
+                '# installed by CaptainHook ' . CH::VERSION,
+                '',
+                'INTERACTIVE="--no-interaction"',
+            ],
+            $useTTY,
+            [
+                '',
+                $this->executablePath
+                    . ' $INTERACTIVE'
+                    . ' --configuration=' . $this->configPath
+                    . ' --bootstrap=' . $this->bootstrap
+                    . ' hook:' . $hook . ' "$@"' . $useStdIn,
+            ]
+        );
     }
 }
