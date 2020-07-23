@@ -82,7 +82,7 @@ class DefaultIOTest extends TestCase
         $helper = $this->getHelperSetMock();
 
         $input->expects($this->once())->method('getArguments')->willReturn(['foo' => 'bar']);
-        $io = new DefaultIO($input, $output, $helper);
+        $io = new DefaultIO($this->fakeStdIn(), $input, $output, $helper);
 
         $this->assertEquals(['foo' => 'bar'], $io->getArguments());
     }
@@ -97,10 +97,25 @@ class DefaultIOTest extends TestCase
         $helper = $this->getHelperSetMock();
 
         $input->expects($this->exactly(2))->method('getArguments')->willReturn(['foo' => 'bar']);
-        $io = new DefaultIO($input, $output, $helper);
+        $io = new DefaultIO($this->fakeStdIn(), $input, $output, $helper);
 
         $this->assertEquals('bar', $io->getArgument('foo'));
         $this->assertEquals('bar', $io->getArgument('fiz', 'bar'));
+    }
+
+
+    /**
+     * Tests DefaultIO::getStandardInput
+     */
+    public function testGetStandardInput(): void
+    {
+        $input  = $this->getInputMock();
+        $output = $this->getOutputMock();
+        $helper = $this->getHelperSetMock();
+
+        $io = new DefaultIO($this->fakeStdIn(), $input, $output, $helper);
+
+        $this->assertCount(3, $io->getStandardInput());
     }
 
     /**
@@ -113,7 +128,7 @@ class DefaultIOTest extends TestCase
         $helper = $this->getHelperSetMock();
 
         $input->expects($this->once())->method('isInteractive')->willReturn(false);
-        $io = new DefaultIO($input, $output, $helper);
+        $io = new DefaultIO($this->fakeStdIn(), $input, $output, $helper);
 
         $this->assertFalse($io->isInteractive());
     }
@@ -128,7 +143,7 @@ class DefaultIOTest extends TestCase
         $helper = $this->getHelperSetMock();
 
         $output->expects($this->once())->method('getVerbosity')->willReturn(0);
-        $io = new DefaultIO($input, $output, $helper);
+        $io = new DefaultIO($this->fakeStdIn(), $input, $output, $helper);
 
         $this->assertFalse($io->isVerbose());
     }
@@ -143,7 +158,7 @@ class DefaultIOTest extends TestCase
         $helper = $this->getHelperSetMock();
 
         $output->expects($this->once())->method('getVerbosity')->willReturn(0);
-        $io = new DefaultIO($input, $output, $helper);
+        $io = new DefaultIO($this->fakeStdIn(), $input, $output, $helper);
 
         $this->assertFalse($io->isVeryVerbose());
     }
@@ -158,7 +173,7 @@ class DefaultIOTest extends TestCase
         $helper = $this->getHelperSetMock();
 
         $output->expects($this->once())->method('getVerbosity')->willReturn(0);
-        $io = new DefaultIO($input, $output, $helper);
+        $io = new DefaultIO($this->fakeStdIn(), $input, $output, $helper);
 
         $this->assertFalse($io->isDebug());
     }
@@ -173,7 +188,7 @@ class DefaultIOTest extends TestCase
         $helper = $this->getHelperSetMock();
 
         $output->expects($this->once())->method('getVerbosity')->willReturn(OutputInterface::VERBOSITY_DEBUG);
-        $io = new DefaultIO($input, $output, $helper);
+        $io = new DefaultIO($this->fakeStdIn(), $input, $output, $helper);
 
         $io->writeError('foo');
     }
@@ -191,7 +206,7 @@ class DefaultIOTest extends TestCase
         $helper->expects($this->once())->method('get')->willReturn($questionHelper);
         $questionHelper->expects($this->once())->method('ask')->willReturn(true);
 
-        $io     = new DefaultIO($input, $output, $helper);
+        $io     = new DefaultIO($this->fakeStdIn(), $input, $output, $helper);
         $answer = $io->ask('foo');
         $this->assertTrue($answer);
     }
@@ -209,7 +224,7 @@ class DefaultIOTest extends TestCase
         $helper->expects($this->once())->method('get')->willReturn($questionHelper);
         $questionHelper->expects($this->once())->method('ask')->willReturn(true);
 
-        $io     = new DefaultIO($input, $output, $helper);
+        $io     = new DefaultIO($this->fakeStdIn(), $input, $output, $helper);
         $answer = $io->askConfirmation('foo');
         $this->assertTrue($answer);
     }
@@ -229,7 +244,7 @@ class DefaultIOTest extends TestCase
         $helper->expects($this->once())->method('get')->willReturn($questionHelper);
         $questionHelper->expects($this->once())->method('ask')->willReturn(true);
 
-        $io     = new DefaultIO($input, $output, $helper);
+        $io     = new DefaultIO($this->fakeStdIn(), $input, $output, $helper);
         $answer = $io->askAndValidate(
             'foo',
             function () {
@@ -251,7 +266,7 @@ class DefaultIOTest extends TestCase
         $output->expects($this->once())->method('getVerbosity')->willReturn(OutputInterface::VERBOSITY_DEBUG);
         $output->expects($this->once())->method('getErrorOutput')->willReturn($this->getOutputMock());
 
-        $io = new DefaultIO($input, $output, $helper);
+        $io = new DefaultIO($this->fakeStdIn(), $input, $output, $helper);
         $io->writeError('foo');
     }
 
@@ -268,7 +283,17 @@ class DefaultIOTest extends TestCase
         $output->expects($this->once())->method('getVerbosity')->willReturn(OutputInterface::VERBOSITY_NORMAL);
         $output->expects($this->exactly(0))->method('getErrorOutput');
 
-        $io = new DefaultIO($input, $output, $helper);
+        $io = new DefaultIO($this->fakeStdIn(), $input, $output, $helper);
         $io->writeError('foo', false, IO::DEBUG);
+    }
+
+    /**
+     * Return fake standard input handle
+     *
+     * @return resource
+     */
+    private function fakeStdIn()
+    {
+        return fopen(CH_PATH_FILES . '/input/stdin.txt', 'r');
     }
 }

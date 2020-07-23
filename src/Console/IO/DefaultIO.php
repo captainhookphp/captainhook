@@ -32,6 +32,13 @@ use Symfony\Component\Console\Question\Question;
 class DefaultIO extends Base
 {
     /**
+     * Piped standard input handler
+     *
+     * @var resource
+     */
+    private $stdIn;
+
+    /**
      * @var \Symfony\Component\Console\Input\InputInterface
      */
     protected $input;
@@ -54,12 +61,14 @@ class DefaultIO extends Base
     /**
      * Constructor
      *
+     * @param resource                                          $stdIn
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      * @param \Symfony\Component\Console\Helper\HelperSet       $helperSet
      */
-    public function __construct(InputInterface $input, OutputInterface $output, HelperSet $helperSet = null)
+    public function __construct($stdIn, InputInterface $input, OutputInterface $output, HelperSet $helperSet = null)
     {
+        $this->stdIn        = $stdIn;
         $this->input        = $input;
         $this->output       = $output;
         $this->helperSet    = $helperSet;
@@ -101,7 +110,7 @@ class DefaultIO extends Base
      */
     public function getStandardInput(): array
     {
-        $iterator = new StandardInput(STDIN);
+        $iterator = new StandardInput($this->stdIn);
         $stdIn    = [];
         foreach ($iterator as $line) {
             $stdIn[] = $line;

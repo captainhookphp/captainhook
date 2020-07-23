@@ -35,6 +35,15 @@ class NullIOTest extends TestCase
     }
 
     /**
+     * Tests NullIO::getStandardInput
+     */
+    public function testGetStandardInput(): void
+    {
+        $io = new NullIO();
+        $this->assertEquals([], $io->getStandardInput('foo'));
+    }
+
+    /**
      * Tests NullIO::isInteractive
      */
     public function testIsInteractive(): void
