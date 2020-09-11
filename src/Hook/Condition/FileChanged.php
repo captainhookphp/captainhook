@@ -12,8 +12,6 @@
 namespace CaptainHook\App\Hook\Condition;
 
 use CaptainHook\App\Console\IO;
-use CaptainHook\App\Hook\Condition;
-use CaptainHook\App\Hook\Constrained;
 use CaptainHook\App\Hook\Restriction;
 use CaptainHook\App\Hooks;
 use SebastianFeldmann\Git\Repository;
@@ -52,7 +50,7 @@ abstract class FileChanged extends File
      */
     public static function getRestriction(): Restriction
     {
-        return Restriction::fromArray([Hooks::POST_CHECKOUT, Hooks::POST_MERGE]);
+        return Restriction::fromArray([Hooks::POST_CHECKOUT, Hooks::POST_MERGE, Hooks::POST_REWRITE]);
     }
 
     /**
@@ -78,9 +76,35 @@ abstract class FileChanged extends File
      */
     protected function getChangedFiles(IO $io, Repository $repository)
     {
-        $oldHash = $io->getArgument('previousHead', 'HEAD@{1}');
+
+        $oldHash = $this->findPreviousHead($io);
         $newHash = $io->getArgument('newHead', 'HEAD');
 
         return $repository->getDiffOperator()->getChangedFiles($oldHash, $newHash);
+    }
+
+    /**
+     * Detects the previous head commit hash
+     *
+     * @param \CaptainHook\App\Console\IO $io
+     * @return string
+     */
+    private function findPreviousHead(IO $io): string
+    {
+        // Check if a list of rewritten commits is supplied via stdIn.
+        // This happens if the 'post-rewrite' hook is triggered.
+        // The stdIn is formatted like this:
+        //
+        // old-hash new-hash extra-info
+        // old-hash new-hash extra-info
+        // ...
+        $stdIn = $io->getStandardInput();
+        if (!empty($stdIn)) {
+            $info = explode(' ', $stdIn[0]);
+            // If we find a rewritten commit, we return the first commit before the rewritten one.
+            // If we do not find any rewritten commits (awkward) we use the last ref-log position.
+            return isset($info[1]) ? $info[1] . '^' :  'HEAD@{1}';
+        }
+        return $io->getArgument('previousHead', 'HEAD@{1}');
     }
 }
