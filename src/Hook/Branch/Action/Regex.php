@@ -15,6 +15,8 @@ use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Action;
+use CaptainHook\App\Hook\Restriction;
+use CaptainHook\App\Hooks;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -27,6 +29,16 @@ use SebastianFeldmann\Git\Repository;
  */
 class Regex implements Action
 {
+    /**
+     * Return hook restriction
+     *
+     * @return \CaptainHook\App\Hook\Restriction
+     */
+    public static function getRestriction(): Restriction
+    {
+        return Restriction::fromArray([Hooks::PRE_COMMIT, Hooks::PRE_PUSH, Hooks::POST_CHECKOUT]);
+    }
+
     /**
      * Execute the configured action
      *
@@ -42,7 +54,6 @@ class Regex implements Action
         $regex      = $this->getRegex($action->getOptions());
         $errorMsg   = $this->getErrorMessage($action->getOptions());
         $successMsg = $this->getSuccessMessage($action->getOptions());
-        $matches    = [];
 
         $branch = $repository->getInfoOperator()->getCurrentBranch();
         if (!preg_match($regex, $branch)) {
