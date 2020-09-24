@@ -14,6 +14,7 @@ namespace CaptainHook\App\Runner;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Console\IOUtil;
+use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hooks;
 use RuntimeException;
 
@@ -100,10 +101,59 @@ abstract class Hook extends RepositoryAware
             return;
         }
         $this->beforeHook();
-        foreach ($actions as $action) {
-            $this->handleAction($action);
+
+        if ($this->config->failAtFirstError()) {
+            $this->executeFailAtFirstError($this->getActionsToExecute($hookConfig));
+        } else {
+            $this->executeFailAfterAllActions($this->getActionsToExecute($hookConfig));
         }
+
         $this->afterHook();
+    }
+
+    /**
+     * Executes all actions. If any of them failes, immediately throws an ActionFailed exception.
+     *
+     * @param  \CaptainHook\App\Config\Action[] $actions
+     * @return void
+     * @throws \Exception
+     */
+    protected function executeFailAtFirstError(array $actions): void
+    {
+        foreach ($actions as $action) {
+            try {
+                $this->handleAction($action);
+            } catch (ActionFailed $exception) {
+                $this->io->write($exception->getMessage());
+                throw new ActionFailed('Action failed; please see above error messages');
+            }
+        }
+    }
+
+    /**
+     * Executes all actions. Eventuelly throws an ActionFailed exception if any action has failed.
+     * This method makes sure that all actions are executed, without regarding whether previous actions have failed.
+     *
+     * @param  \CaptainHook\App\Config\Action[] $actions
+     * @return void
+     * @throws \Exception
+     */
+    protected function executeFailAfterAllActions(array $actions): void
+    {
+        $failedActions = 0;
+
+        foreach ($actions as $action) {
+            try {
+                $this->handleAction($action);
+            } catch (ActionFailed $exception) {
+                $this->io->write($exception->getMessage());
+                $failedActions++;
+            }
+        }
+
+        if ($failedActions > 0) {
+            throw new ActionFailed($failedActions . ' action(s) failed; please see above error messages');
+        }
     }
 
     /**

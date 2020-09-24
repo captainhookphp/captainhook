@@ -141,6 +141,24 @@ class ConfigTest extends TestCase
     }
 
     /**
+     * Tests Config::failAtFirstError default
+     */
+    public function testFailAtFirstErrorDefault(): void
+    {
+        $config = new Config('foo.json', true, []);
+        $this->assertEquals(true, $config->failAtFirstError());
+    }
+
+    /**
+     * Tests Config::failAtFirstError
+     */
+    public function testFailAtFirstError(): void
+    {
+        $config = new Config('foo.json', true, ['fail-at-first-error' => false]);
+        $this->assertEquals(false, $config->failAtFirstError());
+    }
+
+    /**
      * Tests Config::getJsonData
      */
     public function testGetJsonData(): void
