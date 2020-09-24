@@ -298,7 +298,7 @@ class DefaultIOTest extends TestCase
     {
         $handle = fopen(CH_PATH_FILES . '/input/stdin.txt', 'r');
 
-        if (!$handle) {
+        if ($handle === false) {
             throw new Exception('fake stdIn file not found');
         }
 
