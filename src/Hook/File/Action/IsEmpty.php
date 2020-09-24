@@ -12,7 +12,6 @@
 namespace CaptainHook\App\Hook\File\Action;
 
 use CaptainHook\App\Config;
-use CaptainHook\App\Config\Options;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Action;
