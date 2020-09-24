@@ -66,7 +66,7 @@ class PreCommitTest extends TestCase
         $cmd->run($input, $output);
 
         $this->assertTrue(true);
-        $this->assertTrue(\defined('CH_BOOTSTRAP_WORKED'));
+        $this->assertTrue(defined('CH_BOOTSTRAP_WORKED'));
     }
 
     /**
@@ -106,7 +106,6 @@ class PreCommitTest extends TestCase
     public function testExecuteFailingActionInDebugMode(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessageRegExp('#sh.*foobarbaz.*not found#');
 
         $output = $this->createMock(NullOutput::class);
         $output->expects($this->once())->method('isDebug')->willReturn(true);
