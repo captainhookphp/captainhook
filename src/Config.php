@@ -24,15 +24,16 @@ use SebastianFeldmann\Camino\Check;
  */
 class Config
 {
-    public const SETTING_BOOTSTRAP      = 'bootstrap';
-    public const SETTING_COLORS         = 'ansi-colors';
-    public const SETTING_GIT_DIR        = 'git-directory';
-    public const SETTING_INCLUDES       = 'includes';
-    public const SETTING_INCLUDES_LEVEL = 'includes-level';
-    public const SETTING_RUN_EXEC       = 'run-exec';
-    public const SETTING_RUN_MODE       = 'run-mode';
-    public const SETTING_RUN_PATH       = 'run-path';
-    public const SETTING_VERBOSITY      = 'verbosity';
+    public const SETTING_BOOTSTRAP           = 'bootstrap';
+    public const SETTING_COLORS              = 'ansi-colors';
+    public const SETTING_GIT_DIR             = 'git-directory';
+    public const SETTING_INCLUDES            = 'includes';
+    public const SETTING_INCLUDES_LEVEL      = 'includes-level';
+    public const SETTING_RUN_EXEC            = 'run-exec';
+    public const SETTING_RUN_MODE            = 'run-mode';
+    public const SETTING_RUN_PATH            = 'run-path';
+    public const SETTING_VERBOSITY           = 'verbosity';
+    public const SETTING_FAIL_ON_FIRST_ERROR = 'fail-on-first-error';
 
     /**
      * Path to the config file
@@ -114,7 +115,7 @@ class Config
         // if repo path is absolute use it otherwise create an absolute path relative to the configuration file
         return Check::isAbsolutePath($this->settings[self::SETTING_GIT_DIR])
             ? $this->settings[self::SETTING_GIT_DIR]
-            : \dirname($this->path) . '/' . $this->settings[self::SETTING_GIT_DIR];
+            : dirname($this->path) . '/' . $this->settings[self::SETTING_GIT_DIR];
     }
 
     /**
@@ -179,6 +180,18 @@ class Config
     public function getRunPath(): string
     {
         return (string) ($this->settings[self::SETTING_RUN_PATH] ?? '');
+    }
+
+    /**
+     * Whether to abort the hook as soon as a any action has errored. Default is true.
+     * Otherwise, all actions get executed (even if some of them have failed) and
+     * finally, a non-zero exit code is returned if any action has errored.
+     *
+     * @return bool
+     */
+    public function failOnFirstError(): bool
+    {
+        return (bool) ($this->settings[self::SETTING_FAIL_ON_FIRST_ERROR] ?? true);
     }
 
     /**

@@ -94,7 +94,7 @@ class FactoryTest extends TestCase
     public function testCreateWithAllSetting(): void
     {
         $path   = realpath(__DIR__ . '/../../files/config/valid-with-all-settings.json');
-        $gitDir = \dirname($path) . DIRECTORY_SEPARATOR . '../../../.git';
+        $gitDir = dirname($path) . DIRECTORY_SEPARATOR . '../../../.git';
         $config = Factory::create($path);
 
         $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
@@ -104,6 +104,7 @@ class FactoryTest extends TestCase
         $this->assertEquals(false, $config->useAnsiColors());
         $this->assertEquals('docker', $config->getRunMode());
         $this->assertEquals('docker exec CONTAINER_NAME', $config->getRunExec());
+        $this->assertEquals(false, $config->failOnFirstError());
     }
 
     /**

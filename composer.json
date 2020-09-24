@@ -63,7 +63,8 @@
     "sort-packages": true
   },
   "scripts": {
-    "post-install-cmd": "tools/phive install",
+    "post-install-cmd": "tools/phive install --force-accept-unsigned",
+    "tools": "tools/phive install --force-accept-unsigned",
     "test": "tools/phpunit",
     "analyse": "tools/phpstan analyse",
     "style": "tools/phpcs --standard=psr12 src tests"
