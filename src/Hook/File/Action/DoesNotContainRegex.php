@@ -27,7 +27,7 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   TODO
  */
-class NotContainsRegex implements Action
+class DoesNotContainRegex implements Action
 {
     /**
      * Executes the action
@@ -44,7 +44,7 @@ class NotContainsRegex implements Action
         $options = $action->getOptions();
         $regex = $options->get('regex');
         if ($regex === null) {
-            throw new Exception('Missing option "regex" for NotContainsRegex action');
+            throw new Exception('Missing option "regex" for DoesNotContainRegex action');
         }
 
         $files = $this->getFiles($options, $repository);
