@@ -17,23 +17,23 @@ use CaptainHook\App\Mockery;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
-class RegexTest extends TestCase
+class EnsureNamingTest extends TestCase
 {
     use Mockery;
 
     /**
-     * Tests Regex::getRestriction
+     * Tests EnsureNaming::getRestriction
      */
     public function testConstraint(): void
     {
-        $this->assertTrue(Regex::getRestriction()->isApplicableFor('pre-commit'));
-        $this->assertTrue(Regex::getRestriction()->isApplicableFor('pre-push'));
-        $this->assertTrue(Regex::getRestriction()->isApplicableFor('post-checkout'));
-        $this->assertFalse(Regex::getRestriction()->isApplicableFor('post-commit'));
+        $this->assertTrue(EnsureNaming::getRestriction()->isApplicableFor('pre-commit'));
+        $this->assertTrue(EnsureNaming::getRestriction()->isApplicableFor('pre-push'));
+        $this->assertTrue(EnsureNaming::getRestriction()->isApplicableFor('post-checkout'));
+        $this->assertFalse(EnsureNaming::getRestriction()->isApplicableFor('post-commit'));
     }
 
     /**
-     * Tests Regex::execute
+     * Tests EnsureNaming::execute
      *
      * @throws \Exception
      */
@@ -49,16 +49,16 @@ class RegexTest extends TestCase
             $this->createGitInfoOperator('', 'Foo bar baz')
         );
 
-        $action  = new Config\Action(Regex::class, ['regex' => '#bar#']);
+        $action  = new Config\Action(EnsureNaming::class, ['regex' => '#bar#']);
 
-        $standard = new Regex();
+        $standard = new EnsureNaming();
         $standard->execute($config, $io, $repo, $action);
 
         $this->assertTrue(true);
     }
 
     /**
-     * Tests Regex::execute
+     * Tests EnsureNaming::execute
      *
      * @throws \Exception
      */
@@ -75,21 +75,21 @@ class RegexTest extends TestCase
             $this->createGitInfoOperator('', 'Foo bar baz')
         );
         $action  = new Config\Action(
-            Regex::class,
+            EnsureNaming::class,
             [
                 'regex'   => '#.*#',
                 'success' => $successMessage
             ]
         );
 
-        $standard = new Regex();
+        $standard = new EnsureNaming();
         $standard->execute($config, $io, $repo, $action);
 
         $this->assertTrue(true);
     }
 
     /**
-     * Tests Regex::execute
+     * Tests EnsureNaming::execute
      *
      * @throws \Exception
      */
@@ -100,14 +100,14 @@ class RegexTest extends TestCase
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $repo    = $this->createRepositoryMock();
-        $action = new Config\Action(Regex::class);
+        $action = new Config\Action(EnsureNaming::class);
 
-        $standard = new Regex();
+        $standard = new EnsureNaming();
         $standard->execute($config, $io, $repo, $action);
     }
 
     /**
-     * Tests Regex::execute
+     * Tests EnsureNaming::execute
      *
      * @throws \Exception
      */
@@ -122,14 +122,14 @@ class RegexTest extends TestCase
         $repo->expects($this->once())->method('getInfoOperator')->willReturn(
             $this->createGitInfoOperator('', 'Foo bar baz')
         );
-        $action = new Config\Action(Regex::class, ['regex' => '#FooBarBaz#']);
+        $action = new Config\Action(EnsureNaming::class, ['regex' => '#FooBarBaz#']);
 
-        $standard = new Regex();
+        $standard = new EnsureNaming();
         $standard->execute($config, $io, $repo, $action);
     }
 
     /**
-     * Tests Regex::execute
+     * Tests EnsureNaming::execute
      *
      * @throws \Exception
      */
@@ -145,14 +145,14 @@ class RegexTest extends TestCase
             $this->createGitInfoOperator('', 'Foo bar baz')
         );
         $action = new Config\Action(
-            Regex::class,
+            EnsureNaming::class,
             [
                 'regex' => '#FooBarBaz#',
                 'error' => 'No match for %s'
             ]
         );
 
-        $standard = new Regex();
+        $standard = new EnsureNaming();
         $standard->execute($config, $io, $repo, $action);
     }
 }
