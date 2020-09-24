@@ -16,6 +16,7 @@ use CaptainHook\App\Console\IO;
 use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hooks;
+use Exception;
 use RuntimeException;
 
 /**
@@ -101,59 +102,8 @@ abstract class Hook extends RepositoryAware
             return;
         }
         $this->beforeHook();
-
-        if ($this->config->failAtFirstError()) {
-            $this->executeFailAtFirstError($this->getActionsToExecute($hookConfig));
-        } else {
-            $this->executeFailAfterAllActions($this->getActionsToExecute($hookConfig));
-        }
-
+        $this->executeActions($actions);
         $this->afterHook();
-    }
-
-    /**
-     * Executes all actions. If any of them failes, immediately throws an ActionFailed exception.
-     *
-     * @param  \CaptainHook\App\Config\Action[] $actions
-     * @return void
-     * @throws \Exception
-     */
-    protected function executeFailAtFirstError(array $actions): void
-    {
-        foreach ($actions as $action) {
-            try {
-                $this->handleAction($action);
-            } catch (ActionFailed $exception) {
-                $this->io->write($exception->getMessage());
-                throw new ActionFailed('Action failed; please see above error messages');
-            }
-        }
-    }
-
-    /**
-     * Executes all actions. Eventuelly throws an ActionFailed exception if any action has failed.
-     * This method makes sure that all actions are executed, without regarding whether previous actions have failed.
-     *
-     * @param  \CaptainHook\App\Config\Action[] $actions
-     * @return void
-     * @throws \Exception
-     */
-    protected function executeFailAfterAllActions(array $actions): void
-    {
-        $failedActions = 0;
-
-        foreach ($actions as $action) {
-            try {
-                $this->handleAction($action);
-            } catch (ActionFailed $exception) {
-                $this->io->write($exception->getMessage());
-                $failedActions++;
-            }
-        }
-
-        if ($failedActions > 0) {
-            throw new ActionFailed($failedActions . ' action(s) failed; please see above error messages');
-        }
     }
 
     /**
@@ -181,13 +131,67 @@ abstract class Hook extends RepositoryAware
     }
 
     /**
+     * Executes all the Actions configured for the hook
+     *
+     * @param  \CaptainHook\App\Config\Action[] $actions
+     * @throws \Exception
+     */
+    private function executeActions(array $actions): void
+    {
+        if ($this->config->failOnFirstError()) {
+            $this->executeFailOnFirstError($actions);
+        } else {
+            $this->executeFailAfterAllActions($actions);
+        }
+    }
+
+    /**
+     * Executes all actions and fails at the first error
+     *
+     * @param  \CaptainHook\App\Config\Action[] $actions
+     * @return void
+     * @throws \Exception
+     */
+    private function executeFailOnFirstError(array $actions): void
+    {
+        foreach ($actions as $action) {
+            $this->handleAction($action);
+        }
+    }
+
+    /**
+     * Executes all actions but does not fail immediately
+     *
+     * @param \CaptainHook\App\Config\Action[] $actions
+     * @return void
+     * @throws \CaptainHook\App\Exception\ActionFailed
+     */
+    private function executeFailAfterAllActions(array $actions): void
+    {
+        $failedActions = 0;
+
+        foreach ($actions as $action) {
+            try {
+                $this->handleAction($action);
+            } catch (Exception $exception) {
+                $this->io->write($exception->getMessage());
+                $failedActions++;
+            }
+        }
+
+        if ($failedActions > 0) {
+            throw new ActionFailed($failedActions . ' action(s) failed; please see above error messages');
+        }
+    }
+
+    /**
      * Executes a configured hook action
      *
      * @param  \CaptainHook\App\Config\Action $action
      * @return void
      * @throws \Exception
      */
-    protected function handleAction(Config\Action $action): void
+    private function handleAction(Config\Action $action): void
     {
         $this->io->write(['', 'Action: <comment>' . $action->getAction() . '</comment>'], true, IO::VERBOSE);
 
@@ -211,7 +215,7 @@ abstract class Hook extends RepositoryAware
      * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    protected function executePhpAction(Config\Action $action): void
+    private function executePhpAction(Config\Action $action): void
     {
         $this->beforeAction();
         $runner = new Action\PHP($this->hook);
@@ -226,7 +230,7 @@ abstract class Hook extends RepositoryAware
      * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    protected function executeCliAction(Config\Action $action): void
+    private function executeCliAction(Config\Action $action): void
     {
         // since the cli has no straight way to communicate back to php
         // cli hooks have to handle sync stuff by them self

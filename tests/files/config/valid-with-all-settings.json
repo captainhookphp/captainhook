@@ -6,7 +6,7 @@
     "run-mode": "docker",
     "run-exec": "docker exec CONTAINER_NAME",
     "run-path": "/var/www/html",
-    "fail-at-first-error": false
+    "fail-on-first-error": false
   },
   "prepare-commit-msg": {
     "enabled": true,

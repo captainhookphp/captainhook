@@ -33,7 +33,7 @@ class Config
     public const SETTING_RUN_MODE            = 'run-mode';
     public const SETTING_RUN_PATH            = 'run-path';
     public const SETTING_VERBOSITY           = 'verbosity';
-    public const SETTING_FAIL_AT_FIRST_ERROR = 'fail-at-first-error';
+    public const SETTING_FAIL_ON_FIRST_ERROR = 'fail-on-first-error';
 
     /**
      * Path to the config file
@@ -115,7 +115,7 @@ class Config
         // if repo path is absolute use it otherwise create an absolute path relative to the configuration file
         return Check::isAbsolutePath($this->settings[self::SETTING_GIT_DIR])
             ? $this->settings[self::SETTING_GIT_DIR]
-            : \dirname($this->path) . '/' . $this->settings[self::SETTING_GIT_DIR];
+            : dirname($this->path) . '/' . $this->settings[self::SETTING_GIT_DIR];
     }
 
     /**
@@ -189,9 +189,9 @@ class Config
      *
      * @return bool
      */
-    public function failAtFirstError(): bool
+    public function failOnFirstError(): bool
     {
-        return (bool) ($this->settings[self::SETTING_FAIL_AT_FIRST_ERROR] ?? true);
+        return (bool) ($this->settings[self::SETTING_FAIL_ON_FIRST_ERROR] ?? true);
     }
 
     /**
