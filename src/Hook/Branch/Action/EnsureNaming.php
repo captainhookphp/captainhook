@@ -20,14 +20,14 @@ use CaptainHook\App\Hooks;
 use SebastianFeldmann\Git\Repository;
 
 /**
- * Class Regex
+ * Class EnsureNaming
  *
  * @package CaptainHook
  * @author  Felix Edelmann <fxedel@gmail.com>
  * @link    https://github.com/captainhookphp/captainhook
  * @since   TODO
  */
-class Regex implements Action
+class EnsureNaming implements Action
 {
     /**
      * Return hook restriction
