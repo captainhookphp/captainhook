@@ -35,7 +35,7 @@ class Restriction
     /**
      * Restriction constructor
      *
-     * @param array<int, string> $hooks
+     * @param string ...$hooks
      */
     public function __construct(string ...$hooks)
     {
