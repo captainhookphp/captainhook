@@ -39,6 +39,23 @@ class AnyTest extends TestCase
     /**
      * Tests Any::isTrue
      */
+    public function testIsTrueAfterRewrite(): void
+    {
+        $io = $this->createIOMock();
+        $io->expects($this->atLeastOnce())->method('getArgument')->willReturn('');
+        $io->expects($this->atLeastOnce())->method('getStandardInput')->willReturn(['firstHash secondHash']);
+        $operator   = $this->createGitDiffOperator(['fiz.php', 'baz.php', 'foo.php']);
+        $repository = $this->createRepositoryMock('');
+        $repository->expects($this->once())->method('getDiffOperator')->willReturn($operator);
+
+        $fileChange = new Any(['foo.php', 'bar.php']);
+
+        $this->assertTrue($fileChange->isTrue($io, $repository));
+    }
+
+    /**
+     * Tests Any::isTrue
+     */
     public function testWithWildcardIsTrue(): void
     {
         $io = $this->createIOMock();
