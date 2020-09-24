@@ -12,6 +12,7 @@
 namespace CaptainHook\App\Console\IO;
 
 use CaptainHook\App\Console\IO;
+use Exception;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
@@ -291,9 +292,16 @@ class DefaultIOTest extends TestCase
      * Return fake standard input handle
      *
      * @return resource
+     * @throws \Exception
      */
     private function fakeStdIn()
     {
-        return fopen(CH_PATH_FILES . '/input/stdin.txt', 'r');
+        $handle = fopen(CH_PATH_FILES . '/input/stdin.txt', 'r');
+
+        if (!$handle) {
+            throw new Exception('fake stdIn file not found');
+        }
+
+        return $handle;
     }
 }

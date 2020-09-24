@@ -40,14 +40,8 @@ class IsEmpty implements Action
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
     {
-        $options = $action->getOptions();
-        $files = $options->get('files');
-        if ($files === null) {
-            throw new Exception('Missing option "files" for IsEmpty action');
-        }
-
         $failedFiles = 0;
-        foreach ($files as $file) {
+        foreach ($this->getFiles($action->getOptions()) as $file) {
             if (!$this->isEmpty($file)) {
                 $io->write('- <error>FAIL</error> ' . $file, true);
                 $failedFiles++;
@@ -61,6 +55,22 @@ class IsEmpty implements Action
         }
 
         $io->write('<info>All files are empty or don\'t exist</info>');
+    }
+
+    /**
+     * Extract files list from the action configuration
+     *
+     * @param \CaptainHook\App\Config\Options $options
+     * @return array
+     * @throws \Exception
+     */
+    private function getFiles(Config\Options $options): array
+    {
+        $files = $options->get('files');
+        if (!is_array($files)) {
+            throw new Exception('Missing option "files" for IsEmpty action');
+        }
+        return $files;
     }
 
     /**

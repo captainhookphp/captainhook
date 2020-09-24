@@ -40,7 +40,7 @@ class NullIOTest extends TestCase
     public function testGetStandardInput(): void
     {
         $io = new NullIO();
-        $this->assertEquals([], $io->getStandardInput('foo'));
+        $this->assertEquals([], $io->getStandardInput());
     }
 
     /**

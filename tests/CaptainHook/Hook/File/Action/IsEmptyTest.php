@@ -13,6 +13,7 @@ namespace CaptainHook\App\Hook\File\Action;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
+use CaptainHook\App\Hook\Message\Action\Regex;
 use CaptainHook\App\Mockery;
 use Exception;
 use PHPUnit\Framework\TestCase;
