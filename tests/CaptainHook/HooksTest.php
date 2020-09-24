@@ -11,6 +11,7 @@
 
 namespace CaptainHook\App;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class HooksTest extends TestCase
@@ -22,5 +23,22 @@ class HooksTest extends TestCase
     {
         $this->assertEquals('', Hooks::getOriginalHookArguments('pre-commit'));
         $this->assertEquals(' {$PREVIOUSHEAD} {$NEWHEAD} {$MODE}', Hooks::getOriginalHookArguments('post-checkout'));
+    }
+
+    /**
+     * Tests Hooks::getVirtualHook
+     */
+    public function testGetVirtualHook(): void
+    {
+        $this->assertEquals('post-change', Hooks::getVirtualHook('post-rewrite'));
+    }
+
+    /**
+     * Tests Hooks::getVirtualHook
+     */
+    public function testGetVirtualHookFail(): void
+    {
+        $this->expectException(Exception::class);
+        Hooks::getVirtualHook('pre-commit');
     }
 }
