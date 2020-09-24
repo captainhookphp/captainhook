@@ -104,6 +104,7 @@ class FactoryTest extends TestCase
         $this->assertEquals(false, $config->useAnsiColors());
         $this->assertEquals('docker', $config->getRunMode());
         $this->assertEquals('docker exec CONTAINER_NAME', $config->getRunExec());
+        $this->assertEquals(false, $config->failAtFirstError());
     }
 
     /**
