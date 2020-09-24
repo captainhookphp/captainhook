@@ -50,9 +50,19 @@ class Cli
 
         $result = $processor->run($cmdFormatted);
         if (!$result->isSuccessful()) {
-            throw new Exception\ActionFailed($result->getStdOut() . PHP_EOL . $result->getStdErr());
+            $errorMessage = '<error>CLI command failed:</error>';
+
+            if (!empty($result->getStdOut())) {
+                $errorMessage .= PHP_EOL . $result->getStdOut();
+            }
+
+            if (!empty($result->getStdErr())) {
+                $errorMessage .= PHP_EOL . $result->getStdErr();
+            }
+
+            throw new Exception\ActionFailed($errorMessage);
         }
-        $io->write(empty($result->getStdOut()) ? '<info>OK</info>' : $result->getStdOut());
+        $io->write(empty($result->getStdOut()) ? '<info>CLI command OK</info>' : $result->getStdOut());
     }
 
     /**

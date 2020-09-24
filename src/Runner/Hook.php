@@ -114,16 +114,13 @@ abstract class Hook extends RepositoryAware
      */
     protected function handleAction(Config\Action $action): void
     {
-        $this->io->write(['', 'Action: <comment>' . $action->getAction() . '</comment>'], true, IO::VERBOSE);
-
         if (!$this->doConditionsApply($action->getConditions())) {
-            $this->io->write(
-                ['', 'Skipped due to failing conditions'],
-                true,
-                IO::VERBOSE
-            );
+            $this->io->write(['', 'Action: <comment>' . $action->getAction() . '</comment>'], true, IO::VERBOSE);
+            $this->io->write('Skipped due to failing conditions', true, IO::VERBOSE);
             return;
         }
+        
+        $this->io->write(['', 'Action: <comment>' . $action->getAction() . '</comment>'], true);
 
         $execMethod = self::getExecMethod(Util::getExecType($action->getAction()));
         $this->{$execMethod}($action);

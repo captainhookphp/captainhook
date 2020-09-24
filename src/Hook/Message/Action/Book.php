@@ -92,7 +92,7 @@ abstract class Book implements Action, Constrained
         $err  = count($problems);
         $head = [
             IOUtil::getLineSeparator(80, '-'),
-            'CAPTAINHOOK FOUND ' . $err . ' PROBLEM' . ($err === 1 ? '' : 'S') . ' IN YOUR COMMIT MESSAGE',
+            '<error>CAPTAINHOOK FOUND ' . $err . ' PROBLEM' . ($err === 1 ? '' : 'S') . ' IN YOUR COMMIT MESSAGE</error>',
             IOUtil::getLineSeparator(80, '-')
         ];
         $msg  = OutputUtil::trimEmptyLines($repository->getCommitMsg()->getLines());

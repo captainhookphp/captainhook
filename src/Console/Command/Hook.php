@@ -140,7 +140,7 @@ abstract class Hook extends RepositoryAware
             [
                 '',
                 IOUtil::getLineSeparator(8)
-                . ' Error details: <comment>Exception</comment> '
+                . ' Error details: <comment>' . get_class($e) . '</comment> '
                 . IOUtil::getLineSeparator(46),
                 $e->getMessage(),
                 ''

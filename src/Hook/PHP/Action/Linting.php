@@ -42,14 +42,20 @@ class Linting implements Action
     {
         $changedPHPFiles = $repository->getIndexOperator()->getStagedFilesOfType('php');
 
-        $io->write('linting files:', true, IO::VERBOSE);
+        $failedFiles = 0;
         foreach ($changedPHPFiles as $file) {
-            $io->write('  - ' . $file, true, IO::VERBOSE);
             if ($this->hasSyntaxErrors($file)) {
-                $io->write('    syntax error detected in ' . $file, true, IO::VERBOSE);
-                throw new ActionFailed('linting failed: PHP syntax errors in ' . $file);
+                $io->write('- <error>FAIL</error> ' . $file, true);
+                $failedFiles++;
+            } else {
+                $io->write('- <info>OK</info> ' . $file, true, IO::VERBOSE);
             }
         }
+
+        if ($failedFiles > 0) {
+            throw new ActionFailed('<error>Linting failed:</error> PHP syntax errors in ' . $failedFiles . ' file(s)');
+        }
+
         $io->write('<info>No syntax errors detected</info>');
     }
 

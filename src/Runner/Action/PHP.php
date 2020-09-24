@@ -78,13 +78,15 @@ class PHP
 
             // no restrictions run it!
             $exe->execute($config, $io, $repository, $action);
+        } catch (ActionFailed $e) {
+            throw $e;
         } catch (Exception $e) {
             throw new ActionFailed(
                 'Execution failed: ' . PHP_EOL .
                 $e->getMessage() . ' in ' . $e->getFile() . ' line ' . $e->getLine()
             );
         } catch (\Error $e) {
-            throw new ActionFailed('PHP Error:' . $e->getMessage());
+            throw new ActionFailed('PHP Error:' . $e->getMessage() . ' in ' . $e->getFile() . ' line ' . $e->getLine());
         }
     }
 
