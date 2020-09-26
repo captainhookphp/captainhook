@@ -66,7 +66,11 @@ class DoesNotContainRegex implements Action
 
         if ($failedFiles > 0) {
             $regexName = $options->get('regexName', $regex);
-            throw new ActionFailed('<error>Regex \'' . $regexName . '\' failed:</error> ' . $totalMatchesCount . ' matches in ' . $failedFiles . ' files');
+            throw new ActionFailed(
+                '<error>Regex \'' . $regexName . '\' failed:</error> '
+                . $totalMatchesCount . ' matches in '
+                . $failedFiles . ' files'
+            );
         }
 
         $io->write('<info>No regex matches found</info>');
@@ -74,7 +78,7 @@ class DoesNotContainRegex implements Action
 
     /**
      * Returns the files that need to be checked.
-     * 
+     *
      * @param  \CaptainHook\App\Config\Options   $options
      * @param  \SebastianFeldmann\Git\Repository $repository
      * @return array
