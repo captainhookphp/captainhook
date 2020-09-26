@@ -60,15 +60,17 @@ trait Mockery
      * Create info operator mock
      *
      * @param  string $tag
+     * @param  string $branch
      * @return \SebastianFeldmann\Git\Operator\Info&\PHPUnit\Framework\MockObject\MockObject
      */
-    public function createGitInfoOperator(string $tag = 'v1.0.0'): Info
+    public function createGitInfoOperator(string $tag = 'v1.0.0', string $branch = 'master'): Info
     {
         $operator = $this->getMockBuilder(Info::class)
                          ->disableOriginalConstructor()
                          ->getMock();
 
         $operator->method('getCurrentTag')->willReturn($tag);
+        $operator->method('getCurrentBranch')->willReturn($branch);
 
         return $operator;
     }
