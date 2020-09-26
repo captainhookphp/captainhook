@@ -25,7 +25,7 @@ use SebastianFeldmann\Git\Repository;
  * @package CaptainHook
  * @author  Felix Edelmann <fxedel@gmail.com>
  * @link    https://github.com/captainhookphp/captainhook
- * @since   TODO
+ * @since   Class available since Release 5.4.0
  */
 class DoesNotContainRegex implements Action
 {
@@ -77,18 +77,19 @@ class DoesNotContainRegex implements Action
     }
 
     /**
-     * Returns the files that need to be checked.
+     * Returns the files that need to be checked
      *
      * @param  \CaptainHook\App\Config\Options   $options
      * @param  \SebastianFeldmann\Git\Repository $repository
-     * @return array
+     * @return string[]
      */
-    protected function getFiles(Options $options, Repository $repository): array
+    private function getFiles(Options $options, Repository $repository): array
     {
-        $index = $repository->getIndexOperator();
+        $index          = $repository->getIndexOperator();
+        $fileExtensions = $this->getFileExtensions($options);
 
-        $fileExtensions = $options->get('fileExtensions');
-        if ($fileExtensions !== null) {
+
+        if (!empty($fileExtensions)) {
             $files = [];
             foreach ($fileExtensions as $ext) {
                 $files = array_merge($files, $index->getStagedFilesOfType($ext));
@@ -97,5 +98,21 @@ class DoesNotContainRegex implements Action
         }
 
         return $index->getStagedFiles();
+    }
+
+    /**
+     * Returns the configured file extensions
+     *
+     * @param  \CaptainHook\App\Config\Options $options
+     * @return string[]
+     */
+    private function getFileExtensions(Options $options): array
+    {
+        $fileExtensions = $options->get('fileExtensions');
+
+        if (!is_array($fileExtensions)) {
+            return [];
+        }
+        return $fileExtensions;
     }
 }
