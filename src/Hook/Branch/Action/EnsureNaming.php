@@ -25,7 +25,7 @@ use SebastianFeldmann\Git\Repository;
  * @package CaptainHook
  * @author  Felix Edelmann <fxedel@gmail.com>
  * @link    https://github.com/captainhookphp/captainhook
- * @since   TODO
+ * @since   Class available since Release 5.4.0
  */
 class EnsureNaming implements Action
 {
