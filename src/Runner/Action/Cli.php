@@ -50,7 +50,7 @@ class Cli
 
         $result = $processor->run($cmdFormatted);
         if (!$result->isSuccessful()) {
-            $errorMessage = '<error>CLI command failed:</error>';
+            $errorMessage = '<error>Failed executing: \'' . $cmdFormatted . '\'</error>';
 
             if (!empty($result->getStdOut())) {
                 $errorMessage .= PHP_EOL . $result->getStdOut();
