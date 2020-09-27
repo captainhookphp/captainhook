@@ -45,4 +45,15 @@ class IOUtilTest extends TestCase
         $this->assertTrue(IOUtil::answerToBool('ok'));
         $this->assertFalse(IOUtil::answerToBool('foo'));
     }
+
+    /**
+     * Tests IOUtil::formatHeadline
+     */
+    public function testFormatHeadlineLong(): void
+    {
+        $long     = str_repeat('x', 90);
+        $headline = IOUtil::formatHeadline($long, 80);
+
+        $this->assertEquals($long, $headline);
+    }
 }

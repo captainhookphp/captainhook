@@ -135,7 +135,7 @@ class PreCommitTest extends TestCase
     {
         $output = $this->createMock(NullOutput::class);
         $output->expects($this->once())->method('isDebug')->willReturn(false);
-        $output->expects($this->atLeast(2))->method('writeLn');
+        $output->expects($this->atLeast(1))->method('writeLn');
 
         $resolver = new Resolver();
         $repo     = new DummyRepo();
