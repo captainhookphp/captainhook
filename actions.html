@@ -42,12 +42,36 @@
 
 <div class="container theme-showcase" role="main">
 
-  <h1>Actions</h1>
-  <p>Here's a list of all <em>CaptainHook's</em> built-in <em>Actions</em>.</p>
+  <h1>Actions &amp; Conditions</h1>
+  <p>Here's a list of all <em>CaptainHook's</em> built-in <em>Actions</em> and <em>Conditions</em>.</p>
 
-  <h2>Commit-Message validation</h2>
+  <ul>
+    <li>Actions
+      <ul>
+        <li><a href="#msg-regex">Commit message Validation with regex</a></li>
+        <li><a href="#msg-rules">Commit message Validation with rules</a></li>
+        <li><a href="#check-lock-file">Composer lock file checks</a></li>
+        <li><a href="#linting">PHP syntax check</a></li>
+        <li><a href="#test-coverage">Enforce PHPUnit test coverage</a></li>
+        <li><a href="#file-empty">Prevent from committing any content to files</a></li>
+        <li><a href="#file-does-not-contain">Prevent from committing specific content to files</a></li>
+        <li><a href="#branch-naming">Enforce branch naming</a></li>
+      </ul>
+    </li>
+    <li>
+      Conditions
+      <ul>
+        <li><a href="#all-files-changed">All configured files changes</a></li>
+        <li><a href="#any-file-changed">Any configured file changes</a></li>
+      </ul>
+    </li>
+  </ul>
 
-  <h3 id="beams">Enforce Chris Beams commit message rules</h3>
+  <h2>Actions</h2>
+
+  <h3>Commit-Message validation</h3>
+
+  <h4 id="msg-beams">Enforce Chris Beams commit message rules</h4>
   <p>
     Make sure your you commit message complies to the following rules.
   </p>
@@ -64,7 +88,7 @@
   "options": []
 }</code></pre>
 
-  <h3 id="regex">Commit message regex validation</h3>
+  <h4 id="msg-regex">Commit message regex validation</h4>
   <p>
     Use a regex to validate your commit messages.
   </p>
@@ -78,7 +102,7 @@
 }</code></pre>
   Options "error" and "success" are optional.
 
-  <h3 id="rules">Define rules for your commit messages</h3>
+  <h4 id="msg-rules">Define rules for your commit messages</h4>
   <p>
     Use <em>CaptainHooks</em> built in rules, or write <a href="extend.html">your own</a> ones.
   </p>
@@ -89,9 +113,9 @@
   ]
 }</code></pre>
 
-  <h2>Pre-Commit / Pre-Push</h2>
+  <h3>Pre-Commit / Pre-Push</h3>
 
-  <h3 id="check-lock-file">Composer lock file check</h3>
+  <h4 id="check-lock-file">Composer lock file check</h4>
   <p>
     Make sure your <em>composer.lock</em> file ist up to date.
   </p>
@@ -100,7 +124,7 @@
   "options": []
 }</code></pre>
 
-  <h3 id="linting">Lint all changed PHP files</h3>
+  <h4 id="linting">Lint all changed PHP files</h4>
   <p>
     Make sure your PHP code doesn't contain any syntax errors.
   </p>
@@ -109,7 +133,7 @@
   "options": []
 }</code></pre>
 
-  <h3 id="test-coverage">Monitor your unit test code coverage</h3>
+  <h4 id="test-coverage">Monitor your unit test code coverage</h4>
   <p>
     Make sure you code coverage doesn't decrease beyond a given percent value.
   </p>
@@ -120,6 +144,91 @@
     "cloverXml": "build/logs/clover.xml"
   }
 }</code></pre>
+
+  <h4 id="file-empty">Check if a file is empty or does not exist</h4>
+  <p>
+    Make sure you do not commit contents to a lost of file.
+  </p>
+  <pre><code class="javascript">{
+  "action": "\CaptainHook\App\Hook\File\Action\IsEmpty",
+  "options": {
+    "files": [
+      ".env",
+      "logs/event.log",
+      "logs/error.log"
+    ]
+  }
+}</code></pre>
+
+  <h4 id="file-does-not-contain">Check if a file does not contain certain text</h4>
+  <p>
+    Make sure you do not commit specific contents to a file.
+  </p>
+  <pre><code class="javascript">{
+  "action": "\CaptainHook\App\Hook\File\Action\DoesNotContain",
+  "options": {
+    "regex": "#print_r|var_dump#i"
+    "fileExtensions": [
+      "inc",
+      "php"
+    ]
+  }
+}</code></pre>
+
+  <h4 id="enforce-branch-naming">Enforce branch naming rules</h4>
+  <p>
+    Make sure branch names match a configured regex.
+  </p>
+  <pre><code class="javascript">{
+  "action": "\CaptainHook\App\Hook\Branch\Action\EnsureNaming",
+  "options": {
+    "regex": "#master|integration|feature/[a-z]+-[0-9]+#"
+  }
+}</code></pre>
+
+  <h2>Conditions</h2>
+
+  <h4 id="all-files-changed">All files changed</h4>
+  <p>
+    Execute an action only if all of the configured files changed.
+  </p>
+  <pre><code class="javascript">{
+    "action": "my-action",
+    "options": [],
+    "conditions": [
+        {
+            "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileChanged\\All",
+            "args": [
+                [
+                    "trigger-file-1",
+                    "trigger-file-2"
+                ]
+            ]
+        }
+    ]
+}</code></pre>
+
+  <h4 id="any-file-changed">Any file changed</h4>
+  <p>
+    Execute an action only if any of the configured files changed.
+  </p>
+  <pre><code class="javascript">{
+    "action": "composer install",
+    "options": [],
+    "conditions": [
+        {
+            "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileChanged\\Any",
+            "args": [
+                [
+                    "composer.json",
+                    "composer.lock"
+                ]
+            ]
+        }
+    ]
+}</code></pre>
+
+</div>
 
 
   <footer class="footer">

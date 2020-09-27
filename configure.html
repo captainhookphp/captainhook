@@ -203,40 +203,9 @@
         With this configuration you can validate your commit messages against a regular expression. If your commit
         message doesn't match your regular expression your commit fails.
       </p>
-      <p>Here's a list of all built-in actions</p>
-      <table class="table">
-        <tr>
-          <th colspan="2">Commit-Message</th>
-        </tr>
-        <tr>
-          <td><a href="actions.html#regex">\CaptainHook\App\Hook\Message\Action\Regex</a></td>
-          <td>Simple regex matching</td>
-        </tr>
-        <tr>
-          <td><a href="actions.html#rules">\CaptainHook\App\Hook\Message\Action\Rules</a></td>
-          <td>Execute a list of <em>Rules</em></td>
-        </tr>
-        <tr>
-          <td><a href="actions.html#beams">\CaptainHook\App\Hook\Message\Action\Beams</a></td>
-          <td>Enforces the <a href="http://chris.beams.io/posts/git-commit/" target="_blank">Beams-Rules</a></td>
-        </tr>
-        <tr>
-          <th colspan="2">Pre-Commit</th>
-        </tr>
-        <tr>
-          <td><a href="actions.html#check-lock-file">\CaptainHook\App\Hook\Composer\Action\CheckLockFile</a></td>
-          <td>Make sure your composer.lock file is up to date</td>
-        </tr>
-        <tr>
-          <td><a href="actions.html#linting">\CaptainHook\App\Hook\PHP\Action\Linting</a></td>
-          <td>Check php files for syntax errors</td>
-        </tr>
-        <tr>
-          <td><a href="actions.html#test-coverage">\CaptainHook\App\Hook\PHP\Action\TestCoverage</a></td>
-          <td>Monitors your test coverage</td>
-        </tr>
-      </table>
-
+      <p>
+        Here's a <a href="actions.html">list of all available actions</a>.
+      </p>
       <p>
         You can easily build your own action classes. Have a look on how to <a href="extend.html">extend</a> CaptainHook.
       </p>
