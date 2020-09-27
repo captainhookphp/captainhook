@@ -23,6 +23,31 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 abstract class IOUtil
 {
+    // @codingStandardsIgnoreStart
+    /**
+     * @var string
+     */
+    public static $tplError = <<<ERRORTPL
+
+<error>                                                                                </error>
+<error>   </error>                      _______________________________________             <error>   </error>
+<error>   </error>                     /                                       \            <error>   </error>
+<error>   </error>                     | Avast! <error>Hook execution failed!</error>          |           <error>   </error>
+<error>   </error>                     |                                        |           <error>   </error>
+<error>   </error>                    /  Yer git command did not go through!    |           <error>   </error>
+<error>   </error>                   /_                                         |           <error>   </error>  
+<error>   </error>           /(o)\     | For further details check the output   |           <error>   </error>
+<error>   </error>          /  ()/ /)  | or run CaptainHook in verbose or debug |           <error>   </error>
+<error>   </error>         /.;.))'".)  | mode.                                  |           <error>   </error>
+<error>   </error>         //////.-'   \_______________________________________/            <error>   </error>
+<error>   </error>=========))=))===()                                                       <error>   </error>
+<error>   </error>      ///'                                                                <error>   </error>
+<error>   </error>     //                                                                   <error>   </error>
+<error>   </error>    '                                                                     <error>   </error>
+<error>                                                                                </error>
+ERRORTPL;
+    // @codingStandardsIgnoreEnd
+
     /**
      * Maps config values to Symfony verbosity values
      *
@@ -68,6 +93,31 @@ abstract class IOUtil
     public static function getLineSeparator(int $length = 80, string $char = '='): string
     {
         return str_repeat($char, $length);
+    }
+
+    /**
+     * Create formatted cli headline
+     *
+     * >>>> HEADLINE <<<<
+     * ==== HEADLINE ====
+     *
+     * @param  string $headline
+     * @param  int    $length
+     * @param  string $pre
+     * @param  string $post
+     * @return string
+     */
+    public static function formatHeadline(string $headline, int $length, string $pre = '=', string $post = '='): string
+    {
+        $headlineLength = strlen($headline);
+        if ($headlineLength > ($length - 3)) {
+            return $headline;
+        }
+
+        $prefix = (int) floor(($length - $headlineLength - 2) / 2);
+        $suffix = (int) ceil(($length - $headlineLength - 2) / 2);
+
+        return str_repeat($pre, $prefix) . ' ' . $headline . ' ' . str_repeat($post, $suffix);
     }
 
     /**

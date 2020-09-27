@@ -119,33 +119,14 @@ abstract class Hook extends RepositoryAware
      */
     private function handleError(OutputInterface $output, Exception $e): int
     {
-        $error = '
-                  _______________________________________
-                 /                                       \
-                 | Avast! Hook execution failed!          |
-                 |                                        |
-                /  Yer git command did not go through!    | 
-               /_                                         |  
-       /(o)\     | For further details check the output   |
-      /  ()/ /)  | or run CaptainHook in verbose or debug |
-     /.;.))\'".)  | mode.                                  |
-     //////.-\'   \_______________________________________/
-=====))=))===()  
-  ///\'
- //
-  \'';
+        $error = IOUtil::$tplError
+               . PHP_EOL . IOUtil::getLineSeparator() . PHP_EOL
+               . IOUtil::formatHeadline(get_class($e), 80, '>', '<') . PHP_EOL
+               . IOUtil::getLineSeparator() . PHP_EOL
+               . $e->getMessage()  . PHP_EOL;
 
-        $output->writeLn('<error>' . $error . '</error>');
-        $output->writeLn(
-            [
-                '',
-                IOUtil::getLineSeparator(8)
-                . ' Error details: <comment>' . get_class($e) . '</comment> '
-                . IOUtil::getLineSeparator(46),
-                $e->getMessage(),
-                ''
-            ]
-        );
+        $output->writeLn($error);
+
         return 1;
     }
 }
