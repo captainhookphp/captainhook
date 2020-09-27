@@ -92,16 +92,16 @@ abstract class Book implements Action, Constrained
         $err  = count($problems);
         $head = [
             IOUtil::getLineSeparator(80, '-'),
-            '<error>CAPTAINHOOK FOUND ' . $err . ' PROBLEM' . ($err === 1 ? '' : 'S') . ' IN YOUR COMMIT MESSAGE</error>',
+            '<error>CAPTAINHOOK FOUND ' . $err
+            . ' PROBLEM' . ($err === 1 ? '' : 'S')
+            . ' IN YOUR COMMIT MESSAGE</error>',
             IOUtil::getLineSeparator(80, '-')
         ];
-        $msg  = OutputUtil::trimEmptyLines($repository->getCommitMsg()->getLines());
-
+        $msg   = OutputUtil::trimEmptyLines($repository->getCommitMsg()->getLines());
         $lines = [IOUtil::getLineSeparator(80, '-')];
         foreach ($problems as $problem) {
             $lines[] = '  ' . $this->formatProblem($problem);
         }
-
         $lines[] = IOUtil::getLineSeparator(80, '-');
 
         return implode(PHP_EOL, array_merge($head, $msg, $lines));
