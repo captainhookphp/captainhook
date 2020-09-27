@@ -4,10 +4,10 @@
 # Ignore MacOS cache files
 .DS_STORE
 
-# ignore PHPUnit result cache
+# Ignore PHPUnit result cache
 .phpunit.result.cache
 
-# phive home directory
+# Ignore phive home directory and installed tools
 .phive
 tools/box
 tools/phpcs
