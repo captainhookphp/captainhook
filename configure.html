@@ -336,6 +336,7 @@
   "config": {
     "bootstrap": "../vendor/autoload.php",
     "git-directory": "../../.git",
+    "fail-on-first-error": false,
     "verbosity": "verbose",
     "ansi-colors": false,
     "includes-level": 2,
@@ -348,7 +349,7 @@
 
       <table class="table">
         <tr>
-          <th>Setting</th>
+          <th style="width:120px">Setting</th>
           <th>Description</th>
           <th>Default</th>
         </tr>
@@ -361,6 +362,11 @@
           <td>git-directory</td>
           <td>Custom path to your repositories .git directory (relative from the configuration file)</td>
           <td>.git</td>
+        </tr>
+        <tr>
+          <td>fail-on-first-error</td>
+          <td>Stop hook execution on first error (true) or execute all actions and collect all errors (false)</td>
+          <td>true</td>
         </tr>
         <tr>
           <td>verbosity</td>
@@ -416,6 +422,7 @@
       <pre><code class="javascript">{
   "verbosity": "quiet",
   "ansi-colors": false,
+  "fail-on-first-error": false,
   "run-mode": "docker",
   "run-exec": "docker exec MY_CONTAINER_NAME",
   "run-path": "vendor/bin/captainhook
