@@ -19,21 +19,21 @@ use Exception;
 use SebastianFeldmann\Git\Repository;
 
 /**
- * Class IsEmpty
+ * Class IsNotEmpty
  *
  * @package CaptainHook
- * @author  Felix Edelmann <fxedel@gmail.com>
+ * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
- * @since   Class available since Release 5.4.0
+ * @since   Class available since Release 5.4.1
  */
-class IsEmpty extends Check
+class IsNotEmpty extends Check
 {
     /**
      * Actual action name for better error messages
      *
      * @var string
      */
-    protected $actionName = 'IsEmpty';
+    protected $actionName = 'IsNotEmpty';
 
     /**
      * Executes the action
@@ -49,7 +49,7 @@ class IsEmpty extends Check
     {
         $failedFiles = 0;
         foreach ($this->getFiles($action->getOptions()) as $glob => $files) {
-            if (!$this->areAllFilesEmpty($files)) {
+            if (empty($files) || $this->isAnyFileEmpty($files)) {
                 $io->write('- <error>FAIL</error> ' . $glob, true);
                 $failedFiles++;
             } else {
@@ -58,9 +58,9 @@ class IsEmpty extends Check
         }
 
         if ($failedFiles > 0) {
-            throw new ActionFailed('<error>Error: ' . $failedFiles . ' non-empty file(s)</error>');
+            throw new ActionFailed('<error>Error: ' . $failedFiles . ' empty file(s)</error>');
         }
 
-        $io->write('<info>All files are empty or don\'t exist</info>');
+        $io->write('<info>None of the files is empty</info>');
     }
 }
