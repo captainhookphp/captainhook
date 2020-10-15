@@ -47,20 +47,22 @@ class IsEmpty extends Check
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
     {
-        $failedFiles = 0;
-        foreach ($this->getFiles($action->getOptions()) as $glob => $files) {
-            if (!$this->areAllFilesEmpty($files)) {
-                $io->write('- <error>FAIL</error> ' . $glob, true);
-                $failedFiles++;
+        $stagedFiles = $repository->getIndexOperator()->getStagedFiles();
+        $filesFailed = 0;
+
+        foreach ($this->getFilesToCheck($action->getOptions(), $stagedFiles) as $stagedFileToCheck) {
+            if (!$this->isEmpty($stagedFileToCheck)) {
+                $io->write('- <error>FAIL</error> ' . $stagedFileToCheck, true);
+                $filesFailed++;
             } else {
-                $io->write('- <info>OK</info> ' . $glob, true, IO::VERBOSE);
+                $io->write('- <info>OK</info> ' . $stagedFileToCheck, true, IO::VERBOSE);
             }
         }
 
-        if ($failedFiles > 0) {
-            throw new ActionFailed('<error>Error: ' . $failedFiles . ' non-empty file(s)</error>');
+        if ($filesFailed > 0) {
+            throw new ActionFailed('<error>Error: ' . $filesFailed . ' non-empty file(s)</error>');
         }
 
-        $io->write('<info>All files are empty or don\'t exist</info>');
+        $io->write('<info>All checked files are empty</info>');
     }
 }

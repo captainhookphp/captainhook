@@ -23,14 +23,32 @@ class IsNotEmptyTest extends TestCase
     use IOMockery;
 
     /**
+     * Tests IsNotEmpty::getRestriction
+     */
+    public function testRestrictionValid(): void
+    {
+        $restriction = IsNotEmpty::getRestriction();
+        $this->assertTrue($restriction->isApplicableFor('pre-commit'));
+    }
+
+    /**
+     * Tests IsNotEmpty::getRestriction
+     */
+    public function testRestrictionInvalid(): void
+    {
+        $restriction = IsNotEmpty::getRestriction();
+        $this->assertFalse($restriction->isApplicableFor('pre-push'));
+    }
+
+    /**
      * Tests IsNotEmpty::execute
      *
      * @throws \Exception
      */
-    public function testFile(): void
+    public function testCommitNotEmptyFile(): void
     {
+
         $io     = new NullIO();
-        $repo   = $this->createRepositoryMock();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
             IsNotEmpty::class,
@@ -41,31 +59,9 @@ class IsNotEmptyTest extends TestCase
             ]
         );
 
-        $isNotEmpty = new IsNotEmpty();
-        $isNotEmpty->execute($config, $io, $repo, $action);
-
-        // no error should happen
-        $this->assertTrue(true);
-    }
-
-    /**
-     * Tests IsNotEmpty::execute
-     *
-     * @throws \Exception
-     */
-    public function testDirectory(): void
-    {
-        $io     = new NullIO();
-        $repo   = $this->createRepositoryMock();
-        $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action(
-            IsNotEmpty::class,
-            [
-                'files' => [
-                    CH_PATH_FILES . '/storage/',
-                ]
-            ]
-        );
+        $stagedFiles = [CH_PATH_FILES . '/storage/test.json'];
+        $repo        = $this->createRepositoryMock();
+        $repo->method('getIndexOperator')->willReturn($this->createGitIndexOperator($stagedFiles));
 
         $isNotEmpty = new IsNotEmpty();
         $isNotEmpty->execute($config, $io, $repo, $action);
@@ -79,42 +75,9 @@ class IsNotEmptyTest extends TestCase
      *
      * @throws \Exception
      */
-    public function testEmptyDirectoryFail(): void
-    {
-        // create empty directory
-        $emptyDir = sys_get_temp_dir() . '/emptyDir-' . random_int(100, 999);
-        mkdir($emptyDir, 0777);
-
-        $io     = new NullIO();
-        $repo   = $this->createRepositoryMock();
-        $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action(
-            IsNotEmpty::class,
-            [
-                'files' => [
-                    $emptyDir,
-                ]
-            ]
-        );
-
-        try {
-            $isNotEmpty = new IsNotEmpty();
-            $isNotEmpty->execute($config, $io, $repo, $action);
-        } catch (\Exception $e) {
-            rmdir($emptyDir);
-            $this->assertTrue(true);
-        }
-    }
-
-    /**
-     * Tests IsNotEmpty::execute
-     *
-     * @throws \Exception
-     */
-    public function testGlob(): void
+    public function testConfigWithGlobs(): void
     {
         $io     = $this->createIOMock();
-        $repo   = $this->createRepositoryMock();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
             IsNotEmpty::class,
@@ -126,8 +89,13 @@ class IsNotEmptyTest extends TestCase
             ]
         );
 
-        // with this configuration the Cap'n should find 4 files for 2 patterns
+        // with this configuration the Captain should find 4 files for 2 patterns
         $io->expects($this->exactly(3))->method('write');
+
+        // two of those files should be in the commit
+        $stagedFiles = [CH_PATH_FILES . '/storage/regextest1.txt', CH_PATH_FILES . '/storage/test.json'];
+        $repo        = $this->createRepositoryMock();
+        $repo->method('getIndexOperator')->willReturn($this->createGitIndexOperator($stagedFiles));
 
         $isNotEmpty = new IsNotEmpty();
         $isNotEmpty->execute($config, $io, $repo, $action);
@@ -141,37 +109,12 @@ class IsNotEmptyTest extends TestCase
      *
      * @throws \Exception
      */
-    public function testFileDoesNotExistFail(): void
+    public function testFailCommitEmptyFile(): void
     {
         $this->expectException(\Exception::class);
 
-        $io     = new NullIO();
-        $repo   = $this->createRepositoryMock();
-        $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action(
-            IsNotEmpty::class,
-            [
-                'files' => [
-                    CH_PATH_FILES . '/doesNotExist.txt',
-                ]
-            ]
-        );
-
-        $isNotEmpty = new IsNotEmpty();
-        $isNotEmpty->execute($config, $io, $repo, $action);
-    }
-
-    /**
-     * Tests IsNotEmpty::execute
-     *
-     * @throws \Exception
-     */
-    public function testFileEmptyFail(): void
-    {
-        $this->expectException(\Exception::class);
 
         $io     = new NullIO();
-        $repo   = $this->createRepositoryMock();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(
             IsNotEmpty::class,
@@ -181,6 +124,10 @@ class IsNotEmptyTest extends TestCase
                 ]
             ]
         );
+
+        $stagedFiles = [CH_PATH_FILES . '/storage/empty.log'];
+        $repo        = $this->createRepositoryMock();
+        $repo->method('getIndexOperator')->willReturn($this->createGitIndexOperator($stagedFiles));
 
         $isNotEmpty = new IsNotEmpty();
         $isNotEmpty->execute($config, $io, $repo, $action);

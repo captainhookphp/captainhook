@@ -42,9 +42,9 @@ class DoesNotContainRegex implements Action
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
     {
         $options = $action->getOptions();
-        $regex = $options->get('regex');
+        $regex   = $options->get('regex');
         if ($regex === null) {
-            throw new Exception('Missing option "regex" for DoesNotContainRegex action');
+            throw new ActionFailed('Missing option "regex" for DoesNotContainRegex action');
         }
 
         $files = $this->getFiles($options, $repository);
@@ -53,7 +53,7 @@ class DoesNotContainRegex implements Action
         $totalMatchesCount = 0;
         foreach ($files as $file) {
             $fileContent = file_get_contents($file);
-            $matchCount = preg_match_all($regex, $fileContent, $matches);
+            $matchCount  = preg_match_all($regex, $fileContent, $matches);
 
             if ($matchCount > 0) {
                 $io->write('- <error>FAIL</error> ' . $file . ' - ' . $matchCount . ' matches', true);
@@ -87,7 +87,6 @@ class DoesNotContainRegex implements Action
     {
         $index          = $repository->getIndexOperator();
         $fileExtensions = $this->getFileExtensions($options);
-
 
         if (!empty($fileExtensions)) {
             $files = [];
