@@ -27,15 +27,17 @@ class IsEmptyTest extends TestCase
      *
      * @throws \Exception
      */
-    public function testExecuteInvalidOption(): void
+    public function testInvalidConfiguration(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Missing option "files" for IsEmpty action');
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $repo    = $this->createRepositoryMock();
         $action = new Config\Action(Regex::class);
+
+        $repo = $this->createRepositoryMock();
+        $repo->method('getIndexOperator')->willReturn($this->createGitIndexOperator(['foo.txt']));
 
         $standard = new IsEmpty();
         $standard->execute($config, $io, $repo, $action);
@@ -46,7 +48,7 @@ class IsEmptyTest extends TestCase
      *
      * @throws \Exception
      */
-    public function testExecuteSuccess(): void
+    public function testCommitEmptyFile(): void
     {
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
@@ -54,7 +56,10 @@ class IsEmptyTest extends TestCase
             CH_PATH_FILES . '/doesNotExist.txt',
             CH_PATH_FILES . '/storage/empty.log',
         ]]);
-        $repo   = $this->createRepositoryMock();
+
+        $stagedFiles = [CH_PATH_FILES . '/storage/empty.log'];
+        $repo        = $this->createRepositoryMock();
+        $repo->method('getIndexOperator')->willReturn($this->createGitIndexOperator($stagedFiles));
 
         $standard = new IsEmpty();
         $standard->execute($config, $io, $repo, $action);
@@ -67,7 +72,30 @@ class IsEmptyTest extends TestCase
      *
      * @throws \Exception
      */
-    public function testExecuteFailure(): void
+    public function testCommitUnwatchedEmptyFile(): void
+    {
+        $io     = new NullIO();
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
+        $action = new Config\Action(IsEmpty::class, ['files' => [
+            CH_PATH_FILES . '/doesNotExist.txt',
+        ]]);
+
+        $stagedFiles = [CH_PATH_FILES . '/empty.log'];
+        $repo        = $this->createRepositoryMock();
+        $repo->method('getIndexOperator')->willReturn($this->createGitIndexOperator($stagedFiles));
+
+        $standard = new IsEmpty();
+        $standard->execute($config, $io, $repo, $action);
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * Tests RegexCheck::execute
+     *
+     * @throws \Exception
+     */
+    public function testFailCommitFileWithContents(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('<error>Error: 1 non-empty file(s)</error>');
@@ -75,11 +103,14 @@ class IsEmptyTest extends TestCase
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(IsEmpty::class, ['files' => [
-            CH_PATH_FILES . '/doesNotExist.txt', // pass
+            CH_PATH_FILES . '/doesNotExist.txt',  // pass
             CH_PATH_FILES . '/storage/empty.log', // pass
             CH_PATH_FILES . '/storage/test.json', // fail
         ]]);
-        $repo   = $this->createRepositoryMock();
+
+        $stagedFiles = [CH_PATH_FILES . '/storage/empty.log', CH_PATH_FILES . '/storage/test.json'];
+        $repo        = $this->createRepositoryMock();
+        $repo->method('getIndexOperator')->willReturn($this->createGitIndexOperator($stagedFiles));
 
         $standard = new IsEmpty();
         $standard->execute($config, $io, $repo, $action);

@@ -15,6 +15,8 @@ use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Action;
+use CaptainHook\App\Hook\Constrained;
+use CaptainHook\App\Hook\Restriction;
 use Exception;
 use SebastianFeldmann\Git\Repository;
 
@@ -26,7 +28,7 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.4.1
  */
-abstract class Check implements Action
+abstract class Check implements Action, Constrained
 {
     /**
      * Actual action name
@@ -34,6 +36,16 @@ abstract class Check implements Action
      * @var string
      */
     protected $actionName;
+
+    /**
+     * Make sure this action is only used pro pre-commit hooks
+     *
+     * @return \CaptainHook\App\Hook\Restriction
+     */
+    public static function getRestriction(): Restriction
+    {
+        return new Restriction('pre-commit');
+    }
 
     /**
      * Executes the action
@@ -48,86 +60,88 @@ abstract class Check implements Action
     abstract public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void;
 
     /**
-     * Extract files list from the action configuration
+     * @param  \CaptainHook\App\Config\Options $options
+     * @param  string[]                        $stagedFiles
+     * @return array
+     * @throws \Exception
+     */
+    protected function getFilesToCheck(Config\Options $options, array $stagedFiles): array
+    {
+        return $this->extractFilesToCheck($this->getFilesToWatch($options), $stagedFiles);
+    }
+
+    /**
+     * Return a list of files to watch
+     *
+     * ['pattern1' => ['file1', 'file2'], 'pattern2' => ['file3']...]
      *
      * @param  \CaptainHook\App\Config\Options $options
      * @return array
      * @throws \Exception
      */
-    protected function getFiles(Config\Options $options): array
+    private function getFilesToWatch(Config\Options $options): array
     {
-        $files = $options->get('files');
-        if (!is_array($files)) {
+        $filesToWatch = [];
+        $filePatterns = $options->get('files');
+        if (!is_array($filePatterns)) {
             throw new Exception('Missing option "files" for ' . $this->actionName . ' action');
         }
 
-        $globs = [];
-        foreach ($files as $glob) {
-            $globs[$glob] = glob($glob);
+        // collect all files that should be watched
+        foreach ($filePatterns as $glob) {
+            $filesToWatch[$glob] = glob($glob);
         }
-        return $globs;
+
+        return $filesToWatch;
     }
 
     /**
-     * Check if all files are empty
+     * Extract files list from the action configuration
      *
-     * @param  string[] $files
-     * @return bool
-     * @throws \CaptainHook\App\Exception\ActionFailed
+     * @param  array    $filesToWatch  ['pattern1' => ['file1', 'file2'], 'pattern2' => ['file3']...]
+     * @param  string[] $stagedFiles
+     * @return array
      */
-    protected function areAllFilesEmpty(array $files): bool
+    private function extractFilesToCheck(array $filesToWatch, array $stagedFiles): array
     {
-        foreach ($files as $file) {
-            if (!$this->isEmpty($file)) {
-                return false;
+        $filesToCheck = [];
+        // check if any staged file should be watched
+        foreach ($stagedFiles as $stagedFile) {
+            if ($this->isFileUnderWatch($stagedFile, $filesToWatch)) {
+                $filesToCheck[] = $stagedFile;
             }
         }
-        return true;
+        return $filesToCheck;
     }
 
     /**
-     * Check if any file is empty
+     * Check if a file is in the list of watched files
      *
-     * @param  array $files
+     * @param  string $stagedFile
+     * @param  array  $filesToWatch
      * @return bool
-     * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    protected function isAnyFileEmpty(array $files): bool
+    protected function isFileUnderWatch(string $stagedFile, array $filesToWatch): bool
     {
-        foreach ($files as $file) {
-            if ($this->isEmpty($file)) {
-                return true;
+        // check the list of files found for each pattern
+        foreach ($filesToWatch as $pattern => $files) {
+            foreach ($files as $fileToWatch) {
+                if ($fileToWatch === $stagedFile) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
     /**
-     * Returns true when the file has no contents or the directory is empty
+     * Returns true if the file has no contents
      *
      * @param  string $file
      * @return bool
-     * @throws \CaptainHook\App\Exception\ActionFailed
      */
     protected function isEmpty(string $file): bool
     {
-        if (is_dir($file)) {
-            return $this->isDirectoryEmpty($file);
-        }
-
         return filesize($file) === 0;
-    }
-
-    /**
-     * Checks if a directory is empty
-     *
-     * @param  string $directory
-     * @return bool
-     * @throws \CaptainHook\App\Exception\ActionFailed
-     */
-    protected function isDirectoryEmpty(string $directory)
-    {
-        // ignore . and .. directories
-        return empty(array_diff(scandir($directory), ['..', '.']));
     }
 }
