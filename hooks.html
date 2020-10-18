@@ -206,7 +206,7 @@ class NoEmptyCommitMessages implements HookAction
       <p>
         This hook will run after a successful checkout. Failing during this hook has no effect on the checkout.
       </p>
-      <pre><code class="javascript">"post-commit": {
+      <pre><code class="javascript">"post-checkout": {
   "enabled": true,
   "actions": [
     {
@@ -219,7 +219,7 @@ class NoEmptyCommitMessages implements HookAction
       <p>
         This hook will run after a successful merge. Failing during this hook has no effect on the merge.
       </p>
-      <pre><code class="javascript">"post-commit": {
+      <pre><code class="javascript">"post-merge": {
   "enabled": true,
   "actions": [
     {
