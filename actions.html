@@ -53,15 +53,16 @@
         <li><a href="#check-lock-file">Composer lock file checks</a></li>
         <li><a href="#linting">PHP syntax check</a></li>
         <li><a href="#test-coverage">Enforce PHPUnit test coverage</a></li>
-        <li><a href="#file-empty">Prevent from committing any content to files</a></li>
-        <li><a href="#file-does-not-contain">Prevent from committing specific content to files</a></li>
+        <li><a href="#file-empty">Prevent committing any content to files</a></li>
+        <li><a href="#file-not-empty">Prevent committing empty files</a></li>
+        <li><a href="#file-does-not-contain">Prevent committing specific content to files</a></li>
         <li><a href="#branch-naming">Enforce branch naming</a></li>
       </ul>
     </li>
     <li>
       Conditions
       <ul>
-        <li><a href="#all-files-changed">All configured files changes</a></li>
+        <li><a href="#all-files-changed">All configured files change</a></li>
         <li><a href="#any-file-changed">Any configured file changes</a></li>
       </ul>
     </li>
@@ -147,7 +148,8 @@
 
   <h4 id="file-empty">Check if a file is empty or does not exist</h4>
   <p>
-    Make sure you do not commit contents to a lost of file.
+    Make sure you do not commit if there is any file of a configured list that is not empty.
+    The following configuration makes sure you will not commit log files with contents to the repository.
   </p>
   <pre><code class="javascript">{
   "action": "\CaptainHook\App\Hook\File\Action\IsEmpty",
@@ -155,19 +157,35 @@
     "files": [
       ".env",
       "logs/event.log",
-      "logs/error.log"
+      "logs/app/*.log"
+    ]
+  }
+}</code></pre>
+
+  <h4 id="file-not-empty">Check if a file is not empty</h4>
+  <p>
+    Make sure you do not commit empty files to the repository.
+    With this configuration you can make sure that README files are not commited without any contents.
+  </p>
+  <pre><code class="javascript">{
+  "action": "\CaptainHook\App\Hook\File\Action\IsNotEmpty",
+  "options": {
+    "files": [
+      "README.md",
+      "src/Modules/**/README.md"
     ]
   }
 }</code></pre>
 
   <h4 id="file-does-not-contain">Check if a file does not contain certain text</h4>
   <p>
-    Make sure you do not commit specific contents to a file.
+    Make sure you do not commit specific contents to a list of file types.
   </p>
   <pre><code class="javascript">{
   "action": "\CaptainHook\App\Hook\File\Action\DoesNotContain",
   "options": {
     "regex": "#print_r|var_dump#i"
+    "regexName": "debug output"
     "fileExtensions": [
       "inc",
       "php"
