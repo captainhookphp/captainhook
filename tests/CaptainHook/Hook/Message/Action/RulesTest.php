@@ -140,6 +140,30 @@ class RulesTest extends TestCase
     }
 
     /**
+     * Tests Rulebook::execute
+     *
+     * @throws \Exception
+     */
+    public function testExecuteLimitSubjectLengthRuleWithUnicode(): void
+    {
+        $io     = new NullIO();
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
+        $action = new Config\Action(Rules::class, [[LimitSubjectLength::class, [10]]]);
+        $repo   = $this->createRepositoryMock();
+        $repo->method('getCommitMsg')->willReturn(new CommitMessage('Föö bäü¿'));
+
+        try {
+            $standard = new Rules();
+            $standard->execute($config, $io, $repo, $action);
+
+            // no exception should be thrown
+            $this->assertTrue(true);
+        } catch (Exception $e) {
+            $this->assertTrue(false);
+        }
+    }
+
+    /**
      * Tests Rule::execute
      *
      * @throws \Exception

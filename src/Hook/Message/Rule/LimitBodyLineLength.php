@@ -51,7 +51,7 @@ class LimitBodyLineLength extends Base
     {
         $lineNr = 1;
         foreach ($msg->getBodyLines() as $line) {
-            if (strlen($line) > $this->maxLength) {
+            if (mb_strlen($line) > $this->maxLength) {
                 $this->hint .= PHP_EOL . 'Line ' . $lineNr . ' of your body exceeds the max line length';
                 return false;
             }
