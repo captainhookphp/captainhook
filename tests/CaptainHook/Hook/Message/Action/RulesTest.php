@@ -156,7 +156,7 @@ class RulesTest extends TestCase
             $standard = new Rules();
             $standard->execute($config, $io, $repo, $action);
 
-            // exception should be thrown before this
+            // no exception should be thrown
             $this->assertTrue(true);
         } catch (Exception $e) {
             $this->assertTrue(false);
