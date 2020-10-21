@@ -109,7 +109,7 @@ ERRORTPL;
      */
     public static function formatHeadline(string $headline, int $length, string $pre = '=', string $post = '='): string
     {
-        $headlineLength = strlen($headline);
+        $headlineLength = mb_strlen($headline);
         if ($headlineLength > ($length - 3)) {
             return $headline;
         }

@@ -282,7 +282,7 @@ abstract class Hook extends RepositoryAware
             '',
             IOUtil::getLineSeparator(8) .
             $headline .
-            IOUtil::getLineSeparator(80 - 8 - strlen(strip_tags($headline)))
+            IOUtil::getLineSeparator(80 - 8 - mb_strlen(strip_tags($headline)))
         ];
     }
 }
