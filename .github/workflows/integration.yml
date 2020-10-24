@@ -8,24 +8,26 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 3
       matrix:
-        operating-system: [ubuntu-latest]
-        php-versions: ['7.3', '7.4', '8.0']
+        os: [ubuntu-latest]
+        php: ['7.3', '7.4', '8.0']
         include:
           - php: "8.0"
-            composer-options: "--ignore-platform-req=php"
+            composeroptions: "--ignore-platform-req=php"
     steps:
     - uses: actions/checkout@master
 
-    - name: Install PHP
+    - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: ${{ matrix.php-versions }}
+        php-version: ${{ matrix.php }}
         tools: composer:v2
         extensions: mbstring, xdebug
+
+    - name: PHP Version
+      run: php -v
 
     - name: Update composer
       run: composer self-update
@@ -34,7 +36,7 @@ jobs:
       run: composer validate
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
+      run: composer install --prefer-dist --no-progress --no-suggest ${{ matrix.composeroptions }}
 
     - name: Install tooling
       run: GITHUB_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }} tools/phive --no-progress --home ./.phive install --force-accept-unsigned --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192,8E730BA25823D8B5,CF1A108D0E7AE720
