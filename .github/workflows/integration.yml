@@ -14,6 +14,9 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['7.3', '7.4', '8.0']
+        include:
+          - php: "8.0"
+            composer-options: "--ignore-platform-req=php"
     steps:
     - uses: actions/checkout@master
 
@@ -31,7 +34,7 @@ jobs:
       run: composer validate
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+      run: composer install --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
 
     - name: Install tooling
       run: GITHUB_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }} tools/phive --no-progress --home ./.phive install --force-accept-unsigned --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192,8E730BA25823D8B5,CF1A108D0E7AE720
