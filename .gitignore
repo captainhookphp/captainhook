@@ -7,6 +7,9 @@
 # Ignore PHPUnit result cache
 .phpunit.result.cache
 
+# Ignore PHPCS result cache
+.cs-check.json
+
 # Ignore phive home directory and installed tools
 .phive
 tools/box
