@@ -1,6 +1,10 @@
 name: "Continuous Integration"
 
-on: [push]
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
 
 jobs:
   build:
@@ -14,9 +18,10 @@ jobs:
     - uses: actions/checkout@master
 
     - name: Install PHP
-      uses: shivammathur/setup-php@master
+      uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
+        tools: composer:v2
         extensions: mbstring, xdebug
 
     - name: Update composer
@@ -29,7 +34,7 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-suggest
 
     - name: Install tooling
-      run: GITHUB_AUTH_TOKEN=${{ secrets.GITHUB_API_TOKEN }} tools/phive --no-progress --home ./.phive install --force-accept-unsigned --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192,8E730BA25823D8B5,CF1A108D0E7AE720
+      run: GITHUB_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }} tools/phive --no-progress --home ./.phive install --force-accept-unsigned --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192,8E730BA25823D8B5,CF1A108D0E7AE720
 
     - name: Execute unit tests
       run: tools/phpunit
