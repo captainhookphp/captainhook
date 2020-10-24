@@ -102,8 +102,8 @@ class InstallerTest extends TestCase
         $runner = new Installer($io, $config, $repo, $template);
         $runner->run();
 
-        $this->assertFileNotExists($fakeRepo->getHookDir() . '/pre-commit');
-        $this->assertFileNotExists($fakeRepo->getHookDir() . '/pre-push');
+        $this->assertFileDoesNotExist($fakeRepo->getHookDir() . '/pre-commit');
+        $this->assertFileDoesNotExist($fakeRepo->getHookDir() . '/pre-push');
     }
 
     /**

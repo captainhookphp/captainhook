@@ -46,6 +46,7 @@ trait Mockery
      */
     public function createRepositoryMock(string $root = ''): Repository
     {
+
         $repo = $this->getMockBuilder(Repository::class)
                      ->disableOriginalConstructor()
                      ->getMock();
@@ -113,5 +114,5 @@ trait Mockery
      * @param  $type
      * @return \PHPUnit\Framework\MockObject\MockBuilder
      */
-    abstract public function getMockBuilder($type);
+    abstract public function getMockBuilder(string $type): \PHPUnit\Framework\MockObject\MockBuilder;
 }

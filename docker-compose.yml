@@ -1,25 +1,12 @@
 version: "3.7"
 
 services:
-  php7.1:
-    build: .docker/php7.1
-    container_name: captainhook-php7.1
-    volumes:
-      - .:/docker:rw
-    tty: true
-    environment:
-      - PHP_IDE_CONFIG=serverName=php-dev
-      - XDEBUG_CONFIG="idekey=PHPSTORM remote_host=192.168.1.102 remote_port=9001"
-
   php7.2:
     build: .docker/php7.2
     container_name: captainhook-php7.2
     volumes:
       - .:/docker:rw
     tty: true
-    environment:
-      - PHP_IDE_CONFIG=serverName=php-dev
-      - XDEBUG_CONFIG="idekey=PHPSTORM remote_host=192.168.1.102 remote_port=9001"
 
   php7.3:
     build: .docker/php7.3
@@ -27,6 +14,17 @@ services:
     volumes:
       - .:/docker:rw
     tty: true
-    environment:
-      - PHP_IDE_CONFIG=serverName=php-dev
-      - XDEBUG_CONFIG="idekey=PHPSTORM remote_host=192.168.1.102 remote_port=9001"
+
+  php7.4:
+    build: .docker/php7.4
+    container_name: captainhook-php7.4
+    volumes:
+      - .:/docker:rw
+    tty: true
+
+  php8.0:
+    build: .docker/php8.0
+    container_name: captainhook-php8.0
+    volumes:
+      - .:/docker:rw
+    tty: true
