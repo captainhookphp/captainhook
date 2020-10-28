@@ -13,7 +13,6 @@ namespace CaptainHook\App\Hook\File\Action;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
-use CaptainHook\App\Hook\Message\Action\Regex;
 use CaptainHook\App\Mockery;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -34,7 +33,7 @@ class IsEmptyTest extends TestCase
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action(Regex::class);
+        $action = new Config\Action(IsEmpty::class);
 
         $repo = $this->createRepositoryMock();
         $repo->method('getIndexOperator')->willReturn($this->createGitIndexOperator(['foo.txt']));
@@ -44,7 +43,7 @@ class IsEmptyTest extends TestCase
     }
 
     /**
-     * Tests RegexCheck::execute
+     * Tests IsEmpty::execute
      *
      * @throws \Exception
      */
@@ -68,7 +67,7 @@ class IsEmptyTest extends TestCase
     }
 
     /**
-     * Tests RegexCheck::execute
+     * Tests IsEmpty::execute
      *
      * @throws \Exception
      */
@@ -91,7 +90,7 @@ class IsEmptyTest extends TestCase
     }
 
     /**
-     * Tests RegexCheck::execute
+     * Tests IsEmpty::execute
      *
      * @throws \Exception
      */
