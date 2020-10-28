@@ -50,7 +50,7 @@
   ],
   "extra": {
     "branch-alias": {
-      "dev-master": "6.0.x-dev"
+      "dev-main": "6.0.x-dev"
     },
     "captainhook": {
       "config": "captainhook.json"
