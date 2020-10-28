@@ -37,7 +37,7 @@ use SebastianFeldmann\Git\Repository;
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
- * @since   Class available since Release 5.4.1
+ * @since   Class available since Release 5.4.3
  */
 class Exists implements Action
 {
