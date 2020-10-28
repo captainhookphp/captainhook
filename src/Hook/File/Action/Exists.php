@@ -18,7 +18,21 @@ use CaptainHook\App\Hook\Action;
 use SebastianFeldmann\Git\Repository;
 
 /**
- * Class Exists
+ * Exists (in repository)
+ *
+ * This hook makes sure that a configured list of files exist in the repository.
+ * For example you can use this to make sure you have committed some unit tests
+ * before pushing your changes.
+ *
+ * {
+ *     "action": "\\CaptainHook\\App\\Hook\\File\\Action\\Exists",
+ *     "options": {
+ *         "files" : [
+ *             "tests/CaptainHook/ ** / * Test.php",
+ *             "README.md"
+ *         ]
+ *     }
+ * }
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
