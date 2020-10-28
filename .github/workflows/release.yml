@@ -40,7 +40,7 @@ jobs:
           php-version: "${{ matrix.php-version }}"
 
       - name: "Install dependencies"
-        run: "composer install --prefer-dist --no-dev --no-interaction --no-progress --no-suggest"
+        run: "composer install --prefer-dist --no-dev --no-interaction --no-progress"
 
       - name: "Install tooling"
         run: "GITHUB_AUTH_TOKEN=${{ secrets.GITHUB_API_TOKEN }} tools/phive --no-progress --home ./.phive install --force-accept-unsigned --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192,8E730BA25823D8B5,CF1A108D0E7AE720"
