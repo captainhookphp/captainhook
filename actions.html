@@ -35,6 +35,7 @@
         <li class="active"><a href="configure.html">Configure</a></li>
         <li><a href="hooks.html">Hooks</a></li>
         <li><a href="extend.html">Extend</a></li>
+        <li><a href="https://shop.spreadshirt.de/captainhookphp/">Merch</a></li>
       </ul>
     </div>
   </div>
@@ -56,6 +57,7 @@
         <li><a href="#file-empty">Prevent committing any content to files</a></li>
         <li><a href="#file-not-empty">Prevent committing empty files</a></li>
         <li><a href="#file-does-not-contain">Prevent committing specific content to files</a></li>
+        <li><a href="#file-exists">Ensure a files exists</a></li>
         <li><a href="#branch-naming">Enforce branch naming</a></li>
       </ul>
     </li>
@@ -189,6 +191,20 @@
     "fileExtensions": [
       "inc",
       "php"
+    ]
+  }
+}</code></pre>
+
+  <h4 id="file-exists">Ensure a file exists</h4>
+  <p>
+    Make sure you are only allowed to push if configured files exist in the repository.
+  </p>
+  <pre><code class="javascript">{
+  "action": "\CaptainHook\App\Hook\File\Action\Exists",
+  "options": {
+    "files": [
+      "tests/**/*Tests.php",
+      "README.md"
     ]
   }
 }</code></pre>
