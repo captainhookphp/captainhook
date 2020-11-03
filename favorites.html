@@ -50,8 +50,7 @@
   </p>
 
   <h3 id="commit-msg">Commit message validation</h3>
-  <pre><code class="javascript">{
-  "commit-msg": {
+  <pre><code class="javascript">  "commit-msg": {
     "enabled": true,
     "actions": [
       {
@@ -62,12 +61,11 @@
         },
         "conditions": []
       }
-  },</code></pre>
+  }</code></pre>
 
   <h3 id="pre-commit">Soft quality checks on commit</h3>
 
-  <pre><code class="javascript ">{
-  "pre-commit": {
+  <pre><code class="javascript ">  "pre-commit": {
     "enabled": true,
     "actions": [
       {
@@ -78,14 +76,18 @@
       {
         "action": "tools/phpcs --colors --standard=psr12 {$STAGED_FILES|of-type:php|separated-by: }",
         "options": [],
-        "conditions": []
+        "conditions": [
+          {
+            "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
+            "args": ["php"]
+          }
+        ]
       }
-  },</code></pre>
+  }</code></pre>
 
   <h3 id="pre-push">Hard quality checks on push</h3>
 
-  <pre><code class="javascript">{
-  "pre-push": {
+  <pre><code class="javascript">  "pre-push": {
     "enabled": true,
     "actions": [
       {
@@ -98,12 +100,11 @@
         "options": [],
         "conditions": []
       }
-  },</code></pre>
+  }</code></pre>
 
   <h3 id="convenience">Convenience hooks</h3>
 
-  <pre><code class="javascript">{
-  "post-change": {
+  <pre><code class="javascript">  "post-change": {
     "enabled": true,
     "actions": [
       {
@@ -135,7 +136,7 @@
           }
         ]
       }
-  },</code></pre>
+  }</code></pre>
 
 </div>
 
