@@ -12,9 +12,11 @@
 namespace CaptainHook\App;
 
 use CaptainHook\App\Console\Runtime\Resolver;
+use PHPUnit\Framework\MockObject\MockBuilder;
 use SebastianFeldmann\Git\Operator\Diff;
 use SebastianFeldmann\Git\Operator\Index;
 use SebastianFeldmann\Git\Operator\Info;
+use SebastianFeldmann\Git\Operator\Log;
 use SebastianFeldmann\Git\Repository;
 
 trait Mockery
@@ -94,6 +96,21 @@ trait Mockery
     }
 
     /**
+     * Create log operator mock
+     *
+     * @param  array $changedFiles
+     * @return \SebastianFeldmann\Git\Operator\Log&\PHPUnit\Framework\MockObject\MockObject
+     */
+    public function createGitLogOperator(): Log
+    {
+        $operator = $this->getMockBuilder(Log::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        return $operator;
+    }
+
+    /**
      * Create index operator mock
      *
      * @param  array $stagedFiles
@@ -114,5 +131,5 @@ trait Mockery
      * @param  $type
      * @return \PHPUnit\Framework\MockObject\MockBuilder
      */
-    abstract public function getMockBuilder(string $type): \PHPUnit\Framework\MockObject\MockBuilder;
+    abstract public function getMockBuilder(string $type): MockBuilder;
 }

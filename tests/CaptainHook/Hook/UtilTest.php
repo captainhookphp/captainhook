@@ -13,9 +13,12 @@ namespace CaptainHook\App\Hook;
 
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use CaptainHook\App\Console\IO\Mockery;
 
 class UtilTest extends TestCase
 {
+    use Mockery;
+
     /**
      * Tests Util::isValid
      */
@@ -97,5 +100,31 @@ class UtilTest extends TestCase
         $this->assertContains('pre-commit', Util::getHooks());
         $this->assertContains('pre-push', Util::getHooks());
         $this->assertContains('commit-msg', Util::getHooks());
+    }
+
+    /**
+     * Tests Util::findPreviousHead
+     */
+    public function testFindPreviousHeadFallback(): void
+    {
+        $io = $this->createIOMock();
+        $io->method('getStandardInput')->willReturn([]);
+        $io->method('getArgument')->willReturn('HEAD@{1}');
+
+        $prev = Util::findPreviousHead($io);
+
+        $this->assertEquals('HEAD@{1}', $prev);
+    }
+    /**
+     * Tests Util::findPreviousHead
+     */
+    public function testFindPreviousHeadFromStdIn(): void
+    {
+        $io = $this->createIOMock();
+        $io->method('getStandardInput')->willReturn(['foo a1a1a1a1 Something', 'bar b2b2b2b2 Something else']);
+
+        $prev = Util::findPreviousHead($io);
+
+        $this->assertEquals('a1a1a1a1^', $prev);
     }
 }

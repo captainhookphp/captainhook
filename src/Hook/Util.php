@@ -11,6 +11,7 @@
 
 namespace CaptainHook\App\Hook;
 
+use CaptainHook\App\Console\IO;
 use CaptainHook\App\Hooks;
 use RuntimeException;
 
@@ -67,5 +68,30 @@ abstract class Util
     public static function getHooks(): array
     {
         return array_keys(Hooks::getValidHooks());
+    }
+
+    /**
+     * Detects the previous head commit hash
+     *
+     * @param \CaptainHook\App\Console\IO $io
+     * @return string
+     */
+    public static function findPreviousHead(IO $io): string
+    {
+        // Check if a list of rewritten commits is supplied via stdIn.
+        // This happens if the 'post-rewrite' hook is triggered.
+        // The stdIn is formatted like this:
+        //
+        // old-hash new-hash extra-info
+        // old-hash new-hash extra-info
+        // ...
+        $stdIn = $io->getStandardInput();
+        if (!empty($stdIn)) {
+            $info = explode(' ', $stdIn[0]);
+            // If we find a rewritten commit, we return the first commit before the rewritten one.
+            // If we do not find any rewritten commits (awkward) we use the last ref-log position.
+            return isset($info[1]) ? $info[1] . '^' :  'HEAD@{1}';
+        }
+        return $io->getArgument('previousHead', 'HEAD@{1}');
     }
 }
