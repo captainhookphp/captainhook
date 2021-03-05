@@ -54,6 +54,7 @@
         <li><a href="#check-lock-file">Composer lock file checks</a></li>
         <li><a href="#linting">PHP syntax check</a></li>
         <li><a href="#test-coverage">Enforce PHPUnit test coverage</a></li>
+        <li><a href="#notify">Git commit message notifications</a></li>
         <li><a href="#file-empty">Prevent committing any content to files</a></li>
         <li><a href="#file-not-empty">Prevent committing empty files</a></li>
         <li><a href="#file-does-not-contain">Prevent committing specific content to files</a></li>
@@ -145,6 +146,18 @@
   "options": {
     "minCoverage": 90,
     "cloverXml": "build/logs/clover.xml"
+  }
+}</code></pre>
+
+  <h4 id="notify">Display notifications if you merge or checkout commits with notifications</h4>
+  <p>
+    Use "git-notify: !!!WARNING!!! update tooling" in your commit message to trigger
+    notifications after merge or checkout
+  </p>
+  <pre><code class="javascript">{
+  "action": "\CaptainHook\App\Hook\Notify\Action\Notify",
+  "options": {
+    "prefix": "git-notify:"
   }
 }</code></pre>
 
