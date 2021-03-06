@@ -51,6 +51,27 @@ class StagedFiles implements Placeholder
                ? $this->repository->getIndexOperator()->getStagedFilesOfType($options['of-type'])
                : $this->repository->getIndexOperator()->getStagedFiles();
 
+        if (isset($options['in-dir'])) {
+            $files = $this->filterByDirectory($files, $options['in-dir']);
+        }
+
         return implode(($options['separated-by'] ?? ' '), $files);
+    }
+
+    /**
+     * @param array $files
+     * @param string $directory
+     * @return array
+     */
+    private function filterByDirectory(array $files, string $directory): array
+    {
+        $filtered = [];
+        foreach ($files as $file) {
+            if (strpos($file, $directory, 0) === 0) {
+                $filtered[] = $file;
+            }
+        }
+
+        return $filtered;
     }
 }
