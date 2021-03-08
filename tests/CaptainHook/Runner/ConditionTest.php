@@ -96,4 +96,60 @@ class ConditionTest extends TestCase
         $runner = new Condition($io, $repository, 'pre-commit');
         $this->assertTrue($runner->doesConditionApply($conditionConfig));
     }
+
+    public function testAndConditionIsCorrectlyInterpreted(): void
+    {
+        $io = $this->createIOMock();
+        $io->expects($this->exactly(4))->method('getArgument')->willReturn('');
+
+        $operator   = $this->createGitDiffOperator(['fiz.php', 'baz.php', 'foo.php']);
+        $repository = $this->createRepositoryMock('');
+        $repository->expects($this->exactly(2))->method('getDiffOperator')->willReturn($operator);
+
+        $conditionConfig = new Config\Condition(
+            'and',
+            [[
+                'exec' => '\\' . Any::class,
+                'args' => [
+                    ['foo.php', 'bar.php']
+                ]
+            ], [
+                'exec' => '\\' . Any::class,
+                'args' => [
+                    ['foo.php', 'bar.php']
+                ]
+            ]]
+        );
+
+        $runner = new Condition($io, $repository, 'post-checkout');
+        $this->assertTrue($runner->doesConditionApply($conditionConfig));
+    }
+
+    public function testOrConditionIsCorrectlyInterpreted(): void
+    {
+        $io = $this->createIOMock();
+        $io->expects($this->exactly(4))->method('getArgument')->willReturn('');
+
+        $operator   = $this->createGitDiffOperator(['fiz.php', 'baz.php', 'foo.php']);
+        $repository = $this->createRepositoryMock('');
+        $repository->expects($this->exactly(2))->method('getDiffOperator')->willReturn($operator);
+
+        $conditionConfig = new Config\Condition(
+            'or',
+            [[
+                'exec' => '\\' . Any::class,
+                'args' => [
+                    ['buz.php', 'bar.php']
+                ]
+            ], [
+                'exec' => '\\' . Any::class,
+                'args' => [
+                    ['foo.php', 'bar.php']
+                ]
+            ]]
+        );
+
+        $runner = new Condition($io, $repository, 'post-checkout');
+        $this->assertTrue($runner->doesConditionApply($conditionConfig));
+    }
 }

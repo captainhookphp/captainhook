@@ -92,6 +92,34 @@ class Condition
      */
     private function createCondition(Config\Condition $config): ConditionInterface
     {
+        if ($config->getExec() === 'and') {
+            $conditions = [];
+            foreach ($config->getArgs() as $condition) {
+                $currentCondition = $this->createCondition(
+                    new Config\Condition($condition['exec'], $condition['args'])
+                );
+                if (! $this->isApplicable($currentCondition)) {
+                    $this->io->write('Condition skipped due to hook constraint', true, IO::VERBOSE);
+                    continue;
+                }
+                $conditions[] = $currentCondition;
+            }
+            return ConditionInterface\LogicalAnd::fromConditionsArray($conditions);
+        }
+        if ($config->getExec() === 'or') {
+            $conditions = [];
+            foreach ($config->getArgs() as $condition) {
+                $currentCondition = $this->createCondition(
+                    new Config\Condition($condition['exec'], $condition['args'])
+                );
+                if (! $this->isApplicable($currentCondition)) {
+                    $this->io->write('Condition skipped due to hook constraint', true, IO::VERBOSE);
+                    continue;
+                }
+                $conditions[] = $currentCondition;
+            }
+            return ConditionInterface\LogicalOr::fromConditionsArray($conditions);
+        }
         if (Util::getExecType($config->getExec()) === 'cli') {
             return new Cli(new Processor(), $config->getExec());
         }
