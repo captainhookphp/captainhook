@@ -49,6 +49,13 @@ abstract class Local implements Template
     protected $isPhar;
 
     /**
+     * Path to the php binary
+     *
+     * @var string
+     */
+    protected $phpPath;
+
+    /**
      * Local constructor
      *
      * @param \SebastianFeldmann\Camino\Path\Directory $repo
@@ -56,13 +63,21 @@ abstract class Local implements Template
      * @param \SebastianFeldmann\Camino\Path\File      $captainHook
      * @param string                                   $bootstrap
      * @param bool                                     $isPhar
+     * @param string                                   $phpPath
      */
-    public function __construct(Directory $repo, File $config, File $captainHook, string $bootstrap, bool $isPhar)
-    {
+    public function __construct(
+        Directory $repo,
+        File $config,
+        File $captainHook,
+        string $bootstrap,
+        bool $isPhar,
+        string $phpPath
+    ) {
         $this->bootstrap      = $bootstrap;
         $this->configPath     = $this->getPathForHookTo($repo, $config);
         $this->executablePath = $this->getPathForHookTo($repo, $captainHook);
         $this->isPhar         = $isPhar;
+        $this->phpPath        = $phpPath;
     }
 
     /**

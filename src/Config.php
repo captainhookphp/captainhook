@@ -32,6 +32,7 @@ class Config
     public const SETTING_RUN_EXEC            = 'run-exec';
     public const SETTING_RUN_MODE            = 'run-mode';
     public const SETTING_RUN_PATH            = 'run-path';
+    public const SETTING_PHP_PATH            = 'php-path';
     public const SETTING_VERBOSITY           = 'verbosity';
     public const SETTING_FAIL_ON_FIRST_ERROR = 'fail-on-first-error';
 
@@ -180,6 +181,16 @@ class Config
     public function getRunPath(): string
     {
         return (string) ($this->settings[self::SETTING_RUN_PATH] ?? '');
+    }
+
+    /**
+     * Get configured php-path
+     *
+     * @return string
+     */
+    public function getPhpPath(): string
+    {
+        return (string) ($this->settings[self::SETTING_PHP_PATH] ?? '');
     }
 
     /**

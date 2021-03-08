@@ -55,6 +55,8 @@ abstract class Builder
             throw new RuntimeException('bootstrap file not found: \'' . $bootstrapPath . '\'');
         }
 
+        $phpPath = $config->getPhpPath();
+
         switch ($config->getRunMode()) {
             case Template::DOCKER:
                 return new Docker(
@@ -69,7 +71,8 @@ abstract class Builder
                     new File($configPath),
                     new File($captainPath),
                     $config->getBootstrap(),
-                    $resolver->isPharRelease()
+                    $resolver->isPharRelease(),
+                    $phpPath
                 );
             default:
                 return new Shell(
@@ -77,7 +80,8 @@ abstract class Builder
                     new File($configPath),
                     new File($captainPath),
                     $config->getBootstrap(),
-                    $resolver->isPharRelease()
+                    $resolver->isPharRelease(),
+                    $phpPath
                 );
         }
     }
