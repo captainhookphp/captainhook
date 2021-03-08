@@ -344,7 +344,8 @@
     "includes": [],
     "run-mode": "docker",
     "run-exec": "docker exec CONTAINER_NAME",
-    "run-path": "vendor/bin/captainhook
+    "run-path": "vendor/bin/captainhook",
+    "php-path": "/usr/bin/php7.4"
   }
 }</code></pre>
 
@@ -402,6 +403,11 @@
         <tr>
           <td>run-path</td>
           <td>Path to the command inside your docker container</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>php-path</td>
+          <td>Path to the PHP executable</td>
           <td>-</td>
         </tr>
       </table>
