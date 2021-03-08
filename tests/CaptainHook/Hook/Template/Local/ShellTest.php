@@ -26,8 +26,9 @@ class ShellTest extends TestCase
         $config     = new File('/foo/bar/captainhook.json');
         $executable = new File('/foo/bar/vendor/bin/captainhook');
         $bootstrap  = 'vendor/autoload.php';
+        $phpPath    = '';
 
-        $template = new Shell($repo, $config, $executable, $bootstrap, false);
+        $template = new Shell($repo, $config, $executable, $bootstrap, false, $phpPath);
         $code     = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);
@@ -44,8 +45,9 @@ class ShellTest extends TestCase
         $config     = new File('/foo/bar/captainhook.json');
         $executable = new File('/usr/local/bin/captainhook');
         $bootstrap  = 'vendor/autoload.php';
+        $phpPath    = '';
 
-        $template = new Shell($repo, $config, $executable, $bootstrap, false);
+        $template = new Shell($repo, $config, $executable, $bootstrap, false, $phpPath);
         $code     = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);
@@ -63,8 +65,9 @@ class ShellTest extends TestCase
         $config     = new File('/foo/bar/captainhook.json');
         $executable = new File('/usr/local/bin/captainhook');
         $bootstrap  = 'vendor/autoload.php';
+        $phpPath    = '';
 
-        $template = new Shell($repo, $config, $executable, $bootstrap, false);
+        $template = new Shell($repo, $config, $executable, $bootstrap, false, $phpPath);
         $code     = $template->getCode('prepare-commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);

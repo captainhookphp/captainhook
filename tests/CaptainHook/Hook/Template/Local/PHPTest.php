@@ -26,7 +26,9 @@ class PHPTest extends TestCase
         $config     = new File('/foo/bar/captainhook.json');
         $bootstrap  = new File('/foo/bar/vendor/autoload.php');
         $executable = new File('/foo/bar/vendor/bin/captainhook');
-        $template   = new PHP($repo, $config, $executable, $bootstrap, false);
+        $phpPath    = '';
+
+        $template   = new PHP($repo, $config, $executable, $bootstrap, false, $phpPath);
         $code       = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/usr/bin/env php', $code);
@@ -43,7 +45,9 @@ class PHPTest extends TestCase
         $config     = new File('/foo/bar/captainhook.json');
         $bootstrap  = new File('/foo/bar/vendor/autoload.php');
         $executable = new File('/usr/local/bin/captainhook');
-        $template   = new PHP($repo, $config, $executable, $bootstrap, false);
+        $phpPath    = '';
+
+        $template   = new PHP($repo, $config, $executable, $bootstrap, false, $phpPath);
         $code       = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/usr/bin/env php', $code);
@@ -60,7 +64,9 @@ class PHPTest extends TestCase
         $config     = new File('/foo/bar/captainhook.json');
         $bootstrap  = new File('/foo/bar/vendor/autoload.php');
         $executable = new File('/foo/bar/tools/captainhook.phar');
-        $template   = new PHP($repo, $config, $executable, $bootstrap, true);
+        $phpPath    = '';
+
+        $template   = new PHP($repo, $config, $executable, $bootstrap, true, $phpPath);
         $code       = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/usr/bin/env php', $code);
