@@ -33,6 +33,27 @@ class ShellTest extends TestCase
 
         $this->assertStringContainsString('#!/bin/sh', $code);
         $this->assertStringContainsString('commit-msg', $code);
+        $this->assertStringNotContainsString('php7.4', $code);
+        $this->assertStringContainsString('vendor/bin/captainhook $INTERACTIVE', $code);
+    }
+
+    /**
+     * Tests Shell::getCode
+     */
+    public function testTemplateWithDefinedPHP(): void
+    {
+        $repo       = new Directory('/foo/bar');
+        $config     = new File('/foo/bar/captainhook.json');
+        $executable = new File('/foo/bar/vendor/bin/captainhook');
+        $bootstrap  = 'vendor/autoload.php';
+        $phpPath    = '/usr/bin/php7.4';
+
+        $template = new Shell($repo, $config, $executable, $bootstrap, false, $phpPath);
+        $code     = $template->getCode('commit-msg');
+
+        $this->assertStringContainsString('#!/bin/sh', $code);
+        $this->assertStringContainsString('commit-msg', $code);
+        $this->assertStringContainsString('/usr/bin/php7.4', $code);
         $this->assertStringContainsString('vendor/bin/captainhook $INTERACTIVE', $code);
     }
 
@@ -52,6 +73,29 @@ class ShellTest extends TestCase
 
         $this->assertStringContainsString('#!/bin/sh', $code);
         $this->assertStringContainsString('commit-msg', $code);
+        $this->assertStringNotContainsString('php7.4', $code);
+        $this->assertStringContainsString('/usr/local/bin/captainhook $INTERACTIVE', $code);
+        $this->assertStringNotContainsString($this->getTtyRedirectionLines(), $code);
+    }
+
+    /**
+     * Tests Shell::getCode
+     */
+    public function testTemplateExtExecutableWithDefinedPHP(): void
+    {
+        $repo       = new Directory('/foo/bar');
+        $config     = new File('/foo/bar/captainhook.json');
+        $executable = new File('/usr/local/bin/captainhook');
+        $bootstrap  = 'vendor/autoload.php';
+        $phpPath    = '/usr/bin/php7.4';
+
+        $template = new Shell($repo, $config, $executable, $bootstrap, false, $phpPath);
+        $code     = $template->getCode('commit-msg');
+
+        $this->assertStringContainsString('#!/bin/sh', $code);
+        $this->assertStringContainsString('commit-msg', $code);
+
+        $this->assertStringContainsString('/usr/bin/php7.4', $code);
         $this->assertStringContainsString('/usr/local/bin/captainhook $INTERACTIVE', $code);
         $this->assertStringNotContainsString($this->getTtyRedirectionLines(), $code);
     }
