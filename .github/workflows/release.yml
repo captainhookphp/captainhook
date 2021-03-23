@@ -13,8 +13,6 @@ jobs:
 
     strategy:
       matrix:
-        php-version:
-          - "7.3"
 
         dependencies:
           - "locked"
@@ -27,17 +25,17 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v2.0.0"
+        uses: actions/checkout@v2.0.0
         with:
           ref: main
           fetch-depth: 0
 
       - name: "Install PHP with extensions"
-        uses: "shivammathur/setup-php@1.7.1"
+        uses: shivammathur/setup-php@v2
         with:
-          coverage: "none"
-          extensions: "mbstring"
-          php-version: "${{ matrix.php-version }}"
+          coverage: none
+          extensions: mbstring
+          php-version: 7.3
 
       - name: "Install dependencies"
         run: "composer install --prefer-dist --no-dev --no-interaction --no-progress"
