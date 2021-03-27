@@ -55,6 +55,7 @@
         <li><a href="#linting">PHP syntax check</a></li>
         <li><a href="#test-coverage">Enforce PHPUnit test coverage</a></li>
         <li><a href="#notify">Git commit message notifications</a></li>
+        <li><a href="#file-size">Check file size</a></li>
         <li><a href="#file-empty">Prevent committing any content to files</a></li>
         <li><a href="#file-not-empty">Prevent committing empty files</a></li>
         <li><a href="#file-does-not-contain">Prevent committing specific content to files</a></li>
@@ -146,6 +147,18 @@
   "options": {
     "minCoverage": 90,
     "cloverXml": "build/logs/clover.xml"
+  }
+}</code></pre>
+
+  <h4 id="file-size">Check if files are too big</h4>
+  <p>
+    Make sure you do not commit files that are bigger then a configured size limit.<br>
+    Use 'B', 'K' or 'M' as size indication.
+  </p>
+  <pre><code class="javascript">{
+  "action": "\CaptainHook\App\Hook\File\Action\MaxSize",
+  "options": {
+    "maxSize": "5M"
   }
 }</code></pre>
 
