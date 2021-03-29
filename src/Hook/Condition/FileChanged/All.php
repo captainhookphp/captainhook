@@ -29,7 +29,7 @@ use SebastianFeldmann\Git\Repository;
 class All extends FileChanged
 {
     /**
-     * Check if all of the configured files where changed within the applied change set
+     * Check if all of the configured files were changed within the applied change set
      *
      * IMPORTANT: If no files are configured this condition is always true.
      *

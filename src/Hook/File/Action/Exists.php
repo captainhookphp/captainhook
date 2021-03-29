@@ -67,7 +67,7 @@ class Exists implements Action
         }
 
         if ($filesFailed > 0) {
-            throw new ActionFailed('<error>Error: ' . $filesFailed . ' file(s) where not found</error>');
+            throw new ActionFailed('<error>Error: ' . $filesFailed . ' file(s) were not found</error>');
         }
 
         $io->write('<info>All files exist</info>');
