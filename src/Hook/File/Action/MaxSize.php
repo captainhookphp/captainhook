@@ -81,7 +81,7 @@ class MaxSize implements Action, Constrained
         }
 
         if ($filesFailed > 0) {
-            $text = $filesFailed > 1 ? ' files where too big' : 'file is too big';
+            $text = $filesFailed > 1 ? ' files were too big' : 'file is too big';
             throw new ActionFailed('<error>Error: ' . $filesFailed . ' ' . $text . '</error>');
         }
 
