@@ -6,7 +6,6 @@ return [
     'prefix'    => 'CaptainHook\\Ext',
     'whitelist' => [
         'CaptainHook\*',
-        'SebastianFeldmann\*',
-        'parent\*'
+        'SebastianFeldmann\*'
     ],
 ];
