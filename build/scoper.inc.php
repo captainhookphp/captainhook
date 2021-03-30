@@ -7,6 +7,6 @@ return [
     'whitelist' => [
         'CaptainHook\*',
         'SebastianFeldmann\*',
-        'parent'
+        'parent\*'
     ],
 ];
