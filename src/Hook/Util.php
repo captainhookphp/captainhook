@@ -90,8 +90,9 @@ abstract class Util
             $info = explode(' ', $stdIn[0]);
             // If we find a rewritten commit, we return the first commit before the rewritten one.
             // If we do not find any rewritten commits (awkward) we use the last ref-log position.
-            return isset($info[1]) ? $info[1] . '^' :  'HEAD@{1}';
+            return isset($info[1]) ? trim($info[1]) . '^' :  'HEAD@{1}';
         }
+
         return $io->getArgument('previousHead', 'HEAD@{1}');
     }
 }
