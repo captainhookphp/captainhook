@@ -128,3 +128,16 @@ jobs:
           asset_name: "captainhook.phar.asc"
           asset_path: "${{ env.PHAR_SIGNATURE }}"
           upload_url: "${{ steps.create-release.outputs.upload_url }}"
+
+      - name: "Check out the phar repo"
+        uses: actions/checkout@master@v2
+        with:
+          repository: captainhookphp/captainhook-phar
+          token: ${{ secrets.PAT_SF }}
+          path: phar-repo
+        run: |
+          cd phar-repo
+          git config user.name "Sebastian Feldmann"
+          git config user.email sebastianfeldmann@users.noreply.github.com
+          git tag ${{ steps.determine-tag.outputs.tag }}
+          git push --tags
