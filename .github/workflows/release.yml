@@ -135,6 +135,8 @@ jobs:
           repository: captainhookphp/captainhook-phar
           token: ${{ secrets.PAT_SF }}
           path: phar-repo
+
+      - name: "Tag and push the phar repo"
         run: |
           cd phar-repo
           git config user.name "Sebastian Feldmann"
