@@ -130,7 +130,7 @@ jobs:
           upload_url: "${{ steps.create-release.outputs.upload_url }}"
 
       - name: "Check out the phar repo"
-        uses: actions/checkout@master@v2
+        uses: actions/checkout@v2
         with:
           repository: captainhookphp/captainhook-phar
           token: ${{ secrets.PAT_SF }}
