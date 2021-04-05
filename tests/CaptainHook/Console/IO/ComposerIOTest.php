@@ -24,7 +24,7 @@ class ComposerIOTest extends TestCase
     /**
      * Test setup
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         $mock = $this->getMockBuilder(IOInterface::class)
                      ->disableOriginalConstructor()
@@ -42,7 +42,7 @@ class ComposerIOTest extends TestCase
     /**
      * Test tear down
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->io = null;
     }
