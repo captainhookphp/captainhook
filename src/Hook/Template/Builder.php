@@ -48,7 +48,7 @@ abstract class Builder
     {
         $repositoryPath = self::toAbsolutePath($repository->getRoot());
         $configPath     = self::toAbsolutePath($config->getPath());
-        $bootstrapPath  = dirname($configPath) . '/' . $config->getBootstrap();
+        $bootstrapPath  = self::toAbsolutePath($config->getBootstrap());
         $captainPath    = self::toAbsolutePath($resolver->getExecutable());
 
         if (!file_exists($bootstrapPath)) {
