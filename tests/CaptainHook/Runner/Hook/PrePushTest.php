@@ -39,7 +39,7 @@ class PrePushTest extends TestCase
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->atLeast(1))->method('write');
 
-        $runner = new PreCommit($io, $config, $repo);
+        $runner = new PrePush($io, $config, $repo);
         $runner->run();
     }
 
@@ -58,7 +58,7 @@ class PrePushTest extends TestCase
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->atLeast(1))->method('write');
 
-        $runner = new PreCommit($io, $config, $repo);
+        $runner = new PrePush($io, $config, $repo);
         $runner->run();
     }
 }
