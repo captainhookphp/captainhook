@@ -11,6 +11,7 @@
 
 namespace CaptainHook\App\Runner\Hook;
 
+use CaptainHook\App\Config\Action;
 use CaptainHook\App\Hooks;
 use CaptainHook\App\Runner\Hook;
 use RuntimeException;
@@ -81,22 +82,26 @@ class PrepareCommitMsg extends Hook
     /**
      * Read the commit message from file
      *
+     * @param Action $action
+     *
      * @return void
      */
-    public function beforeAction(): void
+    public function beforeAction(Action $action): void
     {
         $this->repository->setCommitMsg(Git\CommitMessage::createFromFile($this->file, $this->commentChar));
-        parent::beforeAction();
+        parent::beforeAction($action);
     }
 
     /**
      * Write the commit message to disk so git or the next action can proceed further
      *
+     * @param Action $action
+     *
      * @return void
      */
-    public function afterAction(): void
+    public function afterAction(Action $action): void
     {
         file_put_contents($this->file, $this->repository->getCommitMsg()->getRawContent());
-        parent::afterAction();
+        parent::afterAction($action);
     }
 }

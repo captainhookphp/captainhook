@@ -49,9 +49,11 @@ abstract class Hook extends RepositoryAware
     /**
      * Execute stuff before every actions
      *
+     * @param Config\Action $action
+     *
      * @return void
      */
-    public function beforeAction(): void
+    public function beforeAction(Config\Action $action): void
     {
         // empty template method
     }
@@ -59,9 +61,11 @@ abstract class Hook extends RepositoryAware
     /**
      * Execute stuff after every actions
      *
+     * @param Config\Action $action
+     *
      * @return void
      */
-    public function afterAction(): void
+    public function afterAction(Config\Action $action): void
     {
         //empty template method
     }
@@ -202,7 +206,10 @@ abstract class Hook extends RepositoryAware
         $this->io->write(['', 'Action: <comment>' . $action->getAction() . '</comment>'], true);
 
         $execMethod = self::getExecMethod(Util::getExecType($action->getAction()));
+
+        $this->beforeAction($action);
         $this->{$execMethod}($action);
+        $this->afterAction($action);
     }
 
     /**
@@ -214,10 +221,8 @@ abstract class Hook extends RepositoryAware
      */
     private function executePhpAction(Config\Action $action): void
     {
-        $this->beforeAction();
         $runner = new Action\PHP($this->hook);
         $runner->execute($this->config, $this->io, $this->repository, $action);
-        $this->afterAction();
     }
 
     /**
@@ -229,9 +234,6 @@ abstract class Hook extends RepositoryAware
      */
     private function executeCliAction(Config\Action $action): void
     {
-        // since the cli has no straight way to communicate back to php
-        // cli hooks have to handle sync stuff by them self
-        // so no 'beforeAction' or 'afterAction' is called here
         $runner = new Action\Cli();
         $runner->execute($this->io, $this->repository, $action);
     }
