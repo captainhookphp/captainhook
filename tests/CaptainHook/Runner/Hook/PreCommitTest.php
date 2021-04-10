@@ -15,13 +15,39 @@ use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Mockery as CHMockery;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use SebastianFeldmann\Git\Operator\Index;
+use SebastianFeldmann\Git\Operator\Status;
+use SebastianFeldmann\Git\Repository;
+use SebastianFeldmann\Git\Status\Path;
 
 class PreCommitTest extends TestCase
 {
     use ConfigMockery;
     use IOMockery;
     use CHMockery;
+
+    /**
+     * @var Repository&MockObject
+     */
+    private $repo;
+
+    /**
+     * @var Status&MockObject
+     */
+    private $statusOperator;
+
+    protected function setUp(): void
+    {
+        $this->repo = $this->createRepositoryMock();
+
+        $this->statusOperator = $this->getMockBuilder(Status::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->repo->method('getStatusOperator')->willReturn($this->statusOperator);
+    }
 
     /**
      * Tests PreCommit::run
@@ -39,7 +65,6 @@ class PreCommitTest extends TestCase
         $config->method('failOnFirstError')->willReturn(true);
 
         $io           = $this->createIOMock();
-        $repo         = $this->createRepositoryMock();
         $hookConfig   = $this->createHookConfigMock();
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
@@ -48,7 +73,9 @@ class PreCommitTest extends TestCase
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->atLeast(1))->method('write');
 
-        $runner = new PreCommit($io, $config, $repo);
+        $this->statusOperator->method('getWorkingTreeStatus')->willReturn([]);
+
+        $runner = new PreCommit($io, $config, $this->repo);
         $runner->run();
     }
 
@@ -69,7 +96,6 @@ class PreCommitTest extends TestCase
         $config->expects($this->once())->method('failOnFirstError')->willReturn(false);
 
         $io                  = $this->createIOMock();
-        $repo                = $this->createRepositoryMock();
         $hookConfig          = $this->createHookConfigMock();
         $actionConfigFail    = $this->createActionConfigMock();
         $actionConfigSuccess = $this->createActionConfigMock();
@@ -92,7 +118,9 @@ class PreCommitTest extends TestCase
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->atLeast(1))->method('write');
 
-        $runner = new PreCommit($io, $config, $repo);
+        $this->statusOperator->method('getWorkingTreeStatus')->willReturn([]);
+
+        $runner = new PreCommit($io, $config, $this->repo);
         $runner->run();
     }
 
@@ -106,12 +134,82 @@ class PreCommitTest extends TestCase
         $io           = $this->createIOMock();
         $config       = $this->createConfigMock();
         $hookConfig   = $this->createHookConfigMock();
-        $repo         = $this->createRepositoryMock();
         $hookConfig->expects($this->once())->method('isEnabled')->willReturn(false);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->once())->method('write');
 
-        $runner = new PreCommit($io, $config, $repo);
+        $this->statusOperator->method('getWorkingTreeStatus')->willReturn([]);
+
+        $runner = new PreCommit($io, $config, $this->repo);
+        $runner->run();
+    }
+
+    public function testRunHookWithStatusPathsButZeroIntentToAddFiles(): void
+    {
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
+        $config       = $this->createConfigMock();
+        $io           = $this->createIOMock();
+        $hookConfig   = $this->createHookConfigMock();
+        $actionConfig = $this->createActionConfigMock();
+        $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
+        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
+        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $io->expects($this->atLeast(1))->method('write');
+
+        $this->statusOperator->method('getWorkingTreeStatus')->willReturn([
+            new Path('M ', 'foo/bar.php'),
+            new Path('M ', 'foo/baz.php'),
+        ]);
+
+        $runner = new PreCommit($io, $config, $this->repo);
+        $runner->run();
+    }
+
+    public function testRunHookWithIntentToAddFiles(): void
+    {
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
+        $config       = $this->createConfigMock();
+        $io           = $this->createIOMock();
+        $hookConfig   = $this->createHookConfigMock();
+        $actionConfig = $this->createActionConfigMock();
+        $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
+        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
+        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $io->expects($this->atLeast(1))->method('write');
+
+        $statusPaths = [
+            new Path('M ', 'foo/bar.php'),
+            new Path(' A', 'foo/qux.php'),
+            new Path('M ', 'foo/baz.php'),
+            new Path(' A', 'foo/quux.php'),
+        ];
+
+        $indexOperator = $this->getMockBuilder(Index::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $indexOperator
+            ->expects($this->once())
+            ->method('removeFiles')
+            ->with(['foo/qux.php', 'foo/quux.php'], false, true);
+
+        $indexOperator
+            ->expects($this->once())
+            ->method('recordIntentToAddFiles')
+            ->with(['foo/qux.php', 'foo/quux.php']);
+
+        $this->statusOperator->method('getWorkingTreeStatus')->willReturn($statusPaths);
+        $this->repo->method('getIndexOperator')->willReturn($indexOperator);
+
+        $runner = new PreCommit($io, $config, $this->repo);
         $runner->run();
     }
 }
