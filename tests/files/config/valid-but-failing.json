@@ -7,7 +7,7 @@
     "enabled": true,
     "actions": []
   },
-  "pre-commit": {
+  "post-commit": {
     "enabled": true,
     "actions": [
       {
