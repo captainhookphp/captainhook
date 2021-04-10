@@ -17,6 +17,7 @@ use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hooks;
 use CaptainHook\App\Mockery;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 class MaxSizeTest extends TestCase
 {
@@ -71,5 +72,37 @@ class MaxSizeTest extends TestCase
         $action   = new Config\Action(MaxSize::class, ['maxSize' => '1B']);
         $standard = new MaxSize();
         $standard->execute($config, $io, $repo, $action);
+    }
+
+    /**
+     * @dataProvider toBytesProvider
+     */
+    public function testToBytes(string $input, int $expected): void
+    {
+        $maxSize = new MaxSize();
+
+        $this->assertSame($expected, $maxSize->toBytes($input));
+    }
+
+    public function toBytesProvider(): array
+    {
+        return [
+            ['input' => '512B', 'expected' => 512],
+            ['input' => '1K', 'expected' => 1024],
+            ['input' => '5M', 'expected' => 5242880],
+            ['input' => '2G', 'expected' => 2147483648],
+            ['input' => '3T', 'expected' => 3298534883328],
+            ['input' => '4P', 'expected' => 4503599627370496],
+        ];
+    }
+
+    public function testToBytesThrowsExceptionForInvalidSizeValue(): void
+    {
+        $maxSize = new MaxSize();
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Invalid size value');
+
+        $maxSize->toBytes('123V');
     }
 }

@@ -128,7 +128,7 @@ class MaxSize implements Action, Constrained
      */
     public function toBytes(string $value): int
     {
-        if (!preg_match('#^[0-9]*[BKMGT]$#i', $value)) {
+        if (!preg_match('#^[0-9]*[BKMGTP]$#i', $value)) {
             throw new RuntimeException('Invalid size value');
         }
         $units  = ['B' => 0, 'K' => 1, 'M' => 2, 'G' => 3, 'T' => 4, 'P' => 5];

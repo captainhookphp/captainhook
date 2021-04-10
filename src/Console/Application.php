@@ -96,6 +96,8 @@ class Application extends SymfonyApplication
      * Make sure X-Debug does not interfere with the exception handling
      *
      * @return void
+     *
+     * @codeCoverageIgnore
      */
     private function silenceXDebug(): void
     {
