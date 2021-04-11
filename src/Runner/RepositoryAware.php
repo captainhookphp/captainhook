@@ -15,6 +15,7 @@ use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Runner;
 use SebastianFeldmann\Git\Repository;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class HookHandler
@@ -34,15 +35,26 @@ abstract class RepositoryAware extends Runner
     protected $repository;
 
     /**
+     * @var Filesystem
+     */
+    protected $filesystem;
+
+    /**
      * HookHandler constructor.
      *
-     * @param \CaptainHook\App\Console\IO     $io
-     * @param \CaptainHook\App\Config         $config
+     * @param \CaptainHook\App\Console\IO       $io
+     * @param \CaptainHook\App\Config           $config
      * @param \SebastianFeldmann\Git\Repository $repository
+     * @param Filesystem|null                   $filesystem
      */
-    public function __construct(IO $io, Config $config, Repository $repository)
-    {
+    public function __construct(
+        IO $io,
+        Config $config,
+        Repository $repository,
+        ?Filesystem $filesystem = null
+    ) {
         parent::__construct($io, $config);
         $this->repository = $repository;
+        $this->filesystem = $filesystem ?? new Filesystem();
     }
 }
