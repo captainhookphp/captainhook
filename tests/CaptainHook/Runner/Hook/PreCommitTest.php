@@ -17,10 +17,12 @@ use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Mockery as CHMockery;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use SebastianFeldmann\Git\Operator\Diff;
 use SebastianFeldmann\Git\Operator\Index;
 use SebastianFeldmann\Git\Operator\Status;
 use SebastianFeldmann\Git\Repository;
 use SebastianFeldmann\Git\Status\Path;
+use Symfony\Component\Filesystem\Filesystem;
 
 class PreCommitTest extends TestCase
 {
@@ -38,6 +40,11 @@ class PreCommitTest extends TestCase
      */
     private $statusOperator;
 
+    /**
+     * @var Diff&MockObject
+     */
+    private $diffOperator;
+
     protected function setUp(): void
     {
         $this->repo = $this->createRepositoryMock();
@@ -46,7 +53,12 @@ class PreCommitTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->diffOperator = $this->getMockBuilder(Diff::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->repo->method('getStatusOperator')->willReturn($this->statusOperator);
+        $this->repo->method('getDiffOperator')->willReturn($this->diffOperator);
     }
 
     /**
@@ -74,6 +86,7 @@ class PreCommitTest extends TestCase
         $io->expects($this->atLeast(1))->method('write');
 
         $this->statusOperator->method('getWorkingTreeStatus')->willReturn([]);
+        $this->diffOperator->method('getUnstagedPatch')->willReturn(null);
 
         $runner = new PreCommit($io, $config, $this->repo);
         $runner->run();
@@ -119,6 +132,7 @@ class PreCommitTest extends TestCase
         $io->expects($this->atLeast(1))->method('write');
 
         $this->statusOperator->method('getWorkingTreeStatus')->willReturn([]);
+        $this->diffOperator->method('getUnstagedPatch')->willReturn(null);
 
         $runner = new PreCommit($io, $config, $this->repo);
         $runner->run();
@@ -139,6 +153,7 @@ class PreCommitTest extends TestCase
         $io->expects($this->once())->method('write');
 
         $this->statusOperator->method('getWorkingTreeStatus')->willReturn([]);
+        $this->diffOperator->method('getUnstagedPatch')->willReturn(null);
 
         $runner = new PreCommit($io, $config, $this->repo);
         $runner->run();
@@ -164,6 +179,8 @@ class PreCommitTest extends TestCase
             new Path('M ', 'foo/bar.php'),
             new Path('M ', 'foo/baz.php'),
         ]);
+
+        $this->diffOperator->method('getUnstagedPatch')->willReturn(null);
 
         $runner = new PreCommit($io, $config, $this->repo);
         $runner->run();
@@ -207,9 +224,122 @@ class PreCommitTest extends TestCase
             ->with(['foo/qux.php', 'foo/quux.php']);
 
         $this->statusOperator->method('getWorkingTreeStatus')->willReturn($statusPaths);
+        $this->diffOperator->method('getUnstagedPatch')->willReturn(null);
         $this->repo->method('getIndexOperator')->willReturn($indexOperator);
 
         $runner = new PreCommit($io, $config, $this->repo);
+        $runner->run();
+    }
+
+    public function testRunHookWithUnstagedChanges(): void
+    {
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
+        $unstagedChanges = 'foo bar baz';
+        $patchFileConstraint = $this->matches(sys_get_temp_dir() . '/CaptainHook/patches/%d-%x.patch');
+
+        $config       = $this->createConfigMock();
+        $io           = $this->createIOMock();
+        $hookConfig   = $this->createHookConfigMock();
+        $actionConfig = $this->createActionConfigMock();
+        $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
+        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
+        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $io->expects($this->atLeast(1))->method('write');
+
+        $this->statusOperator->method('getWorkingTreeStatus')->willReturn([]);
+
+        $this->diffOperator
+            ->expects($this->once())
+            ->method('getUnstagedPatch')
+            ->willReturn($unstagedChanges);
+
+        $filesystem = $this->getMockBuilder(Filesystem::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $filesystem
+            ->expects($this->once())
+            ->method('dumpFile')
+            ->with($patchFileConstraint, $unstagedChanges);
+
+        $this->statusOperator
+            ->expects($this->once())
+            ->method('restoreWorkingTree')
+            ->willReturn(true);
+
+        $this->diffOperator
+            ->expects($this->once())
+            ->method('applyPatches')
+            ->with($this->callback(function ($value) use ($patchFileConstraint): bool {
+                $result = true;
+                foreach ($value as $item) {
+                    $result = $result && $patchFileConstraint->evaluate($item, '', true);
+                }
+                return $result;
+            }))
+            ->willReturn(true);
+
+        $runner = new PreCommit($io, $config, $this->repo, $filesystem);
+        $runner->run();
+    }
+
+    public function testRunHookWithUnstagedChangesAttemptsPatchMultipleTimes(): void
+    {
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
+        $unstagedChanges = 'foo bar baz';
+        $patchFileConstraint = $this->matches(sys_get_temp_dir() . '/CaptainHook/patches/%d-%x.patch');
+
+        $config       = $this->createConfigMock();
+        $io           = $this->createIOMock();
+        $hookConfig   = $this->createHookConfigMock();
+        $actionConfig = $this->createActionConfigMock();
+        $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
+        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
+        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $io->expects($this->atLeast(1))->method('write');
+
+        $this->statusOperator->method('getWorkingTreeStatus')->willReturn([]);
+
+        $this->diffOperator
+            ->expects($this->once())
+            ->method('getUnstagedPatch')
+            ->willReturn($unstagedChanges);
+
+        $filesystem = $this->getMockBuilder(Filesystem::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $filesystem
+            ->expects($this->once())
+            ->method('dumpFile')
+            ->with($patchFileConstraint, $unstagedChanges);
+
+        $this->statusOperator
+            ->expects($this->exactly(2))
+            ->method('restoreWorkingTree')
+            ->willReturn(true);
+
+        $this->diffOperator
+            ->expects($this->exactly(3))
+            ->method('applyPatches')
+            ->with($this->callback(function ($value) use ($patchFileConstraint): bool {
+                $result = true;
+                foreach ($value as $item) {
+                    $result = $result && $patchFileConstraint->evaluate($item, '', true);
+                }
+                return $result;
+            }))
+            ->willReturnOnConsecutiveCalls(false, false, true);
+
+        $runner = new PreCommit($io, $config, $this->repo, $filesystem);
         $runner->run();
     }
 }

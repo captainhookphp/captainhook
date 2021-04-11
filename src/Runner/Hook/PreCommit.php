@@ -85,7 +85,7 @@ class PreCommit extends Hook
             return;
         }
 
-        $this->io->write('Unstaged intent-to-add files detected.');
+        $this->io->write('<info>Unstaged intent-to-add files detected.</info>');
 
         $this->repository->getIndexOperator()->removeFiles(
             array_map(function (Path $path): string {
@@ -114,8 +114,105 @@ class PreCommit extends Hook
             }, $this->intentToAddFiles)
         );
 
-        $this->io->write('Restored intent-to-add files.');
+        $this->io->write('<info>Restored intent-to-add files.</info>');
 
         $this->intentToAddFiles = [];
+    }
+
+    /**
+     * Find whether we have any unstaged changes in the working tree, cache them,
+     * and reset the working tree so we can continue processing the hook.
+     *
+     * @return void
+     */
+    private function clearUnstagedChanges(): void
+    {
+        $unstagedChanges = $this->repository->getDiffOperator()->getUnstagedPatch();
+
+        // Make sure we don't already have something set.
+        $this->unstagedPatchFile = null;
+
+        if ($unstagedChanges === null) {
+            return;
+        }
+
+        $patchFile = sys_get_temp_dir()
+            . '/CaptainHook/patches/'
+            . time() . '-' . bin2hex(random_bytes(4))
+            . '.patch';
+
+        $this->filesystem->dumpFile($patchFile, $unstagedChanges);
+
+        $this->unstagedPatchFile = $patchFile;
+        $this->restoreWorkingTree();
+    }
+
+    /**
+     * If we have cached unstaged changes, restore them to the working tree.
+     *
+     * @return void
+     */
+    private function restoreUnstagedChanges(): void
+    {
+        if ($this->unstagedPatchFile === null) {
+            return;
+        }
+
+        if (!$this->applyPatch($this->unstagedPatchFile)) {
+            $this->io->writeError([
+                '<error>Stashed changes conflicted with hook auto-fixes...</error>',
+                '<comment>Rolling back fixes...</comment>',
+            ]);
+
+            $this->restoreWorkingTree();
+
+            // At this point, the working tree should be pristine, so the
+            // patch should cleanly apply.
+            $this->applyPatch($this->unstagedPatchFile);
+        }
+
+        $this->io->write("<info>Restored changes from {$this->unstagedPatchFile}.</info>");
+
+        $this->unstagedPatchFile = null;
+    }
+
+    /**
+     * Apply a patch file to the working tree.
+     *
+     * We'll try twice, the second time disabling Git's core.autocrlf
+     * setting, in case the local system has it turned on and it's causing
+     * problems when trying to apply the patch.
+     *
+     * @param string $patchFile
+     * @return bool
+     */
+    private function applyPatch(string $patchFile): bool
+    {
+        $diff = $this->repository->getDiffOperator();
+
+        if (!$diff->applyPatches([$patchFile])) {
+            if (!$diff->applyPatches([$patchFile], true)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Restores the working tree by running `git checkout`, while also setting
+     * an environment variable to instruct CaptainHook not to run post-checkout
+     * actions.
+     *
+     * @return void
+     */
+    private function restoreWorkingTree(): void
+    {
+        $this->callWithEnvironment(function (): void {
+            $this->repository->getStatusOperator()->restoreWorkingTree();
+        }, [
+            // Prevent recursive post-checkout hooks.
+            PostCheckout::SKIP_POST_CHECKOUT_VAR => 1,
+        ]);
     }
 }
