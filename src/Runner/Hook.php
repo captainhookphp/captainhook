@@ -37,6 +37,18 @@ abstract class Hook extends RepositoryAware
     protected $hook;
 
     /**
+     * Set to `true` to skip processing this hook's actions.
+     *
+     * There may be times you want to conditionally skip all actions, based on
+     * logic in {@see beforeHook()}. You may use this property to do so.
+     *
+     * This property is reset to `false` in {@see afterHook()}.
+     *
+     * @var bool
+     */
+    protected $skipAllActions = false;
+
+    /**
      * Execute stuff before executing any actions
      *
      * @return void
@@ -77,7 +89,7 @@ abstract class Hook extends RepositoryAware
      */
     public function afterHook(): void
     {
-        // empty template method
+        $this->skipAllActions = false;
     }
 
     /**
@@ -142,6 +154,11 @@ abstract class Hook extends RepositoryAware
      */
     private function executeActions(array $actions): void
     {
+        if ($this->skipAllActions === true) {
+            $this->io->write(['', '<info>Skipping all actions, as requested</info>'], true, IO::VERBOSE);
+            return;
+        }
+
         if ($this->config->failOnFirstError()) {
             $this->executeFailOnFirstError($actions);
         } else {
@@ -286,5 +303,32 @@ abstract class Hook extends RepositoryAware
             $headline .
             IOUtil::getLineSeparator(80 - 8 - mb_strlen(strip_tags($headline)))
         ];
+    }
+
+    /**
+     * Injects variables into the environment before calling $callable, then
+     * unsets the variables after $callable is finished.
+     *
+     * @param callable $callable
+     * @param array<string, string|int|float> $environmentVariables An array of key-value pairs.
+     * @return mixed
+     */
+    protected function callWithEnvironment(
+        callable $callable,
+        array $environmentVariables = []
+    ) {
+        // Set the environment variables.
+        foreach ($environmentVariables as $variable => $value) {
+            putenv("{$variable}={$value}");
+        }
+
+        $result = $callable();
+
+        // Unset the environment variables.
+        foreach ($environmentVariables as $variable => $value) {
+            putenv($variable);
+        }
+
+        return $result;
     }
 }

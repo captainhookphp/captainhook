@@ -11,3 +11,6 @@
 
 require __DIR__ . '/constants.php';
 require __DIR__ . '/../vendor/autoload.php';
+
+// Ensure this environment variable is not set before executing tests.
+putenv(\CaptainHook\App\Runner\Hook\PostCheckout::SKIP_POST_CHECKOUT_VAR);

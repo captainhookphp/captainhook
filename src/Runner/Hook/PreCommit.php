@@ -39,15 +39,24 @@ class PreCommit extends Hook
      */
     private $intentToAddFiles = [];
 
+    /**
+     * A file where unstaged changes are stored as a patch.
+     *
+     * @var string|null
+     */
+    private $unstagedPatchFile = null;
+
     public function beforeHook(): void
     {
         $this->clearIntentToAddFiles();
+        $this->clearUnstagedChanges();
 
         parent::beforeHook();
     }
 
     public function afterHook(): void
     {
+        $this->restoreUnstagedChanges();
         $this->restoreIntentToAddFiles();
 
         parent::afterHook();
