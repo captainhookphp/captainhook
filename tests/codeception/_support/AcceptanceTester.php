@@ -91,8 +91,19 @@ class AcceptanceTester extends Actor
             . '/CaptainHook/tests/repo-'
             . time() . '-' . bin2hex(random_bytes(4));
 
+        $gitConfigFile = $repoPath . '/.git/config';
+
         $this->makeDir($repoPath);
-        $this->runShellCommand('git init --initial-branch=main ' . escapeshellarg($repoPath));
+
+        $this->runShellCommand(
+            'git init --initial-branch=main ' . escapeshellarg($repoPath)
+        );
+        $this->runShellCommand(
+            'git config --file ' . escapeshellarg($gitConfigFile) . ' user.name "Acceptance Tester"'
+        );
+        $this->runShellCommand(
+            'git config --file ' . escapeshellarg($gitConfigFile) . ' user.email "text@example.com"'
+        );
 
         return $repoPath;
     }

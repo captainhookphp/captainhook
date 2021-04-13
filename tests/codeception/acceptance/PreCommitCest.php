@@ -13,7 +13,7 @@ class PreCommitCest
         $I->amInPath($repositoryPath);
         $I->runShellCommand('composer update --no-ansi --no-interaction');
         $I->runShellCommand('git add .');
-        $I->runShellCommand('git commit -m \'My initial commit\'');
+        $I->runShellCommand('git commit --no-gpg-sign -m \'My initial commit\'');
 
         $I->enableHook($repositoryPath, 'pre-commit', [
             [
@@ -35,7 +35,7 @@ class PreCommitCest
         $I->seeInShellOutput('A  foo.txt');
 
         // Commit the file that's staged in the index.
-        $I->runShellCommand('git commit -m \'Add foo.txt\'');
+        $I->runShellCommand('git commit --no-gpg-sign -m \'Add foo.txt\'');
 
         // Output from actions appears in STDERR, so let's check it instead of STDOUT.
         // One of our actions is `git status`, so we want to assert that we do
