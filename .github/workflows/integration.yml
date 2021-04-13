@@ -44,6 +44,9 @@ jobs:
     - name: Execute unit tests
       run: tools/phpunit --configuration=phpunit.ci.xml
 
+    - name: Execute acceptance tests
+      run: php vendor/bin/codecept run
+
     - name: Check coding style
       run: tools/phpcs --standard=psr12 src tests
 

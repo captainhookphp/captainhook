@@ -71,6 +71,7 @@
     "tools": "tools/phive install --force-accept-unsigned",
     "compile": "tools/box compile",
     "test": "tools/phpunit",
+    "test:acceptance": "codecept run",
     "analyse": "tools/phpstan analyse",
     "style": "tools/phpcs --standard=psr12 src tests"
   }
