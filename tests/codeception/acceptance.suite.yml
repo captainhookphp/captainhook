@@ -1,0 +1,6 @@
+actor: AcceptanceTester
+modules:
+    enabled:
+        - \Helper\Acceptance
+        - \Helper\Cli
+        - \Codeception\Module\Filesystem

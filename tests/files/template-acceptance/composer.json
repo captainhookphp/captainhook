@@ -1,0 +1,13 @@
+{
+    "name": "captainhook/repo-test",
+    "description": "A sample project to use with CaptainHook acceptance tests.",
+    "type": "project",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require-dev": {
+        "captainhook/captainhook": "*"
+    },
+    "scripts": {
+        "post-autoload-dump": "captainhook install --no-interaction --no-ansi --force"
+    }
+}

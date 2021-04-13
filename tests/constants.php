@@ -10,3 +10,4 @@
  */
 
 define('CH_PATH_FILES', realpath(__DIR__ . '/files'));
+define('CH_PATH_ROOT', realpath(__DIR__ . '/..'));
