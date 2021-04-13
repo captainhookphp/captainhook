@@ -1,5 +1,9 @@
 <?php
 
+namespace CaptainHook\App\Test\Acceptance;
+
+use AcceptanceTester;
+
 class PreCommitCest
 {
     public const REPO_TEMPLATE = CH_PATH_FILES . '/template-acceptance';

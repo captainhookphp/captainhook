@@ -1,5 +1,9 @@
 <?php
 
+namespace CaptainHook\App\Test\Acceptance;
+
+use AcceptanceTester;
+
 class InstallCest
 {
     public function gitHooksSuccessfullyInstallWithComposerUpdate(AcceptanceTester $I)

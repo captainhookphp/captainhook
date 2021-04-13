@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
+
+use _generated\AcceptanceTesterActions;
 use Codeception\Actor;
 use Codeception\PHPUnit\TestCase;
 use Codeception\Scenario;
@@ -8,7 +13,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class AcceptanceTester extends Actor
 {
-    use _generated\AcceptanceTesterActions;
+    use AcceptanceTesterActions;
 
     /**
      * @var Filesystem
