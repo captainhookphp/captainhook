@@ -11,6 +11,9 @@
 
 namespace CaptainHook\App\Runner\Action\Cli\Command;
 
+use CaptainHook\App\Config;
+use SebastianFeldmann\Git\Repository;
+
 /**
  * Interface Placeholder
  *
@@ -21,6 +24,14 @@ namespace CaptainHook\App\Runner\Action\Cli\Command;
  */
 interface Placeholder
 {
+    /**
+     * Placeholder constructor
+     *
+     * @param \CaptainHook\App\Config           $config
+     * @param \SebastianFeldmann\Git\Repository $repository
+     */
+    public function __construct(Config $config, Repository $repository);
+
     /**
      * Return the replacement value for this placeholder
      *

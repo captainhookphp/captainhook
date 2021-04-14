@@ -11,23 +11,26 @@
 
 namespace CaptainHook\App\Runner\Action\Cli\Command\Placeholder;
 
+use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Mockery as AppMockery;
 use PHPUnit\Framework\TestCase;
 
 class StagedFilesTest extends TestCase
 {
     use AppMockery;
+    use ConfigMockery;
 
     /**
      * Tests StagedFiles::replacement
      */
     public function testCustomSeparator(): void
     {
-        $repo  = $this->createRepositoryMock();
-        $index = $this->createGitIndexOperator(['file1.php', 'file2.php', 'README.md']);
+        $config = $this->createConfigMock();
+        $repo   = $this->createRepositoryMock();
+        $index  = $this->createGitIndexOperator(['file1.php', 'file2.php', 'README.md']);
         $repo->expects($this->once())->method('getIndexOperator')->willReturn($index);
 
-        $placeholder = new StagedFiles($repo);
+        $placeholder = new StagedFiles($config, $repo);
         $command     = $placeholder->replacement(['separated-by' => ', ']);
 
         $this->assertEquals('file1.php, file2.php, README.md', $command);
@@ -38,14 +41,47 @@ class StagedFilesTest extends TestCase
      */
     public function testOfType(): void
     {
-        $repo  = $this->createRepositoryMock();
-        $index = $this->createGitIndexOperator(['file1.php', 'file2.php', 'README.md']);
+        $config = $this->createConfigMock();
+        $repo   = $this->createRepositoryMock();
+        $index  = $this->createGitIndexOperator(['file1.php', 'file2.php', 'README.md']);
         $repo->expects($this->once())->method('getIndexOperator')->willReturn($index);
         $index->expects($this->once())->method('getStagedFilesOfType')->willReturn(['file1.php', 'file2.php']);
 
-        $placeholder = new StagedFiles($repo);
+        $placeholder = new StagedFiles($config, $repo);
         $command     = $placeholder->replacement(['of-type' => 'php']);
 
         $this->assertEquals('file1.php file2.php', $command);
+    }
+
+    /**
+     * Tests StagedFiles::replacement
+     */
+    public function testFilterByDirectory(): void
+    {
+        $config = $this->createConfigMock();
+        $repo   = $this->createRepositoryMock();
+        $index  = $this->createGitIndexOperator(['foo/file1.php', 'foo/file2.php', 'README.md']);
+        $repo->expects($this->once())->method('getIndexOperator')->willReturn($index);
+
+        $placeholder = new StagedFiles($config, $repo);
+        $command     = $placeholder->replacement(['in-dir' => 'foo/']);
+
+        $this->assertEquals('foo/file1.php foo/file2.php', $command);
+    }
+
+    /**
+     * Tests StagedFiles::replacement
+     */
+    public function testReplaceWith(): void
+    {
+        $config = $this->createConfigMock();
+        $repo   = $this->createRepositoryMock();
+        $index  = $this->createGitIndexOperator(['foo/file1.php', 'foo/file2.php', 'README.md']);
+        $repo->expects($this->once())->method('getIndexOperator')->willReturn($index);
+
+        $placeholder = new StagedFiles($config, $repo);
+        $command     = $placeholder->replacement(['replace' => 'foo/', 'with' => 'bar/']);
+
+        $this->assertEquals('bar/file1.php bar/file2.php README.md', $command);
     }
 }

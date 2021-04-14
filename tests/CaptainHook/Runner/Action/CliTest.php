@@ -30,13 +30,14 @@ class CliTest extends TestCase
      */
     public function testExecuteSuccess(): void
     {
-        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
 
         $args   = [];
         $io     = $this->createIOMock();
         $repo   = $this->createRepositoryMock();
+        $config = $this->createConfigMock();
         $action = $this->createActionConfigMock();
         $cmd    = CH_PATH_FILES . '/bin/success';
 
@@ -45,7 +46,7 @@ class CliTest extends TestCase
         $action->expects($this->once())->method('getAction')->willReturn($cmd);
 
         $cli = new Cli();
-        $cli->execute($io, $repo, $action);
+        $cli->execute($config, $io, $repo, $action);
     }
 
     /**
@@ -55,13 +56,14 @@ class CliTest extends TestCase
      */
     public function testExecuteSuccessWithReplacements(): void
     {
-        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
 
         $args   = ['file' => 'bin', 'mode' => 'success'];
         $io     = $this->createIOMock();
         $repo   = $this->createRepositoryMock();
+        $config = $this->createConfigMock();
         $action = $this->createActionConfigMock();
         $cmd    = CH_PATH_FILES . '/{$FILE}/{$MODE}';
 
@@ -70,7 +72,7 @@ class CliTest extends TestCase
         $action->expects($this->once())->method('getAction')->willReturn($cmd);
 
         $cli = new Cli();
-        $cli->execute($io, $repo, $action);
+        $cli->execute($config, $io, $repo, $action);
     }
 
     /**
@@ -85,6 +87,7 @@ class CliTest extends TestCase
         $args   = [];
         $io     = $this->createIOMock();
         $repo   = $this->createRepositoryMock();
+        $config = $this->createConfigMock();
         $action = $this->createActionConfigMock();
         $cmd    = CH_PATH_FILES . '/bin/failure';
 
@@ -92,6 +95,6 @@ class CliTest extends TestCase
         $action->expects($this->once())->method('getAction')->willReturn($cmd);
 
         $cli = new Cli();
-        $cli->execute($io, $repo, $action);
+        $cli->execute($config, $io, $repo, $action);
     }
 }

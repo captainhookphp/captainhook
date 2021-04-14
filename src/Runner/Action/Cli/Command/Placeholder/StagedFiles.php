@@ -11,9 +11,6 @@
 
 namespace CaptainHook\App\Runner\Action\Cli\Command\Placeholder;
 
-use CaptainHook\App\Runner\Action\Cli\Command\Placeholder;
-use SebastianFeldmann\Git\Repository;
-
 /**
  * Class UpdatedFiles
  *
@@ -22,25 +19,8 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.0.0
  */
-class StagedFiles implements Placeholder
+class StagedFiles extends Foundation
 {
-    /**
-     * Git repository
-     *
-     * @var \SebastianFeldmann\Git\Repository
-     */
-    private $repository;
-
-    /**
-     * UpdatedFiles constructor
-     *
-     * @param \SebastianFeldmann\Git\Repository $repository
-     */
-    public function __construct(Repository $repository)
-    {
-        $this->repository = $repository;
-    }
-
     /**
      * @param  array $options
      * @return string
@@ -51,6 +31,55 @@ class StagedFiles implements Placeholder
                ? $this->repository->getIndexOperator()->getStagedFilesOfType($options['of-type'])
                : $this->repository->getIndexOperator()->getStagedFiles();
 
+        $files = $this->filterByDirectory($files, $options);
+        $files = $this->replaceInAll($files, $options);
+
         return implode(($options['separated-by'] ?? ' '), $files);
+    }
+
+    /**
+     * Filter staged files by directory
+     *
+     * @param array $files
+     * @param array $options
+     * @return array
+     */
+    private function filterByDirectory(array $files, array $options): array
+    {
+        if (!isset($options['in-dir'])) {
+            return $files;
+        }
+
+        $directory = $options['in-dir'];
+        $filtered  = [];
+        foreach ($files as $file) {
+            if (strpos($file, $directory, 0) === 0) {
+                $filtered[] = $file;
+            }
+        }
+
+        return $filtered;
+    }
+
+    /**
+     * Run search replace for all files
+     *
+     * @param  array $files
+     * @param  array $options
+     * @return array
+     */
+    private function replaceInAll(array $files, array $options): array
+    {
+        if (!isset($options['replace'])) {
+            return $files;
+        }
+
+        $search  = $options['replace'];
+        $replace = $options['with'] ?? '';
+
+        foreach ($files as $index => $file) {
+            $files[$index] = str_replace($search, $replace, $file);
+        }
+        return $files;
     }
 }

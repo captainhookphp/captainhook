@@ -31,17 +31,18 @@ class Cli
     /**
      * Execute the configured action
      *
-     * @param  \CaptainHook\App\Console\IO       $io
-     * @param  \SebastianFeldmann\Git\Repository $repository
-     * @param  \CaptainHook\App\Config\Action    $action
+     * @param \CaptainHook\App\Config           $config
+     * @param \CaptainHook\App\Console\IO       $io
+     * @param \SebastianFeldmann\Git\Repository $repository
+     * @param \CaptainHook\App\Config\Action    $action
      * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    public function execute(IO $io, Repository $repository, Config\Action $action): void
+    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
     {
         $processor    = new Processor();
         $cmdOriginal  = $action->getAction();
-        $cmdFormatted = $this->formatCommand($repository, $cmdOriginal, $io->getArguments());
+        $cmdFormatted = $this->formatCommand($config, $repository, $cmdOriginal, $io->getArguments());
 
         // if any placeholders got replaced output the finally executed command
         if ($cmdFormatted !== $cmdOriginal) {
@@ -76,14 +77,15 @@ class Cli
      *  - post-checkout      => PREVIOUSHEAD, NEWHEAD, MODE
      *  - post-merge         => SQUASH
      *
-     * @param  \SebastianFeldmann\Git\Repository $repository
-     * @param  string                            $command
-     * @param  array<string>                     $args
+     * @param \CaptainHook\App\Config           $config
+     * @param \SebastianFeldmann\Git\Repository $repository
+     * @param string                            $command
+     * @param array<string>                     $args
      * @return string
      */
-    protected function formatCommand(Repository $repository, string $command, array $args): string
+    protected function formatCommand(Config $config, Repository $repository, string $command, array $args): string
     {
-        $formatter = new Formatter($repository, $args);
+        $formatter = new Formatter($config, $repository, $args);
         return $formatter->format($command);
     }
 }

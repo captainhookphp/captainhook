@@ -11,6 +11,7 @@
 
 namespace CaptainHook\App\Runner\Action\Cli\Command;
 
+use CaptainHook\App\Config;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -36,8 +37,16 @@ class Formatter
      * @var array<string, string>
      */
     private static $placeholders = [
-        'staged_files' => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\StagedFiles'
+        'staged_files' => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\StagedFiles',
+        'config'       => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\Config'
     ];
+
+    /**
+     * CaptainHook configuration
+     *
+     * @var \CaptainHook\App\Config
+     */
+    private $config;
 
     /**
      * Git repository
@@ -59,8 +68,9 @@ class Formatter
      * @param \SebastianFeldmann\Git\Repository $repository
      * @param array<string, string>             $arguments
      */
-    public function __construct(Repository $repository, array $arguments)
+    public function __construct(Config $config, Repository $repository, array $arguments)
     {
+        $this->config     = $config;
         $this->repository = $repository;
         $this->arguments  = $arguments;
     }
@@ -149,7 +159,7 @@ class Formatter
     private function createPlaceholder(string $placeholder): Placeholder
     {
         $class = self::$placeholders[$placeholder];
-        return new $class($this->repository);
+        return new $class($this->config, $this->repository);
     }
 
     /**

@@ -233,7 +233,7 @@ abstract class Hook extends RepositoryAware
         // cli hooks have to handle sync stuff by them self
         // so no 'beforeAction' or 'afterAction' is called here
         $runner = new Action\Cli();
-        $runner->execute($this->io, $this->repository, $action);
+        $runner->execute($this->config, $this->io, $this->repository, $action);
     }
 
     /**
