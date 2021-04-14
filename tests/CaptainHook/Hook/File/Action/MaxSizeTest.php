@@ -16,6 +16,7 @@ use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hooks;
 use CaptainHook\App\Mockery;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class MaxSizeTest extends TestCase
@@ -69,6 +70,27 @@ class MaxSizeTest extends TestCase
         $repo->expects($this->once())->method('getIndexOperator')->willReturn($operator);
 
         $action   = new Config\Action(MaxSize::class, ['maxSize' => '1B']);
+        $standard = new MaxSize();
+        $standard->execute($config, $io, $repo, $action);
+    }
+
+    /**
+     * Tests MaxSize::execute
+     *
+     * @throws \Exception
+     */
+    public function testInvalidSize(): void
+    {
+        $this->expectException(Exception::class);
+
+        $io       = new NullIO();
+        $config   = new Config(CH_PATH_FILES . '/captainhook.json');
+        $repo     = $this->createRepositoryMock();
+        $files    = [CH_PATH_FILES . '/config/empty.json', 'fooBarBaz'];
+        $operator = $this->createGitIndexOperator($files);
+        $repo->expects($this->once())->method('getIndexOperator')->willReturn($operator);
+
+        $action   = new Config\Action(MaxSize::class, ['maxSize' => '1X']);
         $standard = new MaxSize();
         $standard->execute($config, $io, $repo, $action);
     }
