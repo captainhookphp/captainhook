@@ -40,6 +40,12 @@ jobs:
       - name: "Install dependencies"
         run: "composer install --prefer-dist --no-dev --no-interaction --no-progress"
 
+      - name: Force Symfony process version 4
+        run: composer require symfony/process ^4.0
+
+      - name: Force Symfony console version 4
+        run: composer require symfony/console ^4.0
+
       - name: "Install tooling"
         run: "GITHUB_AUTH_TOKEN=${{ secrets.GITHUB_API_TOKEN }} tools/phive --no-progress --home ./.phive install --force-accept-unsigned --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192,8E730BA25823D8B5,CF1A108D0E7AE720"
 
