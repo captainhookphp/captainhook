@@ -16,6 +16,9 @@ jobs:
         include:
           - php: "8.0"
             composeroptions: "--ignore-platform-req=php"
+    env:
+      PHAR: "build/phar/captainhook.phar"
+
     steps:
     - uses: actions/checkout@master
 
@@ -49,3 +52,15 @@ jobs:
 
     - name: Static code analysis
       run: tools/phpstan analyse
+
+    - name: Validate configuration for humbug/box
+      run: tools/box validate box.json
+
+    - name: Compile phar with humbug/box
+      run: tools/box compile
+
+    - name: Show info about generated phar with humbug/box
+      run: tools/box info ${{ env.PHAR }}
+
+    - name: Run phar
+      run: ${{ env.PHAR }} --help
