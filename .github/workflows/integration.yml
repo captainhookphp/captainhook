@@ -53,6 +53,9 @@ jobs:
     - name: Static code analysis
       run: tools/phpstan analyse
 
+    - name: Force install Symfony 3
+      run: composer require symfony/console ^3.0 symfony/process ^3.0
+
     - name: Validate configuration for humbug/box
       run: tools/box validate box.json
 
