@@ -67,7 +67,11 @@
         </tr>
         <tr>
           <td><a href="#file-staged-of-type">\CaptainHook\App\Hook\Condition\FileStaged\OfType</a></td>
-          <td>Check is a file of a given type is staged for commit</td>
+          <td>Check if a file of a given type is staged for commit</td>
+        </tr>
+        <tr>
+          <td><a href="#file-staged-in-directory">\CaptainHook\App\Hook\Condition\FileStaged\InDirectory</a></td>
+          <td>Check if a file in a directory is changed</td>
         </tr>
         <tr>
           <th colspan="2">post-checkout / post-merge</th>
@@ -79,6 +83,17 @@
         <tr>
           <td><a href="#file-staged-any">\CaptainHook\App\Hook\Condition\FileChange\Any</a></td>
           <td>Check if <strong>any</strong> of the configured files is changed</td>
+        </tr>
+        <tr>
+          <th colspan="2">logic conditions</th>
+        </tr>
+        <tr>
+          <td><a href="#logic-and">\CaptainHook\App\Hook\Condition\Logic\LogicAnd</a></td>
+          <td>Combine multiple conditions. Only if all conditions apply the action will be executed</td>
+        </tr>
+        <tr>
+          <td><a href="#logic-or">\CaptainHook\App\Hook\Condition\Logic\LogicOr</a></td>
+          <td>Combine multiple conditions. If one condition applies the action will be executed</td>
         </tr>
       </table>
 
@@ -147,6 +162,20 @@
   ]
 }</code></pre>
 
+      <h3 id="file-staged-in-directory">FileStaged\InDirectory</h3>
+      <p><em class="hl">pre-commit</em></p>
+      <p>Expecting just the type of file you want to watch as string.</p>
+      <pre><code class="javascript">{
+  "conditions": [
+    {
+      "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\InDirectory",
+      "args": [
+        "src/Foo/"
+      ]
+    }
+  ]
+}</code></pre>
+
       <h3 id="file-changed-all">FileChanged\All</h3>
       <p><em class="hl">post-checkout</em> <em class="hl">post-merge</em></p>
       <p>Expecting a list of file names or pattern.</p>
@@ -171,6 +200,48 @@
       "args": [
         ["foo.html", "bar.html", "*.php"]
       ]
+    }
+  ]
+}</code></pre>
+
+      <h3 id="logic-and">Logic\LogicAnd</h3>
+      <p>Combining multiple actions. All have to pass to execute the action.</p>
+      <pre><code class="javascript">{
+  "conditions": [
+    {
+      "exec": "and",
+      "args": [{
+        "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\InDirectory",
+        "args": [
+          ["src/new"]
+        ]
+      },{
+        "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
+        "args": [
+          ["php"]
+        ]
+      }]
+    }
+  ]
+}</code></pre>
+
+      <h3 id="logic-or">Logic\LogicOr</h3>
+      <p>Combining multiple actions. Only one condition must apply to execute the action.</p>
+      <pre><code class="javascript">{
+  "conditions": [
+    {
+      "exec": "or",
+      "args": [{
+        "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\InDirectory",
+        "args": [
+          ["src/new"]
+        ]
+      },{
+        "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
+        "args": [
+          ["php"]
+        ]
+      }]
     }
   ]
 }</code></pre>
