@@ -175,6 +175,19 @@ class FactoryTest extends TestCase
      *
      * @throws \Exception
      */
+    public function testCreateWithNestedAndConditions(): void
+    {
+        $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-nested-and-conditions.json'));
+
+        $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
+        $this->assertCount(1, $config->getHookConfig('pre-commit')->getActions());
+    }
+
+    /**
+     * Tests Factory::create
+     *
+     * @throws \Exception
+     */
     public function testWithMainConfigurationOverridingInclude(): void
     {
         $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-disabled-action.json'));

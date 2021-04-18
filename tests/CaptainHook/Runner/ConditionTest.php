@@ -11,12 +11,13 @@
 
 namespace CaptainHook\App\Runner;
 
-use CaptainHook\App\Hook\Condition\FileChanged\Any;
-use Exception;
-use PHPUnit\Framework\TestCase;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
+use CaptainHook\App\Hook\Condition\FileChanged\Any;
+use CaptainHook\App\Hook\Condition\FileStaged;
 use CaptainHook\App\Mockery as CHMockery;
+use Exception;
+use PHPUnit\Framework\TestCase;
 
 class ConditionTest extends TestCase
 {
@@ -84,7 +85,7 @@ class ConditionTest extends TestCase
      */
     public function testDoesConditionApplyCli(): void
     {
-        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
 
@@ -94,6 +95,73 @@ class ConditionTest extends TestCase
         $conditionConfig = new Config\Condition(CH_PATH_FILES . '/bin/phpunit');
 
         $runner = new Condition($io, $repository, 'pre-commit');
+        $this->assertTrue($runner->doesConditionApply($conditionConfig));
+    }
+
+    /**
+     * Test Condition::doesConditionApply
+     */
+    public function testAndConditionIsCorrectlyInterpreted(): void
+    {
+        $io = $this->createIOMock();
+        $io->expects($this->exactly(4))->method('getArgument')->willReturn('');
+
+        $operator   = $this->createGitDiffOperator(['fiz.php', 'baz.php', 'foo.php']);
+        $repository = $this->createRepositoryMock('');
+        $repository->expects($this->exactly(2))->method('getDiffOperator')->willReturn($operator);
+
+        $conditionConfig = new Config\Condition(
+            'and',
+            [[
+                 'exec' => '\\' . Any::class,
+                 'args' => [
+                     ['foo.php', 'bar.php']
+                 ]
+             ], [
+                 'exec' => '\\' . Any::class,
+                 'args' => [
+                     ['foo.php', 'bar.php']
+                 ]
+             ]]
+        );
+
+        $runner = new Condition($io, $repository, 'post-checkout');
+        $this->assertTrue($runner->doesConditionApply($conditionConfig));
+    }
+
+    /**
+     * Test Condition::doesConditionApply
+     */
+    public function testOrConditionIsCorrectlyInterpreted(): void
+    {
+        $io = $this->createIOMock();
+        $io->expects($this->exactly(4))->method('getArgument')->willReturn('');
+
+        $operator   = $this->createGitDiffOperator(['fiz.php', 'baz.php', 'foo.php']);
+        $repository = $this->createRepositoryMock('');
+        $repository->expects($this->exactly(2))->method('getDiffOperator')->willReturn($operator);
+
+        $conditionConfig = new Config\Condition(
+            'or',
+            [[
+                 'exec' => '\\' . FileStaged\All::class,
+                 'args' => [
+                     ['foo.php', 'bar.php']
+                 ]
+             ], [
+                 'exec' => '\\' . Any::class,
+                 'args' => [
+                     ['buz.php', 'bar.php']
+                 ]
+             ], [
+                 'exec' => '\\' . Any::class,
+                 'args' => [
+                     ['foo.php', 'bar.php']
+                 ]
+             ]]
+        );
+
+        $runner = new Condition($io, $repository, 'post-checkout');
         $this->assertTrue($runner->doesConditionApply($conditionConfig));
     }
 }

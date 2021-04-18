@@ -92,6 +92,10 @@ class Condition
      */
     private function createCondition(Config\Condition $config): ConditionInterface
     {
+        if ($this->isLogicCondition($config)) {
+            return $this->createLogicCondition($config);
+        }
+
         if (Util::getExecType($config->getExec()) === 'cli') {
             return new Cli(new Processor(), $config->getExec());
         }
@@ -103,6 +107,26 @@ class Condition
         return new $class(...$config->getArgs());
     }
 
+    /**
+     * Create a logic condition with configures sub conditions
+     *
+     * @param  \CaptainHook\App\Config\Condition $config
+     * @return \CaptainHook\App\Hook\Condition
+     */
+    private function createLogicCondition(Config\Condition $config): ConditionInterface
+    {
+        $class      = '\\CaptainHook\\App\\Hook\\Condition\\Logic\\Logic' . ucfirst(strtolower($config->getExec()));
+        $conditions = [];
+        foreach ($config->getArgs() as $condition) {
+            $currentCondition = $this->createCondition(new Config\Condition($condition['exec'], $condition['args']));
+            if (!$this->isApplicable($currentCondition)) {
+                $this->io->write('Condition skipped due to hook constraint', true, IO::VERBOSE);
+                continue;
+            }
+            $conditions[] = $currentCondition;
+        }
+        return $class::fromConditionsArray($conditions);
+    }
 
     /**
      * Make sure the condition can be used during this hook
@@ -116,5 +140,16 @@ class Condition
             return $condition->getRestriction()->isApplicableFor($this->hook);
         }
         return true;
+    }
+
+    /**
+     * Is the condition a logic 'AND' or 'OR' condition
+     *
+     * @param \CaptainHook\App\Config\Condition $config
+     * @return bool
+     */
+    private function isLogicCondition(Config\Condition $config): bool
+    {
+        return in_array(strtolower($config->getExec()), ['and', 'or']);
     }
 }
