@@ -32,21 +32,22 @@ class Formatter
     private static $cache = [];
 
     /**
-     * List of available placeholders
-     *
-     * @var array<string, string>
-     */
-    private static $placeholders = [
-        'staged_files' => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\StagedFiles',
-        'config'       => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\Config'
-    ];
-
-    /**
      * CaptainHook configuration
      *
      * @var \CaptainHook\App\Config
      */
     private $config;
+
+    /**
+     * List of available placeholders
+     *
+     * @var array<string, string>
+     */
+    private static $placeholders = [
+        'config'       => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\Config',
+        'env'          => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\Env',
+        'staged_files' => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\StagedFiles'
+    ];
 
     /**
      * Git repository
