@@ -11,11 +11,19 @@
 
 namespace CaptainHook\App\Runner;
 
+use CaptainHook\App\Config\Mockery as ConfigMockery;
+use CaptainHook\App\Console\IO\Mockery as IOMockery;
+use CaptainHook\App\Hooks;
+use CaptainHook\App\Mockery as CHMockery;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
 class HookTest extends TestCase
 {
+    use IOMockery;
+    use ConfigMockery;
+    use CHMockery;
+    
     /**
      * Tests Hook::getActionRunner
      */
@@ -36,5 +44,18 @@ class HookTest extends TestCase
         $this->expectException(Exception::class);
 
         Hook::getExecMethod('foo');
+    }
+
+    public function testGetName(): void
+    {
+        $io = $this->createIOMock();
+        $config = $this->createConfigMock();
+        $repo = $this->createRepositoryMock();
+
+        $runner = new class($io, $config, $repo) extends Hook {
+            protected $hook = Hooks::PRE_COMMIT;
+        };
+
+        $this->assertSame('pre-commit', $runner->getName());
     }
 }

@@ -37,6 +37,16 @@ abstract class Hook extends RepositoryAware
     protected $hook;
 
     /**
+     * Return this hook's name.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->hook;
+    }
+
+    /**
      * Execute stuff before executing any actions
      *
      * @return void
