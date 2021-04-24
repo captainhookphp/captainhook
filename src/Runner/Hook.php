@@ -37,6 +37,13 @@ abstract class Hook extends RepositoryAware
     protected $hook;
 
     /**
+     * Set to `true` to skip processing this hook's actions.
+     *
+     * @var bool
+     */
+    private $skipActions = false;
+
+    /**
      * Return this hook's name.
      *
      * @return string
@@ -149,6 +156,33 @@ abstract class Hook extends RepositoryAware
     }
 
     /**
+     * Returns `true` if something has indicated that the hook should skip all
+     * remaining actions; pass a boolean value to toggle this
+     *
+     * There may be times you want to conditionally skip all actions, based on
+     * logic in {@see beforeHook()}. Other times, you may wish to skip the rest
+     * of the actions based on some condition of the current action.
+     *
+     * - To skip all actions for a hook, set this to `true`
+     *   in {@see beforeHook()}.
+     * - To skip the current action and all remaining actions, set this
+     *   to `true` in {@see beforeAction()}.
+     * - To run the current action but skip all remaining actions, set this
+     *   to `true` in {@see afterAction()}.
+     *
+     * @param bool|null $shouldSkip
+     * @return bool
+     */
+    public function shouldSkipActions(?bool $shouldSkip = null): bool
+    {
+        if ($shouldSkip !== null) {
+            $this->skipActions = $shouldSkip;
+        }
+
+        return $this->skipActions;
+    }
+
+    /**
      * Return all the actions to execute
      *
      * Returns all actions from the triggered hook but also any actions of virtual hooks that might be triggered.
@@ -232,6 +266,10 @@ abstract class Hook extends RepositoryAware
      */
     private function handleAction(Config\Action $action): void
     {
+        if ($this->shouldSkipActions()) {
+            return;
+        }
+
         if (!$this->doConditionsApply($action->getConditions())) {
             $this->io->write(['', 'Action: <comment>' . $action->getAction() . '</comment>'], true, IO::VERBOSE);
             $this->io->write('Skipped due to unfulfilled conditions', true, IO::VERBOSE);
@@ -241,7 +279,16 @@ abstract class Hook extends RepositoryAware
         $this->io->write(['', 'Action: <comment>' . $action->getAction() . '</comment>'], true);
 
         $execMethod = self::getExecMethod(Util::getExecType($action->getAction()));
+        $this->beforeAction();
+
+        // The beforeAction() method may indicate that the current and all
+        // remaining actions should be skipped. If so, return here.
+        if ($this->shouldSkipActions()) {
+            return;
+        }
+
         $this->{$execMethod}($action);
+        $this->afterAction();
     }
 
     /**
@@ -253,10 +300,8 @@ abstract class Hook extends RepositoryAware
      */
     private function executePhpAction(Config\Action $action): void
     {
-        $this->beforeAction();
         $runner = new Action\PHP($this->hook);
         $runner->execute($this->config, $this->io, $this->repository, $action);
-        $this->afterAction();
     }
 
     /**

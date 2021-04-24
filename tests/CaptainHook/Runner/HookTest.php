@@ -58,4 +58,47 @@ class HookTest extends TestCase
 
         $this->assertSame('pre-commit', $runner->getName());
     }
+
+    public function testShouldSkipActionsIsFalseByDefault(): void
+    {
+        $io = $this->createIOMock();
+        $config = $this->createConfigMock();
+        $repo = $this->createRepositoryMock();
+
+        $runner = new class($io, $config, $repo) extends Hook {
+            protected $hook = Hooks::PRE_COMMIT;
+        };
+
+        $this->assertFalse($runner->shouldSkipActions());
+    }
+
+    public function testShouldSkipActionsCanBeSetToTrue(): void
+    {
+        $io = $this->createIOMock();
+        $config = $this->createConfigMock();
+        $repo = $this->createRepositoryMock();
+
+        $runner = new class($io, $config, $repo) extends Hook {
+            protected $hook = Hooks::PRE_COMMIT;
+        };
+
+        $this->assertTrue($runner->shouldSkipActions(true));
+        $this->assertTrue($runner->shouldSkipActions());
+    }
+
+    public function testShouldSkipActionsCanBeSetToFalse(): void
+    {
+        $io = $this->createIOMock();
+        $config = $this->createConfigMock();
+        $repo = $this->createRepositoryMock();
+
+        $runner = new class($io, $config, $repo) extends Hook {
+            protected $hook = Hooks::PRE_COMMIT;
+        };
+
+        $runner->shouldSkipActions(true);
+
+        $this->assertFalse($runner->shouldSkipActions(false));
+        $this->assertFalse($runner->shouldSkipActions());
+    }
 }
