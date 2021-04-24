@@ -58,7 +58,7 @@ class Plugin
         }
 
         $this->pluginClass = $pluginClass;
-        $this->plugin = new $pluginClass;
+        $this->plugin = new $pluginClass();
         $this->setupOptions($options);
     }
 

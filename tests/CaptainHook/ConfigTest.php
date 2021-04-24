@@ -208,10 +208,12 @@ class ConfigTest extends TestCase
 
     public function testGetPluginsReturnsArrayOfPlugins(): void
     {
-        $plugin1 = new class implements CaptainHookPlugin {};
+        $plugin1 = new class implements CaptainHookPlugin {
+        };
         $plugin1Name = get_class($plugin1);
 
-        $plugin2 = new class implements CaptainHookPlugin {};
+        $plugin2 = new class implements CaptainHookPlugin {
+        };
         $plugin2Name = get_class($plugin2);
 
         $config = new Config('foo.json', true, [

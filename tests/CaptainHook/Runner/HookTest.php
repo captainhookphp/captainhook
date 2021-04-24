@@ -60,7 +60,7 @@ class HookTest extends TestCase
         $config = $this->createConfigMock();
         $repo = $this->createRepositoryMock();
 
-        $runner = new class($io, $config, $repo) extends Hook {
+        $runner = new class ($io, $config, $repo) extends Hook {
             protected $hook = Hooks::PRE_COMMIT;
         };
 
@@ -73,7 +73,7 @@ class HookTest extends TestCase
         $config = $this->createConfigMock();
         $repo = $this->createRepositoryMock();
 
-        $runner = new class($io, $config, $repo) extends Hook {
+        $runner = new class ($io, $config, $repo) extends Hook {
             protected $hook = Hooks::PRE_COMMIT;
         };
 
@@ -86,7 +86,7 @@ class HookTest extends TestCase
         $config = $this->createConfigMock();
         $repo = $this->createRepositoryMock();
 
-        $runner = new class($io, $config, $repo) extends Hook {
+        $runner = new class ($io, $config, $repo) extends Hook {
             protected $hook = Hooks::PRE_COMMIT;
         };
 
@@ -100,8 +100,7 @@ class HookTest extends TestCase
         $config = $this->createConfigMock();
         $repo = $this->createRepositoryMock();
 
-        $runner = new class($io, $config, $repo) extends
-            Hook {
+        $runner = new class ($io, $config, $repo) extends Hook {
             protected $hook = Hooks::PRE_COMMIT;
         };
 
@@ -150,7 +149,7 @@ class HookTest extends TestCase
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->atLeast(1))->method('write');
 
-        $runner = new class($io, $config, $repo) extends Hook {
+        $runner = new class ($io, $config, $repo) extends Hook {
             protected $hook = Hooks::PRE_COMMIT;
         };
         $runner->run();
@@ -192,7 +191,7 @@ class HookTest extends TestCase
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->atLeast(1))->method('write');
 
-        $runner = new class($io, $config, $repo) extends Hook {
+        $runner = new class ($io, $config, $repo) extends Hook {
             protected $hook = Hooks::PRE_COMMIT;
         };
         $runner->run();
@@ -233,7 +232,7 @@ class HookTest extends TestCase
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->atLeast(1))->method('write');
 
-        $runner = new class($io, $config, $repo) extends Hook {
+        $runner = new class ($io, $config, $repo) extends Hook {
             protected $hook = Hooks::PRE_COMMIT;
         };
         $runner->run();

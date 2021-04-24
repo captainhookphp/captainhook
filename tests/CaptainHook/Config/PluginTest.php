@@ -24,7 +24,8 @@ class PluginTest extends TestCase
 
     protected function setUp(): void
     {
-        $plugin = new class implements CaptainHookPlugin {};
+        $plugin = new class implements CaptainHookPlugin {
+        };
         $this->class = get_class($plugin);
     }
 

@@ -118,7 +118,7 @@ class PreserveWorkingTreeTest extends TestCase
         $this->statusOperator->expects($this->never())->method('restoreWorkingTree');
         $this->diffOperator->expects($this->never())->method('applyPatches');
 
-        $hook = new class($io, $config, $this->repo) extends Hook {
+        $hook = new class ($io, $config, $this->repo) extends Hook {
             protected $hook = Hooks::PRE_COMMIT;
         };
 
@@ -160,7 +160,7 @@ class PreserveWorkingTreeTest extends TestCase
         $this->statusOperator->expects($this->never())->method('restoreWorkingTree');
         $this->diffOperator->expects($this->never())->method('applyPatches');
 
-        $hook = new class($io, $config, $this->repo) extends Hook {
+        $hook = new class ($io, $config, $this->repo) extends Hook {
             protected $hook = Hooks::PRE_COMMIT;
         };
 
@@ -220,7 +220,7 @@ class PreserveWorkingTreeTest extends TestCase
             }))
             ->willReturn(true);
 
-        $hook = new class($io, $config, $this->repo) extends Hook {
+        $hook = new class ($io, $config, $this->repo) extends Hook {
             protected $hook = Hooks::PRE_COMMIT;
         };
 
@@ -275,7 +275,7 @@ class PreserveWorkingTreeTest extends TestCase
             }))
             ->willReturnOnConsecutiveCalls(false, false, true);
 
-        $hook = new class($io, $config, $this->repo) extends Hook {
+        $hook = new class ($io, $config, $this->repo) extends Hook {
             protected $hook = Hooks::PRE_COMMIT;
         };
 
@@ -300,7 +300,7 @@ class PreserveWorkingTreeTest extends TestCase
         $this->statusOperator->expects($this->never())->method('restoreWorkingTree');
         $this->diffOperator->expects($this->never())->method('applyPatches');
 
-        $hook = new class($io, $config, $this->repo) extends Hook {
+        $hook = new class ($io, $config, $this->repo) extends Hook {
             protected $hook = Hooks::POST_CHECKOUT;
         };
 
