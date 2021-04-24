@@ -11,6 +11,8 @@
 
 namespace CaptainHook\App;
 
+use CaptainHook\App\Config\Plugin;
+use CaptainHook\App\Plugin\CaptainHook as CaptainHookPlugin;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -194,5 +196,57 @@ class ConfigTest extends TestCase
         $this->assertIsArray($json);
         $this->assertIsArray($json['config']);
         $this->assertEquals('foo', $json['config']['run-exec']);
+        $this->assertArrayNotHasKey('plugins', $json);
+    }
+
+    public function testGetPluginsReturnsEmptyArray(): void
+    {
+        $config = new Config('foo.json');
+
+        $this->assertSame([], $config->getPlugins());
+    }
+
+    public function testGetPluginsReturnsArrayOfPlugins(): void
+    {
+        $plugin1 = new class implements CaptainHookPlugin {};
+        $plugin1Name = get_class($plugin1);
+
+        $plugin2 = new class implements CaptainHookPlugin {};
+        $plugin2Name = get_class($plugin2);
+
+        $config = new Config('foo.json', true, [
+            'plugins' => [
+                [
+                    'plugin' => $plugin1Name,
+                    'options' => [
+                        'foo' => 'bar',
+                    ],
+                ],
+                [
+                    'plugin' => $plugin2Name,
+                ],
+            ],
+        ]);
+
+        $json = $config->getJsonData();
+
+        $this->assertIsArray($json);
+        $this->assertIsArray($json['config']);
+        $this->assertIsArray($json['config']['plugins']);
+        $this->assertCount(2, $config->getPlugins());
+        $this->assertContainsOnlyInstancesOf(Plugin::class, $config->getPlugins());
+        $this->assertSame(
+            [
+                [
+                    'plugin' => $plugin1Name,
+                    'options' => ['foo' => 'bar'],
+                ],
+                [
+                    'plugin' => $plugin2Name,
+                    'options' => [],
+                ],
+            ],
+            $json['config']['plugins']
+        );
     }
 }
