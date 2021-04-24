@@ -4,7 +4,13 @@
         "ansi-colors": true,
         "git-directory": ".git",
         "includes": [],
-        "run-mode": "local"
+        "run-mode": "local",
+        "plugins": [
+            {
+                "plugin": "\\CaptainHook\\App\\Plugin\\Runner\\PreserveWorkingTree",
+                "options": []
+            }
+        ]
     },
     "pre-commit": {
         "enabled": true,
