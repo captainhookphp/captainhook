@@ -50,8 +50,8 @@
         There are two ways of hooking your own PHP code in. Let's start with the simpler, jet not so powerful one.
       </p>
       <p>
-        If you want to leverage other peoples coding skills you can check the list of
-        available <a href="#plugins">plugins</a>.
+        If you want to leverage other people's coding skills you can check the list of
+        available <a href="#extensions">extensions</a>.
       </p>
       <h3 id="rules">Custom Rules</h3>
       <p>
@@ -319,13 +319,114 @@ class NotOnAnyWeekday implements Condition
   }
 }</code></pre>
 
-      <h3>Hook Constrained</h3>
+      <h3 id="plugins">Plugins</h3>
 
       <p>
-        It is possible that your <em>Actions</em> or <em>Conditions</em> are only applicable for certain hooks.
-        For example CaptainHooks commit message validation hooks are only applicable for the <em>commit-message</em>
-        hook. If you want to constrain your <em>Actions</em> or <em>Conditions</em> to specific hooks you can implement
-        the <em>Constrained</em> interface and implement the required <em>getRestrictions</em> method.
+        <em>Actions</em> and <em>Conditions</em> are suitable for most needs, but there may be times you need to
+        add more functionality to CaptainHook, such as performing tasks before or after a hook runs. CaptainHook's
+        plugin system provides this flexibility!
+      </p>
+
+      <p>
+        All CaptainHook plugins implement the <em class="hl">CaptainHook\App\Plugin\CaptainHook</em> interface. To use
+        a plugin, add it to the <em class="hl">plugins</em> array in your config. If a plugin requires options, you may
+        also provide those.
+      </p>
+
+      <pre><code class="javascript">{
+"config": {
+  "plugins": [
+    {
+      "plugin": "\\MyName\\GitHook\\MyPlugin",
+      "options": {
+        "myOption": true,
+        "stuff": "cool things"
+      }
+    }
+  ]
+}</code></pre>
+
+      <h4>Runner Plugins</h4>
+
+      <p>
+        Runner plugins are so-called because they execute during the hook runner stage of CaptainHook, allowing you to
+        do things before and after the hook runs, as well as before and after each action in the hook.
+      </p>
+
+      <p>
+        To create a runner plugin, implement the <em class="hl">CaptainHook\App\Plugin\Runner</em> interface.
+        Optionally, you may extend the <em class="hl">CaptainHook\App\Plugin\Runner\Base</em> abstract class, which
+        provides some basic functionality.
+      </p>
+
+      <p>
+        To see an example runner plugin, check out <em>CaptainHook\App\Plugin\Runner\PreserveWorkingTree</em>.
+      </p>
+
+      <pre><code class="php">&lt;?php
+
+namespace MyName\GitHook;
+
+use CaptainHook\App\Config;
+use CaptainHook\App\Plugin;
+use CaptainHook\App\Runner\Hook as RunnerHook;
+
+class MyPlugin extends Plugin\Runner\Base implements Plugin\Runner
+{
+    /**
+     * Runs before the hook.
+     *
+     * @param RunnerHook $hook This is the current hook that's running.
+     */
+    public function beforeHook(RunnerHook $hook): void
+    {
+        $stuff = $this->plugin->getOptions()->get('stuff');
+        $this->io->write("Do {$stuff} before {$hook->getName()} runs");
+    }
+
+    /**
+     * Runs before each action.
+     *
+     * @param RunnerHook $hook This is the current hook that's running.
+     * @param Config\Action $action This is the configuration for action that will
+     *                              run immediately following this method.
+     */
+    public function beforeAction(RunnerHook $hook, Config\Action $action): void
+    {
+        $this->io->write("Do stuff before action {$action->getAction()} runs");
+    }
+
+    /**
+     * Runs after each action.
+     *
+     * @param RunnerHook $hook This is the current hook that's running.
+     * @param Config\Action $action This is the configuration for action that just
+     *                              ran immediately before this method.
+     */
+    public function afterAction(RunnerHook $hook, Config\Action $action): void
+    {
+        $this->io->write("Do stuff after action {$action->getAction()} runs");
+    }
+
+    /**
+     * Runs after the hook.
+     *
+     * @param RunnerHook $hook This is the current hook that's running.
+     */
+    public function afterHook(RunnerHook $hook): void
+    {
+        $this->io->write("Do stuff after {$hook->getName()} runs");
+    }
+}</code></pre>
+
+      <h3 id="constrained">Hook Constrained</h3>
+
+      <p>
+        It is possible that your <em>Actions</em>, <em>Conditions</em>, or <em>Plugins</em> are only applicable for
+        certain hooks. For example CaptainHook's commit message validation hooks are only applicable for the
+        <em>commit-message</em> hook. If you want to constrain your <em>Actions</em>, <em>Conditions</em>, or
+        <em>Plugins</em> to specific hooks, you can implement the <em>Constrained</em> interface and implement the
+        required <em>getRestrictions</em> method.
       </p>
       <p>
         In the following example the condition will only be executed during <em>pre-commit</em> hooks.
@@ -366,16 +467,16 @@ class RandomFail implements Condition, Constrained
     }
 }</code></pre>
 
-      <h3 id="plugins">Plugins</h3>
+      <h3 id="extensions">Third-party Extensions</h3>
 
       <p>
-        Plugins are a composer installable packages of curated <em>CaptainHook</em> <em>Actions</em>, <em>Rules</em> or
-        <em>Conditions</em>. After installing a plugin via composer you should be able to reference those in your
-        <em>CaptainHook</em> configuration.
+        Third-party extensions are composer installable packages of curated <em>CaptainHook</em> <em>Actions</em>,
+        <em>Rules</em>, <em>Conditions</em>, or <em>Plugins</em>. After installing an extension via composer you should
+        be able to reference those in your <em>CaptainHook</em> configuration.
       </p>
 
       <p>
-        This is the list of know plugins in alphabetical order. If you want to add your plugin just open a pull
+        This is the list of known extensions in alphabetical order. If you want to add your extension just open a pull
         request on github or drop me a line via twitter. I will happily add it to the list.
       </p>
 
@@ -389,7 +490,7 @@ class RandomFail implements Condition, Constrained
       </ul>
 
       <p>
-        Thanks to all the plugin maintainers!
+        Thanks to all the extension maintainers!
       </p>
 
     </div>
