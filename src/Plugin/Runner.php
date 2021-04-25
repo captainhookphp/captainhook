@@ -24,53 +24,50 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.9.0.
  */
-abstract class Runner implements CaptainHook
+interface Runner extends CaptainHook
 {
     /**
-     * @var Config
+     * Configure the runner plugin.
+     *
+     * @param Config $config
+     * @param IO $io
+     * @param Repository $repository
+     * @param Config\Plugin $plugin
+     * @return void
      */
-    protected $config;
-
-    /**
-     * @var IO
-     */
-    protected $io;
-
-    /**
-     * @var Repository
-     */
-    protected $repository;
-
-    /**
-     * @var Config\Plugin
-     */
-    protected $plugin;
-
-    public function configure(Config $config, IO $io, Repository $repository, Config\Plugin $plugin): void
-    {
-        $this->config = $config;
-        $this->io = $io;
-        $this->repository = $repository;
-        $this->plugin = $plugin;
-    }
+    public function configure(Config $config, IO $io, Repository $repository, Config\Plugin $plugin): void;
 
     /**
      * Execute before all actions
+     *
+     * @param RunnerHook $hook
+     * @return void
      */
-    abstract public function beforeHook(RunnerHook $hook): void;
+    public function beforeHook(RunnerHook $hook): void;
 
     /**
      * Execute before each action
+     *
+     * @param RunnerHook $hook
+     * @param Config\Action $action
+     * @return void
      */
-    abstract public function beforeAction(RunnerHook $hook, Config\Action $action): void;
+    public function beforeAction(RunnerHook $hook, Config\Action $action): void;
 
     /**
      * Execute after each action
+     *
+     * @param RunnerHook $hook
+     * @param Config\Action $action
+     * @return void
      */
-    abstract public function afterAction(RunnerHook $hook, Config\Action $action): void;
+    public function afterAction(RunnerHook $hook, Config\Action $action): void;
 
     /**
      * Execute after all actions
+     *
+     * @param RunnerHook $hook
+     * @return void
      */
-    abstract public function afterHook(RunnerHook $hook): void;
+    public function afterHook(RunnerHook $hook): void;
 }

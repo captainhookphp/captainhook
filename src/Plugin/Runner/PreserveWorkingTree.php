@@ -26,7 +26,7 @@ use Symfony\Component\Filesystem\Filesystem;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.9.0.
  */
-class PreserveWorkingTree extends Plugin\Runner implements Plugin\CaptainHook
+class PreserveWorkingTree extends Base implements Plugin\Runner
 {
     /**
      * The name of the environment variable used to indicate the post-checkout
