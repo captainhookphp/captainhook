@@ -125,13 +125,15 @@ abstract class Hook extends RepositoryAware
 
         $actions = $this->getActionsToExecute($hookConfigs);
 
+        $this->beforeHook();
+
         // if no actions are configured do nothing
         if (count($actions) === 0) {
             $this->io->write(['', '<info>No actions to execute</info>'], true, IO::VERBOSE);
-            return;
+        } else {
+            $this->executeActions($actions);
         }
-        $this->beforeHook();
-        $this->executeActions($actions);
+
         $this->afterHook();
     }
 
@@ -448,7 +450,7 @@ abstract class Hook extends RepositoryAware
         $this->io->write(['', 'Executing plugins for: <comment>' . $method . '</comment>'], true, IO::DEBUG);
 
         foreach ($plugins as $plugin) {
-            $this->io->write(get_class($plugin), true, IO::DEBUG);
+            $this->io->write('<info>- Running ' . get_class($plugin) . '::' . $method . '</info>', true, IO::DEBUG);
             $plugin->{$method}(...$params);
         }
     }
