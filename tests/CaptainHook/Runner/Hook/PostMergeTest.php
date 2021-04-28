@@ -30,7 +30,7 @@ class PostMergeTest extends TestCase
      */
     public function testRunHookEnabled(): void
     {
-        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
 
@@ -39,7 +39,7 @@ class PostMergeTest extends TestCase
         $repo         = $this->createRepositoryMock();
         $hookConfig   = $this->createHookConfigMock();
         $actionConfig = $this->createActionConfigMock();
-        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->atLeast(1))->method('write');
@@ -62,7 +62,7 @@ class PostMergeTest extends TestCase
         $actionConfig    = $this->createActionConfigMock();
         $conditionConfig = new Config\Condition(CH_PATH_FILES . '/bin/success');
         $actionConfig->expects($this->once())->method('getConditions')->willReturn([$conditionConfig]);
-        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->atLeast(1))->method('write');
@@ -86,7 +86,7 @@ class PostMergeTest extends TestCase
         $actionConfig    = $this->createActionConfigMock();
         $conditionConfig = new Config\Condition(CH_PATH_FILES . '/bin/failure');
         $actionConfig->expects($this->once())->method('getConditions')->willReturn([$conditionConfig]);
-        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->exactly(3))->method('write');
@@ -106,7 +106,7 @@ class PostMergeTest extends TestCase
         $config       = $this->createConfigMock();
         $hookConfig   = $this->createHookConfigMock();
         $repo         = $this->createRepositoryMock();
-        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(false);
+        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(false);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->once())->method('write');
 

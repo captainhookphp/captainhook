@@ -43,7 +43,7 @@ class PreCommitTest extends TestCase
         $hookConfig   = $this->createHookConfigMock();
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
-        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->atLeast(1))->method('write');
@@ -84,7 +84,7 @@ class PreCommitTest extends TestCase
                             ->method('getAction')
                             ->willReturn(CH_PATH_FILES . '/bin/failure');
 
-        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())
                    ->method('getActions')
                    ->willReturn([$actionConfigFail, $actionConfigSuccess]);

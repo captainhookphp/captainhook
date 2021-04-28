@@ -36,14 +36,14 @@ class PostRewriteTest extends TestCase
 
         // configure the actually called hook
         $actionConfig = $this->createActionConfigMock();
-        $hookConfig->expects($this->atLeastOnce())->method('getName')->willReturn('post-rewrite');
-        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->atLeast(1))->method('getName')->willReturn('post-rewrite');
+        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
 
         // configure the virtual hook
         $vHookConfig   = $this->createHookConfigMock();
         $vActionConfig = $this->createActionConfigMock();
-        $vHookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $vHookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
         $vHookConfig->expects($this->once())->method('getActions')->willReturn([$vActionConfig]);
 
         // the config wll return the actually called config and then the virtual hook config
@@ -71,13 +71,13 @@ class PostRewriteTest extends TestCase
 
         // configure the actually called hook
         $actionConfig = $this->createActionConfigMock();
-        $hookConfig->expects($this->atLeastOnce())->method('getName')->willReturn('post-rewrite');
-        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->atLeast(1))->method('getName')->willReturn('post-rewrite');
+        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
 
         // configure the virtual hook
         $vHookConfig = $this->createHookConfigMock();
-        $vHookConfig->expects($this->once())->method('isEnabled')->willReturn(false);
+        $vHookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(false);
 
         // the config wll return the actually called config and then the virtual hook config
         $config->expects($this->exactly(2))

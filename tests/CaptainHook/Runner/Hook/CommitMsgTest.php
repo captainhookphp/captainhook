@@ -29,7 +29,7 @@ class CommitMsgTest extends TestCase
      */
     public function testRunHookEnabled(): void
     {
-        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
 
@@ -44,7 +44,7 @@ class CommitMsgTest extends TestCase
         $hookConfig   = $this->createHookConfigMock();
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
-        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->atLeast(1))->method('write');
@@ -69,7 +69,7 @@ class CommitMsgTest extends TestCase
         $repo         = $this->createRepositoryMock();
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
-        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->once())->method('getArgument')->willReturn('');

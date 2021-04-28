@@ -84,17 +84,18 @@ abstract class Hook extends RepositoryAware
      */
     public function run(): void
     {
-        $hookConfig = $this->config->getHookConfig($this->hook);
+        $hookConfigs = $this->getHookConfigsToHandle();
 
-        // if hook is not enabled in captainhook configuration skip the execution
-        if (!$hookConfig->isEnabled()) {
+        // if the hook and all triggered virtual hooks
+        // are NOT enabled in the captainhook configuration skip the execution
+        if (!$this->isAnyConfigEnabled($hookConfigs)) {
             $this->io->write($this->formatHookHeadline('Skip'), true, IO::VERBOSE);
             return;
         }
 
         $this->io->write($this->formatHookHeadline('Execute'), true, IO::VERBOSE);
 
-        $actions = $this->getActionsToExecute($hookConfig);
+        $actions = $this->getActionsToExecute($hookConfigs);
 
         // if no actions are configured do nothing
         if (count($actions) === 0) {
@@ -107,27 +108,55 @@ abstract class Hook extends RepositoryAware
     }
 
     /**
+     * Return all configs that should be handled original and virtual
+     *
+     * @return \CaptainHook\App\Config\Hook[]
+     */
+    public function getHookConfigsToHandle(): array
+    {
+        $hookConfig = $this->config->getHookConfig($this->hook);
+        $configs    = [$hookConfig];
+
+        if (Hooks::triggersVirtualHook($hookConfig->getName())) {
+            $configs[] = $this->config->getHookConfig(Hooks::getVirtualHook($hookConfig->getName()));
+        }
+
+        return $configs;
+    }
+
+    /**
+     * @param  \CaptainHook\App\Config\Hook[] $configs
+     * @return bool
+     */
+    private function isAnyConfigEnabled(array $configs): bool
+    {
+        foreach ($configs as $hookConfig) {
+            if ($hookConfig->isEnabled()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Return all the actions to execute
      *
      * Returns all actions from the triggered hook but also any actions of virtual hooks that might be triggered.
      * E.g. 'post-rewrite' or 'post-checkout' trigger the virtual/artificial 'post-change' hook.
      * Virtual hooks are special hooks to simplify configuration.
      *
-     * @param  \CaptainHook\App\Config\Hook $hookConfig
+     * @param  \CaptainHook\App\Config\Hook[] $hookConfigs
      * @return \CaptainHook\App\Config\Action[]
      */
-    private function getActionsToExecute(Config\Hook $hookConfig)
+    private function getActionsToExecute(array $hookConfigs): array
     {
-        $actions = $hookConfig->getActions();
-        if (!Hooks::triggersVirtualHook($hookConfig->getName())) {
-            return $actions;
+        $actions = [];
+        foreach ($hookConfigs as $hookConfig) {
+            if ($hookConfig->isEnabled()) {
+                $actions = array_merge($actions, $hookConfig->getActions());
+            }
         }
-
-        $virtualHookConfig = $this->config->getHookConfig(Hooks::getVirtualHook($hookConfig->getName()));
-        if (!$virtualHookConfig->isEnabled()) {
-            return $actions;
-        }
-        return array_merge($actions, $virtualHookConfig->getActions());
+        return $actions;
     }
 
     /**
