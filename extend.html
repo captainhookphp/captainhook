@@ -347,21 +347,21 @@ class NotOnAnyWeekday implements Condition
   }
 }</code></pre>
 
-      <h4>Runner Plugins</h4>
+      <h4>Hook Plugins</h4>
 
       <p>
-        Runner plugins are so-called because they execute during the hook runner stage of CaptainHook, allowing you to
+        Hook plugins are so-called because they execute during the hook run stage of CaptainHook, allowing you to
         do things before and after the hook runs, as well as before and after each action in the hook.
       </p>
 
       <p>
-        To create a runner plugin, implement the <em class="hl">CaptainHook\App\Plugin\Runner</em> interface.
-        Optionally, you may extend the <em class="hl">CaptainHook\App\Plugin\Runner\Base</em> abstract class, which
+        To create a hook plugin, implement the <em class="hl">CaptainHook\App\Plugin\Hook</em> interface.
+        Optionally, you may extend the <em class="hl">CaptainHook\App\Plugin\Hook\Base</em> abstract class, which
         provides some basic functionality.
       </p>
 
       <p>
-        To see an example runner plugin, check out <em>CaptainHook\App\Plugin\Runner\PreserveWorkingTree</em>.
+        To see an example hook plugin, check out <em>CaptainHook\App\Plugin\Hook\PreserveWorkingTree</em>.
       </p>
 
       <pre><code class="php">&lt;?php
@@ -372,7 +372,7 @@ use CaptainHook\App\Config;
 use CaptainHook\App\Plugin;
 use CaptainHook\App\Runner\Hook as RunnerHook;
 
-class MyPlugin extends Plugin\Runner\Base implements Plugin\Runner
+class MyPlugin extends Plugin\Hook\Base implements Plugin\Hook
 {
     /**
      * Runs before the hook.
