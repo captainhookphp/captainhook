@@ -24,7 +24,7 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.9.0.
  */
-interface Runner extends CaptainHook
+interface Hook extends CaptainHook
 {
     /**
      * Configure the runner plugin.

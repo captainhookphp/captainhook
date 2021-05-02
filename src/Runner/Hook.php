@@ -46,11 +46,11 @@ abstract class Hook extends RepositoryAware
     private $skipActions = false;
 
     /**
-     * Runner plugins to apply to this hook.
+     * Plugins to apply to this hook.
      *
-     * @var array<Plugin\Runner>|null
+     * @var array<Plugin\Hook>|null
      */
-    private $runnerPlugins = null;
+    private $hookPlugins = null;
 
     /**
      * Return this hook's name.
@@ -69,7 +69,7 @@ abstract class Hook extends RepositoryAware
      */
     public function beforeHook(): void
     {
-        $this->executeRunnerPluginsFor('beforeHook');
+        $this->executeHookPluginsFor('beforeHook');
     }
 
     /**
@@ -80,7 +80,7 @@ abstract class Hook extends RepositoryAware
      */
     public function beforeAction(Config\Action $action): void
     {
-        $this->executeRunnerPluginsFor('beforeAction', $action);
+        $this->executeHookPluginsFor('beforeAction', $action);
     }
 
     /**
@@ -91,7 +91,7 @@ abstract class Hook extends RepositoryAware
      */
     public function afterAction(Config\Action $action): void
     {
-        $this->executeRunnerPluginsFor('afterAction', $action);
+        $this->executeHookPluginsFor('afterAction', $action);
     }
 
     /**
@@ -101,7 +101,7 @@ abstract class Hook extends RepositoryAware
      */
     public function afterHook(): void
     {
-        $this->executeRunnerPluginsFor('afterHook');
+        $this->executeHookPluginsFor('afterHook');
     }
 
     /**
@@ -383,25 +383,25 @@ abstract class Hook extends RepositoryAware
     /**
      * Return plugins to apply to this hook.
      *
-     * @return array<Plugin\Runner>
+     * @return array<Plugin\Hook>
      */
-    private function getRunnerPlugins(): array
+    private function getHookPlugins(): array
     {
-        if ($this->runnerPlugins !== null) {
-            return $this->runnerPlugins;
+        if ($this->hookPlugins !== null) {
+            return $this->hookPlugins;
         }
 
-        $this->runnerPlugins = [];
+        $this->hookPlugins = [];
 
         foreach ($this->config->getPlugins() as $pluginConfig) {
             $plugin = $pluginConfig->getPlugin();
 
-            if (!$plugin instanceof Plugin\Runner) {
+            if (!$plugin instanceof Plugin\Hook) {
                 continue;
             }
 
             $this->io->write(
-                ['', 'Configuring Runner Plugin: <comment>' . $pluginConfig->getPluginClass() . '</comment>'],
+                ['', 'Configuring Hook Plugin: <comment>' . $pluginConfig->getPluginClass() . '</comment>'],
                 true,
                 IO::VERBOSE
             );
@@ -417,23 +417,23 @@ abstract class Hook extends RepositoryAware
 
             $plugin->configure($this->config, $this->io, $this->repository, $pluginConfig);
 
-            $this->runnerPlugins[] = $plugin;
+            $this->hookPlugins[] = $plugin;
         }
 
-        return $this->runnerPlugins;
+        return $this->hookPlugins;
     }
 
     /**
-     * Execute runner plugins for the given method name (i.e., beforeHook,
+     * Execute hook plugins for the given method name (i.e., beforeHook,
      * beforeAction, afterAction, afterHook).
      *
      * @param string $method
      * @param Config\Action|null $action
      * @return void
      */
-    private function executeRunnerPluginsFor(string $method, ?Config\Action $action = null): void
+    private function executeHookPluginsFor(string $method, ?Config\Action $action = null): void
     {
-        $plugins = $this->getRunnerPlugins();
+        $plugins = $this->getHookPlugins();
 
         if (count($plugins) === 0) {
             $this->io->write(['', 'No plugins to execute for: <comment>' . $method . '</comment>'], true, IO::DEBUG);

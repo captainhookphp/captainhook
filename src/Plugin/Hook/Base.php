@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CaptainHook\App\Plugin\Runner;
+namespace CaptainHook\App\Plugin\Hook;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
@@ -24,7 +24,7 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.9.0.
  */
-abstract class Base implements Plugin\Runner
+abstract class Base implements Plugin\Hook
 {
     /**
      * @var Config

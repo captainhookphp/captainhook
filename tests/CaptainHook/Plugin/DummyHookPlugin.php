@@ -5,7 +5,7 @@ namespace CaptainHook\App\Plugin;
 use CaptainHook\App\Config;
 use CaptainHook\App\Runner\Hook as RunnerHook;
 
-class DummyRunnerPlugin extends Runner\Base
+class DummyHookPlugin extends Hook\Base
 {
     public $beforeHookCalled = 0;
     public $beforeActionCalled = 0;

@@ -18,11 +18,11 @@ use CaptainHook\App\Hook\Restriction;
 use CaptainHook\App\Hooks;
 use CaptainHook\App\Mockery as CHMockery;
 use CaptainHook\App\Plugin\DummyConstrainedPlugin;
-use CaptainHook\App\Plugin\DummyConstrainedRunnerPlugin;
-use CaptainHook\App\Plugin\DummyConstrainedRunnerPluginAlt;
+use CaptainHook\App\Plugin\DummyConstrainedHookPlugin;
+use CaptainHook\App\Plugin\DummyConstrainedHookPluginAlt;
 use CaptainHook\App\Plugin\DummyPlugin;
-use CaptainHook\App\Plugin\DummyRunnerPlugin;
-use CaptainHook\App\Plugin\DummyRunnerPluginSkipsActions;
+use CaptainHook\App\Plugin\DummyHookPlugin;
+use CaptainHook\App\Plugin\DummyHookPluginSkipsActions;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -118,16 +118,16 @@ class HookTest extends TestCase
 
         $restriction1 = new Restriction(Hooks::POST_CHECKOUT);
         DummyConstrainedPlugin::$restriction = $restriction1;
-        DummyConstrainedRunnerPluginAlt::$restriction = $restriction1;
+        DummyConstrainedHookPluginAlt::$restriction = $restriction1;
 
         $restriction2 = new Restriction(Hooks::PRE_COMMIT);
-        DummyConstrainedRunnerPlugin::$restriction = $restriction2;
+        DummyConstrainedHookPlugin::$restriction = $restriction2;
 
         $pluginConfig1 = new Config\Plugin(DummyPlugin::class);
-        $pluginConfig2 = new Config\Plugin(DummyRunnerPlugin::class);
+        $pluginConfig2 = new Config\Plugin(DummyHookPlugin::class);
         $pluginConfig3 = new Config\Plugin(DummyConstrainedPlugin::class);
-        $pluginConfig4 = new Config\Plugin(DummyConstrainedRunnerPlugin::class);
-        $pluginConfig5 = new Config\Plugin(DummyConstrainedRunnerPluginAlt::class);
+        $pluginConfig4 = new Config\Plugin(DummyConstrainedHookPlugin::class);
+        $pluginConfig5 = new Config\Plugin(DummyConstrainedHookPluginAlt::class);
 
         $config = $this->createConfigMock();
         $config->method('failOnFirstError')->willReturn(true);
@@ -172,7 +172,7 @@ class HookTest extends TestCase
 
     public function testRunHookSkipsActionsFromPluginBeforeHook(): void
     {
-        $pluginConfig = new Config\Plugin(DummyRunnerPluginSkipsActions::class);
+        $pluginConfig = new Config\Plugin(DummyHookPluginSkipsActions::class);
         $pluginConfig->getPlugin()->skipStartAt = 1;
 
         $config = $this->createConfigMock();
@@ -208,7 +208,7 @@ class HookTest extends TestCase
             $this->markTestSkipped('not tested on windows');
         }
 
-        $pluginConfig = new Config\Plugin(DummyRunnerPluginSkipsActions::class);
+        $pluginConfig = new Config\Plugin(DummyHookPluginSkipsActions::class);
         $pluginConfig->getPlugin()->skipStartIn = 'beforeAction';
         $pluginConfig->getPlugin()->skipStartAt = 3;
 

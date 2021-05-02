@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CaptainHook\App\Plugin\Runner;
+namespace CaptainHook\App\Plugin\Hook;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Hooks;
@@ -26,7 +26,7 @@ use Symfony\Component\Filesystem\Filesystem;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.9.0.
  */
-class PreserveWorkingTree extends Base implements Plugin\Runner
+class PreserveWorkingTree extends Base implements Plugin\Hook
 {
     /**
      * The name of the environment variable used to indicate the post-checkout

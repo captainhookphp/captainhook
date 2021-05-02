@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CaptainHook\App\Plugin\Runner;
+namespace CaptainHook\App\Plugin\Hook;
 
 use CaptainHook\App\Config\Action;
 use CaptainHook\App\Config\Mockery as ConfigMockery;

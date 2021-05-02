@@ -5,7 +5,7 @@ namespace CaptainHook\App\Plugin;
 use CaptainHook\App\Config;
 use CaptainHook\App\Runner\Hook as RunnerHook;
 
-class DummyRunnerPluginSkipsActions extends DummyRunnerPlugin
+class DummyHookPluginSkipsActions extends DummyHookPlugin
 {
     /**
      * The plugin method to set whether the hook should start skipping

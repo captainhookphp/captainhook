@@ -5,7 +5,7 @@ namespace CaptainHook\App\Plugin;
 use CaptainHook\App\Hook\Constrained;
 use CaptainHook\App\Hook\Restriction;
 
-class DummyConstrainedRunnerPluginAlt extends DummyRunnerPlugin implements Constrained
+class DummyConstrainedHookPlugin extends DummyHookPlugin implements Constrained
 {
     /**
      * @var Restriction
