@@ -8,7 +8,7 @@ use CaptainHook\App\Hook\Restriction;
 class DummyConstrainedHookPlugin extends DummyHookPlugin implements Constrained
 {
     /**
-     * @var Restriction
+     * @var Restriction|null
      */
     public static $restriction;
 

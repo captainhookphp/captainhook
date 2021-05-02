@@ -32,6 +32,34 @@ class HookTest extends TestCase
     use IOMockery;
     use CHMockery;
 
+    protected function setUp(): void
+    {
+        // Ensure the static properties on dummy plugins are all set to their defaults.
+        DummyHookPlugin::$beforeHookCalled = 0;
+        DummyHookPlugin::$beforeActionCalled = 0;
+        DummyHookPlugin::$afterActionCalled = 0;
+        DummyHookPlugin::$afterHookCalled = 0;
+        DummyHookPluginSkipsActions::$skipStartIn = 'beforeHook';
+        DummyHookPluginSkipsActions::$skipStartAt = 1;
+        DummyConstrainedHookPlugin::$restriction = null;
+        DummyConstrainedHookPluginAlt::$restriction = null;
+        DummyConstrainedPlugin::$restriction = null;
+    }
+
+    protected function tearDown(): void
+    {
+        // Reset the static properties on dummy plugins to their defaults.
+        DummyHookPlugin::$beforeHookCalled = 0;
+        DummyHookPlugin::$beforeActionCalled = 0;
+        DummyHookPlugin::$afterActionCalled = 0;
+        DummyHookPlugin::$afterHookCalled = 0;
+        DummyHookPluginSkipsActions::$skipStartIn = 'beforeHook';
+        DummyHookPluginSkipsActions::$skipStartAt = 1;
+        DummyConstrainedHookPlugin::$restriction = null;
+        DummyConstrainedHookPluginAlt::$restriction = null;
+        DummyConstrainedPlugin::$restriction = null;
+    }
+
     /**
      * Tests Hook::getActionRunner
      */
@@ -154,26 +182,17 @@ class HookTest extends TestCase
         };
         $runner->run();
 
-        $this->assertSame(1, $pluginConfig2->getPlugin()->beforeHookCalled);
-        $this->assertSame(2, $pluginConfig2->getPlugin()->beforeActionCalled);
-        $this->assertSame(2, $pluginConfig2->getPlugin()->afterActionCalled);
-        $this->assertSame(1, $pluginConfig2->getPlugin()->afterHookCalled);
-
-        $this->assertSame(1, $pluginConfig4->getPlugin()->beforeHookCalled);
-        $this->assertSame(2, $pluginConfig4->getPlugin()->beforeActionCalled);
-        $this->assertSame(2, $pluginConfig4->getPlugin()->afterActionCalled);
-        $this->assertSame(1, $pluginConfig4->getPlugin()->afterHookCalled);
-
-        $this->assertSame(0, $pluginConfig5->getPlugin()->beforeHookCalled);
-        $this->assertSame(0, $pluginConfig5->getPlugin()->beforeActionCalled);
-        $this->assertSame(0, $pluginConfig5->getPlugin()->afterActionCalled);
-        $this->assertSame(0, $pluginConfig5->getPlugin()->afterHookCalled);
+        $this->assertSame(2, DummyHookPlugin::$beforeHookCalled);
+        $this->assertSame(4, DummyHookPlugin::$beforeActionCalled);
+        $this->assertSame(4, DummyHookPlugin::$afterActionCalled);
+        $this->assertSame(2, DummyHookPlugin::$afterHookCalled);
     }
 
     public function testRunHookSkipsActionsFromPluginBeforeHook(): void
     {
+        DummyHookPluginSkipsActions::$skipStartAt = 1;
+
         $pluginConfig = new Config\Plugin(DummyHookPluginSkipsActions::class);
-        $pluginConfig->getPlugin()->skipStartAt = 1;
 
         $config = $this->createConfigMock();
         $config->method('failOnFirstError')->willReturn(true);
@@ -196,10 +215,10 @@ class HookTest extends TestCase
         };
         $runner->run();
 
-        $this->assertSame(1, $pluginConfig->getPlugin()->beforeHookCalled);
-        $this->assertSame(0, $pluginConfig->getPlugin()->beforeActionCalled);
-        $this->assertSame(0, $pluginConfig->getPlugin()->afterActionCalled);
-        $this->assertSame(1, $pluginConfig->getPlugin()->afterHookCalled);
+        $this->assertSame(1, DummyHookPlugin::$beforeHookCalled);
+        $this->assertSame(0, DummyHookPlugin::$beforeActionCalled);
+        $this->assertSame(0, DummyHookPlugin::$afterActionCalled);
+        $this->assertSame(1, DummyHookPlugin::$afterHookCalled);
     }
 
     public function testRunHookSkipsActionsFromPluginBeforeAction(): void
@@ -208,9 +227,10 @@ class HookTest extends TestCase
             $this->markTestSkipped('not tested on windows');
         }
 
+        DummyHookPluginSkipsActions::$skipStartIn = 'beforeAction';
+        DummyHookPluginSkipsActions::$skipStartAt = 3;
+
         $pluginConfig = new Config\Plugin(DummyHookPluginSkipsActions::class);
-        $pluginConfig->getPlugin()->skipStartIn = 'beforeAction';
-        $pluginConfig->getPlugin()->skipStartAt = 3;
 
         $config = $this->createConfigMock();
         $config->method('failOnFirstError')->willReturn(true);
@@ -237,9 +257,9 @@ class HookTest extends TestCase
         };
         $runner->run();
 
-        $this->assertSame(1, $pluginConfig->getPlugin()->beforeHookCalled);
-        $this->assertSame(3, $pluginConfig->getPlugin()->beforeActionCalled);
-        $this->assertSame(2, $pluginConfig->getPlugin()->afterActionCalled);
-        $this->assertSame(1, $pluginConfig->getPlugin()->afterHookCalled);
+        $this->assertSame(1, DummyHookPlugin::$beforeHookCalled);
+        $this->assertSame(3, DummyHookPlugin::$beforeActionCalled);
+        $this->assertSame(2, DummyHookPlugin::$afterActionCalled);
+        $this->assertSame(1, DummyHookPlugin::$afterHookCalled);
     }
 }

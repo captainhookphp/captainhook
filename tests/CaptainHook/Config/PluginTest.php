@@ -33,14 +33,7 @@ class PluginTest extends TestCase
     {
         $plugin = new Plugin($this->class);
 
-        $this->assertEquals($this->class, $plugin->getPluginClass());
-    }
-
-    public function testGetPlugin(): void
-    {
-        $plugin = new Plugin($this->class);
-
-        $this->assertInstanceOf($this->class, $plugin->getPlugin());
+        $this->assertEquals($this->class, $plugin->getPlugin());
     }
 
     public function testGetOptions(): void

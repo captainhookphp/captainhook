@@ -394,27 +394,30 @@ abstract class Hook extends RepositoryAware
         $this->hookPlugins = [];
 
         foreach ($this->config->getPlugins() as $pluginConfig) {
-            $plugin = $pluginConfig->getPlugin();
-
-            if (!$plugin instanceof Plugin\Hook) {
+            $pluginClass = $pluginConfig->getPlugin();
+            if (!is_a($pluginClass, Plugin\Hook::class, true)) {
                 continue;
             }
 
             $this->io->write(
-                ['', 'Configuring Hook Plugin: <comment>' . $pluginConfig->getPluginClass() . '</comment>'],
+                ['', 'Configuring Hook Plugin: <comment>' . $pluginClass . '</comment>'],
                 true,
                 IO::VERBOSE
             );
 
-            if ($plugin instanceof Constrained && !$plugin->getRestriction()->isApplicableFor($this->hook)) {
+            if (
+                is_a($pluginClass, Constrained::class, true)
+                && !$pluginClass::getRestriction()->isApplicableFor($this->hook)
+            ) {
                 $this->io->write(
-                    'Skipped because plugin it is not applicable for hook ' . $this->hook,
+                    'Skipped because plugin is not applicable for hook ' . $this->hook,
                     true,
                     IO::VERBOSE
                 );
                 continue;
             }
 
+            $plugin = new $pluginClass();
             $plugin->configure($this->config, $this->io, $this->repository, $pluginConfig);
 
             $this->hookPlugins[] = $plugin;

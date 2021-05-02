@@ -29,13 +29,6 @@ class Plugin
      *
      * @var string
      */
-    private $pluginClass;
-
-    /**
-     * Plugin instance
-     *
-     * @var CaptainHook
-     */
     private $plugin;
 
     /**
@@ -48,17 +41,16 @@ class Plugin
     /**
      * Plugin constructor
      *
-     * @param string $pluginClass
+     * @param string $plugin
      * @param array $options
      */
-    public function __construct(string $pluginClass, array $options = [])
+    public function __construct(string $plugin, array $options = [])
     {
-        if (!is_a($pluginClass, CaptainHook::class, true)) {
-            throw new InvalidPlugin("{$pluginClass} is not a valid CaptainHook plugin.");
+        if (!is_a($plugin, CaptainHook::class, true)) {
+            throw new InvalidPlugin("{$plugin} is not a valid CaptainHook plugin.");
         }
 
-        $this->pluginClass = $pluginClass;
-        $this->plugin = new $pluginClass();
+        $this->plugin = $plugin;
         $this->setupOptions($options);
     }
 
@@ -77,17 +69,7 @@ class Plugin
      *
      * @return string
      */
-    public function getPluginClass(): string
-    {
-        return $this->pluginClass;
-    }
-
-    /**
-     * Return the plugin instance
-     *
-     * @return CaptainHook
-     */
-    public function getPlugin(): CaptainHook
+    public function getPlugin(): string
     {
         return $this->plugin;
     }
@@ -110,7 +92,7 @@ class Plugin
     public function getJsonData(): array
     {
         return [
-            'plugin' => $this->pluginClass,
+            'plugin' => $this->plugin,
             'options' => $this->options->getAll(),
         ];
     }

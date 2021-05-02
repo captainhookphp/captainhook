@@ -13,7 +13,7 @@ class DummyHookPluginSkipsActions extends DummyHookPlugin
      *
      * @var string
      */
-    public $skipStartIn = 'beforeHook';
+    public static $skipStartIn = 'beforeHook';
 
     /**
      * Start skipping actions after the $skipStartIn method has been
@@ -21,7 +21,7 @@ class DummyHookPluginSkipsActions extends DummyHookPlugin
      *
      * @var int
      */
-    public $skipStartAt = 1;
+    public static $skipStartAt = 1;
 
     public function beforeHook(RunnerHook $hook): void
     {
@@ -51,7 +51,7 @@ class DummyHookPluginSkipsActions extends DummyHookPlugin
     {
         $property = $method . 'Called';
 
-        if ($this->skipStartIn === $method && $this->{$property} === $this->skipStartAt) {
+        if (self::$skipStartIn === $method && self::${$property} === self::$skipStartAt) {
             $hook->shouldSkipActions(true);
         }
     }
