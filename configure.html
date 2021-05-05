@@ -295,7 +295,7 @@
 ├── msg-validation.json
 └── crazy-workflow.json</code></pre>
       <p>
-        Inside your composer.json you require all libs and plugins you need to execute the configured actions plus <em>captainhook/captainhook</em>
+        Inside your composer.json you require all libs and extensions you need to execute the configured actions plus <em>captainhook/captainhook</em>
         or <em>captainhook/plugin-composer</em>. The only thing you have to do in your projects is to require your <em class="hl">my-git-hooks</em>
         package and add something like this to your local project <em>captainhook.json</em> file.
       </p>
@@ -342,6 +342,7 @@
     "ansi-colors": false,
     "includes-level": 2,
     "includes": [],
+    "plugins": [],
     "run-mode": "docker",
     "run-exec": "docker exec CONTAINER_NAME",
     "run-path": "vendor/bin/captainhook",
@@ -389,6 +390,18 @@
           <td>includes-level</td>
           <td>Nesting level of allowed config file inclusion</td>
           <td>0</td>
+        </tr>
+        <tr>
+          <td>plugins</td>
+          <td>An array of plugins to use when running CaptainHook, optionally including options to pass to the plugin<br><pre><code class="javascript">[
+  {
+    "plugin": "\\MyName\\GitHook\\MyPlugin",
+    "options": {
+      "myOption": true
+    }
+  }
+]</code></pre></td>
+          <td>-</td>
         </tr>
         <tr>
           <td>run-mode</td>
