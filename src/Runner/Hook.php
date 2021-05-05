@@ -15,7 +15,9 @@ use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Exception\ActionFailed;
+use CaptainHook\App\Hook\Constrained;
 use CaptainHook\App\Hooks;
+use CaptainHook\App\Plugin;
 use Exception;
 use RuntimeException;
 
@@ -37,33 +39,59 @@ abstract class Hook extends RepositoryAware
     protected $hook;
 
     /**
+     * Set to `true` to skip processing this hook's actions.
+     *
+     * @var bool
+     */
+    private $skipActions = false;
+
+    /**
+     * Plugins to apply to this hook.
+     *
+     * @var array<Plugin\Hook>|null
+     */
+    private $hookPlugins = null;
+
+    /**
+     * Return this hook's name.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->hook;
+    }
+
+    /**
      * Execute stuff before executing any actions
      *
      * @return void
      */
     public function beforeHook(): void
     {
-        // empty template method
+        $this->executeHookPluginsFor('beforeHook');
     }
 
     /**
      * Execute stuff before every actions
      *
+     * @param Config\Action $action
      * @return void
      */
-    public function beforeAction(): void
+    public function beforeAction(Config\Action $action): void
     {
-        // empty template method
+        $this->executeHookPluginsFor('beforeAction', $action);
     }
 
     /**
      * Execute stuff after every actions
      *
+     * @param Config\Action $action
      * @return void
      */
-    public function afterAction(): void
+    public function afterAction(Config\Action $action): void
     {
-        //empty template method
+        $this->executeHookPluginsFor('afterAction', $action);
     }
 
     /**
@@ -73,7 +101,7 @@ abstract class Hook extends RepositoryAware
      */
     public function afterHook(): void
     {
-        // empty template method
+        $this->executeHookPluginsFor('afterHook');
     }
 
     /**
@@ -97,13 +125,15 @@ abstract class Hook extends RepositoryAware
 
         $actions = $this->getActionsToExecute($hookConfigs);
 
+        $this->beforeHook();
+
         // if no actions are configured do nothing
         if (count($actions) === 0) {
             $this->io->write(['', '<info>No actions to execute</info>'], true, IO::VERBOSE);
-            return;
+        } else {
+            $this->executeActions($actions);
         }
-        $this->beforeHook();
-        $this->executeActions($actions);
+
         $this->afterHook();
     }
 
@@ -136,6 +166,33 @@ abstract class Hook extends RepositoryAware
             }
         }
         return false;
+    }
+
+    /**
+     * Returns `true` if something has indicated that the hook should skip all
+     * remaining actions; pass a boolean value to toggle this
+     *
+     * There may be times you want to conditionally skip all actions, based on
+     * logic in {@see beforeHook()}. Other times, you may wish to skip the rest
+     * of the actions based on some condition of the current action.
+     *
+     * - To skip all actions for a hook, set this to `true`
+     *   in {@see beforeHook()}.
+     * - To skip the current action and all remaining actions, set this
+     *   to `true` in {@see beforeAction()}.
+     * - To run the current action but skip all remaining actions, set this
+     *   to `true` in {@see afterAction()}.
+     *
+     * @param bool|null $shouldSkip
+     * @return bool
+     */
+    public function shouldSkipActions(?bool $shouldSkip = null): bool
+    {
+        if ($shouldSkip !== null) {
+            $this->skipActions = $shouldSkip;
+        }
+
+        return $this->skipActions;
     }
 
     /**
@@ -222,6 +279,10 @@ abstract class Hook extends RepositoryAware
      */
     private function handleAction(Config\Action $action): void
     {
+        if ($this->shouldSkipActions()) {
+            return;
+        }
+
         if (!$this->doConditionsApply($action->getConditions())) {
             $this->io->write(['', 'Action: <comment>' . $action->getAction() . '</comment>'], true, IO::VERBOSE);
             $this->io->write('Skipped due to unfulfilled conditions', true, IO::VERBOSE);
@@ -231,7 +292,16 @@ abstract class Hook extends RepositoryAware
         $this->io->write(['', 'Action: <comment>' . $action->getAction() . '</comment>'], true);
 
         $execMethod = self::getExecMethod(Util::getExecType($action->getAction()));
+        $this->beforeAction($action);
+
+        // The beforeAction() method may indicate that the current and all
+        // remaining actions should be skipped. If so, return here.
+        if ($this->shouldSkipActions()) {
+            return;
+        }
+
         $this->{$execMethod}($action);
+        $this->afterAction($action);
     }
 
     /**
@@ -243,10 +313,8 @@ abstract class Hook extends RepositoryAware
      */
     private function executePhpAction(Config\Action $action): void
     {
-        $this->beforeAction();
         $runner = new Action\PHP($this->hook);
         $runner->execute($this->config, $this->io, $this->repository, $action);
-        $this->afterAction();
     }
 
     /**
@@ -258,9 +326,6 @@ abstract class Hook extends RepositoryAware
      */
     private function executeCliAction(Config\Action $action): void
     {
-        // since the cli has no straight way to communicate back to php
-        // cli hooks have to handle sync stuff by them self
-        // so no 'beforeAction' or 'afterAction' is called here
         $runner = new Action\Cli();
         $runner->execute($this->config, $this->io, $this->repository, $action);
     }
@@ -313,5 +378,83 @@ abstract class Hook extends RepositoryAware
             $headline .
             IOUtil::getLineSeparator(80 - 8 - mb_strlen(strip_tags($headline)))
         ];
+    }
+
+    /**
+     * Return plugins to apply to this hook.
+     *
+     * @return array<Plugin\Hook>
+     */
+    private function getHookPlugins(): array
+    {
+        if ($this->hookPlugins !== null) {
+            return $this->hookPlugins;
+        }
+
+        $this->hookPlugins = [];
+
+        foreach ($this->config->getPlugins() as $pluginConfig) {
+            $pluginClass = $pluginConfig->getPlugin();
+            if (!is_a($pluginClass, Plugin\Hook::class, true)) {
+                continue;
+            }
+
+            $this->io->write(
+                ['', 'Configuring Hook Plugin: <comment>' . $pluginClass . '</comment>'],
+                true,
+                IO::VERBOSE
+            );
+
+            if (
+                is_a($pluginClass, Constrained::class, true)
+                && !$pluginClass::getRestriction()->isApplicableFor($this->hook)
+            ) {
+                $this->io->write(
+                    'Skipped because plugin is not applicable for hook ' . $this->hook,
+                    true,
+                    IO::VERBOSE
+                );
+                continue;
+            }
+
+            $plugin = new $pluginClass();
+            $plugin->configure($this->config, $this->io, $this->repository, $pluginConfig);
+
+            $this->hookPlugins[] = $plugin;
+        }
+
+        return $this->hookPlugins;
+    }
+
+    /**
+     * Execute hook plugins for the given method name (i.e., beforeHook,
+     * beforeAction, afterAction, afterHook).
+     *
+     * @param string $method
+     * @param Config\Action|null $action
+     * @return void
+     */
+    private function executeHookPluginsFor(string $method, ?Config\Action $action = null): void
+    {
+        $plugins = $this->getHookPlugins();
+
+        if (count($plugins) === 0) {
+            $this->io->write(['', 'No plugins to execute for: <comment>' . $method . '</comment>'], true, IO::DEBUG);
+
+            return;
+        }
+
+        $params = [$this];
+
+        if ($action !== null) {
+            $params[] = $action;
+        }
+
+        $this->io->write(['', 'Executing plugins for: <comment>' . $method . '</comment>'], true, IO::DEBUG);
+
+        foreach ($plugins as $plugin) {
+            $this->io->write('<info>- Running ' . get_class($plugin) . '::' . $method . '</info>', true, IO::DEBUG);
+            $plugin->{$method}(...$params);
+        }
     }
 }

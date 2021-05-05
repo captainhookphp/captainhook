@@ -58,6 +58,13 @@ class Config
     private $settings;
 
     /**
+     * List of plugins
+     *
+     * @var array<string, \CaptainHook\App\Config\Plugin>
+     */
+    private $plugins = [];
+
+    /**
      * List of hook configs
      *
      * @var array<string, \CaptainHook\App\Config\Hook>
@@ -73,9 +80,20 @@ class Config
      */
     public function __construct(string $path, bool $fileExists = false, array $settings = [])
     {
+        $pluginSettings = $settings['plugins'] ?? [];
+        unset($settings['plugins']);
+
         $this->path       = $path;
         $this->fileExists = $fileExists;
         $this->settings   = $settings;
+
+        foreach ($pluginSettings as $plugin) {
+            $name = $plugin['plugin'];
+            $options = isset($plugin['options']) && is_array($plugin['options'])
+                ? $plugin['options']
+                : [];
+            $this->plugins[$name] = new Config\Plugin($name, $options);
+        }
 
         foreach (Hooks::getValidHooks() as $hook => $value) {
             $this->hooks[$hook] = new Config\Hook($hook);
@@ -221,6 +239,16 @@ class Config
     }
 
     /**
+     * Return plugins
+     *
+     * @return Config\Plugin[]
+     */
+    public function getPlugins(): array
+    {
+        return $this->plugins;
+    }
+
+    /**
      * Return config array to write to disc
      *
      * @return array
@@ -232,6 +260,11 @@ class Config
         if (!empty($this->settings)) {
             $data['config'] = $this->settings;
         }
+
+        foreach ($this->plugins as $plugin) {
+            $data['config']['plugins'][] = $plugin->getJsonData();
+        }
+
         // append all configured hooks
         foreach (Hooks::getValidHooks() as $hook => $value) {
             $data[$hook] = $this->hooks[$hook]->getJsonData();

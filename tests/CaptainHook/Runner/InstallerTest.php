@@ -17,6 +17,7 @@ use CaptainHook\App\Exception\InvalidHookName;
 use CaptainHook\App\Git\DummyRepo;
 use CaptainHook\App\Hook\Mockery as HookMockery;
 use CaptainHook\App\Mockery as CHMockery;
+use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use SebastianFeldmann\Git\Repository;
 
@@ -274,5 +275,43 @@ class InstallerTest extends TestCase
         $runner = new Installer($io, $config, $repo, $template);
         $runner->setHook('pre-commit');
         $runner->run();
+    }
+
+    public function testMoveExistingHookWhenMoveExistingIsAnAbsolutePath(): void
+    {
+        $virtualFs = vfsStream::setup('root');
+
+        $fakeRepo = new DummyRepo(
+        // git repo
+            [
+                'config' => '# fake git config',
+                'hooks'  => [
+                    'pre-commit' => '# fake pre-commit file',
+                    'pre-push'   => '# fake pre-push file',
+                ]
+            ],
+            // files
+            [
+                'foo' => []
+            ]
+        );
+
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock(true, $fakeRepo->getRoot() . '/captainhook.json');
+        $template = $this->createTemplateMock();
+        $repo     = new Repository($fakeRepo->getRoot());
+
+        $template->expects($this->once())
+            ->method('getCode')
+            ->with('pre-commit')
+            ->willReturn('');
+
+        $runner = new Installer($io, $config, $repo, $template);
+        $runner->setHook('pre-commit')
+            ->setMoveExistingTo($virtualFs->url() . '/foo/bar')
+            ->run();
+
+        $this->assertFileExists($fakeRepo->getHookDir() . '/pre-commit');
+        $this->assertFileExists($fakeRepo->getRoot() . '/foo/bar/pre-commit');
     }
 }

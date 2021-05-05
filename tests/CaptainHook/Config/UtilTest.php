@@ -169,6 +169,13 @@ class UtilTest extends TestCase
     {
         Util::validateJsonConfiguration(
             [
+                'config' => [
+                    'plugins' => [
+                        [
+                            'plugin' => '\\Foo\\Bar',
+                        ]
+                    ],
+                ],
                 'pre-commit' => [
                     'enabled' => true,
                     'actions' => [
@@ -190,5 +197,49 @@ class UtilTest extends TestCase
         );
 
         $this->assertTrue(true);
+    }
+
+    public function testPluginsMustBeAnArray(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Config error: \'plugins\' must be an array');
+
+        Util::validateJsonConfiguration([
+            'config' => [
+                'plugins' => 'foobar',
+            ],
+        ]);
+    }
+
+    public function testPluginMissing(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Config error: \'plugin\' missing');
+
+        Util::validateJsonConfiguration([
+            'config' => [
+                'plugins' => [
+                    [
+                        'foo' => 'bar',
+                    ],
+                ],
+            ],
+        ]);
+    }
+
+    public function testPluginEmpty(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Config error: \'plugin\' can\'t be empty');
+
+        Util::validateJsonConfiguration([
+            'config' => [
+                'plugins' => [
+                    [
+                        'plugin' => '',
+                    ],
+                ],
+            ],
+        ]);
     }
 }

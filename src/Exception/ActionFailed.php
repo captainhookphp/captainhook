@@ -21,6 +21,6 @@ use Exception;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 0.9.0
  */
-class ActionFailed extends Exception
+class ActionFailed extends Exception implements CaptainHookException
 {
 }

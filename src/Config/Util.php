@@ -36,6 +36,8 @@ abstract class Util
      */
     public static function validateJsonConfiguration(array $json): void
     {
+        self::validatePluginConfig($json);
+
         foreach (HookUtil::getValidHooks() as $hook => $class) {
             if (isset($json[$hook])) {
                 self::validateHookConfig($json[$hook]);
@@ -59,6 +61,31 @@ abstract class Util
             throw new RuntimeException('Config error: \'actions\' must be an array');
         }
         self::validateActionsConfig($json['actions']);
+    }
+
+    /**
+     * Validate a plugin configuration
+     *
+     * @param  array $json
+     * @return void
+     * @throws \RuntimeException
+     */
+    public static function validatePluginConfig(array $json): void
+    {
+        if (!isset($json['config']['plugins'])) {
+            return;
+        }
+        if (!is_array($json['config']['plugins'])) {
+            throw new RuntimeException('Config error: \'plugins\' must be an array');
+        }
+        foreach ($json['config']['plugins'] as $plugin) {
+            if (!self::keysExist(['plugin'], $plugin)) {
+                throw new RuntimeException('Config error: \'plugin\' missing');
+            }
+            if (empty($plugin['plugin'])) {
+                throw new RuntimeException('Config error: \'plugin\' can\'t be empty');
+            }
+        }
     }
 
     /**

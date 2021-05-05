@@ -11,16 +11,16 @@
 
 namespace CaptainHook\App\Exception;
 
-use Exception;
+use Throwable;
 
 /**
- * Class InvalidHookName
+ * CaptainHookException interface
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
- * @since   Class available since Release 0.9.0
+ * @since   Class available since Release 5.9.0.
  */
-class InvalidHookName extends Exception implements CaptainHookException
+interface CaptainHookException extends Throwable
 {
 }

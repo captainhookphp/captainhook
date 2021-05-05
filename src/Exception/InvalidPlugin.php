@@ -11,16 +11,16 @@
 
 namespace CaptainHook\App\Exception;
 
-use Exception;
+use RuntimeException;
 
 /**
- * Class InvalidHookName
+ * Class InvalidPlugin
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
- * @since   Class available since Release 0.9.0
+ * @since   Class available since Release 5.9.0
  */
-class InvalidHookName extends Exception implements CaptainHookException
+class InvalidPlugin extends RuntimeException implements CaptainHookException
 {
 }

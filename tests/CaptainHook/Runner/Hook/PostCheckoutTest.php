@@ -29,15 +29,22 @@ class PostCheckoutTest extends TestCase
      */
     public function testRunHookEnabled(): void
     {
-        $io           = $this->createIOMock();
-        $config       = $this->createConfigMock();
-        $repo         = $this->createRepositoryMock();
-        $hookConfig   = $this->createHookConfigMock();
-        $actionConfig = $this->createActionConfigMock();
+        $io            = $this->createIOMock();
+        $config        = $this->createConfigMock();
+        $repo          = $this->createRepositoryMock();
+        $hookConfig    = $this->createHookConfigMock();
+        $actionConfig1 = $this->createActionConfigMock();
+        $actionConfig2 = $this->createActionConfigMock();
         $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
-        $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
+        $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig1, $actionConfig2]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->atLeast(1))->method('write');
+
+        // Ensure that our actions are processed.
+        $actionConfig1->expects($this->atLeast(1))->method('getAction');
+        $actionConfig1->expects($this->atLeast(1))->method('getConditions');
+        $actionConfig2->expects($this->atLeast(1))->method('getAction');
+        $actionConfig2->expects($this->atLeast(1))->method('getConditions');
 
         $runner = new PostCheckout($io, $config, $repo);
         $runner->run();

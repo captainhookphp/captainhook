@@ -9,18 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace CaptainHook\App\Exception;
-
-use Exception;
+namespace CaptainHook\App\Plugin;
 
 /**
- * Class InvalidHookName
+ * CaptainHook plugin interface
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
- * @since   Class available since Release 0.9.0
+ * @since   Class available since Release 5.9.0.
  */
-class InvalidHookName extends Exception implements CaptainHookException
+interface CaptainHook
 {
 }

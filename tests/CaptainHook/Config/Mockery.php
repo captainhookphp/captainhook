@@ -59,6 +59,18 @@ trait Mockery
     }
 
     /**
+     * Create Action configuration mock
+     *
+     * @return \CaptainHook\App\Config\Action&\PHPUnit\Framework\MockObject\MockObject
+     */
+    public function createPluginConfigMock(): Plugin
+    {
+        return $this->getMockBuilder(Plugin::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    /**
      * @param  $type
      * @return \PHPUnit\Framework\MockObject\MockBuilder
      */
