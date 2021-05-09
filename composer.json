@@ -27,7 +27,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "CaptainHook\\App\\": "tests/CaptainHook/"
+      "CaptainHook\\App\\": "tests/CaptainHook/",
+      "CaptainHook\\App\\Integration\\": "tests/integration/"
     }
   },
   "require": {
@@ -67,7 +68,8 @@
     "post-install-cmd": "tools/phive install --force-accept-unsigned",
     "tools": "tools/phive install --force-accept-unsigned",
     "compile": "tools/box compile",
-    "test": "tools/phpunit",
+    "test": "tools/phpunit --testsuite CaptainHook",
+    "test:integration": "tools/phpunit --testsuite Integration --no-coverage",
     "analyse": "tools/phpstan analyse",
     "style": "tools/phpcs --standard=psr12 src tests"
   }
