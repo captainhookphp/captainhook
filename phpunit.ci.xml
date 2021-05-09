@@ -4,5 +4,8 @@
     <testsuite name="CaptainHook">
       <directory>tests/CaptainHook</directory>
     </testsuite>
+    <testsuite name="Integration">
+      <directory>tests/integration</directory>
+    </testsuite>
   </testsuites>
 </phpunit>
