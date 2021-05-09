@@ -9,7 +9,7 @@ use Symfony\Component\Process\Process;
 
 class IntegrationTestCase extends TestCase
 {
-    public const REPO_TEMPLATE = CH_PATH_FILES . '/template-acceptance';
+    public const REPO_TEMPLATE = CH_PATH_FILES . '/template-integration';
 
     /**
      * @return Filesystem
