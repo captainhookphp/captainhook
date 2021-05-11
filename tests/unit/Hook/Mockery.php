@@ -9,20 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace CaptainHook\App\Console\IO;
+namespace CaptainHook\App\Hook;
 
-use CaptainHook\App\Console\IO;
+use PHPUnit\Framework\MockObject\MockBuilder;
 
 trait Mockery
 {
     /**
-     * Create IO mock
+     * Create Template mock
      *
-     * @return \CaptainHook\App\Console\IO&\PHPUnit\Framework\MockObject\MockObject
+     * @return \CaptainHook\App\Hook\Template&\PHPUnit\Framework\MockObject\MockObject
      */
-    public function createIOMock(): IO
+    public function createTemplateMock(): Template
     {
-        return $this->getMockBuilder(DefaultIO::class)
+        return $this->getMockBuilder(Template\Local\PHP::class)
                     ->disableOriginalConstructor()
                     ->getMock();
     }
@@ -31,5 +31,5 @@ trait Mockery
      * @param  $type
      * @return \PHPUnit\Framework\MockObject\MockBuilder
      */
-    abstract public function getMockBuilder(string $type): \PHPUnit\Framework\MockObject\MockBuilder;
+    abstract public function getMockBuilder(string $type): MockBuilder;
 }

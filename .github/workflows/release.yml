@@ -7,15 +7,12 @@ on:
 
 jobs:
   release:
-    name: "Release"
-
-    runs-on: "ubuntu-latest"
-
+    name: Release
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-
         dependencies:
-          - "locked"
+          - locked
 
     env:
       PHAR: "build/phar/captainhook.phar"
@@ -40,55 +37,55 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-dev --no-interaction --no-progress
 
-      - name: "Install tooling"
+      - name: Install tooling
         run: "GITHUB_AUTH_TOKEN=${{ secrets.GITHUB_API_TOKEN }} tools/phive --no-progress --home ./.phive install --force-accept-unsigned --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192,8E730BA25823D8B5,CF1A108D0E7AE720"
 
-      - name: "Validate configuration for humbug/box"
-        run: "tools/box validate box.json"
+      - name: Validate configuration for humbug/box
+        run: tools/box validate box.json
 
       - name: Force install Symfony 3
         run: composer require symfony/console ^3.0 symfony/process ^3.0 symfony/filesystem ^3.0
 
-      - name: "Compile phar with humbug/box"
-        run: "tools/box compile"
+      - name: Compile phar with humbug/box
+        run: tools/box compile
 
-      - name: "Show info about generated phar with humbug/box"
-        run: "tools/box info ${{ env.PHAR }}"
+      - name: Show info about generated phar with humbug/box
+        run: tools/box info ${{ env.PHAR }}
 
-      - name: "Run phar"
-        run: "${{ env.PHAR }} --help"
+      - name: Run phar
+        run: ${{ env.PHAR }} --help
 
-      - name: "Show gpg version"
-        run: "gpg --version"
+      - name: Show gpg version
+        run: gpg --version
 
-      - name: "Decrypt signing key with gpg"
+      - name: Decrypt signing key with gpg
         run: "gpg --batch --output ${{ env.GPG_KEYS }} --passphrase \"${{ secrets.GPG_DECRYPT_PASSPHRASE }}\" --yes --ignore-mdc-error --decrypt ${{ env.GPG_KEYS_ENCRYPTED }}"
 
-      - name: "Import keys with gpg"
+      - name: Import keys with gpg
         run: "gpg --batch --import ${{ env.GPG_KEYS }}"
 
-      - name: "Sign phar with gpg"
+      - name: Sign phar with gpg
         run: "gpg --armor --local-user \"${{ secrets.GPG_KEY_EMAIL }}\" --output ${{ env.PHAR_SIGNATURE }} --passphrase \"${{ secrets.GPG_KEY_PASSPHRASE }}\" --pinentry-mode loopback --yes --detach-sig ${{ env.PHAR }}"
 
-      - name: "Verify signature with gpg"
+      - name: Verify signature with gpg
         run: "gpg --verify ${{ env.PHAR_SIGNATURE }} ${{ env.PHAR }}"
 
-      - name: "Remove decrypted keys"
+      - name: Remove decrypted keys
         run: "rm ${{ env.GPG_KEYS }}"
 
-      - name: "Determine tag"
-        id: "determine-tag"
+      - name: Determine tag
+        id:  determine-tag
         run: "echo \"::set-output name=tag::${GITHUB_REF#refs/tags/}\""
 
-      - name: "Fetch all"
+      - name: Fetch all
         run: git fetch --all && git fetch --tags --force
 
-      - name: "Determine previous tag"
-        id: "determine-prev-tag"
+      - name: Determine previous tag
+        id: determine-prev-tag
         run: echo "##[set-output name=tag;]$(git describe --abbrev=0 ${{ steps.determine-tag.outputs.tag }})^"
 
-      - name: "Prepare release notes"
-        id: "changelog"
+      - name: Prepare release notes
+        id: changelog
         run: |
           changelog=$(php build/release-notes)
           echo $changelog
@@ -97,12 +94,12 @@ jobs:
           changelog="${changelog//$'\r'/'%0D'}"
           echo "::set-output name=changelog::$changelog"
 
-      - name: "Check release notes"
+      - name: Check release notes
         run: "echo \"${{ steps.changelog.outputs.changelog }}\""
 
-      - name: "Create release"
-        id: "create-release"
-        uses: "actions/create-release@master"
+      - name: Create release
+        id: create-release
+        uses: actions/create-release@master
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_API_TOKEN }}"
         with:
@@ -112,34 +109,34 @@ jobs:
           release_name: "${{ steps.determine-tag.outputs.tag }}"
           body: "${{ steps.changelog.outputs.changelog }}"
 
-      - name: "Upload captainhook.phar"
-        uses: "actions/upload-release-asset@v1.0.1"
+      - name: Upload captainhook.phar
+        uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_API_TOKEN }}"
         with:
-          asset_content_type: "text/plain"
-          asset_name: "captainhook.phar"
+          asset_content_type: text/plain
+          asset_name: captainhook.phar
           asset_path: "${{ env.PHAR }}"
           upload_url: "${{ steps.create-release.outputs.upload_url }}"
 
-      - name: "Upload captainhook.phar.asc"
-        uses: "actions/upload-release-asset@v1.0.1"
+      - name: Upload captainhook.phar.asc
+        uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_API_TOKEN }}"
         with:
-          asset_content_type: "text/plain"
-          asset_name: "captainhook.phar.asc"
+          asset_content_type: text/plain
+          asset_name: captainhook.phar.asc
           asset_path: "${{ env.PHAR_SIGNATURE }}"
           upload_url: "${{ steps.create-release.outputs.upload_url }}"
 
-      - name: "Check out the phar repo"
+      - name: Check out the phar repo
         uses: actions/checkout@v2
         with:
           repository: captainhookphp/captainhook-phar
           token: ${{ secrets.PAT_SF }}
           path: phar-repo
 
-      - name: "Tag and push the phar repo"
+      - name: Tag and push the phar repo
         run: |
           cd phar-repo
           git config user.name "Sebastian Feldmann"

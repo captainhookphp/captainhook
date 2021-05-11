@@ -10,10 +10,10 @@
     </report>
   </coverage>
   <testsuites>
-    <testsuite name="CaptainHook">
-      <directory>tests/CaptainHook</directory>
+    <testsuite name="UnitTests">
+      <directory>tests/unit</directory>
     </testsuite>
-    <testsuite name="Integration">
+    <testsuite name="IntegrationTests">
       <directory>tests/integration</directory>
     </testsuite>
   </testsuites>

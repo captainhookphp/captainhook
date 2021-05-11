@@ -19,6 +19,7 @@ use CaptainHook\App\Hook\Mockery as HookMockery;
 use CaptainHook\App\Mockery as CHMockery;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use SebastianFeldmann\Git\Repository;
 
 class InstallerTest extends TestCase
@@ -53,7 +54,7 @@ class InstallerTest extends TestCase
      */
     public function testMoveAfterSkippingFail(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
 
         $io       = $this->createIOMock();
         $config   = $this->createConfigMock();
@@ -73,7 +74,7 @@ class InstallerTest extends TestCase
      */
     public function testSkipAfterMovingFail(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
 
         $io       = $this->createIOMock();
         $config   = $this->createConfigMock();
@@ -212,7 +213,7 @@ class InstallerTest extends TestCase
      */
     public function testMoveExistingHookTargetIsFile(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
 
         $fakeRepo = new DummyRepo(
             // git repo

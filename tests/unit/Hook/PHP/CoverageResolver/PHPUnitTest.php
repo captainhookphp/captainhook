@@ -21,7 +21,7 @@ class PHPUnitTest extends TestCase
      */
     public function testValid(): void
     {
-        if (\defined('PHP_WINDOWS_VERSION_MAJOR')) {
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
 

@@ -12,6 +12,7 @@
 namespace CaptainHook\App\Config;
 
 use CaptainHook\App\Config as CHConfig;
+use PHPUnit\Framework\MockObject\MockBuilder;
 
 trait Mockery
 {
@@ -74,5 +75,5 @@ trait Mockery
      * @param  $type
      * @return \PHPUnit\Framework\MockObject\MockBuilder
      */
-    abstract public function getMockBuilder(string $type): \PHPUnit\Framework\MockObject\MockBuilder;
+    abstract public function getMockBuilder(string $type): MockBuilder;
 }

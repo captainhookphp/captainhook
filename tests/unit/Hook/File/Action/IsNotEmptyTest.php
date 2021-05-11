@@ -15,6 +15,7 @@ use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
 use CaptainHook\App\Mockery as GitMockery;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class IsNotEmptyTest extends TestCase
@@ -111,7 +112,7 @@ class IsNotEmptyTest extends TestCase
      */
     public function testFailCommitEmptyFile(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
 
         $io     = new NullIO();
