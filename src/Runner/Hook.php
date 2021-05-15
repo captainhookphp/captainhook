@@ -114,22 +114,21 @@ abstract class Hook extends RepositoryAware
     {
         $hookConfigs = $this->getHookConfigsToHandle();
 
+        $this->io->write('<comment>' . $this->hook . ':</comment> ');
+
         // if the hook and all triggered virtual hooks
         // are NOT enabled in the captainhook configuration skip the execution
         if (!$this->isAnyConfigEnabled($hookConfigs)) {
-            $this->io->write($this->formatHookHeadline('Skip'), true, IO::VERBOSE);
+            $this->io->write(' - hook is disabled');
             return;
         }
 
-        $this->io->write($this->formatHookHeadline('Execute'), true, IO::VERBOSE);
-
-        $actions = $this->getActionsToExecute($hookConfigs);
-
         $this->beforeHook();
 
-        // if no actions are configured do nothing
+        $actions = $this->getActionsToExecute($hookConfigs);
+        // are any actions configured
         if (count($actions) === 0) {
-            $this->io->write(['', '<info>No actions to execute</info>'], true, IO::VERBOSE);
+            $this->io->write(' - no actions to execute', true);
         } else {
             $this->executeActions($actions);
         }
@@ -255,18 +254,23 @@ abstract class Hook extends RepositoryAware
     private function executeFailAfterAllActions(array $actions): void
     {
         $failedActions = 0;
+        $errors        = '';
 
         foreach ($actions as $action) {
             try {
                 $this->handleAction($action);
             } catch (Exception $exception) {
-                $this->io->write($exception->getMessage());
+                $errors .= $exception->getMessage() . PHP_EOL . PHP_EOL;
                 $failedActions++;
             }
         }
 
         if ($failedActions > 0) {
-            throw new ActionFailed($failedActions . ' action(s) failed; please see above error messages');
+            throw new ActionFailed(
+                '<error>' . $failedActions . ' action' . ($failedActions > 1 ? 's' : '') . ' failed</error>'
+                . PHP_EOL
+                . PHP_EOL . $errors
+            );
         }
     }
 
@@ -280,18 +284,20 @@ abstract class Hook extends RepositoryAware
     private function handleAction(Config\Action $action): void
     {
         if ($this->shouldSkipActions()) {
+            $this->io->write(
+                $this->formatActionOutput($action->getAction()) . ': <comment>deactivated</comment>',
+                true
+            );
             return;
         }
+
+        $this->io->write(' - <fg=blue>' . $this->formatActionOutput($action->getAction()) . '</> : ', false);
 
         if (!$this->doConditionsApply($action->getConditions())) {
-            $this->io->write(['', 'Action: <comment>' . $action->getAction() . '</comment>'], true, IO::VERBOSE);
-            $this->io->write('Skipped due to unfulfilled conditions', true, IO::VERBOSE);
+            $this->io->write('<comment>skipped</comment>', true);
             return;
         }
 
-        $this->io->write(['', 'Action: <comment>' . $action->getAction() . '</comment>'], true);
-
-        $execMethod = self::getExecMethod(Util::getExecType($action->getAction()));
         $this->beforeAction($action);
 
         // The beforeAction() method may indicate that the current and all
@@ -300,7 +306,15 @@ abstract class Hook extends RepositoryAware
             return;
         }
 
-        $this->{$execMethod}($action);
+        try {
+            $execMethod = self::getExecMethod(Util::getExecType($action->getAction()));
+            $this->{$execMethod}($action);
+            $this->io->write('<info>done</info>', true);
+        } catch (Exception  $e) {
+            $this->io->write('<error>failed</error>', true);
+            throw $e;
+        }
+
         $this->afterAction($action);
     }
 
@@ -366,18 +380,17 @@ abstract class Hook extends RepositoryAware
     /**
      * Some fancy output formatting
      *
-     * @param  string $mode
-     * @return string[]
+     * @param  string $action
+     * @return string
      */
-    private function formatHookHeadline(string $mode): array
+    private function formatActionOutput(string $action): string
     {
-        $headline = ' ' . $mode . ' hook: <comment>' . $this->hook . '</comment> ';
-        return [
-            '',
-            IOUtil::getLineSeparator(8) .
-            $headline .
-            IOUtil::getLineSeparator(80 - 8 - mb_strlen(strip_tags($headline)))
-        ];
+        $actionLength = 65;
+        if (mb_strlen($action) < $actionLength) {
+            return str_pad($action, $actionLength, ' ');
+        }
+
+        return mb_substr($action, 0, $actionLength - 3) . '...';
     }
 
     /**

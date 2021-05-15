@@ -42,8 +42,5 @@ class HookPluginTest extends IntegrationTestCase
 
         $this->assertStringContainsString('Do cool things before post-commit runs', $result->getStderr());
         $this->assertStringContainsString('Do cool things after post-commit runs', $result->getStderr());
-
-        $this->assertStringNotContainsString('commit-msg', $result->getStderr());
-        $this->assertStringNotContainsString('prepare-commit-msg', $result->getStderr());
     }
 }

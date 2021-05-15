@@ -61,7 +61,7 @@ class PostCommitTest extends TestCase
         $repo         = $this->createRepositoryMock();
         $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(false);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
-        $io->expects($this->once())->method('write');
+        $io->expects($this->atLeast(1))->method('write');
 
         $runner = new PostCommit($io, $config, $repo);
         $runner->run();

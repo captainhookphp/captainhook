@@ -41,6 +41,7 @@ class Debug implements Action
         $originalHookArguments = $io->getArguments();
         $currentGitTag         = $repository->getInfoOperator()->getCurrentTag();
 
+        $io->write(['', '']);
         $io->write('<info>Executing Dummy action</info>');
         $io->write($this->getArgumentOutput($originalHookArguments));
         $io->write('  Current git-tag: <comment>' . $currentGitTag . '</comment>');

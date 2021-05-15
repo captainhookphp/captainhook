@@ -79,8 +79,8 @@ class PrepareCommitMsgTest extends TestCase
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(Prepare::class);
         $actionConfig->method('getOptions')->willReturn(new Config\Options(['message' => 'Prepared commit msg']));
-        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
-        $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
+        $hookConfig->method('isEnabled')->willReturn(true);
+        $hookConfig->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->exactly(3))->method('getArgument')->willReturn('');
 

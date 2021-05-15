@@ -44,26 +44,36 @@ class Cli
         $cmdOriginal  = $action->getAction();
         $cmdFormatted = $this->formatCommand($config, $repository, $cmdOriginal, $io->getArguments());
 
-        // if any placeholders got replaced output the finally executed command
+        // if any placeholders got replaced display the finally executed command
         if ($cmdFormatted !== $cmdOriginal) {
-            $io->write('Execute: <comment>' . $cmdFormatted . '</comment>', true, IO::VERBOSE);
+            $io->write(
+                PHP_EOL . ' - <comment>' . $cmdFormatted . '</comment>',
+                true,
+                IO::VERBOSE
+            );
         }
 
         $result = $processor->run($cmdFormatted);
-        if (!$result->isSuccessful()) {
-            $errorMessage = '<error>Failed executing: \'' . $cmdFormatted . '\'</error>';
+        $output = '';
 
-            if (!empty($result->getStdOut())) {
-                $errorMessage .= PHP_EOL . $result->getStdOut();
-            }
-
-            if (!empty($result->getStdErr())) {
-                $errorMessage .= PHP_EOL . $result->getStdErr();
-            }
-
-            throw new Exception\ActionFailed($errorMessage);
+        if (!empty($result->getStdOut())) {
+            $output .= PHP_EOL . $result->getStdOut();
         }
-        $io->write(empty($result->getStdOut()) ? '<info>CLI command OK</info>' : $result->getStdOut());
+        if (!empty($result->getStdErr())) {
+            $output .= PHP_EOL . $result->getStdErr();
+        }
+
+        if (!$result->isSuccessful()) {
+            throw new Exception\ActionFailed(
+                'failed to execute: <comment>' . $cmdFormatted . '</comment>' . PHP_EOL . $output
+            );
+        }
+
+        $io->write(
+            ['', empty($output) ? '<info>command executed successfully</info>' : trim($output), ''],
+            true,
+            IO::VERBOSE
+        );
     }
 
     /**

@@ -23,30 +23,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 abstract class IOUtil
 {
-    // @codingStandardsIgnoreStart
-    /**
-     * @var string
-     */
-    public static $tplError = <<<ERRORTPL
-
-<error>                                                                                </error>
-<error>   </error>                      _______________________________________             <error>   </error>
-<error>   </error>                     /                                       \            <error>   </error>
-<error>   </error>                     | Avast! <error>Hook execution failed!</error>          |           <error>   </error>
-<error>   </error>                     |                                        |           <error>   </error>
-<error>   </error>                    /  Yer git command did not go through!    |           <error>   </error>
-<error>   </error>                   /_                                         |           <error>   </error>  
-<error>   </error>           /(o)\     | For further details check the output   |           <error>   </error>
-<error>   </error>          /  ()/ /)  | or run CaptainHook in verbose or debug |           <error>   </error>
-<error>   </error>         /.;.))'".)  | mode.                                  |           <error>   </error>
-<error>   </error>         //////.-'   \_______________________________________/            <error>   </error>
-<error>   </error>=========))=))===()                                                       <error>   </error>
-<error>   </error>      ///'                                                                <error>   </error>
-<error>   </error>     //                                                                   <error>   </error>
-<error>   </error>    '                                                                     <error>   </error>
-<error>                                                                                </error>
-ERRORTPL;
-    // @codingStandardsIgnoreEnd
+    public const PREFIX_OK = '<info>✔</info>';
+    public const PREFIX_FAIL = '<fg=red>✘</>';
 
     /**
      * Maps config values to Symfony verbosity values

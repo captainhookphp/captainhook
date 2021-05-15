@@ -89,7 +89,7 @@ class PostMergeTest extends TestCase
         $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
-        $io->expects($this->exactly(5))->method('write');
+        $io->expects($this->atLeast(1))->method('write');
 
         $runner = new PostMerge($io, $config, $repo);
         $runner->run();
@@ -108,7 +108,7 @@ class PostMergeTest extends TestCase
         $repo         = $this->createRepositoryMock();
         $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(false);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
-        $io->expects($this->once())->method('write');
+        $io->expects($this->atLeast(1))->method('write');
 
         $runner = new PostMerge($io, $config, $repo);
         $runner->run();
