@@ -91,7 +91,7 @@ class IsNotEmptyTest extends TestCase
         );
 
         // with this configuration the Captain should find 4 files for 2 patterns
-        $io->expects($this->exactly(3))->method('write');
+        $io->expects($this->atLeast(1))->method('write');
 
         // two of those files should be in the commit
         $stagedFiles = [CH_PATH_FILES . '/storage/regextest1.txt', CH_PATH_FILES . '/storage/test.json'];
@@ -113,7 +113,6 @@ class IsNotEmptyTest extends TestCase
     public function testFailCommitEmptyFile(): void
     {
         $this->expectException(Exception::class);
-
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');

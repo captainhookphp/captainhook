@@ -12,12 +12,6 @@
 namespace CaptainHook\App\Hook\File\Action;
 
 use CaptainHook\App\Config;
-use CaptainHook\App\Console\IO;
-use CaptainHook\App\Exception\ActionFailed;
-use CaptainHook\App\Hook\Action;
-use CaptainHook\App\Hook\Constrained;
-use CaptainHook\App\Hook\Restriction;
-use CaptainHook\App\Hooks;
 use RuntimeException;
 use SebastianFeldmann\Git\Repository;
 
@@ -38,7 +32,7 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.4.3
  */
-class MaxSize implements Action, Constrained
+class MaxSize extends Check
 {
     /**
      * @var int
@@ -46,46 +40,49 @@ class MaxSize implements Action, Constrained
     private $maxBytes;
 
     /**
-     * Returns a list of applicable hooks
+     * File sizes for all checked files
      *
-     * @return \CaptainHook\App\Hook\Restriction
+     * @var array
      */
-    public static function getRestriction(): Restriction
+    private $fileSizes = [];
+
+    protected function setUp(Config\Options $options): void
     {
-        return Restriction::fromArray([Hooks::PRE_COMMIT]);
+        $this->maxBytes = $this->toBytes($options->get('maxSize'));
     }
 
     /**
-     * Executes the action
+     * Make sure the given file is not too big
      *
-     * @param  \CaptainHook\App\Config           $config
-     * @param  \CaptainHook\App\Console\IO       $io
      * @param  \SebastianFeldmann\Git\Repository $repository
-     * @param  \CaptainHook\App\Config\Action    $action
-     * @return void
-     * @throws \Exception
+     * @param  string                            $file
+     * @return bool
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
+    protected function isValid(Repository $repository, string $file): bool
     {
-        $filesStaged    = $repository->getIndexOperator()->getStagedFiles();
-        $filesFailed    = 0;
-        $this->maxBytes = $this->toBytes($action->getOptions()->get('maxSize'));
+        return !$this->isTooBig($file);
+    }
 
-        foreach ($filesStaged as $file) {
-            if ($this->isTooBig($file)) {
-                $filesFailed++;
-                $io->write('- <error>FAIL</error> ' . $file, true);
-            } else {
-                $io->write('- <info>OK</info> ' . $file, true, IO::VERBOSE);
-            }
-        }
+    /**
+     * Append the actual file size
+     *
+     * @param string $file
+     * @return string
+     */
+    protected function errorDetails(string $file): string
+    {
+        return ' <comment>(' . $this->toMegaBytes($this->fileSizes[$file]) . ' MB)</comment>';
+    }
 
-        if ($filesFailed > 0) {
-            $text = $filesFailed > 1 ? ' files were too big' : 'file is too big';
-            throw new ActionFailed('<error>Error: ' . $filesFailed . ' ' . $text . '</error>');
-        }
-
-        $io->write('<info>File size is ok</info>');
+    /**
+     * Custom error message
+     *
+     * @param  int $filesFailed
+     * @return string
+     */
+    protected function errorMessage(int $filesFailed): string
+    {
+        return  $filesFailed . ' file' . ($filesFailed > 1 ? ' s are' : ' is') . ' too big';
     }
 
     /**
@@ -100,10 +97,11 @@ class MaxSize implements Action, Constrained
             return false;
         }
 
-        if (filesize($file) > $this->maxBytes) {
+        $this->fileSizes[$file] = filesize($file);
+
+        if ($this->fileSizes[$file] > $this->maxBytes) {
             return true;
         }
-
         return false;
     }
 
@@ -136,5 +134,16 @@ class MaxSize implements Action, Constrained
         $number = intval(substr($value, 0, -1));
 
         return $number * pow(1024, $units[$unit]);
+    }
+
+    /**
+     * Display bytes in a readable format
+     *
+     * @param  int $bytes
+     * @return float
+     */
+    private function toMegaBytes(int $bytes): float
+    {
+        return round($bytes / 1024 / 1024, 3);
     }
 }

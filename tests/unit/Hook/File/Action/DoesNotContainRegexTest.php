@@ -73,7 +73,6 @@ class DoesNotContainRegexTest extends TestCase
     public function testExecuteFailure(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('<error>Regex \'#foo#\' failed:</error> 1 matches in 1 files');
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
@@ -99,7 +98,6 @@ class DoesNotContainRegexTest extends TestCase
     public function testExecuteFailureWithCount(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('<error>Regex \'#foo#\' failed:</error> 3 matches in 2 files');
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
@@ -159,7 +157,6 @@ class DoesNotContainRegexTest extends TestCase
     public function testExecuteFailureWithFileExtension(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('<error>Regex \'#foo#\' failed:</error> 1 matches in 1 files');
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');

@@ -13,11 +13,11 @@ namespace CaptainHook\App\Hook\File\Action;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
+use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Action;
 use CaptainHook\App\Hook\Constrained;
 use CaptainHook\App\Hook\Restriction;
-use Exception;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -57,91 +57,87 @@ abstract class Check implements Action, Constrained
      * @return void
      * @throws \Exception
      */
-    abstract public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void;
-
-    /**
-     * @param  \CaptainHook\App\Config\Options $options
-     * @param  string[]                        $stagedFiles
-     * @return array
-     * @throws \Exception
-     */
-    protected function getFilesToCheck(Config\Options $options, array $stagedFiles): array
+    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
     {
-        return $this->extractFilesToCheck($this->getFilesToWatch($options), $stagedFiles);
-    }
+        $this->setUp($action->getOptions());
 
-    /**
-     * Return a list of files to watch
-     *
-     * ['pattern1' => ['file1', 'file2'], 'pattern2' => ['file3']...]
-     *
-     * @param  \CaptainHook\App\Config\Options $options
-     * @return array
-     * @throws \Exception
-     */
-    private function getFilesToWatch(Config\Options $options): array
-    {
-        $filesToWatch = [];
-        $filePatterns = $options->get('files');
-        if (!is_array($filePatterns)) {
-            throw new Exception('Missing option "files" for ' . $this->actionName . ' action');
-        }
+        $filesToCheck = $this->getFilesToCheck($repository);
+        $filesFailed  = 0;
+        $messages     = [];
+        $failures     = [];
 
-        // collect all files that should be watched
-        foreach ($filePatterns as $glob) {
-            $filesToWatch[$glob] = glob($glob);
-        }
-
-        return $filesToWatch;
-    }
-
-    /**
-     * Extract files list from the action configuration
-     *
-     * @param  array    $filesToWatch  ['pattern1' => ['file1', 'file2'], 'pattern2' => ['file3']...]
-     * @param  string[] $stagedFiles
-     * @return array
-     */
-    private function extractFilesToCheck(array $filesToWatch, array $stagedFiles): array
-    {
-        $filesToCheck = [];
-        // check if any staged file should be watched
-        foreach ($stagedFiles as $stagedFile) {
-            if ($this->isFileUnderWatch($stagedFile, $filesToWatch)) {
-                $filesToCheck[] = $stagedFile;
+        foreach ($filesToCheck as $file) {
+            $prefix = IOUtil::PREFIX_OK;
+            if (!$this->isValid($repository, $file)) {
+                $prefix     = IOUtil::PREFIX_FAIL;
+                $failures[] = $prefix . ' ' . $file . $this->errorDetails($file);
+                $filesFailed++;
             }
+            $messages[] = $prefix . ' ' . $file;
         }
-        return $filesToCheck;
+
+        $msg = count($messages) ? implode(PHP_EOL, $messages) : 'no files had to be checked';
+        $io->write(['', '', $msg, ''], true, IO::VERBOSE);
+
+        if ($filesFailed > 0) {
+            throw new ActionFailed(
+                $this->errorMessage($filesFailed) . PHP_EOL
+                . PHP_EOL
+                . implode(PHP_EOL, $failures)
+            );
+        }
     }
 
     /**
-     * Check if a file is in the list of watched files
+     * Setup the action, reading and validating all config settings
      *
-     * @param  string $stagedFile
-     * @param  array  $filesToWatch
-     * @return bool
+     * @param \CaptainHook\App\Config\Options $options
      */
-    protected function isFileUnderWatch(string $stagedFile, array $filesToWatch): bool
+    protected function setUp(Config\Options $options): void
     {
-        // check the list of files found for each pattern
-        foreach ($filesToWatch as $pattern => $files) {
-            foreach ($files as $fileToWatch) {
-                if ($fileToWatch === $stagedFile) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        // can be used in child classes to extract and validate config settings
     }
 
     /**
-     * Returns true if the file has no contents
+     * Some output appendix for every file
      *
      * @param  string $file
+     * @return string
+     */
+    protected function errorDetails(string $file): string
+    {
+        // can be used to enhance the output
+        return '';
+    }
+
+    /**
+     * Define the exception error message
+     *
+     * @param  int $filesFailed
+     * @return string
+     */
+    protected function errorMessage(int $filesFailed): string
+    {
+        return '<error>Error: ' . $filesFailed . ' files failed</error>';
+    }
+
+    /**
+     * Determine if the file is valid
+     *
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @param  string                            $file
      * @return bool
      */
-    protected function isEmpty(string $file): bool
+    abstract protected function isValid(Repository $repository, string $file): bool;
+
+    /**
+     * Return the list of files that should be checked
+     *
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @return array
+     */
+    protected function getFilesToCheck(Repository $repository): array
     {
-        return filesize($file) === 0;
+        return $repository->getIndexOperator()->getStagedFiles();
     }
 }

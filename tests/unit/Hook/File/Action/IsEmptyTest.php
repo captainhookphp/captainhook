@@ -97,7 +97,6 @@ class IsEmptyTest extends TestCase
     public function testFailCommitFileWithContents(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('<error>Error: 1 non-empty file(s)</error>');
 
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');

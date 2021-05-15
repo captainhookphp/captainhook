@@ -11,11 +11,6 @@
 
 namespace CaptainHook\App\Hook\File\Action;
 
-use CaptainHook\App\Config;
-use CaptainHook\App\Console\IO;
-use CaptainHook\App\Exception\ActionFailed;
-use CaptainHook\App\Hook\Action;
-use Exception;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -26,7 +21,7 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.4.0
  */
-class IsEmpty extends Check
+class IsEmpty extends Emptiness
 {
     /**
      * Actual action name for better error messages
@@ -36,33 +31,14 @@ class IsEmpty extends Check
     protected $actionName = 'IsEmpty';
 
     /**
-     * Executes the action
+     * Checks if the file is valid or not
      *
-     * @param  \CaptainHook\App\Config           $config
-     * @param  \CaptainHook\App\Console\IO       $io
      * @param  \SebastianFeldmann\Git\Repository $repository
-     * @param  \CaptainHook\App\Config\Action    $action
-     * @return void
-     * @throws \Exception
+     * @param  string                            $file
+     * @return bool
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
+    protected function isValid(Repository $repository, string $file): bool
     {
-        $stagedFiles = $repository->getIndexOperator()->getStagedFiles();
-        $filesFailed = 0;
-
-        foreach ($this->getFilesToCheck($action->getOptions(), $stagedFiles) as $stagedFileToCheck) {
-            if (!$this->isEmpty($stagedFileToCheck)) {
-                $io->write('- <error>FAIL</error> ' . $stagedFileToCheck, true);
-                $filesFailed++;
-            } else {
-                $io->write('- <info>OK</info> ' . $stagedFileToCheck, true, IO::VERBOSE);
-            }
-        }
-
-        if ($filesFailed > 0) {
-            throw new ActionFailed('<error>Error: ' . $filesFailed . ' non-empty file(s)</error>');
-        }
-
-        $io->write('<info>All checked files are empty</info>');
+        return $this->isEmpty($file);
     }
 }

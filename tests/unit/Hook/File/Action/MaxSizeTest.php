@@ -89,7 +89,7 @@ class MaxSizeTest extends TestCase
         $repo     = $this->createRepositoryMock();
         $files    = [CH_PATH_FILES . '/config/empty.json', 'fooBarBaz'];
         $operator = $this->createGitIndexOperator($files);
-        $repo->expects($this->once())->method('getIndexOperator')->willReturn($operator);
+        $repo->method('getIndexOperator')->willReturn($operator);
 
         $action   = new Config\Action(MaxSize::class, ['maxSize' => '1X']);
         $standard = new MaxSize();

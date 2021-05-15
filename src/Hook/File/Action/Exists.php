@@ -12,9 +12,7 @@
 namespace CaptainHook\App\Hook\File\Action;
 
 use CaptainHook\App\Config;
-use CaptainHook\App\Console\IO;
 use CaptainHook\App\Exception\ActionFailed;
-use CaptainHook\App\Hook\Action;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -28,7 +26,7 @@ use SebastianFeldmann\Git\Repository;
  *     "action": "\\CaptainHook\\App\\Hook\\File\\Action\\Exists",
  *     "options": {
  *         "files" : [
- *             "tests/CaptainHook/ ** / * Test.php",
+ *             "tests / CaptainHook/ ** / * Test.php",
  *             "README.md"
  *         ]
  *     }
@@ -39,53 +37,59 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.4.3
  */
-class Exists implements Action
+class Exists extends Check
 {
     /**
-     * Executes the action
+     * List of files that should exist
      *
-     * @param  \CaptainHook\App\Config           $config
-     * @param  \CaptainHook\App\Console\IO       $io
-     * @param  \SebastianFeldmann\Git\Repository $repository
-     * @param  \CaptainHook\App\Config\Action    $action
-     * @return void
-     * @throws \Exception
+     * @var string[]
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
+    private $files;
+
+    /**
+     * Extract and validate config settings
+     *
+     * @param  \CaptainHook\App\Config\Options $options
+     * @throws \CaptainHook\App\Exception\ActionFailed
+     */
+    protected function setUp(Config\Options $options): void
     {
-        $filesFailed  = 0;
-        $filesToCheck = $this->getFilesToCheck($action->getOptions());
-
-        foreach ($filesToCheck as $filesThatShouldExistInRepo) {
-            $repoFiles = $repository->getInfoOperator()->getFilesInTree($filesThatShouldExistInRepo);
-            if (empty($repoFiles)) {
-                $filesFailed++;
-                $io->write('- <error>FAIL</error> ' . $filesThatShouldExistInRepo, true);
-            } else {
-                $io->write('- <info>OK</info> ' . $filesThatShouldExistInRepo, true, IO::VERBOSE);
-            }
+        $this->files = $options->get('files', []);
+        if (!is_array($this->files) || empty($this->files)) {
+            throw new ActionFailed('no files configured');
         }
-
-        if ($filesFailed > 0) {
-            throw new ActionFailed('<error>Error: ' . $filesFailed . ' file(s) were not found</error>');
-        }
-
-        $io->write('<info>All files exist</info>');
     }
 
     /**
-     * Retrieve configured file globs
+     * Return the list of files that should be checked
      *
-     * @param  \CaptainHook\App\Config\Options $options
-     * @return array
-     * @throws \CaptainHook\App\Exception\ActionFailed
+     * @param  \SebastianFeldmann\Git\Repository $repository
+     * @return string[]
      */
-    private function getFilesToCheck(Config\Options $options): array
+    protected function getFilesToCheck(Repository $repository): array
     {
-        $files = $options->get('files', []);
-        if (!is_array($files) || empty($files)) {
-            throw new ActionFailed('no files configured');
-        }
-        return $files;
+        return $this->files;
+    }
+
+    /**
+     * @param \SebastianFeldmann\Git\Repository $repository
+     * @param string                            $file
+     * @return bool
+     */
+    protected function isValid(Repository $repository, string $file): bool
+    {
+        $repoFiles = $repository->getInfoOperator()->getFilesInTree($file);
+        return !empty($repoFiles);
+    }
+
+    /**
+     * Custom exception message
+     *
+     * @param  int $filesFailed
+     * @return string
+     */
+    protected function errorMessage(int $filesFailed): string
+    {
+        return 'Error: ' . $filesFailed . ' file(s) could not be found';
     }
 }
