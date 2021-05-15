@@ -13,6 +13,7 @@ namespace CaptainHook\App\Hook\PHP\Action;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
+use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Action;
 use SebastianFeldmann\Cli\Processor\ProcOpen as Processor;
@@ -41,22 +42,27 @@ class Linting implements Action
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
     {
         $changedPHPFiles = $repository->getIndexOperator()->getStagedFilesOfType('php');
+        $failedFiles     = 0;
+        $messages        = [];
 
-        $failedFiles = 0;
         foreach ($changedPHPFiles as $file) {
+            $prefix = IOUtil::PREFIX_OK;
             if ($this->hasSyntaxErrors($file)) {
-                $io->write('- <error>FAIL</error> ' . $file, true);
+                $prefix = IOUtil::PREFIX_FAIL;
                 $failedFiles++;
-            } else {
-                $io->write('- <info>OK</info> ' . $file, true, IO::VERBOSE);
             }
+            $messages[] = $prefix . ' ' . $file;
         }
+
+        $io->write(['', '', implode(PHP_EOL, $messages), ''], true, IO::VERBOSE);
 
         if ($failedFiles > 0) {
-            throw new ActionFailed('<error>Linting failed:</error> PHP syntax errors in ' . $failedFiles . ' file(s)');
+            throw new ActionFailed(
+                '<error>Linting failed:</error> PHP syntax errors in ' . $failedFiles . ' file(s)' . PHP_EOL
+                . PHP_EOL
+                . implode(PHP_EOL, $messages)
+            );
         }
-
-        $io->write('<info>No syntax errors detected</info>');
     }
 
     /**

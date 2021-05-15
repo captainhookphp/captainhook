@@ -65,7 +65,7 @@ class Regex implements Action, Constrained
             throw new ActionFailed(sprintf($errorMsg, $regex));
         }
 
-        $io->write(sprintf($successMsg, $matches[0]));
+        $io->write(['', '', sprintf($successMsg, $matches[0]), ''], true, IO::VERBOSE);
     }
 
     /**

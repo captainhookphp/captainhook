@@ -74,10 +74,8 @@ abstract class Book implements Action, Constrained
         $problems = $ruleBook->validate($repository->getCommitMsg());
 
         if (count($problems)) {
-            $io->writeError($this->getErrorOutput($problems, $repository));
-            throw new ActionFailed('Commit message validation failed');
+            throw new ActionFailed($this->getErrorOutput($problems, $repository));
         }
-        $io->write('<info>All rules passed</info>');
     }
 
     /**

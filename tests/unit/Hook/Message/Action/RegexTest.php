@@ -39,7 +39,7 @@ class RegexTest extends TestCase
     public function testExecuteDefaultSuccess(): void
     {
         $io = $this->createPartialMock(NullIO::class, ['write']);
-        $io->expects($this->once())->method('write')->with('Found matching pattern: bar');
+        $io->expects($this->once())->method('write');
         /** @var NullIO $io */
 
         $config  = new Config(CH_PATH_FILES . '/captainhook.json');
@@ -62,7 +62,7 @@ class RegexTest extends TestCase
     {
         $successMessage = 'Regex matched';
         $io             = $this->createPartialMock(NullIO::class, ['write']);
-        $io->expects($this->once())->method('write')->with($successMessage);
+        $io->expects($this->once())->method('write');
         /** @var NullIO $io */
 
         $config  = new Config(CH_PATH_FILES . '/captainhook.json');

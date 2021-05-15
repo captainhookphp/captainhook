@@ -60,7 +60,7 @@ class EnsureNaming implements Action
             throw new ActionFailed(sprintf($errorMsg, $regex));
         }
 
-        $io->write(sprintf($successMsg, $regex));
+        $io->write(['', '', sprintf($successMsg, $regex), ''], true, IO::VERBOSE);
     }
 
     /**

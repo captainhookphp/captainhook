@@ -100,6 +100,6 @@ class Notify implements Action, Constrained
      */
     private function notify(IO $io, Notification $notification)
     {
-        $io->write($notification->banner());
+        $io->write(['', '', $notification->banner(), '']);
     }
 }

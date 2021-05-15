@@ -69,8 +69,8 @@ class CommitMsgTest extends TestCase
         $repo         = $this->createRepositoryMock();
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
-        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
-        $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
+        $hookConfig->method('isEnabled')->willReturn(true);
+        $hookConfig->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->once())->method('getArgument')->willReturn('');
 
