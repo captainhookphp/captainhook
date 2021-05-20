@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace CaptainHook\App;
 
+use RuntimeException;
+
 /**
  * Class Hooks
  *
@@ -44,8 +46,12 @@ final class Hooks
 
     public const POST_CHANGE = 'post-change';
 
-
-    private static $virtualHooks = [
+    /**
+     * This defines which native hook trigger which virtual hook
+     *
+     * @var string[]
+     */
+    private static $virtualHookTriggers = [
         self::POST_CHECKOUT => self::POST_CHANGE,
         self::POST_MERGE    => self::POST_CHANGE,
         self::POST_REWRITE  => self::POST_CHANGE,
@@ -58,6 +64,16 @@ final class Hooks
      */
     public static function getValidHooks(): array
     {
+        return array_merge(self::nativeHooks(), self::virtualHooks());
+    }
+
+    /**
+     * Returns a list of all natively supported git hooks
+     *
+     * @return array<string, string>
+     */
+    public static function nativeHooks(): array
+    {
         return [
             self::COMMIT_MSG         => 'CommitMsg',
             self::PRE_PUSH           => 'PrePush',
@@ -66,8 +82,19 @@ final class Hooks
             self::POST_COMMIT        => 'PostCommit',
             self::POST_MERGE         => 'PostMerge',
             self::POST_CHECKOUT      => 'PostCheckout',
-            self::POST_REWRITE       => 'PostRewrite',
-            self::POST_CHANGE        => 'PostChange'
+            self::POST_REWRITE       => 'PostRewrite'
+        ];
+    }
+
+    /**
+     * Return a list of all artificial CaptainHook hooks (virtual hooks)
+     *
+     * @return array<string, string>
+     */
+    public static function virtualHooks(): array
+    {
+        return [
+            self::POST_CHANGE => 'PostChange'
         ];
     }
 
@@ -100,7 +127,7 @@ final class Hooks
      */
     public static function triggersVirtualHook(string $hook): bool
     {
-        return isset(self::$virtualHooks[$hook]);
+        return isset(self::$virtualHookTriggers[$hook]);
     }
 
     /**
@@ -109,11 +136,11 @@ final class Hooks
      * @param  string $hook
      * @return string
      */
-    public static function getVirtualHook(string $hook)
+    public static function getVirtualHook(string $hook): string
     {
         if (!self::triggersVirtualHook($hook)) {
-            throw new \RuntimeException('no virtual hooks for ' . $hook);
+            throw new RuntimeException('no virtual hooks for ' . $hook);
         }
-        return self::$virtualHooks[$hook];
+        return self::$virtualHookTriggers[$hook];
     }
 }

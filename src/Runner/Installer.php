@@ -23,7 +23,6 @@ use CaptainHook\App\Hooks;
 use CaptainHook\App\Storage\File;
 use RuntimeException;
 use SebastianFeldmann\Camino\Check;
-use SebastianFeldmann\Camino\Path;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -178,9 +177,9 @@ class Installer extends RepositoryAware
         $callback = function () {
             return true;
         };
-        // if a specific hook is set the user chose it so don't ask for permission anymore
+        // if a specific hook is set, the use has actively chosen it, so don't ask for permission anymore
         return empty($this->hookToHandle)
-            ? array_map($callback, HookUtil::getValidHooks())
+            ? array_map($callback, Hooks::nativeHooks())
             : [$this->hookToHandle => false];
     }
 
