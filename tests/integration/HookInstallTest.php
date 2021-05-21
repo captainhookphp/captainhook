@@ -18,6 +18,5 @@ class HookInstallTest extends IntegrationTestCase
         $this->assertStringContainsString("'post-merge' hook installed successfully", $result->getStdout());
         $this->assertStringContainsString("'post-checkout' hook installed successfully", $result->getStdout());
         $this->assertStringContainsString("'post-rewrite' hook installed successfully", $result->getStdout());
-        $this->assertStringContainsString("'post-change' hook installed successfully", $result->getStdout());
     }
 }
