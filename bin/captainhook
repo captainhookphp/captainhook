@@ -59,14 +59,22 @@ use Symfony\Component\Console\Input\ArgvInput;
 
     if (!defined('CAPTAINHOOK_COMPOSER_AUTOLOAD')) {
         fwrite(STDERR,
-            'You need to set up the project dependencies using the following commands:' . PHP_EOL .
-            'wget http://getcomposer.org/composer.phar' . PHP_EOL .
-            'php composer.phar install' . PHP_EOL
+            'Autoloader could not be found:' . PHP_EOL .
+            '  Please run `composer install` to generate the autoloader' . PHP_EOL
         );
         exit(1);
     }
 
-    require CAPTAINHOOK_COMPOSER_AUTOLOAD;
+    try {
+      require CAPTAINHOOK_COMPOSER_AUTOLOAD;
+    } catch (Throwable $exception) {
+        fwrite(STDERR,
+            'Composer autoloader crashed:' . PHP_EOL .
+            '  Please update your autoloader by running `composer install`' . PHP_EOL .
+            '  You can re-run the hook by executing `' . implode(' ', $argv) . '`' . PHP_EOL
+        );
+        exit(1);
+    }
 
     $captainHook = new CaptainHook($argv[0]);
     $captainHook->run(new ArgvInput($argv));
