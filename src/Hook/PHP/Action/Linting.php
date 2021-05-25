@@ -30,6 +30,13 @@ use SebastianFeldmann\Git\Repository;
 class Linting implements Action
 {
     /**
+     * Path to php executable, default 'php'
+     *
+     * @var string
+     */
+    private $php;
+
+    /**
      * Executes the action
      *
      * @param  \CaptainHook\App\Config           $config
@@ -41,6 +48,7 @@ class Linting implements Action
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
     {
+        $this->php       = !empty($config->getPhpPath()) ? $config->getPhpPath() : 'php';
         $changedPHPFiles = $repository->getIndexOperator()->getStagedFilesOfType('php');
         $failedFiles     = 0;
         $messages        = [];
@@ -74,7 +82,7 @@ class Linting implements Action
     protected function hasSyntaxErrors($file): bool
     {
         $process = new Processor();
-        $result  = $process->run('php -l ' . escapeshellarg($file));
+        $result  = $process->run($this->php . ' -l ' . escapeshellarg($file));
 
         return !$result->isSuccessful();
     }
