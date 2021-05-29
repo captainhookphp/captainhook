@@ -154,6 +154,16 @@ abstract class Hook extends RepositoryAware
     }
 
     /**
+     * Returns true if this hook or any applicable virtual hooks are enabled
+     *
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->isAnyConfigEnabled($this->getHookConfigsToHandle());
+    }
+
+    /**
      * @param  \CaptainHook\App\Config\Hook[] $configs
      * @return bool
      */
@@ -192,6 +202,16 @@ abstract class Hook extends RepositoryAware
         }
 
         return $this->skipActions;
+    }
+
+    /**
+     * Returns all actions configured for this hook or applicable virtual hooks
+     *
+     * @return \CaptainHook\App\Config\Action[]
+     */
+    public function getActions(): array
+    {
+        return $this->getActionsToExecute($this->getHookConfigsToHandle());
     }
 
     /**

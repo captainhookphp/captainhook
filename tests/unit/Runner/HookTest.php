@@ -262,4 +262,207 @@ class HookTest extends TestCase
         $this->assertSame(2, DummyHookPlugin::$afterActionCalled);
         $this->assertSame(1, DummyHookPlugin::$afterHookCalled);
     }
+
+    public function testGetActionsWithoutVirtualHooks(): void
+    {
+        $actionConfig1 = $this->createActionConfigMock();
+        $actionConfig1->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success --foo');
+
+        $actionConfig2 = $this->createActionConfigMock();
+        $actionConfig2->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success --bar');
+
+        $hookConfig = $this->createHookConfigMock();
+        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig1, $actionConfig2]);
+
+        $config = $this->createConfigMock();
+        $config->expects($this->once())->method('getHookConfig')->with('pre-commit')->willReturn($hookConfig);
+
+        $io = $this->createIOMock();
+        $repo = $this->createRepositoryMock();
+
+        $runner = new class ($io, $config, $repo) extends Hook {
+            protected $hook = Hooks::PRE_COMMIT;
+        };
+
+        $this->assertSame([$actionConfig1, $actionConfig2], $runner->getActions());
+    }
+
+    public function testGetActionsWithVirtualHooks(): void
+    {
+        $actionConfig1 = $this->createActionConfigMock();
+        $actionConfig1->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success --foo');
+
+        $actionConfig2 = $this->createActionConfigMock();
+        $actionConfig2->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success --bar');
+
+        $actionConfig3 = $this->createActionConfigMock();
+        $actionConfig3->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success --baz');
+
+        $hookConfig1 = $this->createHookConfigMock();
+        $hookConfig1->expects($this->exactly(2))->method('getName')->willReturn('post-checkout');
+        $hookConfig1->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
+        $hookConfig1->expects($this->once())->method('getActions')->willReturn([$actionConfig1, $actionConfig2]);
+
+        $hookConfig2 = $this->createHookConfigMock();
+        $hookConfig2->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
+        $hookConfig2->expects($this->once())->method('getActions')->willReturn([$actionConfig3]);
+
+        $config = $this->createConfigMock();
+        $config
+            ->expects($this->exactly(2))
+            ->method('getHookConfig')
+            ->withConsecutive(['post-checkout'], ['post-change'])
+            ->willReturn($hookConfig1, $hookConfig2);
+
+        $io = $this->createIOMock();
+        $repo = $this->createRepositoryMock();
+
+        $runner = new class ($io, $config, $repo) extends Hook {
+            protected $hook = Hooks::POST_CHECKOUT;
+        };
+
+        $this->assertSame([$actionConfig1, $actionConfig2, $actionConfig3], $runner->getActions());
+    }
+
+    public function testGetActionsReturnsEmptyArrayWhenNoConfigsAreEnabled(): void
+    {
+        $actionConfig1 = $this->createActionConfigMock();
+        $actionConfig1->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success --foo');
+
+        $actionConfig2 = $this->createActionConfigMock();
+        $actionConfig2->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success --bar');
+
+        $actionConfig3 = $this->createActionConfigMock();
+        $actionConfig3->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success --baz');
+
+        $hookConfig1 = $this->createHookConfigMock();
+        $hookConfig1->expects($this->exactly(2))->method('getName')->willReturn('post-checkout');
+        $hookConfig1->expects($this->atLeast(1))->method('isEnabled')->willReturn(false);
+
+        $hookConfig2 = $this->createHookConfigMock();
+        $hookConfig2->expects($this->atLeast(1))->method('isEnabled')->willReturn(false);
+
+        $config = $this->createConfigMock();
+        $config
+            ->expects($this->exactly(2))
+            ->method('getHookConfig')
+            ->withConsecutive(['post-checkout'], ['post-change'])
+            ->willReturn($hookConfig1, $hookConfig2);
+
+        $io = $this->createIOMock();
+        $repo = $this->createRepositoryMock();
+
+        $runner = new class ($io, $config, $repo) extends Hook {
+            protected $hook = Hooks::POST_CHECKOUT;
+        };
+
+        $this->assertSame([], $runner->getActions());
+    }
+
+    public function testGetActionReturnsOnlyConfigsThatAreEnabled(): void
+    {
+        $actionConfig1 = $this->createActionConfigMock();
+        $actionConfig1->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success --foo');
+
+        $actionConfig2 = $this->createActionConfigMock();
+        $actionConfig2->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success --bar');
+
+        $actionConfig3 = $this->createActionConfigMock();
+        $actionConfig3->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success --baz');
+
+        $hookConfig1 = $this->createHookConfigMock();
+        $hookConfig1->expects($this->exactly(2))->method('getName')->willReturn('post-checkout');
+        $hookConfig1->expects($this->atLeast(1))->method('isEnabled')->willReturn(false);
+
+        $hookConfig2 = $this->createHookConfigMock();
+        $hookConfig2->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
+        $hookConfig2->expects($this->once())->method('getActions')->willReturn([$actionConfig3]);
+
+        $config = $this->createConfigMock();
+        $config
+            ->expects($this->exactly(2))
+            ->method('getHookConfig')
+            ->withConsecutive(['post-checkout'], ['post-change'])
+            ->willReturn($hookConfig1, $hookConfig2);
+
+        $io = $this->createIOMock();
+        $repo = $this->createRepositoryMock();
+
+        $runner = new class ($io, $config, $repo) extends Hook {
+            protected $hook = Hooks::POST_CHECKOUT;
+        };
+
+        $this->assertSame([$actionConfig3], $runner->getActions());
+    }
+
+    public function testIsEnabledReturnsFalseWhenNoConfigsAreEnabled(): void
+    {
+        $actionConfig1 = $this->createActionConfigMock();
+        $actionConfig1->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success --foo');
+
+        $actionConfig2 = $this->createActionConfigMock();
+        $actionConfig2->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success --bar');
+
+        $actionConfig3 = $this->createActionConfigMock();
+        $actionConfig3->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success --baz');
+
+        $hookConfig1 = $this->createHookConfigMock();
+        $hookConfig1->expects($this->exactly(2))->method('getName')->willReturn('post-checkout');
+        $hookConfig1->expects($this->atLeast(1))->method('isEnabled')->willReturn(false);
+
+        $hookConfig2 = $this->createHookConfigMock();
+        $hookConfig2->expects($this->atLeast(1))->method('isEnabled')->willReturn(false);
+
+        $config = $this->createConfigMock();
+        $config
+            ->expects($this->exactly(2))
+            ->method('getHookConfig')
+            ->withConsecutive(['post-checkout'], ['post-change'])
+            ->willReturn($hookConfig1, $hookConfig2);
+
+        $io = $this->createIOMock();
+        $repo = $this->createRepositoryMock();
+
+        $runner = new class ($io, $config, $repo) extends Hook {
+            protected $hook = Hooks::POST_CHECKOUT;
+        };
+
+        $this->assertFalse($runner->isEnabled());
+    }
+
+    public function testIsEnabledReturnsTrueWhenAtLeastOneConfigIsEnabled(): void
+    {
+        $actionConfig1 = $this->createActionConfigMock();
+        $actionConfig1->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success --foo');
+
+        $actionConfig2 = $this->createActionConfigMock();
+        $actionConfig2->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success --bar');
+
+        $actionConfig3 = $this->createActionConfigMock();
+        $actionConfig3->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success --baz');
+
+        $hookConfig1 = $this->createHookConfigMock();
+        $hookConfig1->expects($this->exactly(2))->method('getName')->willReturn('post-checkout');
+        $hookConfig1->expects($this->atLeast(1))->method('isEnabled')->willReturn(false);
+
+        $hookConfig2 = $this->createHookConfigMock();
+        $hookConfig2->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
+
+        $config = $this->createConfigMock();
+        $config
+            ->expects($this->exactly(2))
+            ->method('getHookConfig')
+            ->withConsecutive(['post-checkout'], ['post-change'])
+            ->willReturn($hookConfig1, $hookConfig2);
+
+        $io = $this->createIOMock();
+        $repo = $this->createRepositoryMock();
+
+        $runner = new class ($io, $config, $repo) extends Hook {
+            protected $hook = Hooks::POST_CHECKOUT;
+        };
+
+        $this->assertTrue($runner->isEnabled());
+    }
 }
