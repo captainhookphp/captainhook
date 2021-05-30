@@ -114,8 +114,12 @@ abstract class Hook extends RepositoryAware
 
         // use ansi coloring only if not disabled in captainhook.json
         $output->setDecorated($config->useAnsiColors());
-        // use the configured verbosity to manage general output verbosity
-        $output->setVerbosity(IOUtil::mapConfigVerbosity($config->getVerbosity()));
+
+        // If the verbose option is present on the command line, then use it.
+        // Otherwise, use the verbosity setting from the configuration.
+        if (!$input->hasOption('verbose') || !$input->getOption('verbose')) {
+            $output->setVerbosity(IOUtil::mapConfigVerbosity($config->getVerbosity()));
+        }
 
         $class = '\\CaptainHook\\App\\Runner\\Hook\\' . Util::getHookCommand($this->hookName);
         /** @var \CaptainHook\App\Runner\Hook $hook */

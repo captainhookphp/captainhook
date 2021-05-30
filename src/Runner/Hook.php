@@ -437,7 +437,7 @@ abstract class Hook extends RepositoryAware
             }
 
             $this->io->write(
-                ['', 'Configuring Hook Plugin: <comment>' . $pluginClass . '</comment>'],
+                ['Configured Hook Plugin: <comment>' . $pluginClass . '</comment>'],
                 true,
                 IO::VERBOSE
             );
@@ -494,7 +494,7 @@ abstract class Hook extends RepositoryAware
         $this->io->write(['', 'Executing plugins for: <comment>' . $method . '</comment>'], true, IO::DEBUG);
 
         foreach ($plugins as $plugin) {
-            $this->io->write('<info>- Running ' . get_class($plugin) . '::' . $method . '</info>', true, IO::DEBUG);
+            $this->io->write(' <info>- Running ' . get_class($plugin) . '::' . $method . '</info>', true, IO::DEBUG);
             $plugin->{$method}(...$params);
         }
     }
