@@ -13,6 +13,7 @@ namespace CaptainHook\App\Runner;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Config\Mockery as ConfigMockery;
+use CaptainHook\App\Console\IO;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
 use CaptainHook\App\Hook\Restriction;
 use CaptainHook\App\Hooks;
@@ -464,5 +465,49 @@ class HookTest extends TestCase
         };
 
         $this->assertTrue($runner->isEnabled());
+    }
+
+    public function testRunHookWhenPluginsAreDisabled(): void
+    {
+        $pluginConfig1 = new Config\Plugin(DummyHookPlugin::class);
+        $pluginConfig2 = new Config\Plugin(DummyHookPlugin::class);
+
+        $config = $this->createConfigMock();
+        $config->method('failOnFirstError')->willReturn(false);
+        $config->method('getPlugins')->willReturn([$pluginConfig1, $pluginConfig2]);
+
+        $io = $this->createIOMock();
+        $repo = $this->createRepositoryMock();
+        $hookConfig = $this->createHookConfigMock();
+        $actionConfig = $this->createActionConfigMock();
+        $actionConfig->expects($this->atLeastOnce())->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
+        $hookConfig->expects($this->atLeastOnce())->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig, clone $actionConfig]);
+        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $io->expects($this->atLeastOnce())->method('getOption')->with('disable-plugins')->willReturn(true);
+
+        $io
+            ->expects($this->exactly(8))
+            ->method('write')
+            ->withConsecutive(
+                ['<comment>pre-commit:</comment> '],
+                ['<fg=magenta>Running with plugins disabled</>'],
+                [' - <fg=blue>' . CH_PATH_FILES . '/bin/success   </> : ', false],
+                [['', 'foo', ''], true, IO::VERBOSE],
+                ['<info>done</info>'],
+                [' - <fg=blue>' . CH_PATH_FILES . '/bin/success   </> : ', false],
+                [['', 'foo', ''], true, IO::VERBOSE],
+                ['<info>done</info>']
+            );
+
+        $runner = new class ($io, $config, $repo) extends Hook {
+            protected $hook = Hooks::PRE_COMMIT;
+        };
+        $runner->run();
+
+        $this->assertSame(0, DummyHookPlugin::$beforeHookCalled);
+        $this->assertSame(0, DummyHookPlugin::$beforeActionCalled);
+        $this->assertSame(0, DummyHookPlugin::$afterActionCalled);
+        $this->assertSame(0, DummyHookPlugin::$afterHookCalled);
     }
 }

@@ -116,6 +116,10 @@ abstract class Hook extends RepositoryAware
 
         $this->io->write('<comment>' . $this->hook . ':</comment> ');
 
+        if ($this->io->getOption('disable-plugins')) {
+            $this->io->write('<fg=magenta>Running with plugins disabled</>');
+        }
+
         // if the hook and all triggered virtual hooks
         // are NOT enabled in the captainhook configuration skip the execution
         if (!$this->isAnyConfigEnabled($hookConfigs)) {
@@ -469,6 +473,10 @@ abstract class Hook extends RepositoryAware
      */
     private function executeHookPluginsFor(string $method, ?Config\Action $action = null): void
     {
+        if ($this->io->getOption('disable-plugins')) {
+            return;
+        }
+
         $plugins = $this->getHookPlugins();
 
         if (count($plugins) === 0) {

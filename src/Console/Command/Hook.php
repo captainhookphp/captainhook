@@ -63,6 +63,13 @@ abstract class Hook extends RepositoryAware
             InputOption::VALUE_NONE,
             'List actions for this hook without running the hook'
         );
+
+        $this->addOption(
+            'disable-plugins',
+            null,
+            InputOption::VALUE_NONE,
+            'Disable all hook plugins'
+        );
     }
 
     /**
