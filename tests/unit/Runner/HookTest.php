@@ -470,6 +470,8 @@ class HookTest extends TestCase
 
     public function testRunHookWhenPluginsAreDisabled(): void
     {
+        $successProgram = CH_PATH_FILES . '/bin/success';
+
         $pluginConfig1 = new Config\Plugin(DummyHookPlugin::class);
         $pluginConfig2 = new Config\Plugin(DummyHookPlugin::class);
 
@@ -492,7 +494,7 @@ class HookTest extends TestCase
         $repo = $this->createRepositoryMock();
         $hookConfig = $this->createHookConfigMock();
         $actionConfig = $this->createActionConfigMock();
-        $actionConfig->expects($this->atLeastOnce())->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
+        $actionConfig->expects($this->atLeastOnce())->method('getAction')->willReturn($successProgram);
         $hookConfig->expects($this->atLeastOnce())->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig, clone $actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
@@ -511,10 +513,10 @@ class HookTest extends TestCase
             ->withConsecutive(
                 ['<comment>pre-commit:</comment> '],
                 ['<fg=magenta>Running with plugins disabled</>'],
-                [' - <fg=blue>' . CH_PATH_FILES . '/bin/success   </> : ', false],
+                [' - <fg=blue>' . $this->formatActionOutput($successProgram) . '</> : ', false],
                 [['', 'foo', ''], true, IO::VERBOSE],
                 ['<info>done</info>'],
-                [' - <fg=blue>' . CH_PATH_FILES . '/bin/success   </> : ', false],
+                [' - <fg=blue>' . $this->formatActionOutput($successProgram) . '</> : ', false],
                 [['', 'foo', ''], true, IO::VERBOSE],
                 ['<info>done</info>']
             );
@@ -532,6 +534,9 @@ class HookTest extends TestCase
 
     public function testRunHookWhenActionsSpecifiedOnCli(): void
     {
+        $successProgram = CH_PATH_FILES . '/bin/success';
+        $failureProgram = CH_PATH_FILES . '/bin/failure';
+
         $optionCallback = function (string $option) {
             switch ($option) {
                 case 'disable-plugins':
@@ -549,13 +554,13 @@ class HookTest extends TestCase
         $actionSuccessConfig
             ->expects($this->atLeastOnce())
             ->method('getAction')
-            ->willReturn(CH_PATH_FILES . '/bin/success');
+            ->willReturn($successProgram);
 
         $actionFailureConfig = $this->createActionConfigMock();
         $actionFailureConfig
             ->expects($this->atLeastOnce())
             ->method('getAction')
-            ->willReturn(CH_PATH_FILES . '/bin/failure');
+            ->willReturn($failureProgram);
 
         $hookConfig = $this->createHookConfigMock();
         $hookConfig->expects($this->atLeastOnce())->method('isEnabled')->willReturn(true);
@@ -585,10 +590,10 @@ class HookTest extends TestCase
             ->withConsecutive(
                 ['<comment>pre-commit:</comment> '],
                 ['<fg=magenta>Running with plugins disabled</>'],
-                [' - <fg=blue>' . CH_PATH_FILES . '/bin/success   </> : ', false],
+                [' - <fg=blue>' . $this->formatActionOutput($successProgram) . '</> : ', false],
                 [['', 'foo', ''], true, IO::VERBOSE],
                 ['<info>done</info>'],
-                [' - <fg=blue>' . CH_PATH_FILES . '/bin/failure   </> : ', false],
+                [' - <fg=blue>' . $this->formatActionOutput($failureProgram) . '</> : ', false],
                 ['<comment>skipped</comment>']
             );
 
@@ -596,5 +601,15 @@ class HookTest extends TestCase
             protected $hook = Hooks::PRE_COMMIT;
         };
         $runner->run();
+    }
+
+    private function formatActionOutput(string $action): string
+    {
+        $actionLength = 65;
+        if (mb_strlen($action) < $actionLength) {
+            return str_pad($action, $actionLength, ' ');
+        }
+
+        return mb_substr($action, 0, $actionLength - 3) . '...';
     }
 }
