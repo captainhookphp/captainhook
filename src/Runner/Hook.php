@@ -307,18 +307,9 @@ abstract class Hook extends RepositoryAware
      */
     private function handleAction(Config\Action $action): void
     {
-        if ($this->shouldSkipActions()) {
-            $this->io->write(
-                $this->formatActionOutput($action->getAction()) . ': <comment>deactivated</comment>',
-                true
-            );
-            return;
-        }
-
         $this->io->write(' - <fg=blue>' . $this->formatActionOutput($action->getAction()) . '</> : ', false);
 
-        if (!$this->doConditionsApply($action->getConditions())) {
-            $this->io->write('<comment>skipped</comment>', true);
+        if ($this->checkSkipAction($action)) {
             return;
         }
 
@@ -327,6 +318,7 @@ abstract class Hook extends RepositoryAware
         // The beforeAction() method may indicate that the current and all
         // remaining actions should be skipped. If so, return here.
         if ($this->shouldSkipActions()) {
+            $this->io->write('<comment>deactivated</comment>', true);
             return;
         }
 
@@ -382,6 +374,52 @@ abstract class Hook extends RepositoryAware
             throw new RuntimeException('invalid action type: ' . $type);
         }
         return $valid[$type];
+    }
+
+    /**
+     * Check if the action should be skipped
+     *
+     * @param Config\Action $action
+     * @return bool
+     */
+    private function checkSkipAction(Config\Action $action): bool
+    {
+        if (
+            $this->shouldSkipActions()
+            || $this->cliSkipAction($action)
+            || !$this->doConditionsApply($action->getConditions())
+        ) {
+            $this->io->write('<comment>skipped</comment>', true);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the CLI `action` options indicates the action should be skipped
+     *
+     * @param Config\Action $action
+     * @return bool
+     */
+    private function cliSkipAction(Config\Action $action): bool
+    {
+        /** @var string[] $actionsToRun */
+        $actionsToRun = $this->io->getOption('action', []);
+
+        if (empty($actionsToRun)) {
+            // No actions specified on CLI; run all actions.
+            return false;
+        }
+
+        if (in_array($action->getAction(), $actionsToRun)) {
+            // Action specified on CLI; do not skip.
+            return false;
+        }
+
+        // Action not specified on CLI; skip.
+        return true;
     }
 
     /**

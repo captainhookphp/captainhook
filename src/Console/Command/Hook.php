@@ -65,6 +65,13 @@ abstract class Hook extends RepositoryAware
         );
 
         $this->addOption(
+            'action',
+            'a',
+            InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+            'Run only the actions listed'
+        );
+
+        $this->addOption(
             'disable-plugins',
             null,
             InputOption::VALUE_NONE,

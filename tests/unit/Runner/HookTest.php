@@ -25,6 +25,7 @@ use CaptainHook\App\Plugin\DummyPlugin;
 use CaptainHook\App\Plugin\DummyHookPlugin;
 use CaptainHook\App\Plugin\DummyHookPluginSkipsActions;
 use Exception;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class HookTest extends TestCase
@@ -476,6 +477,17 @@ class HookTest extends TestCase
         $config->method('failOnFirstError')->willReturn(false);
         $config->method('getPlugins')->willReturn([$pluginConfig1, $pluginConfig2]);
 
+        $optionCallback = function (string $option) {
+            switch ($option) {
+                case 'disable-plugins':
+                    return true;
+                case 'action':
+                    return [];
+                default:
+                    throw new InvalidArgumentException('Received invalid option: ' . $option);
+            }
+        };
+
         $io = $this->createIOMock();
         $repo = $this->createRepositoryMock();
         $hookConfig = $this->createHookConfigMock();
@@ -484,7 +496,14 @@ class HookTest extends TestCase
         $hookConfig->expects($this->atLeastOnce())->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig, clone $actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
-        $io->expects($this->atLeastOnce())->method('getOption')->with('disable-plugins')->willReturn(true);
+
+        $io
+            ->method('getOption')
+            ->with($this->logicalOr(
+                $this->equalTo('disable-plugins'),
+                $this->equalTo('action')
+            ))
+            ->willReturn($this->returnCallback($optionCallback));
 
         $io
             ->expects($this->exactly(8))
@@ -509,5 +528,73 @@ class HookTest extends TestCase
         $this->assertSame(0, DummyHookPlugin::$beforeActionCalled);
         $this->assertSame(0, DummyHookPlugin::$afterActionCalled);
         $this->assertSame(0, DummyHookPlugin::$afterHookCalled);
+    }
+
+    public function testRunHookWhenActionsSpecifiedOnCli(): void
+    {
+        $optionCallback = function (string $option) {
+            switch ($option) {
+                case 'disable-plugins':
+                    return true;
+                case 'action':
+                    return [CH_PATH_FILES . '/bin/success'];
+                default:
+                    throw new InvalidArgumentException('Received invalid option: ' . $option);
+            }
+        };
+
+        $repo = $this->createRepositoryMock();
+
+        $actionSuccessConfig = $this->createActionConfigMock();
+        $actionSuccessConfig
+            ->expects($this->atLeastOnce())
+            ->method('getAction')
+            ->willReturn(CH_PATH_FILES . '/bin/success');
+
+        $actionFailureConfig = $this->createActionConfigMock();
+        $actionFailureConfig
+            ->expects($this->atLeastOnce())
+            ->method('getAction')
+            ->willReturn(CH_PATH_FILES . '/bin/failure');
+
+        $hookConfig = $this->createHookConfigMock();
+        $hookConfig->expects($this->atLeastOnce())->method('isEnabled')->willReturn(true);
+        $hookConfig
+            ->expects($this->once())
+            ->method('getActions')
+            ->willReturn([$actionSuccessConfig, $actionFailureConfig]);
+
+        $config = $this->createConfigMock();
+        $config->method('failOnFirstError')->willReturn(false);
+        $config->method('getPlugins')->willReturn([]);
+        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+
+        $io = $this->createIOMock();
+
+        $io
+            ->method('getOption')
+            ->with($this->logicalOr(
+                $this->equalTo('disable-plugins'),
+                $this->equalTo('action')
+            ))
+            ->willReturn($this->returnCallback($optionCallback));
+
+        $io
+            ->expects($this->exactly(7))
+            ->method('write')
+            ->withConsecutive(
+                ['<comment>pre-commit:</comment> '],
+                ['<fg=magenta>Running with plugins disabled</>'],
+                [' - <fg=blue>' . CH_PATH_FILES . '/bin/success   </> : ', false],
+                [['', 'foo', ''], true, IO::VERBOSE],
+                ['<info>done</info>'],
+                [' - <fg=blue>' . CH_PATH_FILES . '/bin/failure   </> : ', false],
+                ['<comment>skipped</comment>']
+            );
+
+        $runner = new class ($io, $config, $repo) extends Hook {
+            protected $hook = Hooks::PRE_COMMIT;
+        };
+        $runner->run();
     }
 }
