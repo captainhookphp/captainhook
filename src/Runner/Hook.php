@@ -114,16 +114,19 @@ abstract class Hook extends RepositoryAware
     {
         $hookConfigs = $this->getHookConfigsToHandle();
 
-        $this->io->write('<comment>' . $this->hook . ':</comment> ');
+        /** @var IO\Base $io */
+        $io = $this->io;
 
-        if ($this->io->getOption('disable-plugins')) {
-            $this->io->write('<fg=magenta>Running with plugins disabled</>');
+        $io->write('<comment>' . $this->hook . ':</comment> ');
+
+        if ($io->getOption('disable-plugins')) {
+            $io->write('<fg=magenta>Running with plugins disabled</>');
         }
 
         // if the hook and all triggered virtual hooks
         // are NOT enabled in the captainhook configuration skip the execution
         if (!$this->isAnyConfigEnabled($hookConfigs)) {
-            $this->io->write(' - hook is disabled');
+            $io->write(' - hook is disabled');
             return;
         }
 
@@ -132,7 +135,7 @@ abstract class Hook extends RepositoryAware
         $actions = $this->getActionsToExecute($hookConfigs);
         // are any actions configured
         if (count($actions) === 0) {
-            $this->io->write(' - no actions to execute', true);
+            $io->write(' - no actions to execute', true);
         } else {
             $this->executeActions($actions);
         }
@@ -405,8 +408,11 @@ abstract class Hook extends RepositoryAware
      */
     private function cliSkipAction(Config\Action $action): bool
     {
+        /** @var IO\Base $io */
+        $io = $this->io;
+
         /** @var string[] $actionsToRun */
-        $actionsToRun = $this->io->getOption('action', []);
+        $actionsToRun = $io->getOption('action', []);
 
         if (empty($actionsToRun)) {
             // No actions specified on CLI; run all actions.
@@ -511,14 +517,17 @@ abstract class Hook extends RepositoryAware
      */
     private function executeHookPluginsFor(string $method, ?Config\Action $action = null): void
     {
-        if ($this->io->getOption('disable-plugins')) {
+        /** @var IO\Base $io */
+        $io = $this->io;
+
+        if ($io->getOption('disable-plugins')) {
             return;
         }
 
         $plugins = $this->getHookPlugins();
 
         if (count($plugins) === 0) {
-            $this->io->write(['', 'No plugins to execute for: <comment>' . $method . '</comment>'], true, IO::DEBUG);
+            $io->write(['', 'No plugins to execute for: <comment>' . $method . '</comment>'], true, IO::DEBUG);
 
             return;
         }
@@ -529,10 +538,10 @@ abstract class Hook extends RepositoryAware
             $params[] = $action;
         }
 
-        $this->io->write(['', 'Executing plugins for: <comment>' . $method . '</comment>'], true, IO::DEBUG);
+        $io->write(['', 'Executing plugins for: <comment>' . $method . '</comment>'], true, IO::DEBUG);
 
         foreach ($plugins as $plugin) {
-            $this->io->write(' <info>- Running ' . get_class($plugin) . '::' . $method . '</info>', true, IO::DEBUG);
+            $io->write(' <info>- Running ' . get_class($plugin) . '::' . $method . '</info>', true, IO::DEBUG);
             $plugin->{$method}(...$params);
         }
     }
