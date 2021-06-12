@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>CaptainHook Documentation</title>
+
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/layout.css" rel="stylesheet">
+  <link href="css/atom-one-dark.css" rel="stylesheet">
+
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://github.com/captainhookphp/captainhook">CaptainHook</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="install.html">Install</a></li>
+        <li class="active"><a href="configure.html">Configure</a></li>
+        <li><a href="hooks.html">Hooks</a></li>
+        <li><a href="extend.html">Extend</a></li>
+        <li><a href="https://shop.spreadshirt.de/captainhookphp/">Merch</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container theme-showcase" role="main">
+
+  <h1>Why use the Cap'n</h1>
+  <p>
+    The idea behind the Cap'n is to make sharing git hooks with your team easier. Whether you already use git hooks
+    or you are starting from scratch the Cap'n got you covered. Integrating existing hook scripts is equally simple as
+    writing your first custom commit message validation rule. You can listen to all git hook events and use included
+    functionality or write your own.
+  </p>
+  <p>
+    To better understand you can have a look at the <a href="favorites.html">Captain's favorite hooks</a>.
+  </p>
+
+  <h3 id="grumphp">How does the Cap'n compare to other great tools like GrumPHP</h3>
+  <p>
+    Compared to GrumPHP the Cap'n is more some kind of workflow tool instead of a local CI.
+    GrumPHP focuses on quality tools and on hooks like <em>pre-commit</em> and <em>commit-message</em>
+    The Cap'n can basically do the same but you would have to do more configuration work by yourself.
+  </p>
+  <p>
+    The Cap'n however can utilize other hooks as well and is much easier to customize.
+    With hooks like <em>pre-push</em>, <em>post-merge</em>, <em>post-rewrite</em>
+    and <em>prepare-commit-message</em> you can do way more then just checking your
+    code quality and your commit messages. Here are some ideas people realized with the Cap'n.
+  </p>
+  <ul>
+    <li>Use commit messages to log development time in a work time tracking system</li>
+    <li>Make sure to not push certain branches or commits to customer repositories</li>
+    <li>Trigger ticket transitions in issue tracking systems like Jira or Gitlab</li>
+    <li>Create template commit messages</li>
+    <li>Communicate breaking changes to the team with <em>git-notify</em></li>
+  </ul>
+
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>
+      Found a typo or a bug?
+      Please open an <a href="https://github.com/captainhookphp/captainhook/issues">issue</a>
+      or pull request for the <em>gh-pages</em>
+      branch of <a href="https://github.com/captainhookphp/captainhook/tree/gh-pages">CaptainHook</a>
+    </p>
+    <p>
+      &copy; <a href="https://github.com/sebastianfeldmann">Sebastian Feldmann</a>
+    </p>
+  </div>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
