@@ -142,7 +142,7 @@ it in advance. (Even better, improve the code so that the question doesn't arise
 
 If you've completed all these steps, I _will_ invest significant time and energy in giving your PR a
 detailed code review. This is a powerful and beneficial process which can not only improve the code,
-but can also help you learn to be a better engineer and a better Go programmer—and the same goes for me!
+but can also help you learn to be a better engineer and a better programmer - and the same goes for me!
 
 ## Expect to be taken seriously
 
