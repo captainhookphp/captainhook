@@ -19,6 +19,7 @@ use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Throwable;
 
 /**
  * Class Hook
@@ -71,19 +72,17 @@ abstract class Hook extends RepositoryAware
         $config     = $this->createConfig($input, true, ['git-directory', 'bootstrap']);
         $repository = $this->createRepository(dirname($config->getGitDirectory()));
 
-        // if CaptainHook is executed via PHAR we have to make sure to load
-        $this->handleBootstrap($config);
-
-        // use ansi coloring only if not disabled in captainhook.json
+        // use ansi coloring if not disabled in captainhook.json
         $output->setDecorated($config->useAnsiColors());
         // use the configured verbosity to manage general output verbosity
         $output->setVerbosity(IOUtil::mapConfigVerbosity($config->getVerbosity()));
 
-        $class = '\\CaptainHook\\App\\Runner\\Hook\\' . Util::getHookCommand($this->hookName);
-        /** @var \CaptainHook\App\Runner\Hook $hook */
-        $hook  = new $class($io, $config, $repository);
-
         try {
+            $this->handleBootstrap($config);
+
+            $class = '\\CaptainHook\\App\\Runner\\Hook\\' . Util::getHookCommand($this->hookName);
+            /** @var \CaptainHook\App\Runner\Hook $hook */
+            $hook  = new $class($io, $config, $repository);
             $hook->run();
             return 0;
         } catch (Exception $e) {
@@ -95,7 +94,7 @@ abstract class Hook extends RepositoryAware
     }
 
     /**
-     * Handles the bootstrap file inclusion
+     * If CaptainHook is executed via PHAR this handles the bootstrap file inclusion
      *
      * @param \CaptainHook\App\Config $config
      */
@@ -106,7 +105,14 @@ abstract class Hook extends RepositoryAware
             if (!file_exists($bootstrapFile)) {
                 throw new RuntimeException('bootstrap file not found');
             }
-            require $bootstrapFile;
+            try {
+                require $bootstrapFile;
+            } catch (Throwable $t) {
+                throw new RuntimeException(
+                    'Bootstrapping failed:' . PHP_EOL .
+                    '  Please fix your bootstrap file `' . $bootstrapFile . '`' . PHP_EOL
+                );
+            }
         }
     }
 

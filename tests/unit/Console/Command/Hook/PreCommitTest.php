@@ -76,9 +76,6 @@ class PreCommitTest extends TestCase
      */
     public function testExecutePharBootstrapNotFound(): void
     {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('bootstrap file not found');
-
         $resolver = $this->createMock(Resolver::class);
         $resolver->expects($this->once())->method('isPharRelease')->willReturn(true);
 
@@ -93,9 +90,7 @@ class PreCommitTest extends TestCase
         );
 
         $cmd = new PreCommit($resolver);
-        $cmd->run($input, $output);
-
-        $this->assertTrue(true);
+        $this->assertEquals(1, $cmd->run($input, $output));
     }
 
     /**
