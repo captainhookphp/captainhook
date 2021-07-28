@@ -29,7 +29,7 @@ class UseImperativeMood extends Blacklist
     public function __construct(bool $checkOnlyBeginning = false)
     {
         parent::__construct(false);
-        $this->hint = 'Subject should be written in imperative mood';
+        $this->hint = 'Subject line should complete the sentence: This commit will [YOUR COMMIT MESSAGE].';
         $this->setSubjectBlacklist(
             [
                 'added',
