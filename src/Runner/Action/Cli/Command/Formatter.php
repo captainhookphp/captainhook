@@ -104,7 +104,7 @@ class Formatter
         $placeholders = [];
         $matches      = [];
 
-        if (preg_match_all('#{\$([a-z_]+(\|[a-z\-]+:.*)?)}#i', $command, $matches)) {
+        if (preg_match_all('#{\$([a-z_]+(\|[a-z\-]+:.*)?)}#iU', $command, $matches)) {
             foreach ($matches[1] as $match) {
                 $placeholders[] = $match;
             }
