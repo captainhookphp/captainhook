@@ -142,6 +142,23 @@ abstract class Util
     }
 
     /**
+     * Merges a various list of settings arrays
+     *
+     * @param array ...$settings
+     * @return array
+     */
+    public static function mergeSettings(array ...$settings): array
+    {
+        $includes = array_column($settings, Config::SETTING_INCLUDES);
+        $mergedSettings = array_merge(...$settings);
+        if (!empty($includes)) {
+            $mergedSettings[Config::SETTING_INCLUDES] = array_merge(...$includes);
+        }
+
+        return $mergedSettings;
+    }
+
+    /**
      * Does an array have the expected keys
      *
      * @param  array $keys
