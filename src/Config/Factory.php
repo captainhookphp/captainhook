@@ -103,8 +103,11 @@ final class Factory
         Util::validateJsonConfiguration($json);
 
         $settings = $this->combineArgumentsAndSettingFile($file, $settings);
-        $settings = array_merge($this->extractSettings($json), $settings);
+        $settings = Util::mergeSettings($this->extractSettings($json), $settings);
         $config   = new Config($file->getPath(), true, $settings);
+        if (!empty($settings)) {
+            $json['config'] = $settings;
+        }
 
         $this->appendIncludedConfigurations($config, $json);
 
