@@ -58,6 +58,7 @@ class Exists extends Check
         if (!is_array($this->files) || empty($this->files)) {
             throw new ActionFailed('no files configured');
         }
+        parent::setUp($options);
     }
 
     /**
