@@ -69,4 +69,29 @@ class PostCommitTest extends TestCase
         $cmd = new PostCommit($resolver);
         $this->assertEquals(1, $cmd->run($input, $output));
     }
+
+
+    /**
+     * Tests PostCommit::run
+     */
+    public function testCrashingBootstrapHandling(): void
+    {
+        $repo   = new DummyRepo();
+        $output = new NullOutput();
+        $input  = new ArrayInput(
+            [
+                '--configuration' => CH_PATH_FILES . '/config/valid.json',
+                '--git-directory' => $repo->getGitDir(),
+                '--bootstrap'     => '../bootstrap/crash.php',
+            ]
+        );
+
+        $resolver = $this->getMockBuilder(Resolver::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $resolver->method('isPharRelease')->willReturn(true);
+
+        $cmd = new PostCommit($resolver);
+        $this->assertEquals(1, $cmd->run($input, $output));
+    }
 }
