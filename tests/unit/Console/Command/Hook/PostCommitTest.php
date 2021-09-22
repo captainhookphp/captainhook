@@ -45,4 +45,28 @@ class PostCommitTest extends TestCase
 
         $this->assertTrue(true);
     }
+
+    /**
+     * Tests PostCommit::run
+     */
+    public function testMissingBootstrapHandling(): void
+    {
+        $repo   = new DummyRepo();
+        $output = new NullOutput();
+        $input  = new ArrayInput(
+            [
+                '--configuration' => CH_PATH_FILES . '/config/valid.json',
+                '--git-directory' => $repo->getGitDir(),
+                '--bootstrap'     => 'foo/bar/baz.php',
+            ]
+        );
+
+        $resolver = $this->getMockBuilder(Resolver::class)
+                         ->disableOriginalConstructor()
+                         ->getMock();
+        $resolver->method('isPharRelease')->willReturn(true);
+
+        $cmd = new PostCommit($resolver);
+        $this->assertEquals(1, $cmd->run($input, $output));
+    }
 }
