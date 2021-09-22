@@ -76,6 +76,11 @@ class PostCommitTest extends TestCase
      */
     public function testCrashingBootstrapHandling(): void
     {
+        if (version_compare(PHP_VERSION, '8.0', '<')) {
+            $this->markTestSkipped(
+                'Only available on PHP 8.0 and higher'
+            );
+        }
         $repo   = new DummyRepo();
         $output = new NullOutput();
         $input  = new ArrayInput(
