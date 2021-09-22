@@ -149,7 +149,7 @@ abstract class Util
      */
     public static function mergeSettings(array ...$settings): array
     {
-        $includes = array_column($settings, Config::SETTING_INCLUDES);
+        $includes       = array_column($settings, Config::SETTING_INCLUDES);
         $mergedSettings = array_merge(...$settings);
         if (!empty($includes)) {
             $mergedSettings[Config::SETTING_INCLUDES] = array_merge(...$includes);

@@ -11,6 +11,7 @@
 
 namespace CaptainHook\App\Config;
 
+use CaptainHook\App\Config;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -241,5 +242,27 @@ class UtilTest extends TestCase
                 ],
             ],
         ]);
+    }
+
+    public function testMergeSettings()
+    {
+        $s1 = [
+            Config::SETTING_INCLUDES => [
+                'foo',
+                'bar'
+            ],
+            CONFIG::SETTING_COLORS => true,
+        ];
+        $s2 = [
+            Config::SETTING_INCLUDES => [
+                'baz'
+            ],
+            CONFIG::SETTING_GIT_DIR => '/var/.git'
+        ];
+
+        $merged = Util::mergeSettings($s2, $s1);
+
+        $this->assertEquals(3, count($merged[Config::SETTING_INCLUDES]));
+        $this->assertContains('baz', $merged[Config::SETTING_INCLUDES]);
     }
 }
