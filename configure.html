@@ -213,35 +213,16 @@
 
       <h3 id="conditions">Conditions</h3>
       <p>
-        You can add conditions to an <em>action</em> configuration. Only if all configured conditions apply the action gets executed.
-        This becomes useful for example if you want to run <em>composer install</em> automatically every time someone changes <em>composer.json</em>
+        You can add conditions to an <em>action</em> configuration.
+        This becomes useful for example if you want to run <em>composer install</em> automatically but only if someone changes <em>composer.json</em>
         or <em>composer.lock</em>.
       </p>
       <p>
-        To make sure you catch every change in your repository you have to add the action to both <em>post-merge</em> and <em>post-checkout</em>
-        hooks. This way you run composer after every <em>merge</em> or <em>pull</em> or after checking out another branch that changes you local
-        composer files.
+        To make sure you catch every change in your repository just use the <em>CaptainHook</em> hook <em>post-change</em> (not an official git hook)
+        which gets triggered by gits <em>post-merge</em>, <em>post-checkout</em> and <em>post-rewrite</em> hooks.
       </p>
-
       <pre><code class="javascript">{
-  "post-merge": {
-    "enabled": true,
-    "actions": [
-      {
-        "action": "composer install",
-        "options": {},
-        "conditions": [
-          {
-            "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileChanged\\Any",
-            "args": [
-              ["composer.json", "composer.lock"]
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  "post-checkout": {
+  "post-change": {
     "enabled": true,
     "actions": [
       {
@@ -260,6 +241,9 @@
   }
 }</code></pre>
       <p>
+        You can add multiple conditions and all conditions have to apply to execute the action.
+        But for more complex conditions you can use the <em>LogicConditions</em> to combine
+        multiple conditions by <em>and</em> or <em>or</em>.
         For a full list of all available <em>Conditions</em> and some example configurations check
         the <a href="conditions.html"><em>Conditions</em> Section</a>.
       </p>
