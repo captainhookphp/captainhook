@@ -1,7 +1,9 @@
 {
   "config": {
+    "includes-level": 2,
     "includes": [
-      "valid-include.json"
+      "valid-with-includes.json",
+      "valid-nested-too-deep-include.json"
     ]
   },
   "prepare-commit-msg": {
@@ -15,14 +17,11 @@
   "pre-commit": {
     "enabled": true,
     "actions": [
-      {"action": "composer verify"}
+      {"action": "psalm"}
     ]
   },
   "pre-push": {
-    "enabled": true,
-    "actions": [
-      {"action": "phpunit"},
-      {"action": "phpstan"}
-    ]
+    "enabled": false,
+    "actions": []
   }
 }

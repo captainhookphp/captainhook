@@ -45,21 +45,49 @@ final class Factory
     /**
      * Create a CaptainHook configuration
      *
-     * @param  string $path
-     * @param  array  $settings
+     * @param  string $path     Path to the configuration file
+     * @param  array  $settings Settings passed as options on the command line
      * @return \CaptainHook\App\Config
      * @throws \Exception
      */
     public function createConfig(string $path = '', array $settings = []): Config
     {
-        $path = $path ?: getcwd() . DIRECTORY_SEPARATOR . CH::CONFIG;
-        $file = new Json($path);
+        $path     = $path ?: getcwd() . DIRECTORY_SEPARATOR . CH::CONFIG;
+        $file     = new Json($path);
+        $settings = $this->combineArgumentsAndSettingFile($file, $settings);
 
         return $this->setupConfig($file, $settings);
     }
 
     /**
-     * Includes a external captainhook configuration
+     * Read settings from a local 'config' file
+     *
+     * If you prefer a different verbosity or use a different run mode locally then your teammates do.
+     * You can create a 'captainhook.config.json' in the same directory as your captainhook
+     * configuration file and use it to overwrite the 'config' settings of that configuration file.
+     * Exclude the 'captainhook.config.json' from version control, and you don't have to edit the
+     * version controlled configuration for your local specifics anymore.
+     *
+     * Settings provided as arguments still overrule config file settings:
+     *
+     * ARGUMENTS > SETTINGS_FILE > CONFIGURATION
+     *
+     * @param  \CaptainHook\App\Storage\File\Json $file
+     * @param  array                              $settings
+     * @return array
+     */
+    private function combineArgumentsAndSettingFile(Json $file, array $settings): array
+    {
+        $settingsFile = new Json(dirname($file->getPath()) . '/captainhook.config.json');
+        if ($settingsFile->exists()) {
+            $fileSettings = $settingsFile->readAssoc();
+            $settings     = array_merge($fileSettings, $settings);
+        }
+        return $settings;
+    }
+
+    /**
+     * Includes an external captainhook configuration
      *
      * @param  string $path
      * @return \CaptainHook\App\Config
@@ -75,7 +103,7 @@ final class Factory
     }
 
     /**
-     * Return a configuration with data loaded from json file it it exists
+     * Return a configuration with data loaded from json file if it exists
      *
      * @param  \CaptainHook\App\Storage\File\Json $file
      * @param  array                              $settings
@@ -102,7 +130,6 @@ final class Factory
         $json = $file->readAssoc();
         Util::validateJsonConfiguration($json);
 
-        $settings = $this->combineArgumentsAndSettingFile($file, $settings);
         $settings = Util::mergeSettings($this->extractSettings($json), $settings);
         $config   = new Config($file->getPath(), true, $settings);
         if (!empty($settings)) {
@@ -116,34 +143,8 @@ final class Factory
                 $this->configureHook($config->getHookConfig($hook), $json[$hook]);
             }
         }
-        return $config;
-    }
 
-    /**
-     * Read settings from a local 'config' file
-     *
-     * If you prefer a different verbosity or use a different run mode locally then your team mates do.
-     * You can create a 'captainhook.config.json' in the same directory as your captainhook
-     * configuration file and use it to overwrite the 'config' settings of that configuration file.
-     * Exclude the 'captainhook.config.json' from version control and you don't have to edit the
-     * version controlled configuration for your local specifics anymore.
-     *
-     * Settings provided as arguments still overrule config file settings:
-     *
-     * ARGUMENTS > SETTINGS_FILE > CONFIGURATION
-     *
-     * @param \CaptainHook\App\Storage\File\Json $file
-     * @param array                              $settings
-     * @return array
-     */
-    private function combineArgumentsAndSettingFile(Json $file, array $settings)
-    {
-        $settingsFile = new Json(dirname($file->getPath()) . '/captainhook.config.json');
-        if ($settingsFile->exists()) {
-            $fileSettings = $settingsFile->readAssoc();
-            $settings     = array_merge($fileSettings, $settings);
-        }
-        return $settings;
+        return $config;
     }
 
     /**
@@ -189,13 +190,15 @@ final class Factory
     private function appendIncludedConfigurations(Config $config, array $json)
     {
         $this->readMaxIncludeLevel($json);
+
         if ($this->includeLevel < $this->maxIncludeLevel) {
+            $this->includeLevel++;
             $includes = $this->loadIncludedConfigs($json, $config->getPath());
             foreach (HookUtil::getValidHooks() as $hook => $class) {
                 $this->mergeHookConfigFromIncludes($config->getHookConfig($hook), $includes);
             }
+            $this->includeLevel--;
         }
-        $this->includeLevel++;
     }
 
     /**
@@ -205,7 +208,7 @@ final class Factory
      */
     private function readMaxIncludeLevel(array $json): void
     {
-        // read the include level setting only for the actual configuration
+        // read the include-level setting only for the actual configuration
         if ($this->includeLevel === 0 && isset($json['config'][Config::SETTING_INCLUDES_LEVEL])) {
             $this->maxIncludeLevel = (int) $json['config'][Config::SETTING_INCLUDES_LEVEL];
         }
@@ -224,6 +227,12 @@ final class Factory
             $includedHook = $includedConfig->getHookConfig($hook->getName());
             if ($includedHook->isEnabled()) {
                 $hook->setEnabled(true);
+                // This `setEnable` is solely to overwrite the main configuration in the special case that the hook
+                // is not configured at all. In this case the empty config is disabled by default, and adding an
+                // empty hook config just to enable the included actions feels a bit dull.
+                // Since the main hook is processed last (if one is configured) the enabled flag will be overwritten
+                // once again by the main config value. This is to make sure that if somebody disables a hook in its
+                // main configuration no actions will get executed, even if we have enabled hooks in any include file.
                 $this->copyActionsFromTo($includedHook, $hook);
             }
         }

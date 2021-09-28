@@ -1,0 +1,13 @@
+{
+  "config": {
+    "includes": [
+      "valid-nested-include.json"
+    ]
+  },
+  "pre-commit": {
+    "enabled": true,
+    "actions": [
+      {"action": "infection"}
+    ]
+  }
+}

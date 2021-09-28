@@ -131,6 +131,8 @@ class FactoryTest extends TestCase
 
         $this->assertTrue($config->getHookConfig('pre-commit')->isEnabled());
         $this->assertCount(3, $config->getHookConfig('pre-commit')->getActions());
+        $this->assertFalse($config->getHookConfig('pre-push')->isEnabled());
+        $this->assertCount(2, $config->getHookConfig('pre-push')->getActions());
     }
 
     /**
@@ -193,5 +195,18 @@ class FactoryTest extends TestCase
         $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-disabled-action.json'));
 
         $this->assertFalse($config->getHookConfig('pre-commit')->isEnabled());
+    }
+
+    /**
+     * Tests Factory::create
+     *
+     * @throws \Exception
+     */
+    public function testMaxIncludeLevel(): void
+    {
+        // one of the included files will not be loaded because of the includes-level value of 2
+        $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-exceeded-max-include-level.json'));
+        // all files have combined 6 pre-commit actions but one should not be loaded
+        $this->assertCount(5, $config->getHookConfig('pre-commit')->getActions());
     }
 }
