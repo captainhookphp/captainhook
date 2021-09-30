@@ -1,26 +1,24 @@
 name: "Continuous Integration"
 
-on:
-  push:
-    branches:
-      - "main"
-  pull_request:
+on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
         php: ['7.3', '7.4', '8.0']
-        experimental: false
+        experimental: [false]
+        composeroptions: ['', '', '--ignore-platform-req=php']
         include:
-          - php: "8.1"
-            composeroptions: "--ignore-platform-req=php"
+          - php: 8.1
             experimental: true
+            composeroptions: --ignore-platform-req=php
+
+    name: Build captainhook on ${{ matrix.php }}
+    runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.experimental }}
     env:
-      PHAR: "build/phar/captainhook.phar"
+      PHAR: build/phar/captainhook.phar
 
     steps:
     - uses: actions/checkout@master
