@@ -41,7 +41,7 @@ abstract class Logic implements Condition
     /**
      * Create a logic condition
      *
-     * @param  array $conditions
+     * @param  array<Condition> $conditions
      * @return \CaptainHook\App\Hook\Condition
      */
     public static function fromConditionsArray(array $conditions): Condition

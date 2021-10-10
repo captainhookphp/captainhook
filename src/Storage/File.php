@@ -63,6 +63,7 @@ class File
     /**
      * Reads json file.
      *
+     * @return mixed
      * @throws \RuntimeException
      */
     public function read()

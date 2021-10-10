@@ -22,7 +22,9 @@ namespace CaptainHook\App\Runner\Action\Cli\Command\Placeholder;
 class Env extends Foundation
 {
     /**
-     * @param array $options
+     * Return the requested ENVIRONMENT variable or a given default, returns empty string by default
+     *
+     * @param  array<string, mixed> $options
      * @return string
      */
     public function replacement(array $options): string

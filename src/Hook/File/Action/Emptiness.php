@@ -55,7 +55,7 @@ abstract class Emptiness extends Check
 
     /**
      * @param  \SebastianFeldmann\Git\Repository $repository
-     * @return array
+     * @return array<string>
      * @throws \Exception
      */
     protected function getFilesToCheck(Repository $repository): array
@@ -69,7 +69,7 @@ abstract class Emptiness extends Check
      *
      * ['pattern1' => ['file1', 'file2'], 'pattern2' => ['file3']...]
      *
-     * @return array
+     * @return array<string, array<string>>
      * @throws \Exception
      */
     private function getFilesToWatch(): array
@@ -86,9 +86,9 @@ abstract class Emptiness extends Check
     /**
      * Extract files list from the action configuration
      *
-     * @param  array    $filesToWatch  ['pattern1' => ['file1', 'file2'], 'pattern2' => ['file3']...]
-     * @param  string[] $stagedFiles
-     * @return array
+     * @param  array<string, array<string>> $filesToWatch  ['pattern1' => ['file1', 'file2'], 'pattern2' => ['file3']..]
+     * @param  array<string>                $stagedFiles
+     * @return array<string>
      */
     private function extractFilesToCheck(array $filesToWatch, array $stagedFiles): array
     {
@@ -105,8 +105,8 @@ abstract class Emptiness extends Check
     /**
      * Check if a file is in the list of watched files
      *
-     * @param  string $stagedFile
-     * @param  array  $filesToWatch
+     * @param  string                       $stagedFile
+     * @param  array<string, array<string>> $filesToWatch
      * @return bool
      */
     private function isFileUnderWatch(string $stagedFile, array $filesToWatch): bool

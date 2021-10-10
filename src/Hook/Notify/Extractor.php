@@ -21,11 +21,23 @@ namespace CaptainHook\App\Hook\Notify;
  */
 class Extractor
 {
+    /**
+     * Find the notification inside a commit message and return a Notification model
+     *
+     * @param  string $message
+     * @param  string $prefix
+     * @return \CaptainHook\App\Hook\Notify\Notification
+     */
     public static function extractNotification(string $message, string $prefix = 'git-notify:'): Notification
     {
         return new Notification(self::getLines($message, $prefix));
     }
 
+    /**
+     * @param  string $message
+     * @param  string $prefix
+     * @return array<string>
+     */
     private static function getLines(string $message, string $prefix): array
     {
         $matches = [];

@@ -42,7 +42,7 @@ class MaxSize extends Check
     /**
      * File sizes for all checked files
      *
-     * @var array
+     * @var array<string, int>
      */
     private $fileSizes = [];
 

@@ -35,7 +35,7 @@ interface Placeholder
     /**
      * Return the replacement value for this placeholder
      *
-     * @param  array $options
+     * @param  array<string, mixed> $options
      * @return string
      */
     public function replacement(array $options): string;

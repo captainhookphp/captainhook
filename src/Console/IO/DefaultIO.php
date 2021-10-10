@@ -84,7 +84,7 @@ class DefaultIO extends Base
     /**
      * Return the original cli arguments
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getArguments(): array
     {
@@ -169,10 +169,11 @@ class DefaultIO extends Base
     /**
      * Write to the appropriate user output
      *
-     * @param array|string $messages
-     * @param bool         $newline
-     * @param bool         $stderr
-     * @param int          $verbosity
+     * @param  array<string>|string $messages
+     * @param  bool                 $newline
+     * @param  bool                 $stderr
+     * @param  int                  $verbosity
+     * @return void
      */
     private function doWrite($messages, $newline, $stderr, $verbosity)
     {

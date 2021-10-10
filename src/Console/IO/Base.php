@@ -26,7 +26,7 @@ abstract class Base implements IO
     /**
      * Return the original cli arguments
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getArguments(): array
     {

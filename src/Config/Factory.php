@@ -45,8 +45,8 @@ final class Factory
     /**
      * Create a CaptainHook configuration
      *
-     * @param  string $path     Path to the configuration file
-     * @param  array  $settings Settings passed as options on the command line
+     * @param  string               $path     Path to the configuration file
+     * @param  array<string, mixed> $settings Settings passed as options on the command line
      * @return \CaptainHook\App\Config
      * @throws \Exception
      */
@@ -73,8 +73,8 @@ final class Factory
      * ARGUMENTS > SETTINGS_FILE > CONFIGURATION
      *
      * @param  \CaptainHook\App\Storage\File\Json $file
-     * @param  array                              $settings
-     * @return array
+     * @param  array<string, mixed>               $settings
+     * @return array<string, mixed>
      */
     private function combineArgumentsAndSettingFile(Json $file, array $settings): array
     {
@@ -106,7 +106,7 @@ final class Factory
      * Return a configuration with data loaded from json file if it exists
      *
      * @param  \CaptainHook\App\Storage\File\Json $file
-     * @param  array                              $settings
+     * @param  array<string, mixed>               $settings
      * @return \CaptainHook\App\Config
      * @throws \Exception
      */
@@ -121,7 +121,7 @@ final class Factory
      * Loads a given file into given the configuration
      *
      * @param  \CaptainHook\App\Storage\File\Json $file
-     * @param  array                              $settings
+     * @param  array<string, mixed>               $settings
      * @return \CaptainHook\App\Config
      * @throws \Exception
      */
@@ -150,8 +150,8 @@ final class Factory
     /**
      * Return `config` section of captainhook.json
      *
-     * @param  array $json
-     * @return array
+     * @param  array<string, mixed> $json
+     * @return array<string, mixed>
      */
     private function extractSettings(array $json): array
     {
@@ -162,7 +162,7 @@ final class Factory
      * Setup a hook configuration by json data
      *
      * @param  \CaptainHook\App\Config\Hook $config
-     * @param  array                        $json
+     * @param  array<string, mixed>         $json
      * @return void
      * @throws \Exception
      */
@@ -184,10 +184,10 @@ final class Factory
      * Append all included configuration to the current configuration
      *
      * @param  \CaptainHook\App\Config $config
-     * @param  array                   $json
+     * @param  array<string, mixed>    $json
      * @throws \Exception
      */
-    private function appendIncludedConfigurations(Config $config, array $json)
+    private function appendIncludedConfigurations(Config $config, array $json): void
     {
         $this->readMaxIncludeLevel($json);
 
@@ -204,7 +204,7 @@ final class Factory
     /**
      * Check config section for 'includes-level' setting
      *
-     * @param array $json
+     * @param array<string, mixed> $json
      */
     private function readMaxIncludeLevel(array $json): void
     {
@@ -241,8 +241,8 @@ final class Factory
     /**
      * Return list of included configurations to add them to the main configuration afterwards
      *
-     * @param  array  $json
-     * @param  string $path
+     * @param  array<string, mixed> $json
+     * @param  string               $path
      * @return \CaptainHook\App\Config[]
      * @throws \Exception
      */
@@ -267,7 +267,7 @@ final class Factory
      * @param \CaptainHook\App\Config\Hook $sourceConfig
      * @param \CaptainHook\App\Config\Hook $targetConfig
      */
-    private function copyActionsFromTo(Hook $sourceConfig, Hook $targetConfig)
+    private function copyActionsFromTo(Hook $sourceConfig, Hook $targetConfig): void
     {
         foreach ($sourceConfig->getActions() as $action) {
             $targetConfig->addAction($action);
@@ -277,8 +277,8 @@ final class Factory
     /**
      * Config factory method
      *
-     * @param  string $path
-     * @param  array  $settings
+     * @param  string               $path
+     * @param  array<string, mixed> $settings
      * @return \CaptainHook\App\Config
      * @throws \Exception
      */

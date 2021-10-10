@@ -32,15 +32,15 @@ class Condition
     /**
      * Condition arguments
      *
-     * @var array
+     * @var array<mixed>
      */
     private $args;
 
     /**
      * Condition constructor
      *
-     * @param string $exec
-     * @param array  $args
+     * @param string       $exec
+     * @param array<mixed> $args
      */
     public function __construct(string $exec, array $args = [])
     {
@@ -61,7 +61,7 @@ class Condition
     /**
      * Args getter
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getArgs(): array
     {
@@ -71,7 +71,7 @@ class Condition
     /**
      * Return config data
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getJsonData(): array
     {

@@ -45,9 +45,9 @@ class Action
     /**
      * Action constructor
      *
-     * @param  string $action
-     * @param  array  $options
-     * @param  array  $conditions
+     * @param  string               $action
+     * @param  array<string, mixed> $options
+     * @param  array<string, mixed> $conditions
      * @throws \Exception
      */
     public function __construct(string $action, array $options = [], array $conditions = [])
@@ -60,7 +60,7 @@ class Action
     /**
      * Setup options
      *
-     * @param array $options
+     * @param array<string, mixed> $options
      */
     private function setupOptions(array $options): void
     {
@@ -70,7 +70,7 @@ class Action
     /**
      * Setup action conditions
      *
-     * @param array $conditions
+     * @param array<string, array<string, mixed>> $conditions
      */
     private function setupConditions(array $conditions): void
     {
@@ -112,7 +112,7 @@ class Action
     /**
      * Return config data
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getJsonData(): array
     {
@@ -126,7 +126,7 @@ class Action
     /**
      * Return conditions json data
      *
-     * @return array
+     * @return array<int, array>
      */
     private function getConditionJsonData(): array
     {

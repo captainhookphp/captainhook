@@ -177,8 +177,8 @@ class Formatter
     /**
      * Parse options from ["name:'value'", "name:'value'"] to ["name" => "value", "name" => "value"]
      *
-     * @param  array $raw
-     * @return array
+     * @param  array<int, string> $raw
+     * @return array<string, string>
      */
     private function parseOptions(array $raw): array
     {

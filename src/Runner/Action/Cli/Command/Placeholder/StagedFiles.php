@@ -22,7 +22,7 @@ namespace CaptainHook\App\Runner\Action\Cli\Command\Placeholder;
 class StagedFiles extends Foundation
 {
     /**
-     * @param  array $options
+     * @param  array<string, string> $options
      * @return string
      */
     public function replacement(array $options): string
@@ -40,9 +40,9 @@ class StagedFiles extends Foundation
     /**
      * Filter staged files by directory
      *
-     * @param array $files
-     * @param array $options
-     * @return array
+     * @param  array<string> $files
+     * @param  array<string, string> $options
+     * @return array<string>
      */
     private function filterByDirectory(array $files, array $options): array
     {
@@ -64,9 +64,9 @@ class StagedFiles extends Foundation
     /**
      * Run search replace for all files
      *
-     * @param  array $files
-     * @param  array $options
-     * @return array
+     * @param  array<string> $files
+     * @param  array<string, string> $options
+     * @return array<string>
      */
     private function replaceInAll(array $files, array $options): array
     {
