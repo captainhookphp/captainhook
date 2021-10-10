@@ -41,8 +41,8 @@ class Plugin
     /**
      * Plugin constructor
      *
-     * @param string $plugin
-     * @param array $options
+     * @param string               $plugin
+     * @param array<string, mixed> $options
      */
     public function __construct(string $plugin, array $options = [])
     {
@@ -57,7 +57,7 @@ class Plugin
     /**
      * Setup options
      *
-     * @param array $options
+     * @param array<string, mixed> $options
      */
     private function setupOptions(array $options): void
     {
@@ -87,12 +87,12 @@ class Plugin
     /**
      * Return config data
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getJsonData(): array
     {
         return [
-            'plugin' => $this->plugin,
+            'plugin'  => $this->plugin,
             'options' => $this->options->getAll(),
         ];
     }

@@ -237,7 +237,7 @@ class Installer extends RepositoryAware
      *
      * @param string $hook
      */
-    private function backupHook(string $hook)
+    private function backupHook(string $hook): void
     {
         // no hook to move just leave
         if (!$this->repository->hookExists($hook)) {

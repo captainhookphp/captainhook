@@ -88,7 +88,7 @@ class Advanced extends Guided implements Setup
      * Ask the user for any action options
      *
      * @param  string $type
-     * @return array
+     * @return array<string, string>
      * @throws \Exception
      */
     public function getActionOptions(string $type): array
@@ -99,7 +99,7 @@ class Advanced extends Guided implements Setup
     /**
      * Get the php action options
      *
-     * @return array
+     * @return array<string, string>
      * @throws \Exception
      */
     protected function getPHPActionOptions(): array
@@ -117,7 +117,7 @@ class Advanced extends Guided implements Setup
     /**
      * Ask the user for a php action option
      *
-     * @return array
+     * @return array<string, string>
      * @throws \Exception
      */
     protected function getPHPActionOption(): array

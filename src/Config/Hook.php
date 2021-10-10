@@ -110,7 +110,7 @@ class Hook
     /**
      * Return config data
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getJsonData(): array
     {

@@ -30,7 +30,7 @@ abstract class Util
     /**
      * Validate a configuration
      *
-     * @param  array $json
+     * @param  array<string, mixed> $json
      * @return void
      * @throws \RuntimeException
      */
@@ -48,7 +48,7 @@ abstract class Util
     /**
      * Validate a hook configuration
      *
-     * @param  array $json
+     * @param  array<string, mixed> $json
      * @return void
      * @throws \RuntimeException
      */
@@ -66,7 +66,7 @@ abstract class Util
     /**
      * Validate a plugin configuration
      *
-     * @param  array $json
+     * @param  array<string, mixed> $json
      * @return void
      * @throws \RuntimeException
      */
@@ -91,7 +91,7 @@ abstract class Util
     /**
      * Validate a list of action configurations
      *
-     * @param  array $json
+     * @param  array<string, mixed> $json
      * @return void
      * @throws \RuntimeException
      */
@@ -113,7 +113,7 @@ abstract class Util
     /**
      * Validate a list of condition configurations
      *
-     * @param  array $json
+     * @param  array<int, array<string, mixed>> $json
      * @throws \RuntimeException
      */
     public static function validateConditionsConfig(array $json): void
@@ -144,8 +144,8 @@ abstract class Util
     /**
      * Merges a various list of settings arrays
      *
-     * @param array ...$settings
-     * @return array
+     * @param  array<string, mixed> $settings
+     * @return array<string, mixed>
      */
     public static function mergeSettings(array ...$settings): array
     {
@@ -161,8 +161,8 @@ abstract class Util
     /**
      * Does an array have the expected keys
      *
-     * @param  array $keys
-     * @param  array $subject
+     * @param  array<string>        $keys
+     * @param  array<string, mixed> $subject
      * @return bool
      */
     private static function keysExist(array $keys, array $subject): bool

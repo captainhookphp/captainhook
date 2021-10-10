@@ -24,7 +24,7 @@ class Config extends Foundation
     /**
      * Maps the config value names to actual methods that have to be called to retrieve the value
      *
-     * @var string[]
+     * @var array<string, string>
      */
     private $valueToMethod = [
         'bootstrap'           => 'getBootstrap',
@@ -33,7 +33,7 @@ class Config extends Foundation
     ];
 
     /**
-     * @param array $options
+     * @param  array<string, mixed> $options
      * @return string
      */
     public function replacement(array $options): string
@@ -48,7 +48,7 @@ class Config extends Foundation
     /**
      * Returns the config value '' by default if value is unknown
      *
-     * @param string $value
+     * @param  string $value
      * @return string
      */
     private function getConfigValueFor(string $value): string

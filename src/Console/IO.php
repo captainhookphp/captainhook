@@ -32,7 +32,7 @@ interface IO
     /**
      * Return the original cli arguments
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getArguments(): array;
 
@@ -83,18 +83,20 @@ interface IO
     /**
      * Writes a message to the output
      *
-     * @param string|array $messages  The message as an array of lines or a single string
-     * @param bool         $newline   Whether to add a newline or not
-     * @param int          $verbosity Verbosity level from the VERBOSITY_* constants
+     * @param  string|array<string> $messages  The message as an array of lines or a single string
+     * @param  bool                 $newline   Whether to add a newline or not
+     * @param  int                  $verbosity Verbosity level from the VERBOSITY_* constants
+     * @return void
      */
     public function write($messages, $newline = true, $verbosity = self::NORMAL);
 
     /**
      * Writes a message to the error output
      *
-     * @param string|array $messages  The message as an array of lines or a single string
-     * @param bool         $newline   Whether to add a newline or not
-     * @param int          $verbosity Verbosity level from the VERBOSITY_* constants
+     * @param  string|array<string> $messages  The message as an array of lines or a single string
+     * @param  bool                 $newline   Whether to add a newline or not
+     * @param  int                  $verbosity Verbosity level from the VERBOSITY_* constants
+     * @return void
      */
     public function writeError($messages, $newline = true, $verbosity = self::NORMAL);
 
