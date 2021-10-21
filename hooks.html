@@ -170,7 +170,7 @@ class NoEmptyCommitMessages implements HookAction
     public function execute(Config $config, IO $io, Repo $repository, Action $action) : void
     {
         $message = $repository->getCommitMsg();
-        if (empty($message->getContent()) {
+        if (empty($message->getContent())) {
             throw new \Exception('Empty commit message is not allowed');
         }
     }
