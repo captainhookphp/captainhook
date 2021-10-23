@@ -160,7 +160,11 @@ class EditorTest extends TestCase
         $io     = $this->createIOMock();
         $config = $this->createConfigMock(true, $configDir->url() . '/captainhook.json');
         $config->method('getHookConfig')->willReturn($this->createHookConfigMock());
-        $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', '\\Foo\\Bar', 'y', 'n'));
+        $io->method('ask')->will(
+            $this->onConsecutiveCalls(
+                ...['y', 'y', '\\Foo\\Bar', 'y', 'foo:bar', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n']
+            )
+        );
         $io->expects($this->once())->method('askAndValidate')->willReturn('foo:bar');
 
         $runner = new Creator($io, $config);

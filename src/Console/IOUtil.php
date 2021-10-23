@@ -56,9 +56,9 @@ abstract class IOUtil
      * @param  string $answer
      * @return bool
      */
-    public static function answerToBool($answer): bool
+    public static function answerToBool(string $answer): bool
     {
-        return in_array($answer, ['y', 'yes', 'ok']);
+        return in_array(strtolower($answer), ['y', 'yes', 'ok']);
     }
 
     /**
