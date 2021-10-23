@@ -41,6 +41,7 @@ class IOUtilTest extends TestCase
     public function testAnswerToBool(): void
     {
         $this->assertTrue(IOUtil::answerToBool('y'));
+        $this->assertTrue(IOUtil::answerToBool('Y'));
         $this->assertTrue(IOUtil::answerToBool('yes'));
         $this->assertTrue(IOUtil::answerToBool('ok'));
         $this->assertFalse(IOUtil::answerToBool('foo'));
