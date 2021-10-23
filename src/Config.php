@@ -74,12 +74,13 @@ class Config
     /**
      * Config constructor
      *
-     * @param string                $path
-     * @param bool                  $fileExists
-     * @param array<string, string> $settings
+     * @param string               $path
+     * @param bool                 $fileExists
+     * @param array<string, mixed> $settings
      */
     public function __construct(string $path, bool $fileExists = false, array $settings = [])
     {
+        /* @var array<int, array<string, mixed>> $pluginSettings */
         $pluginSettings = $settings['plugins'] ?? [];
         unset($settings['plugins']);
 

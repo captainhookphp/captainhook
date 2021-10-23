@@ -104,8 +104,8 @@ class DoesNotContainRegex extends Check
      */
     protected function isValid(Repository $repository, string $file): bool
     {
-        $fileContent = file_get_contents($file);
-        $matchCount  = preg_match_all($this->regex, $fileContent, $matches);
+        $fileContent = (string) file_get_contents($file);
+        $matchCount  = (int) preg_match_all($this->regex, $fileContent, $matches);
 
         $this->fileMatches[$file] = $matchCount;
         $this->totalMatches      += $matchCount;
