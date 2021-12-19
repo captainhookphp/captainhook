@@ -27,9 +27,10 @@ class StagedFiles extends Foundation
      */
     public function replacement(array $options): string
     {
-        $files = isset($options['of-type'])
-               ? $this->repository->getIndexOperator()->getStagedFilesOfType($options['of-type'])
-               : $this->repository->getIndexOperator()->getStagedFiles();
+        $filter = isset($options['diff-filter']) ? str_split($options['diff-filter']) : ['A', 'C', 'M', 'R'];
+        $files  = isset($options['of-type'])
+                ? $this->repository->getIndexOperator()->getStagedFilesOfType($options['of-type'], $filter)
+                : $this->repository->getIndexOperator()->getStagedFiles($filter);
 
         $files = $this->filterByDirectory($files, $options);
         $files = $this->replaceInAll($files, $options);

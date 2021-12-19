@@ -39,6 +39,22 @@ class StagedFilesTest extends TestCase
     /**
      * Tests StagedFiles::replacement
      */
+    public function testCustomDiffFilter(): void
+    {
+        $config = $this->createConfigMock();
+        $repo   = $this->createRepositoryMock();
+        $index  = $this->createGitIndexOperator(['file1.php', 'file2.php', 'README.md']);
+        $repo->expects($this->once())->method('getIndexOperator')->willReturn($index);
+
+        $placeholder = new StagedFiles($config, $repo);
+        $command     = $placeholder->replacement(['diff-filter' => 'AM']);
+
+        $this->assertEquals('file1.php file2.php README.md', $command);
+    }
+
+    /**
+     * Tests StagedFiles::replacement
+     */
     public function testOfType(): void
     {
         $config = $this->createConfigMock();
