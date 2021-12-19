@@ -20,7 +20,6 @@ use Symfony\Component\Console\Output\NullOutput;
 
 class EnableTest extends TestCase
 {
-
     /**
      * Tests Enable::run
      *
