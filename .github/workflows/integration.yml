@@ -6,7 +6,7 @@ jobs:
   build:
     strategy:
       matrix:
-        php: ['7.3', '7.4', '8.0']
+        php: ['7.4', '8.0']
         experimental: [false]
         composeroptions: ['--ignore-platform-req=php']
         include:
