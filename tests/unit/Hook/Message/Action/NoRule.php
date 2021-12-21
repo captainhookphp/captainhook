@@ -20,5 +20,4 @@ namespace CaptainHook\App\Hook\Message\Action;
  */
 class NoRule
 {
-
 }

@@ -22,14 +22,15 @@ namespace CaptainHook\App\Runner\Action\Cli\Command\Placeholder;
 class StagedFiles extends Foundation
 {
     /**
-     * @param  array $options
+     * @param  array<string, string> $options
      * @return string
      */
     public function replacement(array $options): string
     {
-        $files = isset($options['of-type'])
-               ? $this->repository->getIndexOperator()->getStagedFilesOfType($options['of-type'])
-               : $this->repository->getIndexOperator()->getStagedFiles();
+        $filter = isset($options['diff-filter']) ? str_split($options['diff-filter']) : ['A', 'C', 'M', 'R'];
+        $files  = isset($options['of-type'])
+                ? $this->repository->getIndexOperator()->getStagedFilesOfType($options['of-type'], $filter)
+                : $this->repository->getIndexOperator()->getStagedFiles($filter);
 
         $files = $this->filterByDirectory($files, $options);
         $files = $this->replaceInAll($files, $options);
@@ -40,9 +41,9 @@ class StagedFiles extends Foundation
     /**
      * Filter staged files by directory
      *
-     * @param array $files
-     * @param array $options
-     * @return array
+     * @param  array<string> $files
+     * @param  array<string, string> $options
+     * @return array<string>
      */
     private function filterByDirectory(array $files, array $options): array
     {
@@ -64,9 +65,9 @@ class StagedFiles extends Foundation
     /**
      * Run search replace for all files
      *
-     * @param  array $files
-     * @param  array $options
-     * @return array
+     * @param  array<string> $files
+     * @param  array<string, string> $options
+     * @return array<string>
      */
     private function replaceInAll(array $files, array $options): array
     {

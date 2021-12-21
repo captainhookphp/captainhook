@@ -104,7 +104,7 @@ class Formatter
         $placeholders = [];
         $matches      = [];
 
-        if (preg_match_all('#{\$([a-z_]+(\|[a-z\-]+:.*)?)}#i', $command, $matches)) {
+        if (preg_match_all('#{\$([a-z_]+(\|[a-z\-]+:.*)?)}#iU', $command, $matches)) {
             foreach ($matches[1] as $match) {
                 $placeholders[] = $match;
             }
@@ -177,8 +177,8 @@ class Formatter
     /**
      * Parse options from ["name:'value'", "name:'value'"] to ["name" => "value", "name" => "value"]
      *
-     * @param  array $raw
-     * @return array
+     * @param  array<int, string> $raw
+     * @return array<string, string>
      */
     private function parseOptions(array $raw): array
     {

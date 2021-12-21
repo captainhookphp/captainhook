@@ -135,7 +135,7 @@ abstract class Check implements Action, Constrained
      * Return the list of files that should be checked
      *
      * @param  \SebastianFeldmann\Git\Repository $repository
-     * @return array
+     * @return array<string>
      */
     protected function getFilesToCheck(Repository $repository): array
     {

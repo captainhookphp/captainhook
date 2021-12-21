@@ -32,7 +32,11 @@ class AdvancedTest extends TestCase
         $io     = $this->createIOMock();
         $config = $this->createConfigMock();
         $config->expects($this->exactly(9))->method('getHookConfig')->willReturn($this->createHookConfigMock());
-        $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', 'echo \'foo\'', 'n'));
+        $io->method('ask')->will(
+            $this->onConsecutiveCalls(
+                ...['y', 'y', 'echo \'foo\'', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n']
+            )
+        );
 
         $setup  = new Advanced($io);
         $setup->configureHooks($config);
@@ -48,7 +52,11 @@ class AdvancedTest extends TestCase
         $io     = $this->createIOMock();
         $config = $this->createConfigMock();
         $config->method('getHookConfig')->willReturn($this->createHookConfigMock());
-        $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', '\\Foo\\Bar', 'y', 'n'));
+        $io->method('ask')->will(
+            $this->onConsecutiveCalls(
+                ...['y', 'y', '\\Foo\\Bar', 'y', 'foo:bar', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n']
+            )
+        );
         $io->expects($this->once())->method('askAndValidate')->willReturn('foo:bar');
 
         $setup  = new Advanced($io);

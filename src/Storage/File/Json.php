@@ -28,7 +28,7 @@ class Json extends File
      * Read and decode the json file
      *
      * @param  bool $assoc
-     * @return \stdClass|array|null
+     * @return \stdClass|array<string, mixed>|null
      */
     public function read(bool $assoc = false)
     {
@@ -42,7 +42,7 @@ class Json extends File
     /**
      * Read the file and decode to assoc array
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function readAssoc(): array
     {

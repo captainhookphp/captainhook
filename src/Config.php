@@ -74,12 +74,13 @@ class Config
     /**
      * Config constructor
      *
-     * @param string $path
-     * @param bool   $fileExists
-     * @param array  $settings
+     * @param string               $path
+     * @param bool                 $fileExists
+     * @param array<string, mixed> $settings
      */
     public function __construct(string $path, bool $fileExists = false, array $settings = [])
     {
+        /* @var array<int, array<string, mixed>> $pluginSettings */
         $pluginSettings = $settings['plugins'] ?? [];
         unset($settings['plugins']);
 
@@ -87,16 +88,27 @@ class Config
         $this->fileExists = $fileExists;
         $this->settings   = $settings;
 
-        foreach ($pluginSettings as $plugin) {
-            $name = $plugin['plugin'];
-            $options = isset($plugin['options']) && is_array($plugin['options'])
-                ? $plugin['options']
-                : [];
-            $this->plugins[$name] = new Config\Plugin($name, $options);
-        }
+        $this->setupPlugins($pluginSettings);
 
         foreach (Hooks::getValidHooks() as $hook => $value) {
             $this->hooks[$hook] = new Config\Hook($hook);
+        }
+    }
+
+    /**
+     * Setup all configured plugins
+     *
+     * @param  array<int, array<mixed>> $pluginSettings
+     * @return void
+     */
+    private function setupPlugins(array $pluginSettings): void
+    {
+        foreach ($pluginSettings as $plugin) {
+            $name                 = $plugin['plugin'];
+            $options              = isset($plugin['options']) && is_array($plugin['options'])
+                ? $plugin['options']
+                : [];
+            $this->plugins[$name] = new Config\Plugin($name, $options);
         }
     }
 
@@ -251,7 +263,7 @@ class Config
     /**
      * Return config array to write to disc
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getJsonData(): array
     {

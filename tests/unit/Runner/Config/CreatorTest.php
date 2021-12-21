@@ -34,7 +34,11 @@ class CreatorTest extends TestCase
 
         $config = $this->createConfigMock(true);
         $io     = $this->createIOMock();
-        $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', '\\Foo\\Bar', 'y', 'n'));
+        $io->method('ask')->will(
+            $this->onConsecutiveCalls(
+                ...['y', 'y', '\\Foo\\Bar', 'y', 'foo:bar', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n']
+            )
+        );
 
         $runner = new Creator($io, $config);
         $runner->advanced(true)
@@ -57,7 +61,11 @@ class CreatorTest extends TestCase
         $config     = Config\Factory::create($configFile);
 
         $io = $this->createIOMock();
-        $io->method('ask')->will($this->onConsecutiveCalls('y', 'y', '\\Foo\\Bar', 'y', 'n'));
+        $io->method('ask')->will(
+            $this->onConsecutiveCalls(
+                ...['y', 'y', '\\Foo\\Bar', 'y', 'foo:bar', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n']
+            )
+        );
         $io->expects($this->once())->method('askAndValidate')->willReturn('foo:bar');
 
         $runner = new Creator($io, $config);

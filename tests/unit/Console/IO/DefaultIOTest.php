@@ -235,11 +235,11 @@ class DefaultIOTest extends TestCase
         $questionHelper = $this->getQuestionHelper();
 
         $helper->expects($this->once())->method('get')->willReturn($questionHelper);
-        $questionHelper->expects($this->once())->method('ask')->willReturn(true);
+        $questionHelper->expects($this->once())->method('ask')->willReturn('y');
 
         $io     = new DefaultIO($this->fakeStdIn(), $input, $output, $helper);
         $answer = $io->ask('foo');
-        $this->assertTrue($answer);
+        $this->assertEquals('y', $answer);
     }
 
     /**
@@ -253,7 +253,7 @@ class DefaultIOTest extends TestCase
         $questionHelper = $this->getQuestionHelper();
 
         $helper->expects($this->once())->method('get')->willReturn($questionHelper);
-        $questionHelper->expects($this->once())->method('ask')->willReturn(true);
+        $questionHelper->expects($this->once())->method('ask')->willReturn('y');
 
         $io     = new DefaultIO($this->fakeStdIn(), $input, $output, $helper);
         $answer = $io->askConfirmation('foo');
@@ -273,7 +273,7 @@ class DefaultIOTest extends TestCase
         $questionHelper = $this->getQuestionHelper();
 
         $helper->expects($this->once())->method('get')->willReturn($questionHelper);
-        $questionHelper->expects($this->once())->method('ask')->willReturn(true);
+        $questionHelper->expects($this->once())->method('ask')->willReturn('y');
 
         $io     = new DefaultIO($this->fakeStdIn(), $input, $output, $helper);
         $answer = $io->askAndValidate(
@@ -282,7 +282,7 @@ class DefaultIOTest extends TestCase
                 return true;
             }
         );
-        $this->assertTrue($answer);
+        $this->assertEquals('y', $answer);
     }
 
     /**

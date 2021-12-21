@@ -199,7 +199,7 @@ class Installer extends RepositoryAware
 
         $doIt = true;
         if ($ask) {
-            $answer = $this->io->ask('  <info>Install \'' . $hook . '\' hook?</info> <comment>[y,n]</comment> ', 'y');
+            $answer = $this->io->ask('  <info>Install \'' . $hook . '\' hook?</info> <comment>[Y,n]</comment> ', 'y');
             $doIt   = IOUtil::answerToBool($answer);
         }
 
@@ -237,7 +237,7 @@ class Installer extends RepositoryAware
      *
      * @param string $hook
      */
-    private function backupHook(string $hook)
+    private function backupHook(string $hook): void
     {
         // no hook to move just leave
         if (!$this->repository->hookExists($hook)) {

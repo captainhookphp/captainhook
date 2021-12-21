@@ -24,14 +24,14 @@ class Options
     /**
      * Map of options
      *
-     * @var array<string, string>
+     * @var array<string, mixed>
      */
     private $options;
 
     /**
      * Options constructor
      *
-     * @param array<string, string> $options
+     * @param array<string, mixed> $options
      */
     public function __construct(array $options)
     {
@@ -53,7 +53,7 @@ class Options
     /**
      * Return all options
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getAll(): array
     {

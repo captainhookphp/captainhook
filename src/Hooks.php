@@ -60,7 +60,7 @@ final class Hooks
     /**
      * Returns the list of valid hooks
      *
-     * @return array<string>
+     * @return array<string, string>
      */
     public static function getValidHooks(): array
     {

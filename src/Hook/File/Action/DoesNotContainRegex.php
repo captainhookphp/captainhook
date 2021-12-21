@@ -43,14 +43,14 @@ class DoesNotContainRegex extends Check
     /**
      * List of file types to check
      *
-     * @var string[]
+     * @var array<string>
      */
     private $fileExtensions;
 
     /**
      * Log of all checked files and found matches
      *
-     * @var array
+     * @var array<string, int>
      */
     private $fileMatches = [];
 
@@ -78,7 +78,7 @@ class DoesNotContainRegex extends Check
      * Returns a list of files to check
      *
      * @param  \SebastianFeldmann\Git\Repository $repository
-     * @return array
+     * @return array<string>
      */
     protected function getFilesToCheck(Repository $repository): array
     {
@@ -104,8 +104,8 @@ class DoesNotContainRegex extends Check
      */
     protected function isValid(Repository $repository, string $file): bool
     {
-        $fileContent = file_get_contents($file);
-        $matchCount  = preg_match_all($this->regex, $fileContent, $matches);
+        $fileContent = (string) file_get_contents($file);
+        $matchCount  = (int) preg_match_all($this->regex, $fileContent, $matches);
 
         $this->fileMatches[$file] = $matchCount;
         $this->totalMatches      += $matchCount;

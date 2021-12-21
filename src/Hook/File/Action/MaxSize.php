@@ -42,7 +42,7 @@ class MaxSize extends Check
     /**
      * File sizes for all checked files
      *
-     * @var array
+     * @var array<string, int>
      */
     private $fileSizes = [];
 
@@ -97,7 +97,7 @@ class MaxSize extends Check
             return false;
         }
 
-        $this->fileSizes[$file] = filesize($file);
+        $this->fileSizes[$file] = (int) filesize($file);
 
         if ($this->fileSizes[$file] > $this->maxBytes) {
             return true;

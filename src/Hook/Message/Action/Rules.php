@@ -57,7 +57,7 @@ class Rules extends Book
      * Create a new rule
      *
      * @param  string $class
-     * @param  array  $args
+     * @param  array<string> $args
      * @return \CaptainHook\App\Hook\Message\Rule
      * @throws \Exception
      */
@@ -81,7 +81,7 @@ class Rules extends Book
     /**
      * Create a rule from a argument containing configuration
      *
-     * @param  array $config
+     * @param  array<int, mixed> $config
      * @return \CaptainHook\App\Hook\Message\Rule
      * @throws \Exception
      */

@@ -95,10 +95,11 @@ class Notify implements Action, Constrained
     /**
      * Write the notification to the
      *
-     * @param \CaptainHook\App\Console\IO               $io
-     * @param \CaptainHook\App\Hook\Notify\Notification $notification
+     * @param  \CaptainHook\App\Console\IO               $io
+     * @param  \CaptainHook\App\Hook\Notify\Notification $notification
+     * @return void
      */
-    private function notify(IO $io, Notification $notification)
+    private function notify(IO $io, Notification $notification): void
     {
         $io->write(['', '', $notification->banner(), '']);
     }
