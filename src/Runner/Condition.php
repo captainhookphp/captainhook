@@ -117,13 +117,13 @@ class Condition
     {
         $class      = '\\CaptainHook\\App\\Hook\\Condition\\Logic\\Logic' . ucfirst(strtolower($config->getExec()));
         $conditions = [];
-        foreach ($config->getArgs() as $condition) {
-            $currentCondition = $this->createCondition(new Config\Condition($condition['exec'], $condition['args'] ?? []));
-            if (!$this->isApplicable($currentCondition)) {
+        foreach ($config->getArgs() as $conf) {
+            $condition = $this->createCondition(new Config\Condition($conf['exec'], $conf['args'] ?? []));
+            if (!$this->isApplicable($condition)) {
                 $this->io->write('Condition skipped due to hook constraint', true, IO::VERBOSE);
                 continue;
             }
-            $conditions[] = $currentCondition;
+            $conditions[] = $condition;
         }
         return $class::fromConditionsArray($conditions);
     }
