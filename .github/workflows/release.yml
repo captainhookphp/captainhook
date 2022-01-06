@@ -110,17 +110,17 @@ jobs:
           body: "${{ steps.changelog.outputs.changelog }}"
 
       - name: Upload captainhook.phar
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          asset_content_type: text/plain
+          asset_content_type: application/octet-stream
           asset_name: captainhook.phar
           asset_path: "${{ env.PHAR }}"
           upload_url: "${{ steps.create-release.outputs.upload_url }}"
 
       - name: Upload captainhook.phar.asc
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
