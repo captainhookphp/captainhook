@@ -19,7 +19,6 @@ jobs:
       PHAR_SIGNATURE: "build/phar/captainhook.phar.asc"
       GPG_KEYS: "build/captainhook-signing-keys.asc"
       GPG_KEYS_ENCRYPTED: "build/captainhook-signing-keys.asc.gpg"
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout
@@ -102,7 +101,7 @@ jobs:
         id: create-release
         uses: actions/create-release@master
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_API_TOKEN }}"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           draft: false
           prerelease: false
