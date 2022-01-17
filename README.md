@@ -29,25 +29,25 @@ For more information have a look at the [documentation](https://captainhookphp.g
 
 Install the *CaptainHook* PHAR using [Phive](https://phar.io/) or download the PHAR from the github [release page](https://github.com/captainhookphp/captainhook/releases/latest).
 ```bash
-    $ phive install captainhook
+phive install captainhook
 ```
 
 Or use *Composer* to install *CaptainHook*.
 ```bash
-    $ composer require --dev captainhook/captainhook
+composer require --dev captainhook/captainhook
 ```
 
 ## Setup
 After installing CaptainHook you can use the *captainhook* executable to create a configuration.
 ```bash
-    $ vendor/bin/captainhook configure
+vendor/bin/captainhook configure
 ```
 Now there should be a *captainhook.json* configuration file.
 
 If you are not using the `composer-plugin` yet you have to activate the hooks manually by installing them to
 your local .git repository. To do so just run the following *captainhook* command.
 ```bash
-    $ vendor/bin/captainhook install
+vendor/bin/captainhook install
 ```
 
 Have a look at this short installation video.
@@ -57,7 +57,7 @@ Have a look at this short installation video.
 If you want to make sure your whole team uses the same hooks and you want to make sure everybody has the
 hooks installed you can use the *CaptainHook* `composer-plugin` as an addition.
 ```bash
-    $ composer require --dev captainhook/plugin-composer
+composer require --dev captainhook/plugin-composer
 ```
 The plugin will make sure that the hooks get activated after every `composer install` or `update`.
 If you don't like the extra dependency just add the following `scripts` command to your `composer.json` file instead.
