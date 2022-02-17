@@ -107,7 +107,7 @@
       <ul>
         <li>docker exec MY_CONTAINER_NAME</li>
         <li>docker run --rm -v $(pwd):/var/www/html MY_IMAGE_NAME</li>
-        <li>docker-compose -f docker/docker-compose.yml run --rm MY_SERVICE_NAME</li>
+        <li>docker-compose -f docker/docker-compose.yml run --rm -T MY_SERVICE_NAME</li>
       </ul>
       <p>
         If you are using the composer plugin or just dont't want to provide the settings via cli option you can
