@@ -58,10 +58,17 @@ class PreserveWorkingTreePluginTest extends IntegrationTestCase
         // `git checkout`, we want to test our post-commit hook plugin creates a
         // file with the environment variables dumped to it and that the skip
         // post-checkout env var is one of them.
+
+
+        // This is disabled for now, because the plugin doesn't trigger the post-checkout
+        // hook anymore. This was changed because running a docker executed hook inside docker
+        // is causing a crazy docker-hook-ception.
+        /*
         $this->assertStringContainsString(
             PreserveWorkingTree::SKIP_POST_CHECKOUT_VAR,
             file_get_contents($repoPath . '/env.txt')
         );
+        */
 
         // Look at `git status` again for the things we expect to see (or not).
         $statusResult = $this->runInShell(['git', 'status', '--porcelain=v1'], $repoPath);
