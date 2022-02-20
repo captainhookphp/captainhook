@@ -125,15 +125,17 @@ abstract class Hook extends RepositoryAware
 
         $this->beforeHook();
 
-        $actions = $this->getActionsToExecute($hookConfigs);
-        // are any actions configured
-        if (count($actions) === 0) {
-            $this->io->write(' - no actions to execute', true);
-        } else {
-            $this->executeActions($actions);
+        try {
+            $actions = $this->getActionsToExecute($hookConfigs);
+            // are any actions configured
+            if (count($actions) === 0) {
+                $this->io->write(' - no actions to execute', true);
+            } else {
+                $this->executeActions($actions);
+            }
+        } finally {
+            $this->afterHook();
         }
-
-        $this->afterHook();
     }
 
     /**
