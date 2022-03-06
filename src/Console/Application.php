@@ -85,7 +85,7 @@ class Application extends SymfonyApplication
     public function getLongVersion(): string
     {
         return sprintf(
-            '<info>%s</info> version <comment>%s</comment> %s',
+            '<info>%s</info> version <comment>%s</comment> %s <fg=blue>#StandWith</><fg=yellow>Ukraine</>',
             $this->getName(),
             $this->getVersion(),
             CH::RELEASE_DATE
