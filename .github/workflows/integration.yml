@@ -9,7 +9,7 @@ jobs:
         php: ['7.4', '8.0']
         experimental: [false]
         composeroptions: ['']
-        buidphar: [true, true]
+        buidphar: [true]
         include:
           - php: 7.3
             experimental: false
