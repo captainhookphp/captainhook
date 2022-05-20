@@ -44,7 +44,7 @@ jobs:
         run: tools/box validate box.json
 
       - name: Force install Symfony 3
-        run: composer require symfony/console ^3.0 symfony/process ^3.0 symfony/filesystem ^3.0
+        run: COMPOSER=composer.phar.json composer update
 
       - name: Compile phar with humbug/box
         run: tools/box compile
