@@ -159,6 +159,7 @@ class Formatter
      */
     private function createPlaceholder(string $placeholder): Placeholder
     {
+        /** @var class-string<\CaptainHook\App\Runner\Action\Cli\Command\Placeholder> $class */
         $class = self::$placeholders[$placeholder];
         return new $class($this->config, $this->repository);
     }

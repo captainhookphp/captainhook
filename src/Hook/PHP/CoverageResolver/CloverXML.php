@@ -77,6 +77,6 @@ class CloverXML implements CoverageResolver
             );
         }
 
-        return $covered / ($statements * 0.01);
+        return $covered / ((int)$statements * 0.01);
     }
 }

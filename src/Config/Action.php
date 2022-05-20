@@ -126,7 +126,7 @@ class Action
     /**
      * Return conditions json data
      *
-     * @return array<int, array>
+     * @return array<int, mixed>
      */
     private function getConditionJsonData(): array
     {

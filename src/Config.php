@@ -98,13 +98,13 @@ class Config
     /**
      * Setup all configured plugins
      *
-     * @param  array<int, array<mixed>> $pluginSettings
+     * @param  array<int, array<string, mixed>> $pluginSettings
      * @return void
      */
     private function setupPlugins(array $pluginSettings): void
     {
         foreach ($pluginSettings as $plugin) {
-            $name                 = $plugin['plugin'];
+            $name                 = (string) $plugin['plugin'];
             $options              = isset($plugin['options']) && is_array($plugin['options'])
                 ? $plugin['options']
                 : [];

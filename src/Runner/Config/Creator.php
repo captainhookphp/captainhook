@@ -49,7 +49,7 @@ class Creator extends Runner
     /**
      * Path to the currently executed 'binary'
      *
-     * @var string
+     * @var null|string
      */
     protected $executable;
 
@@ -178,7 +178,7 @@ class Creator extends Runner
      *
      * @return string
      */
-    private function getExecutable()
+    private function getExecutable(): string
     {
         return $this->executable ?? 'vendor/bin/captainhook';
     }

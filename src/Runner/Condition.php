@@ -100,6 +100,7 @@ class Condition
             return new Cli(new Processor(), $config->getExec());
         }
 
+        /** @var class-string<\CaptainHook\App\Hook\Condition> $class */
         $class = $config->getExec();
         if (!class_exists($class)) {
             throw new RuntimeException('could not find condition class: ' . $class);

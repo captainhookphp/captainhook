@@ -90,13 +90,14 @@ class Editor extends Runner
     }
 
     /**
-     * Create an config edit command
+     * Create a config edit command
      *
      * @return \CaptainHook\App\Runner\Config\Change
      * @throws \RuntimeException
      */
     private function createChange(): Change
     {
+        /** @var class-string<\CaptainHook\App\Runner\Config\Change> $changeClass */
         $changeClass = '\\CaptainHook\\App\\Runner\\Config\\Change\\' . $this->change;
         if (!class_exists($changeClass)) {
             throw new RuntimeException('Invalid change requested');
