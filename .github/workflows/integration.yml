@@ -12,9 +12,9 @@ jobs:
         buidphar: [true, true]
         include:
           - php: 7.3
-                experimental: false
-                composeroptions:
-                buildphar: false
+            experimental: false
+            composeroptions:
+            buildphar: false
           - php: 8.1
             experimental: true
             composeroptions: --ignore-platform-req=php
