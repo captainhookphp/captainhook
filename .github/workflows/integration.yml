@@ -6,7 +6,7 @@ jobs:
   build:
     strategy:
       matrix:
-        php: ['7.4', '8.0']
+        php: ['7.4', '8.0', '8.1']
         experimental: [false]
         composeroptions: ['']
         buidphar: [true]
@@ -15,10 +15,6 @@ jobs:
             experimental: false
             composeroptions:
             buildphar: false
-          - php: 8.1
-            experimental: true
-            composeroptions: --ignore-platform-req=php
-            buildphar: true
 
     name: Build captainhook on ${{ matrix.php }}
     runs-on: ubuntu-latest
