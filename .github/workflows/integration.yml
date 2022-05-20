@@ -9,10 +9,12 @@ jobs:
         php: ['7.3', '7.4', '8.0']
         experimental: [false]
         composeroptions: ['']
+        buidphar: [false, true, true]
         include:
           - php: 8.1
             experimental: true
             composeroptions: --ignore-platform-req=php
+            buildphar: true
 
     name: Build captainhook on ${{ matrix.php }}
     runs-on: ubuntu-latest
@@ -58,16 +60,21 @@ jobs:
       run: tools/phpstan analyse
 
     - name: Force install Symfony 3
+      if: ${{ matrix.buildphar }}
       run: COMPOSER=composer.phar.json composer update
 
     - name: Validate configuration for humbug/box
+      if: ${{ matrix.buildphar }}
       run: tools/box validate box.json
 
     - name: Compile phar with humbug/box
+      if: ${{ matrix.buildphar }}
       run: tools/box compile
 
     - name: Show info about generated phar with humbug/box
+      if: ${{ matrix.buildphar }}
       run: tools/box info ${{ env.PHAR }}
 
     - name: Run phar
+      if: ${{ matrix.buildphar }}
       run: ${{ env.PHAR }} --help
