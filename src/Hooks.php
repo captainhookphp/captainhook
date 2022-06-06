@@ -108,7 +108,9 @@ final class Hooks
         return array_keys(
             array_filter(
                 self::$virtualHookTriggers,
-                function($e) use ($virtualHook) { return $e === $virtualHook; }
+                function ($e) use ($virtualHook) {
+                    return $e === $virtualHook;
+                }
             )
         );
     }
