@@ -99,6 +99,21 @@ final class Hooks
     }
 
     /**
+     * Returns a list of all native hooks triggered by a given virtual hook
+     *
+     * @return array<string>
+     */
+    public static function getNativeHooksForVirtualHook(string $virtualHook): array
+    {
+        return array_keys(
+            array_filter(
+                self::$virtualHookTriggers,
+                function($e) use ($virtualHook) { return $e === $virtualHook; }
+            )
+        );
+    }
+
+    /**
      * Returns the argument placeholders for a given hook
      *
      * @param  string $hook

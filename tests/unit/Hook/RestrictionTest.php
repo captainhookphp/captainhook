@@ -70,4 +70,16 @@ class RestrictionTest extends TestCase
         $this->assertTrue($restriction->isApplicableFor('pre-commit'));
         $this->assertFalse($restriction->isApplicableFor('post-push'));
     }
+
+    /**
+     * Tests Restriction::isApplicable
+     */
+    public function testIsApplicableWithVirtualHook(): void
+    {
+        $restriction = Restriction::fromString('post-change');
+
+        $this->assertTrue($restriction->isApplicableFor('post-checkout'));
+        $this->assertTrue($restriction->isApplicableFor('post-merge'));
+        $this->assertTrue($restriction->isApplicableFor('post-rewrite'));
+    }
 }

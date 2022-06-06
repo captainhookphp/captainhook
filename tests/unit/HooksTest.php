@@ -34,6 +34,28 @@ class HooksTest extends TestCase
     }
 
     /**
+     * Tests Hooks::getNativeHooksForVirtualHook
+     */
+    public function testGetNativeHooksForVirtualHookWithVirtual(): void
+    {
+        $hooks = Hooks::getNativeHooksForVirtualHook(Hooks::POST_CHANGE);
+
+        $this->assertTrue(in_array(Hooks::POST_CHECKOUT, $hooks));
+        $this->assertTrue(in_array(Hooks::POST_MERGE, $hooks));
+        $this->assertTrue(in_array(Hooks::POST_REWRITE, $hooks));
+    }
+
+    /**
+     * Tests Hooks::getNativeHooksForVirtualHook
+     */
+    public function testGetNativeHooksForVirtualHookWithNative(): void
+    {
+        $hooks = Hooks::getNativeHooksForVirtualHook(Hooks::PRE_COMMIT);
+
+        $this->assertTrue(empty($hooks));
+    }
+
+    /**
      * Tests Hooks::getVirtualHook
      */
     public function testGetVirtualHookFail(): void

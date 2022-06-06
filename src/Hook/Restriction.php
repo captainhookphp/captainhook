@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace CaptainHook\App\Hook;
 
+use CaptainHook\App\Hooks;
+
 /**
  * Class PHP
  *
@@ -85,6 +87,10 @@ class Restriction
     {
         if (Util::isValid($hook)) {
             $this->applicableHooks[$hook] = true;
+            // also allow all native hook if a virtual hook is used
+            foreach (Hooks::getNativeHooksForVirtualHook($hook) as $nativeHook) {
+                $this->applicableHooks[$nativeHook] = true;
+            }
         }
     }
 
