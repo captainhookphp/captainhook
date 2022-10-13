@@ -52,15 +52,15 @@
       </p>
       <h3>Placeholders</h3>
       <p>
-        If you where using placeholders in your CLI actions to access the original hook arguments the syntax changed
+        If you were using placeholders in your CLI actions to access the original hook arguments the syntax changed
         from <em>{NAME}</em> to <em>{$NAME}</em> please update your placeholders accordingly.
       </p>
       <h3>Custom vendor directory</h3>
       <p>
         If you are using a custom <em>vendor</em> path in your composer setup the config setting or argument changed
-        from <em>vendor-directory</em> to <em>bootstrap</em>. This is because version 5 is installable as PHAR file
-        and it is possible to run CaptainHook completely without using composer for your project. So the "vendor" naming
-        could be confusing. Further more the setting is now the complete path to the autoloader and not just the directory
+        from <em>vendor-directory</em> to <em>bootstrap</em>. This is because version 5 is installable as PHAR file, 
+        and it is possible to run CaptainHook completely without using composer for your project. So, the "vendor" naming
+        could be confusing. Furthermore the setting is now the complete path to the autoloader and not just the directory
         name anymore. The default bootstrap setting for example is "vendor/autoload.php". It is configured relative to
         the configuration file.
       </p>
