@@ -81,7 +81,7 @@
     Make sure your you commit message complies to the following rules.
   </p>
   <ul>
-    <li>Subject line starts with an upper case character</li>
+    <li>Subject line starts with an upper-case character</li>
     <li>Subject line doesn't exceed 50 characters</li>
     <li>Subject line doesn't end with a period</li>
     <li>Subject line and body are separated by a blank line</li>
@@ -109,7 +109,7 @@
 
   <h4 id="msg-rules">Define rules for your commit messages</h4>
   <p>
-    Use <em>CaptainHooks</em> built in rules, or write <a href="extend.html">your own</a> ones.
+    Use <em>CaptainHooks</em> built in rules or write <a href="extend.html">your own</a> ones.
   </p>
   <pre><code class="javascript">{
   "action": "\CaptainHook\App\Hook\Message\Action\Rules",
@@ -122,7 +122,7 @@
 
   <h4 id="check-lock-file">Composer lock file check</h4>
   <p>
-    Make sure your <em>composer.lock</em> file ist up to date.
+    Make sure your <em>composer.lock</em> file is up to date.
   </p>
   <pre><code class="javascript">{
   "action": "\CaptainHook\App\Hook\Composer\Action\CheckLockFile",
@@ -152,7 +152,7 @@
 
   <h4 id="file-size">Check if files are too big</h4>
   <p>
-    Make sure you do not commit files that are bigger then a configured size limit.<br>
+    Make sure you do not commit files that are bigger than a configured size limit.<br>
     Use 'B', 'K' or 'M' as size indication.
   </p>
   <pre><code class="javascript">{
@@ -181,7 +181,7 @@
   <h4 id="file-not-empty">Check if a file is not empty</h4>
   <p>
     Make sure you do not commit empty files to the repository.
-    With this configuration you can make sure that README files are not commited without any contents.
+    With this configuration you can make sure that README files are not committed without any contents.
   </p>
   <pre><code class="javascript">{
   "action": "\CaptainHook\App\Hook\File\Action\IsNotEmpty",
@@ -258,7 +258,7 @@ Please update your dev tooling</pre>
 
   <h4 id="all-files-changed">All files changed</h4>
   <p>
-    Execute an action only if all of the configured files changed.
+    Execute an action only if all the configured files changed.
   </p>
   <pre><code class="javascript">{
     "action": "my-action",
