@@ -65,9 +65,9 @@
       <h2>Setup</h2>
       <p>
         The next step is to create a configuration file, to define the actions you want to execute for
-        each git hook. You can either use a sample configuration from the documentation, or create one by running
+        each git hook. You can either use a sample configuration from the documentation or create one by running
         the following command. Be aware, that if you changed your composer bin directory or use the PHAR,
-        you have to adjust the path.
+        you must adjust the path.
       </p>
       <pre><code class="bash">$ vendor/bin/captainhook configure</code></pre>
       <p>
@@ -76,7 +76,7 @@
       </p>
       <p>
         After creating the configuration file, there is only one step left to finish the installation.
-        You have to activate the hooks in your local git repository. To do so, just run the following command.
+        You must activate the hooks in your local git repository. To do so, just run the following command.
       </p>
       <pre><code class="bash">$ vendor/bin/captainhook install</code></pre>
       <p>
@@ -98,7 +98,7 @@
       <h2>Using Docker</h2>
       <p>
         If you don't have PHP installed locally or you have installed a different version, you can use Docker to
-        execute CaptainHook. To do so you have to install the hooks a bit differently.
+        execute CaptainHook. To do so you must install the hooks a bit differently.
       </p>
       <pre><code class="bash">$ vendor/bin/captainhook install --run-mode=docker --run-exec="docker exec CONTAINER_NAME"</code></pre>
       <p>
@@ -110,7 +110,7 @@
         <li>docker-compose -f docker/docker-compose.yml run --rm -T MY_SERVICE_NAME</li>
       </ul>
       <p>
-        If you are using the composer plugin or just dont't want to provide the settings via cli option you can
+        If you are using the composer plugin or just don't want to provide the settings via cli option you can
         configure the settings in the "config" section of your <em>captainhook.json</em>.
       </p>
       <pre><code class="javascript">{
