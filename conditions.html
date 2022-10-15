@@ -45,7 +45,7 @@
 
       <h1>Conditions</h1>
 
-      <p>Here's a list of all built-in conditions</p>
+      <p>Here's a list of all built-in conditions:</p>
       <table class="table">
         <tr>
           <th colspan="2">All hooks</th>
@@ -98,8 +98,8 @@
       </table>
 
       <p>
-        You can build your own conditions. You can either use simple scripts or binaries which have to return an exit code.
-        The exit code 0 means the condition applies, any exit code other then 0 means the condition does not apply.
+        You can build your own conditions. You can either use simple scripts or binaries which must return an exit code.
+        The exit code 0 means the condition applies; any exit code other than 0 means the condition does not apply.
       </p>
       <p>
         Or you can build custom PHP <em>Conditions</em>. For an exact guide have a look at the
@@ -205,7 +205,7 @@
 }</code></pre>
 
       <h3 id="logic-and">Logic\LogicAnd</h3>
-      <p>Combining multiple actions. All have to pass to execute the action.</p>
+      <p>Combining multiple actions. All must pass to execute the action.</p>
       <pre><code class="javascript">{
   "conditions": [
     {
