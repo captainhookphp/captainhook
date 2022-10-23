@@ -20,6 +20,7 @@ tools/phpstan
 # Ignore composer libs
 /vendor/
 /composer.lock
+/composer.phar.lock
 
 # Ignore local dev configuration
 /captainhook.json
