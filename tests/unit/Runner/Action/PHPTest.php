@@ -13,6 +13,7 @@ namespace CaptainHook\App\Runner\Action;
 
 use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
+use CaptainHook\App\Event\Dispatcher;
 use CaptainHook\App\Mockery as CHMockery;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -32,11 +33,30 @@ class PHPTest extends TestCase
         $io     = $this->createIOMock();
         $repo   = $this->createRepositoryMock();
         $action = $this->createActionConfigMock();
+        $events = new Dispatcher($io, $config, $repo);
         $class  = DummyPHPSuccess::class;
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
-        $php = new PHP('pre-commit');
+        $php = new PHP('pre-commit', $events);
+        $php->execute($config, $io, $repo, $action);
+    }
+
+    /**
+     * Tests PHP::execute
+     */
+    public function testExecuteEventSubscriber(): void
+    {
+        $config = $this->createConfigMock();
+        $io     = $this->createIOMock();
+        $repo   = $this->createRepositoryMock();
+        $action = $this->createActionConfigMock();
+        $events = new Dispatcher($io, $config, $repo);
+        $class  = DummyPHPSubscriber::class;
+
+        $action->expects($this->once())->method('getAction')->willReturn($class);
+
+        $php = new PHP('pre-commit', $events);
         $php->execute($config, $io, $repo, $action);
     }
 
@@ -49,11 +69,12 @@ class PHPTest extends TestCase
         $io     = $this->createIOMock();
         $repo   = $this->createRepositoryMock();
         $action = $this->createActionConfigMock();
+        $events = new Dispatcher($io, $config, $repo);
         $class  = DummyPHPConstraint::class;
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
-        $php = new PHP('pre-commit');
+        $php = new PHP('pre-commit', $events);
         $php->execute($config, $io, $repo, $action);
     }
 
@@ -66,11 +87,12 @@ class PHPTest extends TestCase
         $io     = $this->createIOMock();
         $repo   = $this->createRepositoryMock();
         $action = $this->createActionConfigMock();
+        $events = new Dispatcher($io, $config, $repo);
         $class  = DummyPHPConstraint::class;
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
-        $php = new PHP('pre-push');
+        $php = new PHP('pre-push', $events);
         $php->execute($config, $io, $repo, $action);
     }
 
@@ -87,11 +109,12 @@ class PHPTest extends TestCase
         $io     = $this->createIOMock();
         $repo   = $this->createRepositoryMock();
         $action = $this->createActionConfigMock();
+        $events = new Dispatcher($io, $config, $repo);
         $class  = DummyPHPFailure::class;
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
-        $php = new PHP('pre-commit');
+        $php = new PHP('pre-commit', $events);
         $php->execute($config, $io, $repo, $action);
     }
 
@@ -108,11 +131,12 @@ class PHPTest extends TestCase
         $io     = $this->createIOMock();
         $repo   = $this->createRepositoryMock();
         $action = $this->createActionConfigMock();
+        $events = new Dispatcher($io, $config, $repo);
         $class  = DummyPHPError::class;
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
-        $php = new PHP('pre-commit');
+        $php = new PHP('pre-commit', $events);
         $php->execute($config, $io, $repo, $action);
     }
 
@@ -129,11 +153,12 @@ class PHPTest extends TestCase
         $io     = $this->createIOMock();
         $repo   = $this->createRepositoryMock();
         $action = $this->createActionConfigMock();
+        $events = new Dispatcher($io, $config, $repo);
         $class  = DummyNoAction::class;
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
-        $php = new PHP('pre-commit');
+        $php = new PHP('pre-commit', $events);
         $php->execute($config, $io, $repo, $action);
     }
 
@@ -150,12 +175,13 @@ class PHPTest extends TestCase
         $io     = $this->createIOMock();
         $repo   = $this->createRepositoryMock();
         $action = $this->createActionConfigMock();
+        $events = new Dispatcher($io, $config, $repo);
 
         $class = '\\Fiz::baz';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
-        $php = new PHP('pre-commit');
+        $php = new PHP('pre-commit', $events);
         $php->execute($config, $io, $repo, $action);
     }
 
@@ -172,12 +198,13 @@ class PHPTest extends TestCase
         $io     = $this->createIOMock();
         $repo   = $this->createRepositoryMock();
         $action = $this->createActionConfigMock();
+        $events = new Dispatcher($io, $config, $repo);
 
         $class = '\\CaptainHook\\App\\Runner\\Action\\DummyNoAction::foo';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
-        $php = new PHP('pre-commit');
+        $php = new PHP('pre-commit', $events);
         $php->execute($config, $io, $repo, $action);
     }
 
@@ -193,12 +220,13 @@ class PHPTest extends TestCase
         $io     = $this->createIOMock();
         $repo   = $this->createRepositoryMock();
         $action = $this->createActionConfigMock();
+        $events = new Dispatcher($io, $config, $repo);
 
         $class = '\\CaptainHook\\App\\Runner\\Action\\DummyPHPSuccess::executeStatic';
 
         $action->expects($this->once())->method('getAction')->willReturn($class);
 
-        $php = new PHP('pre-commit');
+        $php = new PHP('pre-commit', $events);
         $php->execute($config, $io, $repo, $action);
     }
 }
