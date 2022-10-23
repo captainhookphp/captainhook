@@ -140,15 +140,25 @@ abstract class Hook extends RepositoryAware
         $this->beforeHook();
 
         try {
-            $actions = $this->getActionsToExecute($hookConfigs);
-            // are any actions configured
-            if (count($actions) === 0) {
-                $this->io->write(' - no actions to execute', true);
-            } else {
-                $this->executeActions($actions);
-            }
+            $this->runHook($hookConfigs);
         } finally {
             $this->afterHook();
+        }
+    }
+
+    /**
+     * @param  \CaptainHook\App\Config\Hook[] $hookConfigs
+     * @return void
+     * @throws \Exception
+     */
+    protected function runHook(array $hookConfigs): void
+    {
+        $actions = $this->getActionsToExecute($hookConfigs);
+        // are any actions configured
+        if (count($actions) === 0) {
+            $this->io->write(' - no actions to execute');
+        } else {
+            $this->executeActions($actions);
         }
     }
 
