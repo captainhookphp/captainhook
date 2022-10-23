@@ -44,4 +44,21 @@ class CommitMsg extends Hook
 
         parent::beforeHook();
     }
+
+    /**
+     * Makes sure we do not run commit message validation for fixup commits
+     *
+     * @param  \CaptainHook\App\Config\Hook[] $hookConfigs
+     * @return void
+     * @throws \Exception
+     */
+    protected function runHook(array $hookConfigs): void
+    {
+        $msg = $this->repository->getCommitMsg();
+        if ($msg->isFixup()) {
+            $this->io->write(' - no commit message validation for fixup commits: skipping all actions');
+            return;
+        }
+        parent::runHook($hookConfigs);
+    }
 }

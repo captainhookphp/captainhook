@@ -16,6 +16,7 @@ use CaptainHook\App\Console\IO\Mockery as IOMockery;
 use CaptainHook\App\Mockery as CHMockery;
 use Exception;
 use PHPUnit\Framework\TestCase;
+use SebastianFeldmann\Git\CommitMessage as GitCommitMessage;
 use SebastianFeldmann\Git\Operator\Config as ConfigOperator;
 
 class CommitMsgTest extends TestCase
@@ -53,6 +54,38 @@ class CommitMsgTest extends TestCase
         $runner = new CommitMsg($io, $config, $repo);
         $runner->run();
     }
+
+    /**
+     * Tests CommitMsg::run
+     */
+    public function testRunHookSkippedBecauseOfFixup(): void
+    {
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock();
+        $configOp = $this->createMock(ConfigOperator::class);
+        $configOp->expects($this->once())->method('getSafely')->willReturn('#');
+
+        $repo = $this->createRepositoryMock();
+        $repo->expects($this->once())->method('getConfigOperator')->willReturn($configOp);
+        $repo->expects($this->once())->method('getCommitMsg')->willReturn(new GitCommitMessage('fixup! foo', '#'));
+
+        $hookConfig   = $this->createHookConfigMock();
+        $actionConfig = $this->createActionConfigMock();
+        $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
+        $hookConfig->method('isEnabled')->willReturn(true);
+        $hookConfig->method('getActions')->willReturn([$actionConfig]);
+        $config->method('getHookConfig')->willReturn($hookConfig);
+        $io->expects($this->atLeast(1))->method('write');
+        $io->expects($this->once())->method('getArgument')->willReturn(CH_PATH_FILES . '/git/message/valid.txt');
+
+        $runner = new CommitMsg($io, $config, $repo);
+        $runner->run();
+    }
+
 
     /**
      * Tests CommitMsg::run
