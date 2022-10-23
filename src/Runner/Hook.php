@@ -13,13 +13,14 @@ namespace CaptainHook\App\Runner;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
-use CaptainHook\App\Console\IOUtil;
+use CaptainHook\App\Event\Dispatcher;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Constrained;
 use CaptainHook\App\Hooks;
 use CaptainHook\App\Plugin;
 use Exception;
 use RuntimeException;
+use SebastianFeldmann\Git\Repository;
 
 /**
  * Hook
@@ -32,28 +33,41 @@ use RuntimeException;
 abstract class Hook extends RepositoryAware
 {
     /**
-     * Hook that should be handled.
+     * Hook that should be handled
      *
      * @var string
      */
     protected $hook;
 
     /**
-     * Set to `true` to skip processing this hook's actions.
+     * Set to `true` to skip processing this hook's actions
      *
      * @var bool
      */
     private $skipActions = false;
 
     /**
-     * Plugins to apply to this hook.
+     * Event dispatcher
+     *
+     * @var \CaptainHook\App\Event\Dispatcher
+     */
+    protected $dispatcher;
+
+    /**
+     * Plugins to apply to this hook
      *
      * @var array<Plugin\Hook>|null
      */
     private $hookPlugins = null;
 
+    public function __construct(IO $io, Config $config, Repository $repository)
+    {
+        $this->dispatcher = new Dispatcher($io, $config, $repository);
+        parent::__construct($io, $config, $repository);
+    }
+
     /**
-     * Return this hook's name.
+     * Return this hook's name
      *
      * @return string
      */
@@ -192,7 +206,6 @@ abstract class Hook extends RepositoryAware
         if ($shouldSkip !== null) {
             $this->skipActions = $shouldSkip;
         }
-
         return $this->skipActions;
     }
 
@@ -225,10 +238,15 @@ abstract class Hook extends RepositoryAware
      */
     private function executeActions(array $actions): void
     {
-        if ($this->config->failOnFirstError()) {
-            $this->executeFailOnFirstError($actions);
-        } else {
-            $this->executeFailAfterAllActions($actions);
+        try {
+            if ($this->config->failOnFirstError()) {
+                $this->executeFailOnFirstError($actions);
+            } else {
+                $this->executeFailAfterAllActions($actions);
+            }
+        } catch (Exception $e) {
+            $this->dispatcher->dispatch('onHookFailure');
+            throw $e;
         }
     }
 
@@ -329,7 +347,7 @@ abstract class Hook extends RepositoryAware
      */
     private function executePhpAction(Config\Action $action): void
     {
-        $runner = new Action\PHP($this->hook);
+        $runner = new Action\PHP($this->hook, $this->dispatcher);
         $runner->execute($this->config, $this->io, $this->repository, $action);
     }
 

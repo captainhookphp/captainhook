@@ -13,9 +13,12 @@ namespace CaptainHook\App\Runner\Action;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
+use CaptainHook\App\Event\Dispatcher;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Action;
 use CaptainHook\App\Hook\Constrained;
+use CaptainHook\App\Hook\EventSubscriber;
+use Error;
 use Exception;
 use RuntimeException;
 use SebastianFeldmann\Git\Repository;
@@ -38,13 +41,20 @@ class PHP
     private $hook;
 
     /**
+     *
+     * @var \CaptainHook\App\Event\Dispatcher
+     */
+    private $dispatcher;
+
+    /**
      * PHP constructor.
      *
      * @param string $hook Name of the currently executed hook
      */
-    public function __construct(string $hook)
+    public function __construct(string $hook, Dispatcher $dispatcher)
     {
-        $this->hook = $hook;
+        $this->hook       = $hook;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -76,6 +86,11 @@ class PHP
                 return;
             }
 
+            // make sure to collect all event handlers before executing the action
+            if ($exe instanceof EventSubscriber) {
+                $this->dispatcher->subscribeHandlers($class::getEventHandlers($action));
+            }
+
             // no restrictions run it!
             $exe->execute($config, $io, $repository, $action);
         } catch (ActionFailed $e) {
@@ -85,7 +100,7 @@ class PHP
                 'Execution failed: ' . PHP_EOL .
                 $e->getMessage() . ' in ' . $e->getFile() . ' line ' . $e->getLine()
             );
-        } catch (\Error $e) {
+        } catch (Error $e) {
             throw new ActionFailed('PHP Error:' . $e->getMessage() . ' in ' . $e->getFile() . ' line ' . $e->getLine());
         }
     }
@@ -113,7 +128,7 @@ class PHP
     /**
      * Create an action instance
      *
-     * @param  string $class
+     * @param string $class
      * @return \CaptainHook\App\Hook\Action
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
