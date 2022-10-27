@@ -26,7 +26,7 @@ use SebastianFeldmann\Git\Repository;
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
- * @since   Class available since Release 6.0.0
+ * @since   Class available since Release 5.11.0
  */
 class PrepareFromFile implements Action
 {
