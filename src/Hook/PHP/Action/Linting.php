@@ -48,8 +48,8 @@ class Linting implements Action
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
     {
-        $this->php       = !empty($config->getPhpPath()) ? $config->getPhpPath() : 'php';
-        $changedPHPFiles = $repository->getIndexOperator()->getStagedFilesOfType('php');
+        // we have to provide a custom filter because we do not want to check any deleted files
+        $changedPHPFiles  = $repository->getIndexOperator()->getStagedFilesOfType('php', ['A', 'C', 'M']);
         $this->php        = !empty($config->getPhpPath()) ? $config->getPhpPath() : 'php';
         $failedFilesCount = 0;
         $failedFiles      = [];
