@@ -81,7 +81,7 @@ class Linting implements Action
      * @param  string $file
      * @return bool
      */
-    protected function hasSyntaxErrors($file): bool
+    protected function hasSyntaxErrors(string $file): bool
     {
         $process = new Processor();
         $result  = $process->run($this->php . ' -l ' . escapeshellarg($file));
