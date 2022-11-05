@@ -12,7 +12,7 @@ RUN echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/docker-php-ext-x
     && echo "display_errors = On" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini;
 
-COPY --from=composer:2.0.0-RC2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer/composer:2-bin /composer /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 WORKDIR /docker

@@ -21,3 +21,17 @@ services:
     volumes:
       - .:/docker:rw
     tty: true
+
+  php8.1:
+    build: .docker/php8.1
+    container_name: captainhook-php8.1
+    volumes:
+      - .:/docker:rw
+    tty: true
+
+  php8.2:
+    build: .docker/php8.2
+    container_name: captainhook-php8.2
+    volumes:
+      - .:/docker:rw
+    tty: true
