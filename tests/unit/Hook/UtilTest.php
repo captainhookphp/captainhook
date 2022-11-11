@@ -31,6 +31,17 @@ class UtilTest extends TestCase
     }
 
     /**
+     * Tests Util::isInstallable
+     */
+    public function testIsInstallable(): void
+    {
+        $this->assertTrue(Util::isInstallable('pre-commit'));
+        $this->assertTrue(Util::isInstallable('pre-push'));
+        $this->assertTrue(Util::isValid('post-change'));
+        $this->assertFalse(Util::isInstallable('post-change'));
+    }
+
+    /**
      * Tests Util::getValidHooks
      */
     public function testGetValidHooks(): void

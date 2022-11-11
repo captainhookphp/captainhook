@@ -37,6 +37,19 @@ abstract class Util
     }
 
     /**
+     * Answers if a hook is installable
+     *
+     * Only native hooks are installable, virtual hooks used by the Cap'n should not be installed.
+     *
+     * @param  string $hook
+     * @return bool
+     */
+    public static function isInstallable(string $hook): bool
+    {
+        return isset(Hooks::nativeHooks()[$hook]);
+    }
+
+    /**
      * Returns list of valid hooks
      *
      * @return array<string>

@@ -138,7 +138,7 @@ class Installer extends RepositoryAware
      */
     public function setHook(string $hook): Installer
     {
-        if (!empty($hook) && !HookUtil::isValid($hook)) {
+        if (!empty($hook) && !HookUtil::isInstallable($hook)) {
             throw new Exception\InvalidHookName('Invalid hook name \'' . $hook . '\'');
         }
         $this->hookToHandle = $hook;
