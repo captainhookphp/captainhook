@@ -41,9 +41,10 @@ class Options
     /**
      * Return a option value
      *
+     * @template T
      * @param  string $name
-     * @param  mixed  $default
-     * @return mixed
+     * @param  T      $default
+     * @return T
      */
     public function get(string $name, $default = null)
     {
