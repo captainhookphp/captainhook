@@ -150,7 +150,7 @@ class DoesNotContainRegex extends Check
      */
     private function getFileExtensions(Options $options): array
     {
-        $fileExtensions = $options->get('fileExtensions');
+        $fileExtensions = $options->get('fileExtensions', []);
 
         if (!is_array($fileExtensions)) {
             return [];
@@ -167,9 +167,9 @@ class DoesNotContainRegex extends Check
      */
     private function getRegex(Options $options)
     {
-        $regex = $options->get('regex');
+        $regex = $options->get('regex', '');
 
-        if ($regex === null) {
+        if (empty($regex)) {
             throw new ActionFailed('Missing option "regex" for DoesNotContainRegex action');
         }
         return $regex;

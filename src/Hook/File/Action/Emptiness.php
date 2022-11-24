@@ -47,8 +47,8 @@ abstract class Emptiness extends Check
      */
     protected function setUp(Config\Options $options): void
     {
-        $this->filePatterns = $options->get('files');
-        if (!is_array($this->filePatterns)) {
+        $this->filePatterns = $options->get('files', []);
+        if (empty($this->filePatterns)) {
             throw new ActionFailed('Missing option "files" for ' . $this->actionName . ' action');
         }
     }

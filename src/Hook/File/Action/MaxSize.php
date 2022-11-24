@@ -48,7 +48,7 @@ class MaxSize extends Check
 
     protected function setUp(Config\Options $options): void
     {
-        $this->maxBytes = $this->toBytes($options->get('maxSize'));
+        $this->maxBytes = $this->toBytes($options->get('maxSize', ''));
     }
 
     /**

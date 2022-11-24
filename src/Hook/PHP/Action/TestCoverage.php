@@ -82,7 +82,7 @@ class TestCoverage implements Action
      */
     protected function handleOptions(Config\Options $options): void
     {
-        $this->cloverXmlFile = $options->get('cloverXml');
+        $this->cloverXmlFile = $options->get('cloverXml', '');
         $this->phpUnit       = $options->get('phpUnit', 'phpunit');
         $this->minCoverage   = (int) $options->get('minCoverage', 80);
     }
@@ -95,7 +95,7 @@ class TestCoverage implements Action
     protected function getCoverageResolver(): CoverageResolver
     {
         // if clover xml is configured use it to read coverage data
-        if (null !== $this->cloverXmlFile) {
+        if (!empty($this->cloverXmlFile)) {
             return new CoverageResolver\CloverXML($this->cloverXmlFile);
         }
 

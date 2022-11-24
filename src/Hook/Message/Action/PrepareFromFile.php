@@ -44,7 +44,7 @@ class PrepareFromFile implements Action
     {
         $options   = $action->getOptions();
         $cacheFile = $repository->getRoot() . '/' . $options->get('file', '');
-        if (null === $options->get('file')) {
+        if (empty($options->get('file', ''))) {
             throw new ActionFailed('PrepareFromFile requires \'file\' option');
         }
         if (!is_file($cacheFile)) {

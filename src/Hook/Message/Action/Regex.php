@@ -77,7 +77,7 @@ class Regex implements Action, Constrained
      */
     protected function getRegex(Config\Options $options): string
     {
-        $regex = $options->get('regex');
+        $regex = $options->get('regex', '');
         if (empty($regex)) {
             throw new ActionFailed('No regex option');
         }
@@ -92,7 +92,8 @@ class Regex implements Action, Constrained
      */
     protected function getErrorMessage(Config\Options $options): string
     {
-        return $options->get('error') ?? 'Commit message did not match regex: %s';
+        $msg = $options->get('error', '');
+        return !empty($msg) ? $msg : 'Commit message did not match regex: %s';
     }
 
     /**
@@ -103,6 +104,7 @@ class Regex implements Action, Constrained
      */
     protected function getSuccessMessage(Config\Options $options): string
     {
-        return $options->get('success') ?? 'Found matching pattern: %s';
+        $msg = $options->get('success', '');
+        return !empty($msg) ? $msg : 'Found matching pattern: %s';
     }
 }

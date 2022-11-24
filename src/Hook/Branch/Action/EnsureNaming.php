@@ -72,7 +72,7 @@ class EnsureNaming implements Action
      */
     protected function getRegex(Config\Options $options): string
     {
-        $regex = $options->get('regex');
+        $regex = $options->get('regex', '');
         if (empty($regex)) {
             throw new ActionFailed('No regex option');
         }
@@ -87,7 +87,8 @@ class EnsureNaming implements Action
      */
     protected function getErrorMessage(Config\Options $options): string
     {
-        return $options->get('error') ?? '<error>FAIL</error> Branch name does not match regex: %s';
+        $msg = $options->get('error', '');
+        return !empty($msg) ? $msg : '<error>FAIL</error> Branch name does not match regex: %s';
     }
 
     /**
@@ -98,6 +99,7 @@ class EnsureNaming implements Action
      */
     protected function getSuccessMessage(Config\Options $options): string
     {
-        return $options->get('success') ?? '<info>OK</info> Branch name does match regex: %s';
+        $msg = $options->get('success', '');
+        return !empty($msg) ? $msg : '<info>OK</info> Branch name does match regex: %s';
     }
 }

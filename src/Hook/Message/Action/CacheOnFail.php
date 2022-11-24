@@ -56,7 +56,7 @@ class CacheOnFail implements Action, EventSubscriber
     public static function getEventHandlers(Config\Action $action): array
     {
         // make sure the cache file is configured
-        if (null === $action->getOptions()->get('file')) {
+        if (empty($action->getOptions()->get('file', ''))) {
             throw new ActionFailed('CacheOnFail requires \'file\' option');
         }
         return [
