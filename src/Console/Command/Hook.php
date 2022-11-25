@@ -68,6 +68,11 @@ abstract class Hook extends RepositoryAware
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if ($this->shouldHooksBeSkipped()) {
+            $output->writeLn('all hooks were skipped because of the environment variable CAPTAINHOOK_SKIP_HOOKS');
+            return 0;
+        }
+
         $io         = $this->getIO($input, $output);
         $config     = $this->createConfig($input, true, ['git-directory', 'bootstrap']);
         $repository = $this->createRepository(dirname($config->getGitDirectory()));
@@ -133,5 +138,11 @@ abstract class Hook extends RepositoryAware
         $output->writeLn(PHP_EOL . $e->getMessage());
 
         return 1;
+    }
+
+    private function shouldHooksBeSkipped(): bool
+    {
+        $skip = $_SERVER['CAPTAINHOOK_SKIP_HOOKS'] ?? 0;
+        return (int) $skip === 1;
     }
 }

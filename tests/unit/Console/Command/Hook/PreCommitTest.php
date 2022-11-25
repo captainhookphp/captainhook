@@ -47,6 +47,32 @@ class PreCommitTest extends TestCase
      *
      * @throws \Exception
      */
+    public function testExecuteSkip(): void
+    {
+        $repo   = new DummyRepo();
+        $output = new NullOutput();
+        $input  = new ArrayInput(
+            [
+                '--configuration' => CH_PATH_FILES . '/config/valid.json',
+                '--git-directory' => $repo->getGitDir()
+            ]
+        );
+
+        $_SERVER['CAPTAINHOOK_SKIP_HOOKS'] = 1;
+
+        $cmd = new PreCommit(new Resolver());
+        $cmd->run($input, $output);
+
+        $this->assertTrue(true);
+
+        $_SERVER['CAPTAINHOOK_SKIP_HOOKS'] = 0;
+    }
+
+    /**
+     * Tests PreCommit::run
+     *
+     * @throws \Exception
+     */
     public function testExecutePhar(): void
     {
         $resolver = $this->createMock(Resolver::class);
