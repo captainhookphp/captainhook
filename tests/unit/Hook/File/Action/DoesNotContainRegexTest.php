@@ -95,6 +95,31 @@ class DoesNotContainRegexTest extends TestCase
      *
      * @throws \Exception
      */
+    public function testExecuteMissConfiguration(): void
+    {
+        $this->expectException(Exception::class);
+
+        $io     = new NullIO();
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
+        $action = new Config\Action(DoesNotContainRegex::class, [
+            'regex'          => '#foo#',
+            'fileExtensions' => ''
+        ]);
+        $repo   = $this->createRepositoryMock();
+        $repo->method('getIndexOperator')->willReturn(
+            $this->createGitIndexOperator([
+                CH_PATH_FILES . '/storage/regextest1.txt',
+            ])
+        );
+
+        $standard = new DoesNotContainRegex();
+        $standard->execute($config, $io, $repo, $action);
+    }
+    /**
+     * Tests DoesNotContainRegex::execute
+     *
+     * @throws \Exception
+     */
     public function testExecuteFailureWithCount(): void
     {
         $this->expectException(Exception::class);
