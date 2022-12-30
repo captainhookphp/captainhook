@@ -43,9 +43,6 @@ jobs:
       - name: Validate configuration for humbug/box
         run: tools/box validate box.json
 
-      - name: Force install Symfony 3
-        run: COMPOSER=composer.phar.json composer update
-
       - name: Compile phar with humbug/box
         run: tools/box compile
 
