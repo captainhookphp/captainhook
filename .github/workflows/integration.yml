@@ -9,10 +9,13 @@ jobs:
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
-        php: ['7.4', '8.0', '8.1', '8.2']
+        php: ['8.0', '8.1', '8.2']
         buildphar: [true]
         experimental: [false]
         include:
+          - php: 7.4
+            buildphar: false
+            experimental: false
           - php: 7.3
             buildphar: false
             experimental: true
