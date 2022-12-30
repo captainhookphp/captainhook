@@ -59,6 +59,10 @@ jobs:
     - name: Static code analysis
       run: tools/phpstan analyse
 
+    - name: Force install Symfony 5
+      if: ${{ matrix.buildphar }}
+      run: COMPOSER=composer.phar.json composer update
+
     - name: Validate configuration for humbug/box
       if: ${{ matrix.buildphar }}
       run: tools/box validate box.json
