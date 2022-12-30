@@ -4,20 +4,19 @@ on: [push, pull_request]
 
 jobs:
   build:
-    strategy:
-      matrix:
-        php: ['7.4', '8.0', '8.1', '8.2']
-        experimental: [false]
-        composeroptions: ['']
-        buildphar: [true]
-        include:
-          - php: 7.3
-            experimental: true
-            buildphar: false
-
     name: Build captainhook on ${{ matrix.php }}
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      matrix:
+        php: ['7.4', '8.0', '8.1', '8.2']
+        buildphar: [true]
+        experimental: [false]
+        include:
+          - php: 7.3
+            buildphar: false
+            experimental: true
+
     env:
       PHAR: build/phar/captainhook.phar
 
@@ -41,7 +40,7 @@ jobs:
       run: composer validate
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest ${{ matrix.composeroptions }}
+      run: composer install --prefer-dist --no-progress --no-suggest
 
     - name: Install tooling
       run: GITHUB_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }} tools/phive --no-progress --home ./.phive install --force-accept-unsigned --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192,8E730BA25823D8B5,CF1A108D0E7AE720,2DF45277AEF09A2F
