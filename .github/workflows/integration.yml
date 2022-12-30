@@ -6,10 +6,10 @@ jobs:
   build:
     strategy:
       matrix:
-        php: ['7.4', '8.0', '8.1', '8.2']
+        php: ['7.3', '7.4', '8.0', '8.1', '8.2']
         experimental: [false]
         composeroptions: ['']
-        buidphar: [true]
+        buildphar: [true]
         include:
           - php: 7.3
             experimental: true
