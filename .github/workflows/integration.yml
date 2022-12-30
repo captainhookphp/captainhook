@@ -12,7 +12,7 @@ jobs:
         buidphar: [true]
         include:
           - php: 7.3
-            experimental: false
+            experimental: true
             composeroptions:
             buildphar: false
 
