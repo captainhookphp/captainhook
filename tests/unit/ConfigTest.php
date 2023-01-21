@@ -134,6 +134,15 @@ class ConfigTest extends TestCase
     }
 
     /**
+     * Tests Config::getCustomSettings
+     */
+    public function testGetCustomSettings(): void
+    {
+        $config = new Config('foo.json', true, ['custom' => ['foo' => 'foo']]);
+        $this->assertEquals(['foo' => 'foo'], $config->getCustomSettings());
+    }
+
+    /**
      * Tests Config::getRunPath
      */
     public function testGetRunPath(): void

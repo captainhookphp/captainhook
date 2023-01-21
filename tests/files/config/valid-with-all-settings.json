@@ -6,7 +6,10 @@
     "run-mode": "docker",
     "run-exec": "docker exec CONTAINER_NAME",
     "run-path": "/var/www/html",
-    "fail-on-first-error": false
+    "fail-on-first-error": false,
+    "custom": {
+      "foo": "bar"
+    }
   },
   "prepare-commit-msg": {
     "enabled": true,

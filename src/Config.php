@@ -26,6 +26,7 @@ class Config
 {
     public const SETTING_BOOTSTRAP           = 'bootstrap';
     public const SETTING_COLORS              = 'ansi-colors';
+    public const SETTING_CUSTOM              = 'custom';
     public const SETTING_GIT_DIR             = 'git-directory';
     public const SETTING_INCLUDES            = 'includes';
     public const SETTING_INCLUDES_LEVEL      = 'includes-level';
@@ -58,6 +59,13 @@ class Config
     private $settings;
 
     /**
+     * List of users custom settings
+     *
+     * @var array<string, mixed>
+     */
+    private $custom = [];
+
+    /**
      * List of plugins
      *
      * @var array<string, \CaptainHook\App\Config\Plugin>
@@ -80,15 +88,12 @@ class Config
      */
     public function __construct(string $path, bool $fileExists = false, array $settings = [])
     {
-        /* @var array<int, array<string, mixed>> $pluginSettings */
-        $pluginSettings = $settings['plugins'] ?? [];
-        unset($settings['plugins']);
+        $settings = $this->setupPlugins($settings);
+        $settings = $this->setupCustom($settings);
 
         $this->path       = $path;
         $this->fileExists = $fileExists;
         $this->settings   = $settings;
-
-        $this->setupPlugins($pluginSettings);
 
         foreach (Hooks::getValidHooks() as $hook => $value) {
             $this->hooks[$hook] = new Config\Hook($hook);
@@ -96,13 +101,32 @@ class Config
     }
 
     /**
+     * Extract custom settings from Captain Hook ones
+     *
+     * @param  array<string, mixed> $settings
+     * @return array<string, mixed>
+     */
+    private function setupCustom(array $settings): array
+    {
+        /* @var array<string, mixed> $custom */
+        $this->custom = $settings['custom'] ?? [];
+        unset($settings['custom']);
+
+        return $settings;
+    }
+
+    /**
      * Setup all configured plugins
      *
-     * @param  array<int, array<string, mixed>> $pluginSettings
-     * @return void
+     * @param  array<string, mixed> $settings
+     * @return array<string, mixed>
      */
-    private function setupPlugins(array $pluginSettings): void
+    private function setupPlugins(array $settings): array
     {
+        /* @var array<int, array<string, mixed>> $pluginSettings */
+        $pluginSettings = $settings['plugins'] ?? [];
+        unset($settings['plugins']);
+
         foreach ($pluginSettings as $plugin) {
             $name                 = (string) $plugin['plugin'];
             $options              = isset($plugin['options']) && is_array($plugin['options'])
@@ -110,6 +134,7 @@ class Config
                 : [];
             $this->plugins[$name] = new Config\Plugin($name, $options);
         }
+        return $settings;
     }
 
     /**
@@ -221,6 +246,16 @@ class Config
     public function getPhpPath(): string
     {
         return (string) ($this->settings[self::SETTING_PHP_PATH] ?? '');
+    }
+
+    /**
+     * Returns the users custom config values
+     *
+     * @return array<string, mixed>
+     */
+    public function getCustomSettings(): array
+    {
+        return $this->custom;
     }
 
     /**

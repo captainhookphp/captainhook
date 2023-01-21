@@ -38,6 +38,36 @@ class ConfigTest extends TestCase
     /**
      * Tests Config::replacement
      */
+    public function testCustomConfigValue(): void
+    {
+        $repo   = $this->createRepositoryMock();
+        $config = $this->createConfigMock();
+        $config->expects($this->once())->method('getCustomSettings')->willReturn(['foo' => 'bar']);
+
+        $placeholder = new Config($config, $repo);
+        $replace     = $placeholder->replacement(['value-of' => 'custom>>foo']);
+
+        $this->assertEquals('bar', $replace);
+    }
+
+    /**
+     * Tests Config::replacement
+     */
+    public function testCustomConfigValueNotFound(): void
+    {
+        $repo   = $this->createRepositoryMock();
+        $config = $this->createConfigMock();
+        $config->expects($this->once())->method('getCustomSettings')->willReturn(['foo' => 'bar']);
+
+        $placeholder = new Config($config, $repo);
+        $replace     = $placeholder->replacement(['value-of' => 'custom>>bar']);
+
+        $this->assertEquals('', $replace);
+    }
+
+    /**
+     * Tests Config::replacement
+     */
     public function testNoValueOf(): void
     {
         $repo   = $this->createRepositoryMock();
