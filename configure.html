@@ -103,6 +103,7 @@
         You can use placeholders in CLI actions that will get replaced by the Cap'n before execution. This way you can
         access the the original hook arguments and some other neat stuff.
       </p>
+      <h5>Static placeholders</h5>
       <table class="table">
         <tr>
           <th>Placeholder</th>
@@ -159,11 +160,6 @@
           <td>post-merge</td>
           <td>A flag specifying whether or not the merge being done was a squash merge.</td>
         </tr>
-        <tr>
-          <td>{$STAGED_FILES}</td>
-          <td>pre-commit</td>
-          <td>List of files that get committed. You can use it like this {$STAGED_FILES|of-type:php|separated-by:, }.</td>
-        </tr>
       </table>
 
       <pre><code class="javascript">{
@@ -176,6 +172,60 @@
     ]
   }
 }</code></pre>
+
+      <h5>Dynamic placeholders</h5>
+      <p>
+        Dynamic placeholders work like this:
+        <pre>{$ PLACEHOLDER | OPTION : ARGUMENT }</pre>
+      </p>
+      <table class="table">
+        <tr>
+          <th>Placeholder</th>
+          <th>Hook</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>{$CONFIG}</td>
+          <td>*</td>
+          <td>Access config values.</td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <h7>Examples:</h7>
+            <pre>
+{$CONFIG|value-of:git-directory}
+{$CONFIG|value-of:custom>>some-key}</pre>
+          </td>
+        </tr>
+        <tr>
+          <td>{$ENV}</td>
+          <td>*</td>
+          <td>Access environment variables</td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <h7>Examples:</h7>
+            <pre>
+{$ENV|value-of:MY_ENV_VARIABLE}
+{$ENV|value-of:MY_ENV_VARIABLE|default:FALSE}</pre>
+          </td>
+        </tr>
+        <tr>
+          <td>{$STAGED_FILES}</td>
+          <td>pre-commit</td>
+          <td>Gets replaced with a list of staged files</td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <h7>Examples:</h7>
+            <pre>
+{$STAGED_FILES|separated-by: }              // foo/bar/file1 file2.php foo3.php
+{$STAGED_FILES|of-type:php|separated-by:, } // file2.php, foo3.php
+{$STAGED_FILES|in-dir:foo/bar}              // foo/bar/file1
+{$STAGED_FILES|replace:foo|with:bar}        // bar/bar/file1 bar3.php</pre>
+          </td>
+        </tr>
+      </table>
 
 
       <h4>PHP scripts</h4>
@@ -407,6 +457,11 @@
           <td>Path to the PHP executable</td>
           <td>-</td>
         </tr>
+        <tr>
+          <td>custom</td>
+          <td>List of custom settings you need for replacements or custom actions</td>
+          <td>-</td>
+        </tr>
       </table>
 
       <a name="settings-overwrite"></a>
@@ -429,7 +484,10 @@
   "fail-on-first-error": false,
   "run-mode": "docker",
   "run-exec": "docker exec MY_CONTAINER_NAME",
-  "run-path": "vendor/bin/captainhook"
+  "run-path": "vendor/bin/captainhook",
+  "custom": {
+    "some-key": "some value"
+  }
 }</code></pre>
       <p>
         <strong>ATTENTION:</strong> Remember to exclude the file from version control ;)

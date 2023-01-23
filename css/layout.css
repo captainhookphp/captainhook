@@ -23,6 +23,9 @@ body {
   line-height: 40px;
 }
 
+h4 { font-size: 20px; }
+h5 { font-size: 18px; }
+
 /* Custom page footer */
 .footer {
   margin-top: 20px;
