@@ -13,6 +13,7 @@ namespace CaptainHook\App\Runner;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Config\Mockery as ConfigMockery;
+use CaptainHook\App\Console\IO\DefaultIO;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
 use CaptainHook\App\Hook\Restriction;
 use CaptainHook\App\Hooks;
@@ -24,7 +25,10 @@ use CaptainHook\App\Plugin\DummyPlugin;
 use CaptainHook\App\Plugin\DummyHookPlugin;
 use CaptainHook\App\Plugin\DummyHookPluginSkipsActions;
 use Exception;
+use Generator;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Input\StringInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 class HookTest extends TestCase
 {
@@ -261,5 +265,55 @@ class HookTest extends TestCase
         $this->assertSame(3, DummyHookPlugin::$beforeActionCalled);
         $this->assertSame(2, DummyHookPlugin::$afterActionCalled);
         $this->assertSame(1, DummyHookPlugin::$afterHookCalled);
+    }
+
+    /**
+     * @dataProvider allowFailureDataProvider
+     */
+    public function testAllowsFailureIfOptionIsEnabled(
+        Config\Action $action,
+        string $expectedRegexInOutput
+    ): void {
+        $bufferedOutput = new BufferedOutput();
+        $io = new DefaultIO(null, new StringInput(''), $bufferedOutput);
+        $config = new Config('');
+        $config->getHookConfig(Hooks::PRE_COMMIT)->setEnabled(true);
+        $config->getHookConfig(Hooks::PRE_COMMIT)->addAction($action);
+        $config->getHookConfig(Hooks::PRE_COMMIT)->addAction(
+            new Config\Action('echo hello')
+        );
+        $repo = $this->createRepositoryMock();
+        $runner = new class ($io, $config, $repo) extends Hook {
+            protected $hook = Hooks::PRE_COMMIT;
+        };
+
+        $runner->run();
+
+        $output = $bufferedOutput->fetch();
+        $this->assertMatchesRegularExpression($expectedRegexInOutput, $output);
+        $this->assertMatchesRegularExpression('/ - echo hello .*: done/', $output);
+    }
+
+    public function allowFailureDataProvider(): Generator
+    {
+        yield 'actions with allow_failure do not block further actions from being executed' => [
+            new Config\Action(
+                'thisCommandDoesNotExistAndFails',
+                ['allow_failure' => true]
+            ),
+            '/ - thisCommandDoesNotExistAndFails .*: warning \(failed, but allow_failure enabled\)/',
+        ];
+
+        $error = 'This action failed, but that is ok. Just FYI';
+        yield 'shows error message if any is set' => [
+            new Config\Action(
+                'fooBarBaz',
+                [
+                    'allow_failure' => true,
+                    'error' => $error,
+                ]
+            ),
+            '/ - fooBarBaz .*: warning \(failed, but allow_failure enabled\)\n' . $error . '/',
+        ];
     }
 }

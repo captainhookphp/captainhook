@@ -336,10 +336,21 @@ abstract class Hook extends RepositoryAware
             return;
         }
 
+        $allowedToFail = $action->getOptions()->get('allow_failure', false);
+
         try {
             $execMethod = self::getExecMethod(Util::getExecType($action->getAction()));
             $this->{$execMethod}($action);
             $this->io->write('<info>done</info>', true);
+        } catch (ActionFailed $e) {
+            if (!$allowedToFail) {
+                throw $e;
+            }
+            $this->io->write('<error>warning</error> <comment>(failed, but allow_failure enabled)</comment>', true);
+            $errorMessage = (string)$action->getOptions()->get('error', '');
+            if ($errorMessage !== '') {
+                $this->io->write($errorMessage, true);
+            }
         } catch (Exception  $e) {
             $this->io->write('<error>failed</error>', true);
             throw $e;
