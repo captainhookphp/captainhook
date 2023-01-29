@@ -91,6 +91,18 @@ class FactoryTest extends TestCase
      *
      * @throws \Exception
      */
+    public function testCreateWithSettings(): void
+    {
+        $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-conditions.json'));
+
+        $this->assertTrue($config->getHookConfig('pre-commit')->getActions()[0]->isFailureAllowed());
+    }
+
+    /**
+     * Tests Factory::create
+     *
+     * @throws \Exception
+     */
     public function testCreateWithAllSetting(): void
     {
         $path   = realpath(__DIR__ . '/../../files/config/valid-with-all-settings.json');

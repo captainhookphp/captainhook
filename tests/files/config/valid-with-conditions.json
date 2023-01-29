@@ -20,7 +20,10 @@
               ["foo.php", "bar.php"]
             ]
           }
-        ]
+        ],
+        "config": {
+          "allow-failure": true
+        }
       }
     ]
   },

@@ -1,6 +1,7 @@
 {
     "config": {
         "verbosity": "normal",
+        "allow-failure": false,
         "ansi-colors": true,
         "git-directory": ".git",
         "includes": [],
@@ -25,7 +26,10 @@
             },
             {
                 "action": "\\CaptainHook\\App\\Hook\\PHP\\Action\\TestCoverage",
-                "options": []
+                "options": [],
+                "config": {
+                    "allow-failure": true
+                }
             },
             {
                 "action": "\\CaptainHook\\App\\Hook\\Composer\\Action\\CheckLockFile",

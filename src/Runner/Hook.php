@@ -342,7 +342,9 @@ abstract class Hook extends RepositoryAware
             $this->io->write('<info>done</info>', true);
         } catch (Exception  $e) {
             $this->io->write('<error>failed</error>', true);
-            throw $e;
+            if (!$action->isFailureAllowed($this->config->isFailureAllowed())) {
+                throw $e;
+            }
         }
 
         $this->afterAction($action);

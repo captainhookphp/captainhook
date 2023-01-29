@@ -24,6 +24,7 @@ use SebastianFeldmann\Camino\Check;
  */
 class Config
 {
+    public const SETTING_ALLOW_FAILURE       = 'allow-failure';
     public const SETTING_BOOTSTRAP           = 'bootstrap';
     public const SETTING_COLORS              = 'ansi-colors';
     public const SETTING_CUSTOM              = 'custom';
@@ -145,6 +146,16 @@ class Config
     public function isLoadedFromFile(): bool
     {
         return $this->fileExists;
+    }
+
+    /**
+     * Are actions allowed to fail without stopping the git operation
+     *
+     * @return bool
+     */
+    public function isFailureAllowed(): bool
+    {
+        return (bool) ($this->settings[self::SETTING_ALLOW_FAILURE] ?? false);
     }
 
     /**

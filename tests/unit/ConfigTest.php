@@ -89,6 +89,27 @@ class ConfigTest extends TestCase
     }
 
     /**
+     * Tests Config::isFailureAllowed
+     */
+    public function testIsFailureAllowedDefault(): void
+    {
+        $path   = realpath(__DIR__ . '/../files/config/valid.json');
+        $config = new Config($path, true);
+
+        $this->assertFalse($config->isFailureAllowed());
+    }
+
+    /**
+     * Tests Config::isFailureAllowed
+     */
+    public function testIsFailureAllowedSet(): void
+    {
+        $path   = realpath(__DIR__ . '/../files/config/valid.json');
+        $config = new Config($path, true, ['allow-failure' => true]);
+
+        $this->assertTrue($config->isFailureAllowed());
+    }
+    /**
      * Tests Config::useAnsiColors
      */
     public function testAnsiColorsEnabledByDefault(): void

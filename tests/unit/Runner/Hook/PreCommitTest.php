@@ -11,6 +11,7 @@
 
 namespace CaptainHook\App\Runner\Hook;
 
+use CaptainHook\App\Config\Action;
 use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
 use CaptainHook\App\Exception\ActionFailed;
@@ -88,6 +89,82 @@ class PreCommitTest extends TestCase
         $hookConfig->expects($this->once())
                    ->method('getActions')
                    ->willReturn([$actionConfigFail, $actionConfigSuccess]);
+
+        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $io->expects($this->atLeast(1))->method('write');
+
+        $runner = new PreCommit($io, $config, $repo);
+        $runner->run();
+    }
+
+    /**
+     * Tests PreCommit::run
+     */
+    public function testRunHookDontFailEvenOnExceptions(): void
+    {
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+        $config              = $this->createConfigMock();
+        $config->expects($this->once())->method('isFailureAllowed')->willReturn(false);
+
+        $io                  = $this->createIOMock();
+        $repo                = $this->createRepositoryMock();
+        $hookConfig          = $this->createHookConfigMock();
+        $actionConfigSuccess = $this->createActionConfigMock();
+
+        // every action has to get executed
+        $actionConfigSuccess->expects($this->atLeastOnce())
+                            ->method('getAction')
+                            ->willReturn(CH_PATH_FILES . '/bin/success');
+
+        // so even if the first actions fails this action has to get executed
+        $actionConfigFail = new Action(CH_PATH_FILES . '/bin/failure', [], [], ['allow-failure' => true]);
+
+        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->once())
+                   ->method('getActions')
+                   ->willReturn([$actionConfigFail, $actionConfigSuccess]);
+
+        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $io->expects($this->atLeast(1))->method('write');
+
+        $runner = new PreCommit($io, $config, $repo);
+        $runner->run();
+    }
+
+
+    /**
+     * Tests PreCommit::run
+     *
+     * @throws \Exception
+     */
+    public function testRunHookAllowFailureGlobally(): void
+    {
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->markTestSkipped('not tested on windows');
+        }
+        // we have to create a config that does not fail even if errors occur
+        $config              = $this->createConfigMock();
+        $config->expects($this->once())->method('isFailureAllowed')->willReturn(true);
+
+        $io                  = $this->createIOMock();
+        $repo                = $this->createRepositoryMock();
+        $hookConfig          = $this->createHookConfigMock();
+        $actionConfigSuccess = $this->createActionConfigMock();
+
+        // every action has to get executed
+        $actionConfigSuccess->expects($this->atLeastOnce())
+            ->method('getAction')
+            ->willReturn(CH_PATH_FILES . '/bin/success');
+
+        // so even if the first actions fails this action has to get executed
+        $actionConfigFail = new Action(CH_PATH_FILES . '/bin/failure');
+
+        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
+        $hookConfig->expects($this->once())
+            ->method('getActions')
+            ->willReturn([$actionConfigFail, $actionConfigSuccess]);
 
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $io->expects($this->atLeast(1))->method('write');

@@ -11,6 +11,8 @@
 
 namespace CaptainHook\App\Config;
 
+use CaptainHook\App\Config;
+
 /**
  * Class Action
  *
@@ -22,7 +24,7 @@ namespace CaptainHook\App\Config;
 class Action
 {
     /**
-     * Action phpc lass or cli script
+     * Action php class, php static method, or cli script
      *
      * @var string
      */
@@ -43,18 +45,35 @@ class Action
     private $conditions = [];
 
     /**
+     * Action settings
+     *
+     * @var array<string, mixed>
+     */
+    private $settings = [];
+
+    /**
+     * List of available settings
+     *
+     * @var string[]
+     */
+    private static $availableSettings = [
+        Config::SETTING_ALLOW_FAILURE
+    ];
+
+    /**
      * Action constructor
      *
-     * @param  string               $action
-     * @param  array<string, mixed> $options
-     * @param  array<string, mixed> $conditions
-     * @throws \Exception
+     * @param string               $action
+     * @param array<string, mixed> $options
+     * @param array<string, mixed> $conditions
+     * @param array<string, mixed> $settings
      */
-    public function __construct(string $action, array $options = [], array $conditions = [])
+    public function __construct(string $action, array $options = [], array $conditions = [], array $settings = [])
     {
         $this->action = $action;
         $this->setupOptions($options);
         $this->setupConditions($conditions);
+        $this->setupSettings($settings);
     }
 
     /**
@@ -77,6 +96,32 @@ class Action
         foreach ($conditions as $condition) {
             $this->conditions[] = new Condition($condition['exec'], $condition['args'] ?? []);
         }
+    }
+
+    /**
+     * Setting up the action settings
+     *
+     * @param array<string, mixed> $settings
+     * @return void
+     */
+    private function setupSettings(array $settings): void
+    {
+        foreach (self::$availableSettings as $setting) {
+            if (isset($settings[$setting])) {
+                $this->settings[Config::SETTING_ALLOW_FAILURE] = $settings[$setting];
+            }
+        }
+    }
+
+    /**
+     * Indicates if the action can fail without stopping the git operation
+     *
+     * @param  bool $default
+     * @return bool
+     */
+    public function isFailureAllowed(bool $default = false): bool
+    {
+        return (bool) ($this->settings[Config::SETTING_ALLOW_FAILURE] ?? $default);
     }
 
     /**
@@ -116,11 +161,21 @@ class Action
      */
     public function getJsonData(): array
     {
-        return [
-            'action'     => $this->action,
-            'options'    => $this->options->getAll(),
-            'conditions' => $this->getConditionJsonData()
+        $data = [
+            'action'  => $this->action,
+            'options' => $this->options->getAll(),
         ];
+
+        $conditions = $this->getConditionJsonData();
+        if (!empty($conditions)) {
+            $data['conditions'] = $conditions;
+        }
+
+        if (!empty($this->settings)) {
+            $data['settings'] = $this->settings;
+        }
+
+        return $data;
     }
 
     /**

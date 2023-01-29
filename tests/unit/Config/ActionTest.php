@@ -16,6 +16,43 @@ use PHPUnit\Framework\TestCase;
 class ActionTest extends TestCase
 {
     /**
+     * Tests Action::getJsonData
+     */
+    public function testAllowFailure(): void
+    {
+        $action = new Action('\\Foo\\Bar', [], [], ['allow-failure' => true]);
+        $this->assertTrue($action->isFailureAllowed());
+    }
+
+    /**
+     * Tests Action::getJsonData
+     */
+    public function testFailureNotAllowedByDefault(): void
+    {
+        // nothing configured so should not be allowed
+        $action = new Action('\\Foo\\Bar', [], [], []);
+        $this->assertFalse($action->isFailureAllowed());
+    }
+
+    /**
+     * Tests Action::getJsonData
+     */
+    public function testFailureAllowedByDefault(): void
+    {
+        $action = new Action('\\Foo\\Bar');
+        $this->assertTrue($action->isFailureAllowed(true));
+    }
+
+    /**
+     * Tests Action::getJsonData
+     */
+    public function testFailureExcplitlyNotAllowed(): void
+    {
+        $action = new Action('\\Foo\\Bar', [], [], ['allow-failure' => false]);
+        $this->assertFalse($action->isFailureAllowed(true));
+    }
+
+    /**
      * Tests Action::getAction
      */
     public function testGetAction(): void
@@ -78,5 +115,16 @@ class ActionTest extends TestCase
         $action = new Action('\\Foo\\Bar', [], $conditions);
 
         $this->assertCount(2, $action->getConditions());
+    }
+
+    /**
+     * Tests Action::getJsonData
+     */
+    public function testSettings(): void
+    {
+        $action = new Action('\\Foo\\Bar', [], [], ['allow-failure' => true]);
+        $config = $action->getJsonData();
+
+        $this->assertCount(1, $config['settings']);
     }
 }

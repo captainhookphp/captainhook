@@ -159,7 +159,7 @@ final class Factory
     }
 
     /**
-     * Setup a hook configuration by json data
+     * Set up a hook configuration by json data
      *
      * @param  \CaptainHook\App\Config\Hook $config
      * @param  array<string, mixed>         $json
@@ -176,7 +176,10 @@ final class Factory
             $conditions = isset($actionJson['conditions']) && is_array($actionJson['conditions'])
                         ? $actionJson['conditions']
                         : [];
-            $config->addAction(new Config\Action($actionJson['action'], $options, $conditions));
+            $settings   = isset($actionJson['config']) && is_array($actionJson['config'])
+                        ? $actionJson['config']
+                        : [];
+            $config->addAction(new Config\Action($actionJson['action'], $options, $conditions, $settings));
         }
     }
 
