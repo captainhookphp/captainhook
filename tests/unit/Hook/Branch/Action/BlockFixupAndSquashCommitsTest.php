@@ -15,6 +15,8 @@ use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Config\Options;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
 use CaptainHook\App\Mockery as AppMockery;
+use DateTimeImmutable;
+use Exception;
 use PHPUnit\Framework\TestCase;
 use SebastianFeldmann\Git\Log\Commit;
 
@@ -58,9 +60,30 @@ class BlockFixupAndSquashCommitsTest extends TestCase
     /**
      * Tests BlockFixupAndSquashCommits::execute
      */
+    public function testExecuteSuccessWithNoChangesFromLocalAndRemote(): void
+    {
+        $input    = ['refs/tags/5.14.2 4d89c05 refs/tags/5.14.2 0000000000000000000000000000000000000000'];
+        $io       = $this->createIOMock();
+        $repo     = $this->createRepositoryMock();
+        $config   = $this->createConfigMock();
+        $action   = $this->createActionConfigMock();
+        $operator = $this->createGitLogOperator();
+        $action->expects($this->once())->method('getOptions')->willReturn(new Options([]));
+        $io->expects($this->once())->method('getStandardInput')->willReturn($input);
+        $operator->method('getCommitsBetween')->willReturn($this->getFakeCommits());
+        $repo->method('getLogOperator')->willReturn($operator);
+
+        $blocker = new BlockFixupAndSquashCommits();
+        $blocker->execute($config, $io, $repo, $action);
+
+        $this->assertTrue(true);
+    }
+    /**
+     * Tests BlockFixupAndSquashCommits::execute
+     */
     public function testExecuteBlockFixup(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $input    = ['refs/heads/main 12345 refs/heads/main 98765'];
         $io       = $this->createIOMock();
@@ -82,7 +105,7 @@ class BlockFixupAndSquashCommitsTest extends TestCase
      */
     public function testExecuteBlockSquash(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $input    = ['refs/heads/main 12345 refs/heads/main 98765'];
         $io       = $this->createIOMock();
@@ -124,8 +147,8 @@ class BlockFixupAndSquashCommitsTest extends TestCase
     private function getFakeCommits(string $subject = ''): array
     {
         return [
-            new Commit('12345', [], 'Test commit #1', '', new \DateTimeImmutable(), ''),
-            new Commit('98765', [], $subject, '', new \DateTimeImmutable(), ''),
+            new Commit('12345', [], 'Test commit #1', '', new DateTimeImmutable(), ''),
+            new Commit('98765', [], $subject, '', new DateTimeImmutable(), ''),
         ];
     }
 }
