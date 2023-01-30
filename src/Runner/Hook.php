@@ -54,6 +54,13 @@ abstract class Hook extends RepositoryAware
     protected $dispatcher;
 
     /**
+     * List of error messages to display after all action have finished
+     *
+     * @var array<\Exception>
+     */
+    protected $errors = [];
+
+    /**
      * Plugins to apply to this hook
      *
      * @var array<Plugin\Hook>|null
@@ -254,6 +261,7 @@ abstract class Hook extends RepositoryAware
             } else {
                 $this->executeFailAfterAllActions($actions);
             }
+            $this->io->write($this->formatCollectedErrors());
         } catch (Exception $e) {
             $this->dispatcher->dispatch('onHookFailure');
             throw $e;
@@ -284,13 +292,12 @@ abstract class Hook extends RepositoryAware
     private function executeFailAfterAllActions(array $actions): void
     {
         $failedActions = 0;
-        $errors        = '';
 
         foreach ($actions as $action) {
             try {
                 $this->handleAction($action);
             } catch (Exception $exception) {
-                $errors .= $exception->getMessage() . PHP_EOL . PHP_EOL;
+                $this->errors[] = $exception;
                 $failedActions++;
             }
         }
@@ -299,7 +306,7 @@ abstract class Hook extends RepositoryAware
             throw new ActionFailed(
                 '<error>' . $failedActions . ' action' . ($failedActions > 1 ? 's' : '') . ' failed</error>'
                 . PHP_EOL
-                . PHP_EOL . $errors
+                . $this->formatCollectedErrors()
             );
         }
     }
@@ -345,6 +352,7 @@ abstract class Hook extends RepositoryAware
             if (!$action->isFailureAllowed($this->config->isFailureAllowed())) {
                 throw $e;
             }
+            $this->errors[] = $e;
         }
 
         $this->afterAction($action);
@@ -501,5 +509,17 @@ abstract class Hook extends RepositoryAware
             $this->io->write('<info>- Running ' . get_class($plugin) . '::' . $method . '</info>', true, IO::DEBUG);
             $plugin->{$method}(...$params);
         }
+    }
+
+    /**
+     * Displays all collected errors
+     */
+    private function formatCollectedErrors(): string
+    {
+        $errorMessage = '';
+        foreach ($this->errors as $e) {
+            $errorMessage .= PHP_EOL . $e->getMessage() . PHP_EOL;
+        }
+        return $errorMessage;
     }
 }
