@@ -172,7 +172,7 @@ class Action
         }
 
         if (!empty($this->settings)) {
-            $data['settings'] = $this->settings;
+            $data['config'] = $this->settings;
         }
 
         return $data;

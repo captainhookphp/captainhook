@@ -125,6 +125,6 @@ class ActionTest extends TestCase
         $action = new Action('\\Foo\\Bar', [], [], ['allow-failure' => true]);
         $config = $action->getJsonData();
 
-        $this->assertCount(1, $config['settings']);
+        $this->assertCount(1, $config['config']);
     }
 }
