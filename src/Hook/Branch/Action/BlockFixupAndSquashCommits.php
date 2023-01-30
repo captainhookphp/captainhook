@@ -81,6 +81,7 @@ class BlockFixupAndSquashCommits implements Action
     {
         $stdInput = $io->getStandardInput();
         $pushInfo = $stdInput[0] ?? null;
+
         if (empty($pushInfo)) {
             return;
         }
@@ -89,6 +90,12 @@ class BlockFixupAndSquashCommits implements Action
 
         // detect local and remote hashes to check everything in between
         [$localRef, $localHash, $remoteRef, $remoteHash] = explode(' ', $pushInfo);
+
+        // if remote hash is "0000000000000000000000000000000000000000"
+        if (preg_match('/^0+$/', $remoteHash)) {
+            return;
+        }
+
         $commits = $this->getInvalidCommits($repository, trim($remoteHash), trim($localHash));
 
         // no commits to block just exit
