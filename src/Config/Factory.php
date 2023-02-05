@@ -144,6 +144,7 @@ final class Factory
             }
         }
 
+        $this->validatePhpPath($config);
         return $config;
     }
 
@@ -180,6 +181,22 @@ final class Factory
                         ? $actionJson['config']
                         : [];
             $config->addAction(new Config\Action($actionJson['action'], $options, $conditions, $settings));
+        }
+    }
+
+    /**
+     * Makes sure the configured PHP executable exists
+     *
+     * @param  \CaptainHook\App\Config $config
+     * @return void
+     */
+    private function validatePhpPath(Config $config): void
+    {
+        if (empty($config->getPhpPath())) {
+            return;
+        }
+        if (!file_exists($config->getPhpPath())) {
+            throw new RuntimeException('The configured php-path is wrong: ' . $config->getPhpPath());
         }
     }
 

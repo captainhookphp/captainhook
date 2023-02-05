@@ -63,6 +63,21 @@ class FactoryTest extends TestCase
      *
      * @throws \Exception
      */
+    public function testCreateWithInvalidPhpPath(): void
+    {
+        $this->expectException(Exception::class);
+
+        Factory::create(
+            realpath(__DIR__ . '/../../files/config/valid.json'),
+            ['php-path' => '/foo/bar/baz']
+        );
+    }
+
+    /**
+     * Tests Factory::create
+     *
+     * @throws \Exception
+     */
     public function testCreateWithRelativeGitDir(): void
     {
         $path   = realpath(__DIR__ . '/../../files/config/valid.json');
