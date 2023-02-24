@@ -29,7 +29,7 @@ use SebastianFeldmann\Git\Repository;
 class All extends FileStaged
 {
     /**
-     * Check if all of the configured files is staged for commit
+     * Check if all the configured files are staged for commit
      *
      * @param  \CaptainHook\App\Console\IO       $io
      * @param  \SebastianFeldmann\Git\Repository $repository
