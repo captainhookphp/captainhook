@@ -36,6 +36,12 @@ class DefaultIO extends Base
      *
      * @var resource
      */
+    private $stdInStream;
+
+    /**
+     * Contents of the STDIN
+     * @var array<string>
+     */
     private $stdIn;
 
     /**
@@ -68,8 +74,8 @@ class DefaultIO extends Base
      */
     public function __construct($stdIn, InputInterface $input, OutputInterface $output, HelperSet $helperSet = null)
     {
-        $this->stdIn        = $stdIn;
-        $this->input        = $input;
+        $this->stdInStream = $stdIn;
+        $this->input       = $input;
         $this->output       = $output;
         $this->helperSet    = $helperSet;
         $this->verbosityMap = [
@@ -110,12 +116,13 @@ class DefaultIO extends Base
      */
     public function getStandardInput(): array
     {
-        $iterator = new StandardInput($this->stdIn);
-        $stdIn    = [];
-        foreach ($iterator as $line) {
-            $stdIn[] = $line;
+        if (empty($this->stdIn)) {
+            $iterator = new StandardInput($this->stdInStream);
+            foreach ($iterator as $line) {
+                $this->stdIn[] = $line;
+            }
         }
-        return $stdIn;
+        return $this->stdIn;
     }
 
     /**
