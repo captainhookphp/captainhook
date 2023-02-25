@@ -15,6 +15,7 @@ use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Action;
+use CaptainHook\App\Hook\Input;
 use CaptainHook\App\Hook\Restriction;
 use CaptainHook\App\Hooks;
 use SebastianFeldmann\Git\Repository;
@@ -79,28 +80,23 @@ class BlockFixupAndSquashCommits implements Action
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
     {
-        $stdInput = $io->getStandardInput();
-        $pushInfo = $stdInput[0] ?? null;
+        $refsToPush = Input\PrePush::createFromStdIn($io->getStandardInput());
 
-        if (empty($pushInfo)) {
+        if (empty($refsToPush->all())) {
             return;
         }
 
         $this->handleOptions($action->getOptions());
 
-        // detect local and remote hashes to check everything in between
-        [$localRef, $localHash, $remoteRef, $remoteHash] = explode(' ', $pushInfo);
+        foreach ($refsToPush->all() as $ref) {
+            if ($ref->remote()->isZeroHash()) {
+                continue;
+            }
+            $commits = $this->getInvalidCommits($repository, $ref->remote()->hash(), $ref->local()->hash());
 
-        // if remote hash is "0000000000000000000000000000000000000000"
-        if (preg_match('/^0+$/', $remoteHash)) {
-            return;
-        }
-
-        $commits = $this->getInvalidCommits($repository, trim($remoteHash), trim($localHash));
-
-        // no commits to block just exit
-        if (count($commits) > 0) {
-            $this->handleFailure($commits);
+            if (count($commits) > 0) {
+                $this->handleFailure($commits, $ref->remote()->branch());
+            }
         }
     }
 
@@ -141,21 +137,22 @@ class BlockFixupAndSquashCommits implements Action
     }
 
     /**
-     * Format the error message and throw the exception
+     * Generate a helpful error message and throw the exception
      *
      * @param  \SebastianFeldmann\Git\Log\Commit[] $commits
+     * @param  string                              $branch
      * @return void
      * @throws \CaptainHook\App\Exception\ActionFailed
      */
-    private function handleFailure(array $commits): void
+    private function handleFailure(array $commits, string $branch): void
     {
-        // generate some helpful output
         $out = [];
         foreach ($commits as $commit) {
             $out[] = ' - ' . $commit->getHash() . ' ' . $commit->getSubject();
         }
         throw new ActionFailed(
             'You are prohibited to push the following commits:' . PHP_EOL
+            . ' --[ ' . $branch . ' ]-- ' . PHP_EOL
             . PHP_EOL
             . implode(PHP_EOL, $out)
         );
