@@ -67,7 +67,7 @@ abstract class FileChanged extends File
      * Use 'diff-tree' to find the changed files after this merge or checkout
      *
      * In case of a checkout it is easy because the arguments 'previousHead' and 'newHead' exist.
-     * In case of a merge determining this hashes is more difficult so we are using the 'ref-log'
+     * In case of a merge determining this hashes is more difficult, so we are using the 'ref-log'
      * to do it and using 'HEAD@{1}' as the last position before the merge and 'HEAD' as the
      * current position after the merge.
      *
