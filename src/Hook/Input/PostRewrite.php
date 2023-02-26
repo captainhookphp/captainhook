@@ -47,7 +47,7 @@ class PostRewrite implements Range\Detecting
         $ranges = [];
         foreach ($stdIn as $line) {
             if (!empty($line)) {
-                $parts    = explode(' ', $line);
+                $parts    = explode(' ', trim($line));
                 $from     = new Ref\Generic(!empty($parts[1]) ? $parts[1] . '^' : 'HEAD@{1}');
                 $to       = new Ref\Generic('HEAD');
                 $ranges[] = new Range\Generic($from, $to);

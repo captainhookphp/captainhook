@@ -52,7 +52,7 @@ class PrePush implements Detecting
                 continue;
             }
 
-            [$localRef, $localHash, $remoteRef, $remoteHash] = explode(' ', $line);
+            [$localRef, $localHash, $remoteRef, $remoteHash] = explode(' ', trim($line));
 
             if (Util::isZeroHash($remoteHash)) {
                 continue;
