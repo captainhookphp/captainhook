@@ -35,7 +35,7 @@ class OfTypeTest extends TestCase
     public function testIsTrue(): void
     {
         $io = $this->createIOMock();
-        $io->method('getArgument')->willReturn('');
+        $io->method('getArgument')->willReturn('hook:pre-push');
         $io->expects($this->atLeastOnce())
            ->method('getStandardInput')
            ->willReturn(
@@ -60,7 +60,7 @@ class OfTypeTest extends TestCase
     public function testIsZeroHash(): void
     {
         $io = $this->createIOMock();
-        $io->method('getArgument')->willReturn('');
+        $io->method('getArgument')->willReturn('hook:pre-push');
         $io->expects($this->atLeastOnce())
             ->method('getStandardInput')
             ->willReturn(
@@ -82,7 +82,7 @@ class OfTypeTest extends TestCase
     public function testIsFalse(): void
     {
         $io = $this->createIOMock();
-        $io->method('getArgument')->willReturn('');
+        $io->method('getArgument')->willReturn('hook:pre-push');
         $io->expects($this->atLeastOnce())
             ->method('getStandardInput')
             ->willReturn(

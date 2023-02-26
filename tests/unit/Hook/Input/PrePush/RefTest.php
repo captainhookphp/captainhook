@@ -34,5 +34,6 @@ class RefTest extends TestCase
         $this->assertEquals('refs/heads/main', $ref->head());
         $this->assertEquals('12345', $ref->hash());
         $this->assertEquals('main', $ref->branch());
+        $this->assertEquals('12345', $ref->id());
     }
 }

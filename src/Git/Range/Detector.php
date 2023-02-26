@@ -43,7 +43,9 @@ class Detector
      */
     public static function getRanges(IO $io): array
     {
-        $command  = $io->getArgument('command');
+        $command = $io->getArgument('command');
+
+        /** @var \CaptainHook\App\Git\Range\Detecting $class */
         $class    = self::$detectors[$command] ?? '\\CaptainHook\\App\\Git\\Range\\Detector\\Fallback';
         $detector = new $class();
 

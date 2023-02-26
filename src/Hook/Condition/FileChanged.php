@@ -12,6 +12,7 @@
 namespace CaptainHook\App\Hook\Condition;
 
 use CaptainHook\App\Console\IO;
+use CaptainHook\App\Git\Range\Detector;
 use CaptainHook\App\Hook\Restriction;
 use CaptainHook\App\Hook\Util;
 use CaptainHook\App\Hooks;
@@ -77,9 +78,9 @@ abstract class FileChanged extends File
      */
     protected function getChangedFiles(IO $io, Repository $repository): array
     {
-
-        $oldHash = Util::findPreviousHead($io);
-        $newHash = $io->getArgument('newHead', 'HEAD');
+        $ranges  = Detector::getRanges($io);
+        $oldHash = isset($ranges[0]) ? $ranges[0]->from()->id() : 'HEAD@{1}';
+        $newHash = isset($ranges[0]) ? $ranges[0]->to()->id() : 'HEAD';
 
         return $repository->getDiffOperator()->getChangedFiles($oldHash, $newHash);
     }

@@ -12,10 +12,12 @@
 namespace CaptainHook\App\Hook\Condition\FileChanged;
 
 use CaptainHook\App\Console\IO;
+use CaptainHook\App\Git;
 use CaptainHook\App\Hook\Condition;
 use CaptainHook\App\Hook\Constrained;
 use CaptainHook\App\Hook\Input;
 use CaptainHook\App\Hook\Restriction;
+use CaptainHook\App\Hook\Util;
 use CaptainHook\App\Hooks;
 use SebastianFeldmann\Git\Repository;
 
@@ -63,7 +65,7 @@ class OfType implements Condition, Constrained
      */
     public static function getRestriction(): Restriction
     {
-        return Restriction::fromArray([Hooks::PRE_PUSH]);
+        return Restriction::fromArray([Hooks::PRE_PUSH, Hooks::POST_CHECKOUT, Hooks::POST_MERGE, Hooks::POST_REWRITE]);
     }
 
     /**
@@ -75,22 +77,16 @@ class OfType implements Condition, Constrained
      */
     public function isTrue(IO $io, Repository $repository): bool
     {
-        $refsToPush = Input\PrePush::createFromStdIn($io->getStandardInput());
-
-        foreach ($refsToPush->all() as $ref) {
-            if ($ref->remote()->isZeroHash()) {
-                continue;
-            }
+        foreach (Git\Range\Detector::getRanges($io) as $range) {
             $files = $repository->getDiffOperator()->getChangedFilesOfType(
-                $ref->remote()->hash(),
-                $ref->local()->hash(),
+                $range->from()->id(),
+                $range->to()->id(),
                 $this->suffix
             );
             if (count($files) > 0) {
                 return true;
             }
         }
-
         return false;
     }
 }

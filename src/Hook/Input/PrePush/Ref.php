@@ -19,7 +19,7 @@ namespace CaptainHook\App\Hook\Input\PrePush;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.15.0
  */
-class Ref
+class Ref implements \CaptainHook\App\Git\Ref
 {
     /**
      * Head path - refs/heads/main
@@ -87,12 +87,14 @@ class Ref
     }
 
     /**
-     * Indicates if commit hash is a zero commit (0000000000000000000000000000000000000000)
+     * Returns the ref id that can be used in a git command
      *
-     * @return bool
+     * This can be completely different thing hash, branch name, ref-log position...
+     *
+     * @return string
      */
-    public function isZeroHash(): bool
+    public function id(): string
     {
-        return (bool) preg_match('/^0+$/', $this->hash);
+        return  $this->hash;
     }
 }

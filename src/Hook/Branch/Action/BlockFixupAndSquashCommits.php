@@ -80,22 +80,20 @@ class BlockFixupAndSquashCommits implements Action
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
     {
-        $refsToPush = Input\PrePush::createFromStdIn($io->getStandardInput());
+        $refDetector = new Input\PrePush();
+        $refsToPush  = $refDetector->getRanges($io);
 
-        if (empty($refsToPush->all())) {
+        if (empty($refsToPush)) {
             return;
         }
 
         $this->handleOptions($action->getOptions());
 
-        foreach ($refsToPush->all() as $ref) {
-            if ($ref->remote()->isZeroHash()) {
-                continue;
-            }
-            $commits = $this->getInvalidCommits($repository, $ref->remote()->hash(), $ref->local()->hash());
+        foreach ($refsToPush as $range) {
+            $commits = $this->getInvalidCommits($repository, $range->from()->id(), $range->to()->id());
 
             if (count($commits) > 0) {
-                $this->handleFailure($commits, $ref->remote()->branch());
+                $this->handleFailure($commits, $range->from()->branch());
             }
         }
     }

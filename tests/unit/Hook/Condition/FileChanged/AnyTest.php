@@ -42,7 +42,7 @@ class AnyTest extends TestCase
     public function testIsTrueAfterRewrite(): void
     {
         $io = $this->createIOMock();
-        $io->expects($this->atLeastOnce())->method('getArgument')->willReturn('');
+        $io->expects($this->atLeastOnce())->method('getArgument')->willReturn('hook:post-rewrite');
         $io->expects($this->atLeastOnce())->method('getStandardInput')->willReturn(['firstHash secondHash']);
         $operator   = $this->createGitDiffOperator(['fiz.php', 'baz.php', 'foo.php']);
         $repository = $this->createRepositoryMock('');

@@ -12,10 +12,8 @@
 namespace CaptainHook\App\Hook\Input;
 
 use CaptainHook\App\Console\IO;
-use CaptainHook\App\Git\Range\Detecting;
-use CaptainHook\App\Git\Ref\Util;
-use CaptainHook\App\Hook\Input\PrePush\Range;
-use CaptainHook\App\Hook\Input\PrePush\Ref;
+use CaptainHook\App\Git\Range;
+use CaptainHook\App\Git\Ref;
 
 /**
  * Class to access the pre-push stdIn data
@@ -25,13 +23,13 @@ use CaptainHook\App\Hook\Input\PrePush\Ref;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.15.0
  */
-class PrePush implements Detecting
+class PostRewrite implements Range\Detecting
 {
     /**
      * Returns list of refs
      *
      * @param  \CaptainHook\App\Console\IO $io
-     * @return array<\CaptainHook\App\Hook\Input\PrePush\Range>
+     * @return \CaptainHook\App\Git\Range[]
      */
     public function getRanges(IO $io): array
     {
@@ -39,28 +37,21 @@ class PrePush implements Detecting
     }
 
     /**
-     * Factory method
+     * Create ranges from stdIn
      *
      * @param  array<string> $stdIn
-     * @return array<\CaptainHook\App\Hook\Input\PrePush\Range>
+     * @return array<\CaptainHook\App\Git\Range>
      */
     private function createFromStdIn(array $stdIn): array
     {
         $ranges = [];
         foreach ($stdIn as $line) {
-            if (empty($line)) {
-                continue;
+            if (!empty($line)) {
+                $parts    = explode(' ', $line);
+                $from     = new Ref\Generic(!empty($parts[1]) ? $parts[1] . '^' : 'HEAD@{1}');
+                $to       = new Ref\Generic('HEAD');
+                $ranges[] = new Range\Generic($from, $to);
             }
-
-            [$localRef, $localHash, $remoteRef, $remoteHash] = explode(' ', $line);
-
-            if (Util::isZeroHash($remoteHash)) {
-                continue;
-            }
-
-            $from     = new Ref($remoteRef, $remoteHash, Util::extractBranchFromRefPath($remoteRef));
-            $to       = new Ref($localRef, $localHash, Util::extractBranchFromRefPath($localRef));
-            $ranges[] = new Range($from, $to);
         }
         return $ranges;
     }

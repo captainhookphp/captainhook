@@ -68,7 +68,7 @@ class BlockFixupAndSquashCommitsTest extends TestCase
         $config   = $this->createConfigMock();
         $action   = $this->createActionConfigMock();
         $operator = $this->createGitLogOperator();
-        $action->expects($this->once())->method('getOptions')->willReturn(new Options([]));
+        $action->method('getOptions')->willReturn(new Options([]));
         $io->expects($this->once())->method('getStandardInput')->willReturn($input);
         $operator->method('getCommitsBetween')->willReturn($this->getFakeCommits());
         $repo->method('getLogOperator')->willReturn($operator);
