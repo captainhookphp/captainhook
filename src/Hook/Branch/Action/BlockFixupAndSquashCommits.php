@@ -90,7 +90,7 @@ class BlockFixupAndSquashCommits implements Action
         $this->handleOptions($action->getOptions());
 
         foreach ($refsToPush as $range) {
-            $commits = $this->getInvalidCommits($repository, $range->from()->id(), $range->to()->id());
+            $commits = $this->getBlockedCommits($repository, $range->from()->id(), $range->to()->id());
 
             if (count($commits) > 0) {
                 $this->handleFailure($commits, $range->from()->branch());
@@ -99,7 +99,7 @@ class BlockFixupAndSquashCommits implements Action
     }
 
     /**
-     * Check if fixup and squash should be blocked
+     * Check if fixup or squash should be blocked
      *
      * @param \CaptainHook\App\Config\Options $options
      * @return void
@@ -119,19 +119,52 @@ class BlockFixupAndSquashCommits implements Action
      * @return array<\SebastianFeldmann\Git\Log\Commit>
      * @throws \Exception
      */
-    private function getInvalidCommits(Repository $repository, string $remoteHash, string $localHash): array
+    private function getBlockedCommits(Repository $repository, string $remoteHash, string $localHash): array
     {
-        $invalid = [];
+        $typesToCheck = $this->getTypesToBlock();
+        $blocked      = [];
         foreach ($repository->getLogOperator()->getCommitsBetween($remoteHash, $localHash) as $commit) {
-            if ($this->blockFixupCommits && strpos($commit->getSubject(), 'fixup!') === 0) {
-                $invalid[] = $commit;
-                continue;
-            }
-            if ($this->blockSquashCommits && strpos($commit->getSubject(), 'squash!') === 0) {
-                $invalid[] = $commit;
+            if ($this->hasToBeBlocked($commit->getSubject(), $typesToCheck)) {
+                $blocked[] = $commit;
             }
         }
-        return $invalid;
+        return $blocked;
+    }
+
+    /**
+     * Returns a list of strings to look for in commit messages
+     *
+     * Will most likely return ['fixup!', 'squash!']
+     *
+     * @return array<string>
+     */
+    private function getTypesToBlock(): array
+    {
+        $strings = [];
+        if ($this->blockFixupCommits) {
+            $strings[] = 'fixup!';
+        }
+        if ($this->blockSquashCommits) {
+            $strings[] = 'squash!';
+        }
+        return $strings;
+    }
+
+    /**
+     * Checks if the commit message starts with any of the given strings
+     *
+     * @param  string        $message
+     * @param  array<string> $typesToCheck
+     * @return bool
+     */
+    private function hasToBeBlocked(string $message, array $typesToCheck): bool
+    {
+        foreach ($typesToCheck as $type) {
+            if (strpos($message, $type) === 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
