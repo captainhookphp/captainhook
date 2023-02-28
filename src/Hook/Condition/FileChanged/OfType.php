@@ -15,9 +15,7 @@ use CaptainHook\App\Console\IO;
 use CaptainHook\App\Git;
 use CaptainHook\App\Hook\Condition;
 use CaptainHook\App\Hook\Constrained;
-use CaptainHook\App\Hook\Input;
 use CaptainHook\App\Hook\Restriction;
-use CaptainHook\App\Hook\Util;
 use CaptainHook\App\Hooks;
 use SebastianFeldmann\Git\Repository;
 
