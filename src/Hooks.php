@@ -127,6 +127,7 @@ final class Hooks
             Hooks::COMMIT_MSG         => ' {$FILE}',
             Hooks::POST_MERGE         => ' {$SQUASH}',
             Hooks::PRE_COMMIT         => '',
+            Hooks::POST_COMMIT        => '',
             Hooks::PRE_PUSH           => ' {$TARGET} {$URL}',
             Hooks::PREPARE_COMMIT_MSG => ' {$FILE} {$MODE} {$HASH}',
             Hooks::POST_CHECKOUT      => ' {$PREVIOUSHEAD} {$NEWHEAD} {$MODE}',
