@@ -118,6 +118,18 @@ class FactoryTest extends TestCase
      *
      * @throws \Exception
      */
+    public function testCreateWithCrazyPHPPath(): void
+    {
+        $config = Factory::create(realpath(__DIR__ . '/../../files/config/valid-with-strange-settings.json'));
+
+        $this->assertEquals("tests/files/bin/success foo", $config->getPhpPath());
+    }
+
+    /**
+     * Tests Factory::create
+     *
+     * @throws \Exception
+     */
     public function testCreateWithAllSetting(): void
     {
         $path   = realpath(__DIR__ . '/../../files/config/valid-with-all-settings.json');

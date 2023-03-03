@@ -195,7 +195,24 @@ final class Factory
         if (empty($config->getPhpPath())) {
             return;
         }
-        if (!file_exists($config->getPhpPath())) {
+        $foundPHP    = false;
+        $pathToCheck = [$config->getPhpPath()];
+        $parts       = explode(' ', $config->getPhpPath());
+        // if there are spaces in the php-path and they are not escaped
+        // it looks like an executable is used to find the PHP binary
+        // so at least check if the executable exists
+        if (count($parts) > 1 && substr($parts[0], -1) !== '\\') {
+            $pathToCheck[] = $parts[0];
+        }
+
+        foreach ($pathToCheck as $path) {
+            if (file_exists($path)) {
+                $foundPHP = true;
+                break;
+            }
+        }
+
+        if (!$foundPHP) {
             throw new RuntimeException('The configured php-path is wrong: ' . $config->getPhpPath());
         }
     }
