@@ -143,6 +143,7 @@ class Installer extends RepositoryAware
 			if ($hooks === false) {
 				throw new Exception\InvalidHookName('Invalid hook name \'' . $hook . '\'');
 			}
+			$hooks = array_map('trim', $hooks);
 	        $hooksValidationCallback = static function (string $hook): bool {
 		        return !HookUtil::isInstallable($hook);
 	        };
