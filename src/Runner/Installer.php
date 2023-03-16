@@ -57,7 +57,7 @@ class Installer extends RepositoryAware
     private $moveExistingTo = '';
 
     /**
-     * Hook that should be handled.
+     * Hooks that should be handled.
      *
      * @var array
      */
