@@ -32,7 +32,8 @@ use SebastianFeldmann\Git\Repository;
  *    "action": "\\CaptainHook\\App\\Hook\\Branch\\Action\\BlockFixupAndSquashCommits",
  *    "options": {
  *      "blockSquashCommits": true,
- *      "blockFixupCommits": true
+ *      "blockFixupCommits": true,
+ *      "protectedBranches": ["main", "master", "integration"]
  *    },
  *    "conditions": []
  *  }
@@ -49,14 +50,23 @@ class BlockFixupAndSquashCommits implements Action
      *
      * @var bool
      */
-    private $blockFixupCommits = true;
+    private bool $blockFixupCommits = true;
 
     /**
      * Should squash! commits be blocked
      *
      * @var bool
      */
-    private $blockSquashCommits = true;
+    private bool $blockSquashCommits = true;
+
+    /**
+     * List of protected branches
+     *
+     * If not specified all branches are protected
+     *
+     * @var array<string>
+     */
+    private array $protectedBranches;
 
     /**
      * Return hook restriction
@@ -90,6 +100,9 @@ class BlockFixupAndSquashCommits implements Action
         $this->handleOptions($action->getOptions());
 
         foreach ($refsToPush as $range) {
+            if (!empty($this->protectedBranches) && !in_array($range->from()->branch(), $this->protectedBranches)) {
+                return;
+            }
             $commits = $this->getBlockedCommits($repository, $range->from()->id(), $range->to()->id());
 
             if (count($commits) > 0) {
@@ -108,6 +121,7 @@ class BlockFixupAndSquashCommits implements Action
     {
         $this->blockSquashCommits = (bool) $options->get('blockSquashCommits', true);
         $this->blockFixupCommits  = (bool) $options->get('blockFixupCommits', true);
+        $this->protectedBranches  = $options->get('protectedBranches', []);
     }
 
     /**

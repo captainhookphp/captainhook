@@ -60,6 +60,29 @@ class BlockFixupAndSquashCommitsTest extends TestCase
     /**
      * Tests BlockFixupAndSquashCommits::execute
      */
+    public function testExecuteSuccessBecauseOfUnprotectedBranch(): void
+    {
+        $input    = ['refs/heads/foo 12345 refs/heads/foo 98765'];
+        $io       = $this->createIOMock();
+        $repo     = $this->createRepositoryMock();
+        $config   = $this->createConfigMock();
+        $action   = $this->createActionConfigMock();
+        $operator = $this->createGitLogOperator();
+        $options  = new Options(['protectedBranches' => ['main']]);
+        $action->expects($this->once())->method('getOptions')->willReturn($options);
+        $io->expects($this->once())->method('getStandardInput')->willReturn($input);
+        $operator->method('getCommitsBetween')->willReturn($this->getFakeCommits());
+        $repo->method('getLogOperator')->willReturn($operator);
+
+        $blocker = new BlockFixupAndSquashCommits();
+        $blocker->execute($config, $io, $repo, $action);
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * Tests BlockFixupAndSquashCommits::execute
+     */
     public function testExecuteSuccessWithNoChangesFromLocalAndRemote(): void
     {
         $input    = ['refs/tags/5.14.2 4d89c05 refs/tags/5.14.2 0000000000000000000000000000000000000000'];
@@ -78,6 +101,7 @@ class BlockFixupAndSquashCommitsTest extends TestCase
 
         $this->assertTrue(true);
     }
+
     /**
      * Tests BlockFixupAndSquashCommits::execute
      */
@@ -92,6 +116,29 @@ class BlockFixupAndSquashCommitsTest extends TestCase
         $action   = $this->createActionConfigMock();
         $operator = $this->createGitLogOperator();
         $action->expects($this->once())->method('getOptions')->willReturn(new Options([]));
+        $io->expects($this->once())->method('getStandardInput')->willReturn($input);
+        $operator->method('getCommitsBetween')->willReturn($this->getFakeCommits('fixup! Foo'));
+        $repo->method('getLogOperator')->willReturn($operator);
+
+        $blocker = new BlockFixupAndSquashCommits();
+        $blocker->execute($config, $io, $repo, $action);
+    }
+
+    /**
+     * Tests BlockFixupAndSquashCommits::execute
+     */
+    public function testExecuteBlockFixupForProtectedBranch(): void
+    {
+        $this->expectException(Exception::class);
+
+        $input    = ['refs/heads/main 12345 refs/heads/main 98765'];
+        $io       = $this->createIOMock();
+        $repo     = $this->createRepositoryMock();
+        $config   = $this->createConfigMock();
+        $action   = $this->createActionConfigMock();
+        $operator = $this->createGitLogOperator();
+        $options  = new Options(['protectedBranches' => ['main']]);
+        $action->expects($this->once())->method('getOptions')->willReturn($options);
         $io->expects($this->once())->method('getStandardInput')->willReturn($input);
         $operator->method('getCommitsBetween')->willReturn($this->getFakeCommits('fixup! Foo'));
         $repo->method('getLogOperator')->willReturn($operator);
