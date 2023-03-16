@@ -57,11 +57,11 @@ class Installer extends RepositoryAware
     private $moveExistingTo = '';
 
     /**
-     * Hook that should be handled.
+     * Hooks that should be handled.
      *
-     * @var string
+     * @var array<int, string>
      */
-    protected $hookToHandle;
+    protected $hooksToHandle;
 
     /**
      * Hook template
@@ -138,10 +138,29 @@ class Installer extends RepositoryAware
      */
     public function setHook(string $hook): Installer
     {
-        if (!empty($hook) && !HookUtil::isInstallable($hook)) {
+        if (empty($hook)) {
+            return $this;
+        }
+
+        /** @var array<int,string>|false $hooks */
+        $hooks = explode(',', $hook);
+        if ($hooks === false) {
             throw new Exception\InvalidHookName('Invalid hook name \'' . $hook . '\'');
         }
-        $this->hookToHandle = $hook;
+
+        $hooks = array_map('trim', $hooks);
+
+        $hooksValidationCallback = static function (string $hook): bool {
+            return !HookUtil::isInstallable($hook);
+        };
+        if (!empty(($invalidHooks = array_filter($hooks, $hooksValidationCallback)))) {
+            throw new Exception\InvalidHookName(
+                'Invalid hook name \'' . implode(',', $invalidHooks) . '\''
+            );
+        }
+
+        $this->hooksToHandle = $hooks;
+
         return $this;
     }
 
@@ -178,9 +197,11 @@ class Installer extends RepositoryAware
             return true;
         };
         // if a specific hook is set, the use has actively chosen it, so don't ask for permission anymore
-        return empty($this->hookToHandle)
+        return empty($this->hooksToHandle)
             ? array_map($callback, Hooks::nativeHooks())
-            : [$this->hookToHandle => false];
+            : array_map(static function (): bool {
+                return false;
+            }, array_flip($this->hooksToHandle));
     }
 
     /**
