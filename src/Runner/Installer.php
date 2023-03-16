@@ -142,12 +142,8 @@ class Installer extends RepositoryAware
             return $this;
         }
 
-        /** @var array<int,string>|false $hooks */
+        /** @var array<string> $hooks */
         $hooks = explode(',', $hook);
-        if ($hooks === false) {
-            throw new Exception\InvalidHookName('Invalid hook name \'' . $hook . '\'');
-        }
-
         $hooks = array_map('trim', $hooks);
 
         $hooksValidationCallback = static function (string $hook): bool {
@@ -155,7 +151,7 @@ class Installer extends RepositoryAware
         };
         if (!empty(($invalidHooks = array_filter($hooks, $hooksValidationCallback)))) {
             throw new Exception\InvalidHookName(
-                'Invalid hook name \'' . implode(',', $invalidHooks) . '\''
+                'Invalid hook name \'' . implode('\', \'', $invalidHooks) . '\''
             );
         }
 

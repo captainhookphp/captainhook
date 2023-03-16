@@ -120,6 +120,7 @@ class InstallerTest extends TestCase
         $io->expects($this->atLeast(5))->method('ask')->willReturn('n');
 
         $runner = new Installer($io, $config, $repo, $template);
+        $runner->setHook('');
         $runner->run();
 
         $this->assertFileDoesNotExist($fakeRepo->getHookDir() . '/pre-commit');
