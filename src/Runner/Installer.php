@@ -59,7 +59,7 @@ class Installer extends RepositoryAware
     /**
      * Hooks that should be handled.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hooksToHandle;
 
@@ -142,6 +142,7 @@ class Installer extends RepositoryAware
             return $this;
         }
 
+        /** @var array<int,string>|false $hooks */
         $hooks = explode(',', $hook);
         if ($hooks === false) {
             throw new Exception\InvalidHookName('Invalid hook name \'' . $hook . '\'');
