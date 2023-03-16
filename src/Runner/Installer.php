@@ -139,21 +139,21 @@ class Installer extends RepositoryAware
     public function setHook(string $hook): Installer
     {
         if (!empty($hook)) {
-	        $hooks = explode(',', $hook);
-			if ($hooks === false) {
-				throw new Exception\InvalidHookName('Invalid hook name \'' . $hook . '\'');
-			}
-			$hooks = array_map('trim', $hooks);
-	        $hooksValidationCallback = static function (string $hook): bool {
-		        return !HookUtil::isInstallable($hook);
-	        };
-			if (!empty(($invalidHooks = array_filter($hooks, $hooksValidationCallback)))) {
-		        throw new Exception\InvalidHookName(
-					'Invalid hook name \'' . implode(',', $invalidHooks) . '\''
-		        );
-	        }
+            $hooks = explode(',', $hook);
+            if ($hooks === false) {
+                throw new Exception\InvalidHookName('Invalid hook name \'' . $hook . '\'');
+            }
+            $hooks = array_map('trim', $hooks);
+            $hooksValidationCallback = static function (string $hook): bool {
+                return !HookUtil::isInstallable($hook);
+            };
+            if (!empty(($invalidHooks = array_filter($hooks, $hooksValidationCallback)))) {
+                throw new Exception\InvalidHookName(
+                    'Invalid hook name \'' . implode(',', $invalidHooks) . '\''
+                );
+            }
 
-	        $this->hooksToHandle = $hooks;
+            $this->hooksToHandle = $hooks;
         }
 
         return $this;
