@@ -46,7 +46,9 @@ class Install extends RepositoryAware
              ->addArgument(
                  'hook',
                  InputArgument::OPTIONAL,
-                 'Limit the hook you want to install. By default all hooks get installed.'
+                 'Limit the hooks you want to install. ' .
+                 'You can specify multiple hooks with comma as delimiter. ' .
+                 'By default all hooks get installed.'
              )
              ->addOption(
                  'force',
