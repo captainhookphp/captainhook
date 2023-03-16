@@ -198,7 +198,9 @@ class Installer extends RepositoryAware
         // if a specific hook is set, the use has actively chosen it, so don't ask for permission anymore
         return empty($this->hooksToHandle)
             ? array_map($callback, Hooks::nativeHooks())
-            : array_map(static function (): bool { return false; }, array_flip($this->hooksToHandle));
+            : array_map(static function (): bool {
+                return false;
+            }, array_flip($this->hooksToHandle));
     }
 
     /**
