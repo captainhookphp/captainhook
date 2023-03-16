@@ -190,18 +190,12 @@ class Installer extends RepositoryAware
      */
     public function getHooksToInstall(): array
     {
-        // callback to write bool true to all array entries
         // to make sure the user will be asked to confirm every hook installation
         // unless the user provided the force or skip option
-        $callback = function () {
-            return true;
-        };
-        // if a specific hook is set, the use has actively chosen it, so don't ask for permission anymore
+        // if specific hooks are set, the use has actively chosen it, so don't ask for permission anymore
         return empty($this->hooksToHandle)
-            ? array_map($callback, Hooks::nativeHooks())
-            : array_map(static function (): bool {
-                return false;
-            }, array_flip($this->hooksToHandle));
+            ? array_map(fn ($hook) => true, Hooks::nativeHooks())
+            : array_map(fn ($hook) => false, array_flip($this->hooksToHandle));
     }
 
     /**
