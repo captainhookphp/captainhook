@@ -52,6 +52,24 @@ class InstallerTest extends TestCase
      *
      * @throws \CaptainHook\App\Exception\InvalidHookName
      */
+    public function testSetMultipleInvalidHooks(): void
+    {
+        $this->expectException(InvalidHookName::class);
+
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock();
+        $repo     = $this->createRepositoryMock();
+        $template = $this->createTemplateMock();
+
+        $runner = new Installer($io, $config, $repo, $template);
+        $runner->setHook('itDoNotExist1,itDoNotExist2,itDontExist3');
+    }
+
+    /**
+     * Tests Installer::setHook
+     *
+     * @throws \CaptainHook\App\Exception\InvalidHookName
+     */
     public function testMoveAfterSkippingFail(): void
     {
         $this->expectException(RuntimeException::class);
@@ -130,6 +148,27 @@ class InstallerTest extends TestCase
         $runner->run();
 
         $this->assertFileExists($fakeRepo->getHookDir() . '/pre-commit');
+    }
+
+    /**
+     * Tests Installer::run
+     */
+    public function testWriteMultipleHooks(): void
+    {
+        $fakeRepo = new DummyRepo();
+
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock();
+        $repo     = $this->createRepositoryMock($fakeRepo->getRoot());
+        $template = $this->createTemplateMock();
+
+        $runner = new Installer($io, $config, $repo, $template);
+        $runner->setHook('pre-commit,pre-push,post-checkout');
+        $runner->run();
+
+        $this->assertFileExists($fakeRepo->getHookDir() . '/pre-commit');
+        $this->assertFileExists($fakeRepo->getHookDir() . '/pre-push');
+        $this->assertFileExists($fakeRepo->getHookDir() . '/post-checkout');
     }
 
     /**

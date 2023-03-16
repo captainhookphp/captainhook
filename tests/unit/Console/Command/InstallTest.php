@@ -114,4 +114,99 @@ class InstallTest extends TestCase
 
         $this->assertTrue($repo->hookExists('pre-commit'));
     }
+
+	/**
+	 * Tests Install::run
+	 *
+	 * @throws \Exception
+	 */
+	public function testInstallMultipleHooks(): void
+	{
+		$repo   = new DummyRepo();
+		$output = new NullOutput();
+		$input  = new ArrayInput(
+			[
+				'hook'            => 'pre-commit,pre-push,post-checkout',
+				'--configuration' => CH_PATH_FILES . '/template/captainhook.json',
+				'--git-directory' => $repo->getGitDir()
+			]
+		);
+
+		$install = new Install(new Resolver(CH_PATH_FILES . '/bin/captainhook'));
+		$install->run($input, $output);
+
+		$this->assertTrue($repo->hookExists('pre-commit'));
+		$this->assertTrue($repo->hookExists('pre-push'));
+		$this->assertTrue($repo->hookExists('post-checkout'));
+	}
+
+	/**
+	 * Tests Install::run
+	 *
+	 * @throws \Exception
+	 */
+	public function testInstallMultipleHooksWithSpacesAfterAndBetweenSeparator(): void
+	{
+		$repo   = new DummyRepo();
+		$output = new NullOutput();
+		$input  = new ArrayInput(
+			[
+				'hook'            => ' pre-commit , pre-push , post-checkout, post-commit',
+				'--configuration' => CH_PATH_FILES . '/template/captainhook.json',
+				'--git-directory' => $repo->getGitDir()
+			]
+		);
+
+		$install = new Install(new Resolver(CH_PATH_FILES . '/bin/captainhook'));
+		$install->run($input, $output);
+
+		$this->assertTrue($repo->hookExists('pre-commit'));
+		$this->assertTrue($repo->hookExists('pre-push'));
+		$this->assertTrue($repo->hookExists('post-checkout'));
+	}
+
+	/**
+	 * Tests Install::run
+	 *
+	 * @throws \Exception
+	 */
+	public function testInstallMultipleHooksWithOneWrong(): void
+	{
+		$this->expectException(\CaptainHook\App\Exception\InvalidHookName::class);
+		$repo   = new DummyRepo();
+		$output = new NullOutput();
+		$input  = new ArrayInput(
+			[
+				'hook'            => 'pre-commit,pre-push,post-checkout,something-wrong',
+				'--configuration' => CH_PATH_FILES . '/template/captainhook.json',
+				'--git-directory' => $repo->getGitDir()
+			]
+		);
+
+		$install = new Install(new Resolver(CH_PATH_FILES . '/bin/captainhook'));
+		$install->run($input, $output);
+	}
+
+
+	/**
+	 * Tests Install::run
+	 *
+	 * @throws \Exception
+	 */
+	public function testInstallMultipleHooksWithMultipleWrong(): void
+	{
+		$this->expectException(\CaptainHook\App\Exception\InvalidHookName::class);
+		$repo   = new DummyRepo();
+		$output = new NullOutput();
+		$input  = new ArrayInput(
+			[
+				'hook'            => 'pre-commit,pre-push,post-checkout,something-wrong1,something-wrong2',
+				'--configuration' => CH_PATH_FILES . '/template/captainhook.json',
+				'--git-directory' => $repo->getGitDir()
+			]
+		);
+
+		$install = new Install(new Resolver(CH_PATH_FILES . '/bin/captainhook'));
+		$install->run($input, $output);
+	}
 }
