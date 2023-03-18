@@ -85,6 +85,13 @@
           <td>Check if <strong>any</strong> of the configured files is changed</td>
         </tr>
         <tr>
+          <th colspan="2">pre-push</th>
+        </tr>
+        <tr>
+          <td><a href="#file-changed-oftype">\CaptainHook\App\Hook\Condition\FileChange\OfType</a></td>
+          <td>Check if changes to a typy of file will be pushed</td>
+        </tr>
+        <tr>
           <th colspan="2">logic conditions</th>
         </tr>
         <tr>
@@ -199,6 +206,20 @@
       "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileChanged\\Any‚",
       "args": [
         ["foo.html", "bar.html", "*.php"]
+      ]
+    }
+  ]
+}</code></pre>
+
+      <h3 id="file-changed-oftype">FileChange\OfType</h3>
+      <p><em class="hl">pre-push</em></p>
+      <p>Expecting just the type of file you want to watch as string.</p>
+      <pre><code class="javascript">{
+  "conditions": [
+    {
+      "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileChange\\OfType",
+      "args": [
+        "php"
       ]
     }
   ]
