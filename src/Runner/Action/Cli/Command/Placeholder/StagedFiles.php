@@ -19,7 +19,7 @@ namespace CaptainHook\App\Runner\Action\Cli\Command\Placeholder;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.0.0
  */
-class StagedFiles extends Foundation
+class StagedFiles extends CheckFiles
 {
     /**
      * @param  array<string, string> $options
@@ -36,51 +36,5 @@ class StagedFiles extends Foundation
         $files = $this->replaceInAll($files, $options);
 
         return implode(($options['separated-by'] ?? ' '), $files);
-    }
-
-    /**
-     * Filter staged files by directory
-     *
-     * @param  array<string> $files
-     * @param  array<string, string> $options
-     * @return array<string>
-     */
-    private function filterByDirectory(array $files, array $options): array
-    {
-        if (!isset($options['in-dir'])) {
-            return $files;
-        }
-
-        $directory = $options['in-dir'];
-        $filtered  = [];
-        foreach ($files as $file) {
-            if (strpos($file, $directory, 0) === 0) {
-                $filtered[] = $file;
-            }
-        }
-
-        return $filtered;
-    }
-
-    /**
-     * Run search replace for all files
-     *
-     * @param  array<string> $files
-     * @param  array<string, string> $options
-     * @return array<string>
-     */
-    private function replaceInAll(array $files, array $options): array
-    {
-        if (!isset($options['replace'])) {
-            return $files;
-        }
-
-        $search  = $options['replace'];
-        $replace = $options['with'] ?? '';
-
-        foreach ($files as $index => $file) {
-            $files[$index] = str_replace($search, $replace, $file);
-        }
-        return $files;
     }
 }

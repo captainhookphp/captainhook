@@ -12,6 +12,7 @@
 namespace CaptainHook\App\Runner\Action\Cli\Command;
 
 use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -29,24 +30,32 @@ class Formatter
      *
      * @var array<string, string>
      */
-    private static $cache = [];
+    private static array $cache = [];
+
+    /**
+     * Input output handler
+     *
+     * @var \CaptainHook\App\Console\IO
+     */
+    private IO $io;
 
     /**
      * CaptainHook configuration
      *
      * @var \CaptainHook\App\Config
      */
-    private $config;
+    private Config $config;
 
     /**
      * List of available placeholders
      *
      * @var array<string, string>
      */
-    private static $placeholders = [
-        'config'       => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\Config',
-        'env'          => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\Env',
-        'staged_files' => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\StagedFiles'
+    private static array $placeholders = [
+        'config'        => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\Config',
+        'env'           => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\Env',
+        'staged_files'  => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\StagedFiles',
+        'changed_files' => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\ChangedFiles'
     ];
 
     /**
@@ -54,26 +63,20 @@ class Formatter
      *
      * @var \SebastianFeldmann\Git\Repository
      */
-    private $repository;
-
-    /**
-     * Original hook arguments
-     *
-     * @var array<string, string>
-     */
-    private $arguments;
+    private Repository $repository;
 
     /**
      * Formatter constructor
      *
+     * @param \CaptainHook\App\Console\IO       $io
+     * @param \CaptainHook\App\Config           $config
      * @param \SebastianFeldmann\Git\Repository $repository
-     * @param array<string, string>             $arguments
      */
-    public function __construct(Config $config, Repository $repository, array $arguments)
+    public function __construct(IO $io, Config $config, Repository $repository)
     {
+        $this->io         = $io;
         $this->config     = $config;
         $this->repository = $repository;
-        $this->arguments  = $arguments;
     }
 
     /**
@@ -123,7 +126,7 @@ class Formatter
     {
         // if placeholder references an original hook argument return the argument
         // otherwise compute the placeholder
-        return $this->arguments[strtolower($placeholder)] ?? $this->computedPlaceholder($placeholder);
+        return $this->io->getArguments()[strtolower($placeholder)] ?? $this->computedPlaceholder($placeholder);
     }
 
     /**
@@ -161,7 +164,7 @@ class Formatter
     {
         /** @var class-string<\CaptainHook\App\Runner\Action\Cli\Command\Placeholder> $class */
         $class = self::$placeholders[$placeholder];
-        return new $class($this->config, $this->repository);
+        return new $class($this->io, $this->config, $this->repository);
     }
 
     /**

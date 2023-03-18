@@ -41,7 +41,7 @@ class CliTest extends TestCase
         $action = $this->createActionConfigMock();
         $cmd    = CH_PATH_FILES . '/bin/success';
 
-        $io->expects($this->once())->method('getArguments')->willReturn($args);
+        $io->method('getArguments')->willReturn($args);
         $io->expects($this->atLeast(1))->method('write');
         $action->expects($this->once())->method('getAction')->willReturn($cmd);
 
@@ -67,7 +67,7 @@ class CliTest extends TestCase
         $action = $this->createActionConfigMock();
         $cmd    = CH_PATH_FILES . '/{$FILE}/{$MODE}';
 
-        $io->expects($this->once())->method('getArguments')->willReturn($args);
+        $io->method('getArguments')->willReturn($args);
         $io->expects($this->atLeast(1))->method('write');
         $action->expects($this->once())->method('getAction')->willReturn($cmd);
 
@@ -91,7 +91,7 @@ class CliTest extends TestCase
         $action = $this->createActionConfigMock();
         $cmd    = CH_PATH_FILES . '/bin/failure';
 
-        $io->expects($this->once())->method('getArguments')->willReturn($args);
+        $io->method('getArguments')->willReturn($args);
         $action->expects($this->once())->method('getAction')->willReturn($cmd);
 
         $cli = new Cli();

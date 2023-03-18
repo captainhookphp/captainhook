@@ -12,6 +12,7 @@
 namespace CaptainHook\App\Runner\Action\Cli\Command\Placeholder;
 
 use CaptainHook\App\Config;
+use CaptainHook\App\Console\IO;
 use CaptainHook\App\Runner\Action\Cli\Command\Placeholder as PlaceholderInterface;
 use SebastianFeldmann\Git\Repository;
 
@@ -26,27 +27,36 @@ use SebastianFeldmann\Git\Repository;
 abstract class Foundation implements PlaceholderInterface
 {
     /**
+     * Input Output handler
+     *
+     * @var \CaptainHook\App\Console\IO
+     */
+    protected IO $io;
+
+    /**
      * CaptainHook configuration
      *
      * @var \CaptainHook\App\Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * Git repository
      *
      * @var \SebastianFeldmann\Git\Repository
      */
-    protected $repository;
+    protected Repository $repository;
 
     /**
      * StagedFile constructor
      *
+     * @param \CaptainHook\App\Console\IO       $io
      * @param \CaptainHook\App\Config           $config
      * @param \SebastianFeldmann\Git\Repository $repository
      */
-    public function __construct(Config $config, Repository $repository)
+    public function __construct(IO $io, Config $config, Repository $repository)
     {
+        $this->io         = $io;
         $this->config     = $config;
         $this->repository = $repository;
     }

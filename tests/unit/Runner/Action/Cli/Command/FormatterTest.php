@@ -11,12 +11,14 @@
 
 namespace CaptainHook\App\Runner\Action\Cli\Command;
 
+use CaptainHook\App\Console\IO\Mockery as IOMockery;
 use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Mockery as AppMockery;
 use PHPUnit\Framework\TestCase;
 
 class FormatterTest extends TestCase
 {
+    use IOMockery;
     use AppMockery;
     use ConfigMockery;
 
@@ -25,11 +27,12 @@ class FormatterTest extends TestCase
      */
     public function testFormatArgumentPlaceholders(): void
     {
-        $args   = ['foo' => 'bar'];
         $config = $this->createConfigMock();
         $repo   = $this->createRepositoryMock();
+        $io     = $this->createIOMock();
+        $io->method('getArguments')->willReturn(['foo' => 'bar']);
 
-        $formatter = new Formatter($config, $repo, $args);
+        $formatter = new Formatter($io, $config, $repo);
         $command   = $formatter->format('cmd argument {$FOO}');
 
         $this->assertEquals('cmd argument bar', $command);
@@ -40,11 +43,12 @@ class FormatterTest extends TestCase
      */
     public function testFormatInvalidPlaceholderReplacedWithEmptyString(): void
     {
-        $args   = [];
         $config = $this->createConfigMock();
         $repo   = $this->createRepositoryMock();
+        $io     = $this->createIOMock();
+        $io->method('getArguments')->willReturn([]);
 
-        $formatter = new Formatter($config, $repo, $args);
+        $formatter = new Formatter($io, $config, $repo);
         $command   = $formatter->format('cmd argument {$FOO}');
 
         $this->assertEquals('cmd argument ', $command);
@@ -55,14 +59,15 @@ class FormatterTest extends TestCase
      */
     public function testCachedPlaceholder(): void
     {
-        $args   = [];
+        $io     = $this->createIOMock();
         $config = $this->createConfigMock();
-        $config->method('getGitDirectory')->willReturn('./');
         $repo   = $this->createRepositoryMock();
         $index  = $this->createGitIndexOperator(['foo/file1.php', 'bar/file2.php', 'baz/file3.php']);
+        $io->method('getArguments')->willReturn([]);
+        $config->method('getGitDirectory')->willReturn('./');
         $repo->expects($this->atLeast(1))->method('getIndexOperator')->willReturn($index);
 
-        $formatter = new Formatter($config, $repo, $args);
+        $formatter = new Formatter($io, $config, $repo);
         $command1  = $formatter->format('cmd1 argument {$STAGED_FILES|in-dir:foo} {$STAGED_FILES|in-dir:baz}');
         $command2  = $formatter->format('cmd2 argument {$STAGED_FILES}');
 
@@ -76,14 +81,15 @@ class FormatterTest extends TestCase
      */
     public function testComplexPlaceholder(): void
     {
-        $args   = [];
+        $io     = $this->createIOMock();
         $config = $this->createConfigMock();
         $repo   = $this->createRepositoryMock();
         $index  = $this->createGitIndexOperator(['file1.php', 'file2.php', 'README.md']);
+        $io->method('getArguments')->willReturn([]);
         $repo->expects($this->exactly(2))->method('getIndexOperator')->willReturn($index);
         $index->expects($this->exactly(2))->method('getStagedFilesOfType')->willReturn(['file1.php', 'file2.php']);
 
-        $formatter = new Formatter($config, $repo, $args);
+        $formatter = new Formatter($io, $config, $repo);
         $command1  = $formatter->format('cmd1 argument {$STAGED_FILES|of-type:php|separated-by:,}');
         $command2  = $formatter->format('cmd2 argument {$STAGED_FILES|of-type:php}');
 

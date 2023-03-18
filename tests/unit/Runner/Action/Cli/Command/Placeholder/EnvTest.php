@@ -11,12 +11,14 @@
 
 namespace CaptainHook\App\Runner\Action\Cli\Command\Placeholder;
 
+use CaptainHook\App\Console\IO\Mockery as IOMockery;
 use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Mockery as AppMockery;
 use PHPUnit\Framework\TestCase;
 
 class EnvTest extends TestCase
 {
+    use IOMockery;
     use AppMockery;
     use ConfigMockery;
 
@@ -26,10 +28,12 @@ class EnvTest extends TestCase
     public function testEnvValue(): void
     {
         $_ENV['foo'] = 'bar';
+
+        $io     = $this->createIOMock();
         $repo   = $this->createRepositoryMock();
         $config = $this->createConfigMock();
 
-        $placeholder = new Env($config, $repo);
+        $placeholder = new Env($io, $config, $repo);
         $result      = $placeholder->replacement(['value-of' => 'foo']);
 
         $this->assertEquals('bar', $result);
@@ -42,10 +46,11 @@ class EnvTest extends TestCase
      */
     public function testNoValueOf(): void
     {
+        $io     = $this->createIOMock();
         $repo   = $this->createRepositoryMock();
         $config = $this->createConfigMock();
 
-        $placeholder = new Env($config, $repo);
+        $placeholder = new Env($io, $config, $repo);
         $result      = $placeholder->replacement([]);
 
         $this->assertEquals('', $result);
@@ -56,10 +61,11 @@ class EnvTest extends TestCase
      */
     public function testDefault(): void
     {
+        $io     = $this->createIOMock();
         $repo   = $this->createRepositoryMock();
         $config = $this->createConfigMock();
 
-        $placeholder = new Env($config, $repo);
+        $placeholder = new Env($io, $config, $repo);
         $result      = $placeholder->replacement(['value-of' => 'MY_SUPER_ENV_VAR', 'default' => 'my-default']);
 
         $this->assertEquals('my-default', $result);

@@ -42,7 +42,7 @@ class Cli
     {
         $processor    = new Processor();
         $cmdOriginal  = $action->getAction();
-        $cmdFormatted = $this->formatCommand($config, $repository, $cmdOriginal, $io->getArguments());
+        $cmdFormatted = $this->formatCommand($io, $config, $repository, $cmdOriginal);
 
         // if any placeholders got replaced display the finally executed command
         if ($cmdFormatted !== $cmdOriginal) {
@@ -87,15 +87,15 @@ class Cli
      *  - post-checkout      => PREVIOUSHEAD, NEWHEAD, MODE
      *  - post-merge         => SQUASH
      *
+     * @param \CaptainHook\App\Console\IO       $io
      * @param \CaptainHook\App\Config           $config
      * @param \SebastianFeldmann\Git\Repository $repository
      * @param string                            $command
-     * @param array<string>                     $args
      * @return string
      */
-    protected function formatCommand(Config $config, Repository $repository, string $command, array $args): string
+    protected function formatCommand(IO $io, Config $config, Repository $repository, string $command): string
     {
-        $formatter = new Formatter($config, $repository, $args);
+        $formatter = new Formatter($io, $config, $repository);
         return $formatter->format($command);
     }
 }
