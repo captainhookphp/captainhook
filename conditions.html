@@ -74,7 +74,7 @@
           <td>Check if a file in a directory is changed</td>
         </tr>
         <tr>
-          <th colspan="2">post-checkout / post-merge</th>
+          <th colspan="2">post-checkout / post-merge / post-rewrite / pre-push</th>
         </tr>
         <tr>
           <td><a href="#file-changed-all">\CaptainHook\App\Hook\Condition\FileChange\All</a></td>
@@ -83,9 +83,6 @@
         <tr>
           <td><a href="#file-staged-any">\CaptainHook\App\Hook\Condition\FileChange\Any</a></td>
           <td>Check if <strong>any</strong> of the configured files is changed</td>
-        </tr>
-        <tr>
-          <th colspan="2">pre-push</th>
         </tr>
         <tr>
           <td><a href="#file-changed-oftype">\CaptainHook\App\Hook\Condition\FileChange\OfType</a></td>
@@ -211,7 +208,7 @@
   ]
 }</code></pre>
 
-      <h3 id="file-changed-oftype">FileChange\OfType</h3>
+      <h3 id="file-changed-oftype">FileChanged\OfType</h3>
       <p><em class="hl">pre-push</em></p>
       <p>Expecting just the type of file you want to watch as string.</p>
       <pre><code class="javascript">{
