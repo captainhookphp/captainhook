@@ -225,6 +225,21 @@
 {$STAGED_FILES|replace:foo|with:bar}        // bar/bar/file1 bar3.php</pre>
           </td>
         </tr>
+        <tr>
+          <td>{$CHANGED_FILES}</td>
+          <td>pre-push, post-merge, post-checkout, post-rewrite</td>
+          <td>Gets replaced with a list of changed files</td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <h7>Examples:</h7>
+            <pre>
+{$CHANGED_FILES|separated-by: }              // foo/bar/file1 file2.php foo3.php
+{$CHANGED_FILES|of-type:php|separated-by:, } // file2.php, foo3.php
+{$CHANGED_FILES|in-dir:foo/bar}              // foo/bar/file1
+{$CHANGED_FILES|replace:foo|with:bar}        // bar/bar/file1 bar3.php</pre>
+          </td>
+        </tr>
       </table>
 
 
