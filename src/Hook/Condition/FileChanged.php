@@ -33,7 +33,7 @@ abstract class FileChanged extends File
      *
      * @var array<string>
      */
-    protected $filesToWatch;
+    protected array $filesToWatch;
 
     /**
      * FileChange constructor
@@ -52,7 +52,7 @@ abstract class FileChanged extends File
      */
     public static function getRestriction(): Restriction
     {
-        return Restriction::fromArray([Hooks::POST_CHECKOUT, Hooks::POST_MERGE, Hooks::POST_REWRITE]);
+        return Restriction::fromArray([Hooks::PRE_PUSH, Hooks::POST_CHECKOUT, Hooks::POST_MERGE, Hooks::POST_REWRITE]);
     }
 
     /**
