@@ -122,6 +122,12 @@
     ...
   }
 }</code></pre>
+      <p>
+        Another optimization you could to is to only install hooks that are enabled in your configuration. This way git
+        will not trigger the creation of a Docker container just to output that the hook is disabled. To make sure you
+        only install enabled hooks use the corresponding flag during installation.
+      </p>
+      <pre><code class="bash">$ vendor/bin/captainhook install --only-enabled --run-mode=docker --run-exec="docker exec CONTAINER_NAME"</code></pre>
 
       <h2>A word of warning</h2>
       <p class="pirate">
