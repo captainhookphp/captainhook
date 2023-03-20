@@ -165,13 +165,13 @@ class Config
      */
     public function isHookEnabled(string $hook, bool $withVirtual = true): bool
     {
-        //Either this hook is explicitely enabled
+        // either this hook is explicitly enabled
         $hookConfig = $this->getHookConfig($hook);
         if ($hookConfig->isEnabled()) {
             return true;
         }
 
-        //Or any virtual hook that triggers it is enabled
+        // or any virtual hook that triggers it is enabled
         if ($withVirtual && Hooks::triggersVirtualHook($hookConfig->getName())) {
             $virtualHookConfig = $this->getHookConfig(Hooks::getVirtualHook($hookConfig->getName()));
             if ($virtualHookConfig->isEnabled()) {

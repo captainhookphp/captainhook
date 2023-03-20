@@ -137,7 +137,7 @@ abstract class Hook extends RepositoryAware
 
         $this->io->write('<comment>' . $this->hook . ':</comment> ');
 
-        if(!$this->config->isHookEnabled($this->hook)) {
+        if (!$this->config->isHookEnabled($this->hook)) {
             $this->io->write(' - hook is disabled');
             return;
         }

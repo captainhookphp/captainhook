@@ -54,7 +54,8 @@ class Install extends RepositoryAware
                  'only-enabled',
                  null,
                  InputOption::VALUE_NONE,
-                 'Limit the hooks you want to install to those enabled in your conf. By default all hooks get installed.'
+                 'Limit the hooks you want to install to those enabled in your conf. ' .
+                 'By default all hooks get installed.'
              )
              ->addOption(
                  'force',

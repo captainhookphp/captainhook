@@ -217,7 +217,7 @@ class Installer extends RepositoryAware
             return array_map(fn($hook) => false, array_flip($this->hooksToHandle));
         }
         $hooks = Hooks::nativeHooks();
-        if($this->onlyEnabled) {
+        if ($this->onlyEnabled) {
             $hooks = array_filter(
                 $hooks,
                 fn($hook) => $this->config->isHookEnabled($hook),

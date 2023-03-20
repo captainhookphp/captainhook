@@ -88,9 +88,9 @@ class PostRewriteTest extends TestCase
                ->method('getHookConfig')
                ->willReturnOnConsecutiveCalls($hookConfig, $vHookConfig);
 
-        $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturnCallback(function($hook){
-            return $hook === 'post-rewrite';
-        });
+        $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturnCallback(
+            fn($hook) => $hook === 'post-rewrite'
+        );
 
         $io->expects($this->atLeast(1))->method('write');
 
