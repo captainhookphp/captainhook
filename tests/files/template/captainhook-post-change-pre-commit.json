@@ -1,0 +1,10 @@
+{
+  "post-change": {
+    "enabled": true,
+    "actions": []
+  },
+  "pre-commit": {
+    "enabled": true,
+    "actions": []
+  }
+}

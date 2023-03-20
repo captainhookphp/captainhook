@@ -1,0 +1,6 @@
+{
+  "post-change": {
+    "enabled": true,
+    "actions": []
+  }
+}
