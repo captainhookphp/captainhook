@@ -137,9 +137,7 @@ abstract class Hook extends RepositoryAware
 
         $this->io->write('<comment>' . $this->hook . ':</comment> ');
 
-        // if the hook and all triggered virtual hooks
-        // are NOT enabled in the captainhook configuration skip the execution
-        if (!$this->isAnyConfigEnabled($hookConfigs)) {
+        if(!$this->config->isHookEnabled($this->hook)) {
             $this->io->write(' - hook is disabled');
             return;
         }
@@ -184,20 +182,6 @@ abstract class Hook extends RepositoryAware
         }
 
         return $configs;
-    }
-
-    /**
-     * @param  \CaptainHook\App\Config\Hook[] $configs
-     * @return bool
-     */
-    private function isAnyConfigEnabled(array $configs): bool
-    {
-        foreach ($configs as $hookConfig) {
-            if ($hookConfig->isEnabled()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

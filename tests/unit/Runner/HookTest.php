@@ -175,6 +175,7 @@ class HookTest extends TestCase
         $hookConfig->expects($this->atLeastOnce())->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig, $actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
         $io->expects($this->atLeast(1))->method('write');
 
         $runner = new class ($io, $config, $repo) extends Hook {
@@ -208,6 +209,7 @@ class HookTest extends TestCase
             $actionConfig,
         ]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
         $io->expects($this->atLeast(1))->method('write');
 
         $runner = new class ($io, $config, $repo) extends Hook {
@@ -250,6 +252,7 @@ class HookTest extends TestCase
             $actionConfig,
         ]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
         $io->expects($this->atLeast(1))->method('write');
 
         $runner = new class ($io, $config, $repo) extends Hook {

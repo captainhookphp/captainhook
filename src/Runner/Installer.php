@@ -57,7 +57,13 @@ class Installer extends RepositoryAware
     private $moveExistingTo = '';
 
     /**
-     * Hooks that should be handled.
+     * Install only enabled hooks
+     *
+     * @var bool
+     */
+    private $onlyEnabled = false;
+
+    /**
      *
      * @var array<int, string>
      */
@@ -130,6 +136,20 @@ class Installer extends RepositoryAware
     }
 
     /**
+     * @param bool $onlyEnabled
+     * @return \CaptainHook\App\Runner\Installer
+     */
+    public function setOnlyEnabled(bool $onlyEnabled): Installer
+    {
+        if ($onlyEnabled && !empty($this->hooksToHandle)) {
+            throw new RuntimeException('choose --only-enabled or specific hooks');
+        }
+
+        $this->onlyEnabled = $onlyEnabled;
+        return $this;
+    }
+
+    /**
      * Hook setter
      *
      * @param  string $hook
@@ -140,6 +160,10 @@ class Installer extends RepositoryAware
     {
         if (empty($hook)) {
             return $this;
+        }
+
+        if ($this->onlyEnabled) {
+            throw new RuntimeException('choose --only-enabled or specific hooks');
         }
 
         /** @var array<string> $hooks */
@@ -189,9 +213,18 @@ class Installer extends RepositoryAware
         // to make sure the user will be asked to confirm every hook installation
         // unless the user provided the force or skip option
         // if specific hooks are set, the use has actively chosen it, so don't ask for permission anymore
-        return empty($this->hooksToHandle)
-            ? array_map(fn ($hook) => true, Hooks::nativeHooks())
-            : array_map(fn ($hook) => false, array_flip($this->hooksToHandle));
+        if (!empty($this->hooksToHandle)) {
+            return array_map(fn($hook) => false, array_flip($this->hooksToHandle));
+        }
+        $hooks = Hooks::nativeHooks();
+        if($this->onlyEnabled) {
+            $hooks = array_filter(
+                $hooks,
+                fn($hook) => $this->config->isHookEnabled($hook),
+                ARRAY_FILTER_USE_KEY
+            );
+        }
+        return array_map(fn($hook) => true, $hooks);
     }
 
     /**

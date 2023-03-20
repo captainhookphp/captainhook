@@ -47,6 +47,7 @@ class PreCommitTest extends TestCase
         $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
         $io->expects($this->atLeast(1))->method('write');
 
         $runner = new PreCommit($io, $config, $repo);
@@ -91,6 +92,7 @@ class PreCommitTest extends TestCase
                    ->willReturn([$actionConfigFail, $actionConfigSuccess]);
 
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
         $io->expects($this->atLeast(1))->method('write');
 
         $runner = new PreCommit($io, $config, $repo);
@@ -127,6 +129,7 @@ class PreCommitTest extends TestCase
                    ->willReturn([$actionConfigFail, $actionConfigSuccess]);
 
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
         $io->expects($this->atLeast(1))->method('write');
 
         $runner = new PreCommit($io, $config, $repo);
@@ -167,6 +170,7 @@ class PreCommitTest extends TestCase
             ->willReturn([$actionConfigFail, $actionConfigSuccess]);
 
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
         $io->expects($this->atLeast(1))->method('write');
 
         $runner = new PreCommit($io, $config, $repo);
@@ -184,8 +188,8 @@ class PreCommitTest extends TestCase
         $config       = $this->createConfigMock();
         $hookConfig   = $this->createHookConfigMock();
         $repo         = $this->createRepositoryMock();
-        $hookConfig->expects($this->once())->method('isEnabled')->willReturn(false);
         $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(false);
         $io->expects($this->atLeast(1))->method('write');
 
         $runner = new PreCommit($io, $config, $repo);

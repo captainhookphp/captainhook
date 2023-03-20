@@ -209,4 +209,171 @@ class InstallTest extends TestCase
         $install = new Install(new Resolver(CH_PATH_FILES . '/bin/captainhook'));
         $install->run($input, $output);
     }
+
+    /**
+     * Tests Install::run
+     *
+     * @throws \Exception
+     */
+    public function testInstallOnlyEnabled(): void
+    {
+        $repo = new DummyRepo();
+        $output = new NullOutput();
+        $input = new ArrayInput(
+            [
+                '--only-enabled' => true,
+                '--force' => true,
+                '--configuration' => CH_PATH_FILES . '/template/captainhook.json',
+                '--git-directory' => $repo->getGitDir()
+            ]
+        );
+
+        $install = new Install(new Resolver(CH_PATH_FILES . '/bin/captainhook'));
+        $install->run($input, $output);
+
+        $this->assertTrue($repo->hookExists('prepare-commit-msg'));
+        $this->assertTrue($repo->hookExists('commit-msg'));
+        $this->assertTrue($repo->hookExists('pre-commit'));
+        $this->assertFalse($repo->hookExists('pre-push'));
+        $this->assertFalse($repo->hookExists('post-commit'));
+    }
+
+    /**
+     * Tests Install::run
+     *
+     * @throws \Exception
+     */
+    public function testInstallOnlyEnabledOnlyVirtual(): void
+    {
+        $repo = new DummyRepo();
+        $output = new NullOutput();
+        $input = new ArrayInput(
+            [
+                '--only-enabled' => true,
+                '--force' => true,
+                '--configuration' => CH_PATH_FILES . '/template/captainhook-post-change.json',
+                '--git-directory' => $repo->getGitDir()
+            ]
+        );
+
+        $install = new Install(new Resolver(CH_PATH_FILES . '/bin/captainhook'));
+        $install->run($input, $output);
+
+        $this->assertTrue($repo->hookExists('post-checkout'));
+        $this->assertTrue($repo->hookExists('post-merge'));
+        $this->assertTrue($repo->hookExists('post-rewrite'));
+        $this->assertFalse($repo->hookExists('pre-commit'));
+        $this->assertFalse($repo->hookExists('pre-push'));
+        $this->assertFalse($repo->hookExists('post-commit'));
+    }
+
+    /**
+     * Tests Install::run
+     *
+     * @throws \Exception
+     */
+    public function testInstallOnlyEnabledNotOnlyVirtual(): void
+    {
+        $repo = new DummyRepo();
+        $output = new NullOutput();
+        $input = new ArrayInput(
+            [
+                '--only-enabled' => true,
+                '--force' => true,
+                '--configuration' => CH_PATH_FILES . '/template/captainhook-post-change-pre-commit.json',
+                '--git-directory' => $repo->getGitDir()
+            ]
+        );
+
+        $install = new Install(new Resolver(CH_PATH_FILES . '/bin/captainhook'));
+        $install->run($input, $output);
+
+        $this->assertTrue($repo->hookExists('post-checkout'));
+        $this->assertTrue($repo->hookExists('post-merge'));
+        $this->assertTrue($repo->hookExists('post-rewrite'));
+        $this->assertTrue($repo->hookExists('pre-commit'));
+        $this->assertFalse($repo->hookExists('pre-push'));
+        $this->assertFalse($repo->hookExists('post-commit'));
+    }
+
+    /**
+     * Tests Install::run
+     *
+     * @throws \Exception
+     */
+    public function testInstallOnlyEnabledNotOnlyVirtualOverlaps(): void
+    {
+        $repo = new DummyRepo();
+        $output = new NullOutput();
+        $input = new ArrayInput(
+            [
+                '--only-enabled' => true,
+                '--force' => true,
+                '--configuration' => CH_PATH_FILES . '/template/captainhook-post-change-post-merge.json',
+                '--git-directory' => $repo->getGitDir()
+            ]
+        );
+
+        $install = new Install(new Resolver(CH_PATH_FILES . '/bin/captainhook'));
+        $install->run($input, $output);
+
+        $this->assertTrue($repo->hookExists('post-checkout'));
+        $this->assertTrue($repo->hookExists('post-merge'));
+        $this->assertTrue($repo->hookExists('post-rewrite'));
+        $this->assertFalse($repo->hookExists('pre-commit'));
+        $this->assertFalse($repo->hookExists('pre-push'));
+        $this->assertFalse($repo->hookExists('post-commit'));
+    }
+
+    /**
+     * Tests Install::run
+     *
+     * @throws \Exception
+     */
+    public function testInstallOnlyEnabledNotOnlyVirtualOverlapsDisabled(): void
+    {
+        $repo = new DummyRepo();
+        $output = new NullOutput();
+        $input = new ArrayInput(
+            [
+                '--only-enabled' => true,
+                '--force' => true,
+                '--configuration' => CH_PATH_FILES . '/template/captainhook-post-change-post-merge-disabled.json',
+                '--git-directory' => $repo->getGitDir()
+            ]
+        );
+
+        $install = new Install(new Resolver(CH_PATH_FILES . '/bin/captainhook'));
+        $install->run($input, $output);
+
+        $this->assertTrue($repo->hookExists('post-checkout'));
+        $this->assertTrue($repo->hookExists('post-merge'));
+        $this->assertTrue($repo->hookExists('post-rewrite'));
+        $this->assertFalse($repo->hookExists('pre-commit'));
+        $this->assertFalse($repo->hookExists('pre-push'));
+        $this->assertFalse($repo->hookExists('post-commit'));
+    }
+
+    /**
+     * Tests Install::run
+     *
+     * @throws \Exception
+     */
+    public function testInstallOnlyEnabledAndHook(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $repo = new DummyRepo();
+        $output = new NullOutput();
+        $input = new ArrayInput(
+            [
+                'hook' => 'pre-commit',
+                '--only-enabled' => true,
+                '--configuration' => CH_PATH_FILES . '/template/captainhook.json',
+                '--git-directory' => $repo->getGitDir(),
+            ]
+        );
+
+        $install = new Install(new Resolver(CH_PATH_FILES . '/bin/captainhook'));
+        $install->run($input, $output);
+    }
 }

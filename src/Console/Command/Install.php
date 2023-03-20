@@ -51,6 +51,12 @@ class Install extends RepositoryAware
                  'By default all hooks get installed.'
              )
              ->addOption(
+                 'only-enabled',
+                 null,
+                 InputOption::VALUE_NONE,
+                 'Limit the hooks you want to install to those enabled in your conf. By default all hooks get installed.'
+             )
+             ->addOption(
                  'force',
                  'f',
                  InputOption::VALUE_NONE,
@@ -122,6 +128,7 @@ class Install extends RepositoryAware
         $installer->setForce(IOUtil::argToBool($input->getOption('force')))
                   ->setSkipExisting(IOUtil::argToBool($input->getOption('skip-existing')))
                   ->setMoveExistingTo(IOUtil::argToString($input->getOption('move-existing-to')))
+                  ->setOnlyEnabled(IOUtil::argToBool($input->getOption('only-enabled')))
                   ->setHook(IOUtil::argToString($input->getArgument('hook')))
                   ->run();
 

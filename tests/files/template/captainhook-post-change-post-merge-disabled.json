@@ -1,0 +1,10 @@
+{
+  "post-change": {
+    "enabled": true,
+    "actions": []
+  },
+  "post-merge": {
+    "enabled": false,
+    "actions": []
+  }
+}
