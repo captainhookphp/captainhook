@@ -159,6 +159,30 @@ class Config
     }
 
     /**
+     * @param  string $hook
+     * @param  bool   $withVirtual if true, also check if hook is enabled through any enabled virtual hook
+     * @return bool
+     */
+    public function isHookEnabled(string $hook, bool $withVirtual = true): bool
+    {
+        //Either this hook is explicitely enabled
+        $hookConfig = $this->getHookConfig($hook);
+        if ($hookConfig->isEnabled()) {
+            return true;
+        }
+
+        //Or any virtual hook that triggers it is enabled
+        if ($withVirtual && Hooks::triggersVirtualHook($hookConfig->getName())) {
+            $virtualHookConfig = $this->getHookConfig(Hooks::getVirtualHook($hookConfig->getName()));
+            if ($virtualHookConfig->isEnabled()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Path getter
      *
      * @return string
