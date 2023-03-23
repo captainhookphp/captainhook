@@ -69,7 +69,7 @@ abstract class Hook extends RepositoryAware
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($this->shouldHooksBeSkipped()) {
-            $output->writeLn('all hooks were skipped because of the environment variable CAPTAINHOOK_SKIP_HOOKS');
+            $output->writeLn('all hooks were skipped because of the environment variable CAPTAINHOOK_SKIP_HOOKS or CI');
             return 0;
         }
 
@@ -134,9 +134,21 @@ abstract class Hook extends RepositoryAware
         return 1;
     }
 
+    /**
+     * Indicates if hooks should be skipped
+     *
+     * Either because of CI environment or the SKIP environment variable is set.
+     *
+     * @return bool
+     */
     private function shouldHooksBeSkipped(): bool
     {
-        $skip = $_SERVER['CAPTAINHOOK_SKIP_HOOKS'] ?? 0;
-        return (int) $skip === 1;
+        foreach (['CAPTAINHOOK_SKIP_HOOKS', 'CI'] as $envVar) {
+            $skip = (int) ($_SERVER[$envVar] ?? 0);
+            if ($skip === 1) {
+                return true;
+            }
+        }
+        return false;
     }
 }
