@@ -130,13 +130,7 @@ abstract class Hook extends RepositoryAware
      */
     private function handleError(OutputInterface $output, Exception $e): int
     {
-        $header = PHP_EOL . IOUtil::getLineSeparator() . PHP_EOL
-                . IOUtil::formatHeadline(get_class($e), 80, '>', '<') . PHP_EOL
-                . IOUtil::getLineSeparator();
-
-        $output->writeLn($header, OutputInterface::VERBOSITY_VERBOSE);
-        $output->writeLn(PHP_EOL . $e->getMessage());
-
+        $output->writeLn('<error>' . PHP_EOL . $e->getMessage() . '</error>');
         return 1;
     }
 

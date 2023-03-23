@@ -44,28 +44,28 @@ abstract class Hook extends RepositoryAware
      *
      * @var bool
      */
-    private $skipActions = false;
+    private bool $skipActions = false;
 
     /**
      * Event dispatcher
      *
      * @var \CaptainHook\App\Event\Dispatcher
      */
-    protected $dispatcher;
+    protected Dispatcher $dispatcher;
 
     /**
      * List of error messages to display after all action have finished
      *
      * @var array<\Exception>
      */
-    protected $errors = [];
+    protected array $errors = [];
 
     /**
      * Plugins to apply to this hook
      *
      * @var array<Plugin\Hook>|null
      */
-    private $hookPlugins = null;
+    private ?array $hookPlugins = null;
 
     public function __construct(IO $io, Config $config, Repository $repository)
     {
@@ -245,7 +245,6 @@ abstract class Hook extends RepositoryAware
             } else {
                 $this->executeFailAfterAllActions($actions);
             }
-            $this->io->write($this->formatCollectedErrors());
         } catch (Exception $e) {
             $this->dispatcher->dispatch('onHookFailure');
             throw $e;
@@ -288,7 +287,7 @@ abstract class Hook extends RepositoryAware
 
         if ($failedActions > 0) {
             throw new ActionFailed(
-                '<error>' . $failedActions . ' action' . ($failedActions > 1 ? 's' : '') . ' failed</error>'
+                $failedActions . ' action' . ($failedActions > 1 ? 's' : '') . ' failed'
                 . PHP_EOL
                 . $this->formatCollectedErrors()
             );
@@ -312,7 +311,10 @@ abstract class Hook extends RepositoryAware
             return;
         }
 
-        $this->io->write(' - <fg=blue>' . $this->formatActionOutput($action->getAction()) . '</> : ', false);
+        $this->io->write(
+            ' - <fg=blue>' . $this->formatActionOutput($action->getAction()) . '</> : ',
+            $this->io->isVerbose()
+        );
 
         if (!$this->doConditionsApply($action->getConditions())) {
             $this->io->write('<comment>skipped</comment>', true);
@@ -476,8 +478,7 @@ abstract class Hook extends RepositoryAware
         $plugins = $this->getHookPlugins();
 
         if (count($plugins) === 0) {
-            $this->io->write(['', 'No plugins to execute for: <comment>' . $method . '</comment>'], true, IO::DEBUG);
-
+            $this->io->write(['No plugins to execute for: <comment>' . $method . '</comment>'], true, IO::DEBUG);
             return;
         }
 
@@ -487,7 +488,7 @@ abstract class Hook extends RepositoryAware
             $params[] = $action;
         }
 
-        $this->io->write(['', 'Executing plugins for: <comment>' . $method . '</comment>'], true, IO::DEBUG);
+        $this->io->write(['Executing plugins for: <comment>' . $method . '</comment>'], true, IO::DEBUG);
 
         foreach ($plugins as $plugin) {
             $this->io->write('<info>- Running ' . get_class($plugin) . '::' . $method . '</info>', true, IO::DEBUG);

@@ -167,9 +167,9 @@ class HookTest extends TestCase
             $pluginConfig5,
         ]);
 
-        $io = $this->createIOMock();
-        $repo = $this->createRepositoryMock();
-        $hookConfig = $this->createHookConfigMock();
+        $io           = $this->createIOMock();
+        $repo         = $this->createRepositoryMock();
+        $hookConfig   = $this->createHookConfigMock();
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
         $hookConfig->expects($this->atLeastOnce())->method('isEnabled')->willReturn(true);

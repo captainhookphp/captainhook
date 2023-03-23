@@ -47,7 +47,7 @@ class Cli
         // if any placeholders got replaced display the finally executed command
         if ($cmdFormatted !== $cmdOriginal) {
             $io->write(
-                PHP_EOL . ' - <comment>' . $cmdFormatted . '</comment>',
+                ' - <comment>' . $cmdFormatted . '</comment>',
                 true,
                 IO::VERBOSE
             );
@@ -70,7 +70,12 @@ class Cli
         }
 
         $io->write(
-            ['', empty($output) ? '<info>command executed successfully</info>' : trim($output), ''],
+            [
+                ' - <comment>command output</comment>',
+                '',
+                empty($output) ? '<info>command executed successfully</info>' : trim($output),
+                '',
+            ],
             true,
             IO::VERBOSE
         );
