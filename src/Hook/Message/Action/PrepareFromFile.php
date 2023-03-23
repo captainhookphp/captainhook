@@ -23,6 +23,14 @@ use SebastianFeldmann\Git\Repository;
 /**
  * Class PrepareFromFile
  *
+ * Example configuration:
+ * {
+ *   "action": "\\CaptainHook\\App\\Hook\\Message\\Action\\PrepareFromFile"
+ *   "options": {
+ *     "file": ".git/CH_MSG_CACHE"
+ *   }
+ * }
+ *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
@@ -47,13 +55,18 @@ class PrepareFromFile implements Action
         if (empty($options->get('file', ''))) {
             throw new ActionFailed('PrepareFromFile requires \'file\' option');
         }
-        if (!is_file($cacheFile)) {
-            return;
+
+        // if there is a commit message don't do anything just delete the file
+        if ($repository->getCommitMsg()->isEmpty()) {
+            if (!is_file($cacheFile)) {
+                return;
+            }
+            $msg = (string)file_get_contents($cacheFile);
+            $repository->setCommitMsg(
+                new CommitMessage($msg, $repository->getCommitMsg()->getCommentCharacter())
+            );
         }
-        $msg = (string) file_get_contents($cacheFile);
-        $repository->setCommitMsg(
-            new CommitMessage($msg, $repository->getCommitMsg()->getCommentCharacter())
-        );
+
         if (!$options->get('keep', false)) {
             unlink($cacheFile);
         }
