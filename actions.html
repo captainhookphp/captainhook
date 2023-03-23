@@ -51,6 +51,8 @@
       <ul>
         <li><a href="#msg-regex">Commit message Validation with regex</a></li>
         <li><a href="#msg-rules">Commit message Validation with rules</a></li>
+        <li><a href="#msg-file-write">Write invalid commit message to a file</a></li>
+        <li><a href="#msg-file-read">Load commit message from file</a></li>
         <li><a href="#check-lock-file">Composer lock file checks</a></li>
         <li><a href="#linting">PHP syntax check</a></li>
         <li><a href="#test-coverage">Enforce PHPUnit test coverage</a></li>
@@ -61,6 +63,7 @@
         <li><a href="#file-does-not-contain">Prevent committing specific content to files</a></li>
         <li><a href="#file-exists">Ensure a files exists</a></li>
         <li><a href="#branch-naming">Enforce branch naming</a></li>
+        <li><a href="#branch-fixup">Block pushing of squash or fixup commits</a></li>
       </ul>
     </li>
     <li>
@@ -78,7 +81,7 @@
 
   <h4 id="msg-beams">Enforce Chris Beams commit message rules</h4>
   <p>
-    Make sure your you commit message complies to the following rules.
+    Make sure your commit message complies to the following rules.
   </p>
   <ul>
     <li>Subject line starts with an upper-case character</li>
@@ -116,6 +119,47 @@
   "options": [
     "\CaptainHook\App\Hook\Message\Rule\MsgNotEmpty"
   ]
+}</code></pre>
+
+  <h4 id="msg-file-write">Write invalid commit message to file</h4>
+  <p>
+    Writes the invalid commit message to a file. This way it can be loaded for the next commit attempt, and
+    you don't have to type the whole message again. Instead, you can just fix the errors and proceed.
+  </p>
+  <pre><code class="javascript">{
+  "action": "\CaptainHook\App\Hook\Message\Action\CacheOnFail",
+  "options": {
+    "file": ".git/CH_MSG.temp"
+  }
+}</code></pre>
+
+  <h3>Commit-Message preparation</h3>
+
+  <div class="alert alert-warning">
+    Be aware that <em>prepare-commit-msg</em> hooks should support two scenarios:
+    <ol>
+      <li>
+        Commit without providing a message<br>
+        Then the editor will load with your prepared commit message to edit.
+      </li>
+      <li>
+        Commit with providing a message<br>
+        This way the commit message will be whatever you prepare. So you have to use the provided message
+        and combine it with your "preparation" otherwise you will just overwrite the message.
+      </li>
+    </ol>
+  </div>
+
+  <h4 id="msg-file-read">Load commit message from file</h4>
+  <p>
+    Load a commit message from a file for example if you wrote an invalid commit message to a file in a
+    previous commit attempt.
+  </p>
+  <pre><code class="javascript">{
+  "action": "\CaptainHook\App\Hook\Message\Action\LoadFromFile",
+  "options": {
+    "file": ".git/CH_MSG.temp"
+  }
 }</code></pre>
 
   <h3>Pre-Commit / Pre-Push</h3>
@@ -231,6 +275,19 @@
   "action": "\CaptainHook\App\Hook\Branch\Action\EnsureNaming",
   "options": {
     "regex": "#master|integration|feature/[a-z]+-[0-9]+#"
+  }
+}</code></pre>
+
+  <h4 id="branch-fixup">Block pushing of !fixup or !squash commits</h4>
+  <p>
+    Preparing !fixup or !squash commits for smooth rebasing is very handy. But you may not want to push those commits
+    to the main branch. If you don't provide any protected branches push fixup and squash commits is generally
+    prohibited.
+  </p>
+  <pre><code class="javascript">{
+  "action": "\CaptainHook\App\Hook\Branch\Action\BlockFixupAndSquashCommits",
+  "options": {
+    "protectedBranches": ["main", "master"]
   }
 }</code></pre>
 
