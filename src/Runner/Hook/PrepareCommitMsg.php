@@ -14,6 +14,7 @@ namespace CaptainHook\App\Runner\Hook;
 use CaptainHook\App\Config;
 use CaptainHook\App\Hooks;
 use CaptainHook\App\Runner\Hook;
+use CaptainHook\App\Runner\Util;
 use RuntimeException;
 use SebastianFeldmann\Git;
 
@@ -35,30 +36,30 @@ class PrepareCommitMsg extends Hook
     protected $hook = Hooks::PREPARE_COMMIT_MSG;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private $commentChar;
+    private ?string $commentChar;
 
     /**
      * Path to commit message file
      *
      * @var string
      */
-    private $file;
+    private string $file;
 
     /**
      * Commit mode, empty or [message|template|merge|squash|commit]
      *
      * @var string
      */
-    private $mode;
+    private string $mode;
 
     /**
      * Commit hash if mode is commit during -c or --amend
      *
      * @var string
      */
-    private $hash;
+    private string $hash;
 
     /**
      * Fetch the original hook arguments and message related config settings
@@ -99,7 +100,11 @@ class PrepareCommitMsg extends Hook
      */
     public function afterAction(Config\Action $action): void
     {
-        file_put_contents($this->file, $this->repository->getCommitMsg()->getRawContent());
+        // only write the commit message to disk if a php action was executed
+        // and potentially changed the message object
+        if (Util::getExecType($action->getAction()) !== 'cli') {
+            file_put_contents($this->file, $this->repository->getCommitMsg()->getRawContent());
+        }
         parent::afterAction($action);
     }
 }
