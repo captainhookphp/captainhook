@@ -51,6 +51,7 @@
       <ul>
         <li><a href="#msg-regex">Commit message Validation with regex</a></li>
         <li><a href="#msg-rules">Commit message Validation with rules</a></li>
+        <li><a href="#msg-issue-key">Inject issue key from branch name</a></li>
         <li><a href="#msg-file-write">Write invalid commit message to a file</a></li>
         <li><a href="#msg-file-read">Load commit message from file</a></li>
         <li><a href="#check-lock-file">Composer lock file checks</a></li>
@@ -149,6 +150,23 @@
       </li>
     </ol>
   </div>
+
+  <h4 id="msg-issue-key">Inject issue key into your commit message</h4>
+  <p>
+    Extracts an issue key from the current branch name and appends or prepends it to your commit messages
+    subject or body. If the commit message already contains the key nothing is added. If you set the <em>force</em>
+    option to <em>true</em> it will fail if no issue key can be extracted.
+  </p>
+  <pre><code class="javascript">{
+  "action": "\CaptainHook\App\Hook\Message\Action\InjectIssueKeyFromBranch",
+  "options": {
+    "regex": "#([A-Z]+\\-[0-9]+)#i",
+    "into": "body",
+    "mode": "append",
+    "prefix": "\\n\\nIssue: ",
+    "force": false
+  }
+}</code></pre>
 
   <h4 id="msg-file-read">Load commit message from file</h4>
   <p>
