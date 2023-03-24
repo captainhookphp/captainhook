@@ -116,6 +116,6 @@ class InjectIssueKeyFromBranch implements Action
      */
     private function injectIssueId(string $issueID, string $msg, string $mode, string $prefix): string
     {
-        return $mode === 'prepend' ? $prefix . $issueID . ' ' . $msg : $msg . $prefix . $issueID;
+        return ltrim($mode === 'prepend' ? $prefix . $issueID . ' ' . $msg : $msg . $prefix . $issueID);
     }
 }
