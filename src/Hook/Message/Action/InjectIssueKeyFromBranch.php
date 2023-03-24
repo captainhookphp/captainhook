@@ -93,7 +93,7 @@ class InjectIssueKeyFromBranch implements Action
         // let's figure out where to put the issueID
         $target = $options->get('into', 'body');
         $mode   = $options->get('mode', 'append');
-        $prefix = $options->get('prefix', '');
+        $prefix = $options->get('prefix', ' ');
 
         // overwrite either subject or body
         $newMsgData          = ['subject' => $msg->getSubject(), 'body' => $msg->getBody()];
