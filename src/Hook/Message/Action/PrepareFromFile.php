@@ -56,11 +56,12 @@ class PrepareFromFile implements Action
             throw new ActionFailed('PrepareFromFile requires \'file\' option');
         }
 
+        if (!is_file($cacheFile)) {
+            return;
+        }
+
         // if there is a commit message don't do anything just delete the file
         if ($repository->getCommitMsg()->isEmpty()) {
-            if (!is_file($cacheFile)) {
-                return;
-            }
             $msg = (string)file_get_contents($cacheFile);
             $repository->setCommitMsg(
                 new CommitMessage($msg, $repository->getCommitMsg()->getCommentCharacter())
