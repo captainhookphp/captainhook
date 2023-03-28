@@ -36,13 +36,22 @@ abstract class FileChanged extends File
     protected array $filesToWatch;
 
     /**
+     * Git filter options
+     *
+     * @var array<string>
+     */
+    private array $filter;
+
+    /**
      * FileChange constructor
      *
      * @param array<string> $files
+     * @param string $filter
      */
-    public function __construct(array $files)
+    public function __construct(array $files, string $filter = 'ACMR')
     {
         $this->filesToWatch = $files;
+        $this->filter       = !empty($filter) ? str_split($filter) : [];
     }
 
     /**
@@ -82,6 +91,6 @@ abstract class FileChanged extends File
         $oldHash = isset($ranges[0]) ? $ranges[0]->from()->id() : 'HEAD@{1}';
         $newHash = isset($ranges[0]) ? $ranges[0]->to()->id() : 'HEAD';
 
-        return $repository->getDiffOperator()->getChangedFiles($oldHash, $newHash);
+        return $repository->getDiffOperator()->getChangedFiles($oldHash, $newHash, $this->filter);
     }
 }

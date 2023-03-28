@@ -31,7 +31,7 @@ class AllTest extends TestCase
         $repository = $this->createRepositoryMock('');
         $repository->expects($this->once())->method('getDiffOperator')->willReturn($operator);
 
-        $fileChange = new All(['foo.php', 'bar.php']);
+        $fileChange = new All(['foo.php', 'bar.php'], '');
 
         $this->assertFalse($fileChange->isTrue($io, $repository));
     }
