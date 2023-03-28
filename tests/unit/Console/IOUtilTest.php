@@ -57,4 +57,16 @@ class IOUtilTest extends TestCase
 
         $this->assertEquals($long, $headline);
     }
+
+    /**
+     * Tests IOUtil::formatHeadline
+     */
+    public function testFormatHeadlineShort(): void
+    {
+        $text     = str_repeat('x', 70) ;
+        $expected = '==== ' . $text . ' ====';
+        $headline = IOUtil::formatHeadline($text, 80);
+
+        $this->assertEquals($expected, $headline);
+    }
 }

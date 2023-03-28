@@ -17,6 +17,7 @@ use CaptainHook\App\Exception\InvalidHookName;
 use CaptainHook\App\Git\DummyRepo;
 use CaptainHook\App\Hook\Mockery as HookMockery;
 use CaptainHook\App\Mockery as CHMockery;
+use Exception;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -298,6 +299,23 @@ class InstallerTest extends TestCase
         $runner->setSkipExisting(true);
         $runner->setHook('pre-commit');
         $runner->run();
+    }
+
+    /**
+     * Tests Installer::writeHookFile
+     */
+    public function testOnlyEnabledAndHooksToHandle(): void
+    {
+        $this->expectException(Exception::class);
+
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock();
+        $repo     = $this->createRepositoryMock();
+        $template = $this->createTemplateMock();
+
+        $runner = new Installer($io, $config, $repo, $template);
+        $runner->setHook('pre-commit');
+        $runner->setOnlyEnabled(true);
     }
 
     /**
