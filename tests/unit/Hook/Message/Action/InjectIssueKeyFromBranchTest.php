@@ -58,6 +58,33 @@ class InjectIssueKeyFromBranchTest extends TestCase
      *
      * @throws \Exception
      */
+    public function testAppendSubject(): void
+    {
+        $repo = new RepoMock();
+        $info = $this->createGitInfoOperator('5.0.0', 'freature/ABCD-12345-foo-bar-baz');
+
+        $repo->setCommitMsg(new CommitMessage('foo' . PHP_EOL . PHP_EOL . 'bar'));
+        $repo->setInfoOperator($info);
+
+        $io      = $this->createIOMock();
+        $config  = $this->createConfigMock();
+        $action  = $this->createActionConfigMock();
+        $action->method('getOptions')->willReturn(new Options([
+            'into' => 'subject',
+            'mode' => 'append',
+        ]));
+
+        $hook = new InjectIssueKeyFromBranch();
+        $hook->execute($config, $io, $repo, $action);
+
+        $this->assertEquals('foo ABCD-12345', $repo->getCommitMsg()->getSubject());
+    }
+
+    /**
+     * Tests InjectIssueKeyFromBranch::execute
+     *
+     * @throws \Exception
+     */
     public function testAppendBodyWithPrefix(): void
     {
         $repo = new RepoMock();
