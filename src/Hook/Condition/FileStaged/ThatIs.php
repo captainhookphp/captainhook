@@ -43,16 +43,16 @@ class ThatIs implements Condition, Constrained
     /**
      * Directory path to check e.g. 'src/' or 'path/To/Custom/Directory/'
      *
-     * @var string
+     * @var string[]
      */
-    private string $directory;
+    private array $directories;
 
     /**
      * File type to check e.g. 'php' or 'html'
      *
-     * @var string
+     * @var string[]
      */
-    private string $suffix;
+    private array $suffixes;
 
     /**
      * OfType constructor
@@ -61,8 +61,8 @@ class ThatIs implements Condition, Constrained
      */
     public function __construct(array $options)
     {
-        $this->directory = $options['inDirectory'] ?? '';
-        $this->suffix    = $options['ofType'] ?? '';
+        $this->directories = (array)($options['inDirectory'] ?? []);
+        $this->suffixes    = (array)($options['ofType'] ?? []);
     }
 
     /**
@@ -98,10 +98,17 @@ class ThatIs implements Condition, Constrained
      */
     private function filterFilesByDirectory(array $files): array
     {
-        if (empty($this->directory)) {
+        if (empty($this->directories)) {
             return $files;
         }
-        return array_filter($files, fn($file) => strpos($file, $this->directory) !== false);
+        return array_filter($files, function ($file) {
+            foreach ($this->directories as $directory) {
+                if (str_starts_with($file, $directory)) {
+                    return true;
+                }
+            }
+            return false;
+        });
     }
 
     /**
@@ -112,9 +119,13 @@ class ThatIs implements Condition, Constrained
      */
     private function filterFilesByType(array $files): array
     {
-        if (empty($this->suffix)) {
+        if (empty($this->suffixes)) {
             return $files;
         }
-        return array_filter($files, fn($file) => strtolower(pathinfo($file, PATHINFO_EXTENSION)) === $this->suffix);
+        return array_filter($files, fn($file) => in_array(
+            strtolower(pathinfo($file, PATHINFO_EXTENSION)),
+            $this->suffixes,
+            true
+        ));
     }
 }

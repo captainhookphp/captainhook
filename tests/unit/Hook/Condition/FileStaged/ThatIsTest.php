@@ -46,6 +46,34 @@ class ThatIsTest extends TestCase
     /**
      * Tests ThatIs::isTrue
      */
+    public function testStagedTrueMultipleType(): void
+    {
+        $io    = $this->createIOMock();
+        $repo  = $this->createRepositoryMock();
+        $index = $this->createGitIndexOperator(['foo.php', 'bar.php']);
+        $repo->expects($this->once())->method('getIndexOperator')->willReturn($index);
+
+        $thatIs = new ThatIs(['ofType' => ['php', 'js']]);
+        $this->assertTrue($thatIs->isTrue($io, $repo));
+    }
+
+    /**
+     * Tests ThatIs::isTrue
+     */
+    public function testStagedFalseMultipleType(): void
+    {
+        $io    = $this->createIOMock();
+        $repo  = $this->createRepositoryMock();
+        $index = $this->createGitIndexOperator(['foo.php', 'bar.php']);
+        $repo->expects($this->once())->method('getIndexOperator')->willReturn($index);
+
+        $thatIs = new ThatIs(['ofType' => ['ts', 'js']]);
+        $this->assertFalse($thatIs->isTrue($io, $repo));
+    }
+
+    /**
+     * Tests ThatIs::isTrue
+     */
     public function testStagedTrueDirectory(): void
     {
         $io    = $this->createIOMock();
@@ -55,6 +83,48 @@ class ThatIsTest extends TestCase
 
         $thatIs = new ThatIs(['inDirectory' => 'bar/']);
         $this->assertTrue($thatIs->isTrue($io, $repo));
+    }
+
+    /**
+     * Tests ThatIs::isTrue
+     */
+    public function testStagedFalsePartialDirectory(): void
+    {
+        $io    = $this->createIOMock();
+        $repo  = $this->createRepositoryMock();
+        $index = $this->createGitIndexOperator(['foo/foo.php', 'foo/bar/bar.js', 'fiz/baz.txt']);
+        $repo->expects($this->once())->method('getIndexOperator')->willReturn($index);
+
+        $thatIs = new ThatIs(['inDirectory' => 'bar/']);
+        $this->assertFalse($thatIs->isTrue($io, $repo));
+    }
+
+    /**
+     * Tests ThatIs::isTrue
+     */
+    public function testStagedTrueMultipleDirectory(): void
+    {
+        $io = $this->createIOMock();
+        $repo = $this->createRepositoryMock();
+        $index = $this->createGitIndexOperator(['foo/foo.php', 'bar/bar.js', 'fiz/baz.txt']);
+        $repo->expects($this->once())->method('getIndexOperator')->willReturn($index);
+
+        $thatIs = new ThatIs(['inDirectory' => ['bar/', 'baz/']]);
+        $this->assertTrue($thatIs->isTrue($io, $repo));
+    }
+
+    /**
+     * Tests ThatIs::isTrue
+     */
+    public function testStagedFalseMultipleDirectory(): void
+    {
+        $io = $this->createIOMock();
+        $repo = $this->createRepositoryMock();
+        $index = $this->createGitIndexOperator(['foo/foo.php', 'bar/bar.js', 'fiz/baz.txt']);
+        $repo->expects($this->once())->method('getIndexOperator')->willReturn($index);
+
+        $thatIs = new ThatIs(['inDirectory' => ['foobar/', 'baz/']]);
+        $this->assertFalse($thatIs->isTrue($io, $repo));
     }
 
     /**
