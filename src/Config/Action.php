@@ -28,36 +28,37 @@ class Action
      *
      * @var string
      */
-    private $action;
+    private string $action;
 
     /**
      * Map of options name => value
      *
      * @var \CaptainHook\App\Config\Options
      */
-    private $options;
+    private Options $options;
 
     /**
      * List of action conditions
      *
      * @var \CaptainHook\App\Config\Condition[]
      */
-    private $conditions = [];
+    private array $conditions = [];
 
     /**
      * Action settings
      *
      * @var array<string, mixed>
      */
-    private $settings = [];
+    private array $settings = [];
 
     /**
      * List of available settings
      *
      * @var string[]
      */
-    private static $availableSettings = [
-        Config::SETTING_ALLOW_FAILURE
+    private static array $availableSettings = [
+        Config::SETTING_ALLOW_FAILURE,
+        Config::SETTING_LABEL
     ];
 
     /**
@@ -108,7 +109,7 @@ class Action
     {
         foreach (self::$availableSettings as $setting) {
             if (isset($settings[$setting])) {
-                $this->settings[Config::SETTING_ALLOW_FAILURE] = $settings[$setting];
+                $this->settings[$setting] = $settings[$setting];
             }
         }
     }
@@ -122,6 +123,16 @@ class Action
     public function isFailureAllowed(bool $default = false): bool
     {
         return (bool) ($this->settings[Config::SETTING_ALLOW_FAILURE] ?? $default);
+    }
+
+    /**
+     * Return the label or the action if no label is set
+     *
+     * @return string
+     */
+    public function getLabel(): string
+    {
+        return (string) ($this->settings[Config::SETTING_LABEL] ?? $this->getAction());
     }
 
     /**

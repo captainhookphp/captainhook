@@ -63,6 +63,26 @@ class ActionTest extends TestCase
     }
 
     /**
+     * Tests Action::getLabel
+     */
+    public function testGetLabel(): void
+    {
+        $action = new Action('\\Foo\\Bar', [], [], ['label' => 'My label']);
+
+        $this->assertEquals('My label', $action->getLabel());
+    }
+
+    /**
+     * Tests Action::getLabel
+     */
+    public function testGetLabelEmpty(): void
+    {
+        $action = new Action('\\Foo\\Bar');
+
+        $this->assertEquals('\\Foo\\Bar', $action->getLabel());
+    }
+
+    /**
      * Tests Action::getOptions
      */
     public function testGetOptions(): void

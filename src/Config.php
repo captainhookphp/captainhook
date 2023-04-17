@@ -31,6 +31,7 @@ class Config
     public const SETTING_GIT_DIR             = 'git-directory';
     public const SETTING_INCLUDES            = 'includes';
     public const SETTING_INCLUDES_LEVEL      = 'includes-level';
+    public const SETTING_LABEL               = 'label';
     public const SETTING_RUN_EXEC            = 'run-exec';
     public const SETTING_RUN_MODE            = 'run-mode';
     public const SETTING_RUN_PATH            = 'run-path';

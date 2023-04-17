@@ -304,15 +304,12 @@ abstract class Hook extends RepositoryAware
     private function handleAction(Config\Action $action): void
     {
         if ($this->shouldSkipActions()) {
-            $this->io->write(
-                $this->formatActionOutput($action->getAction()) . ': <comment>deactivated</comment>',
-                true
-            );
+            $this->io->write($this->formatActionOutput($action->getLabel()) . ': <comment>deactivated</comment>');
             return;
         }
 
         $this->io->write(
-            ' - <fg=blue>' . $this->formatActionOutput($action->getAction()) . '</> : ',
+            ' - <fg=blue>' . $this->formatActionOutput($action->getLabel()) . '</> : ',
             $this->io->isVerbose()
         );
 
