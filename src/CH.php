@@ -23,7 +23,7 @@ namespace CaptainHook\App;
  */
 final class CH
 {
-    public const VERSION      = '5.16.3';
-    public const RELEASE_DATE = '2023-03-30';
+    public const VERSION      = '5.16.4';
+    public const RELEASE_DATE = '2023-04-17';
     public const CONFIG       = 'captainhook.json';
 }
