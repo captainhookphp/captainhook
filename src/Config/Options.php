@@ -44,7 +44,7 @@ class Options
      * @template T
      * @param  string $name
      * @param  T      $default
-     * @return T
+     * @return T|null
      */
     public function get(string $name, $default = null)
     {
