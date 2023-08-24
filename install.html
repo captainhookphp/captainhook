@@ -100,12 +100,12 @@
         If you don't have PHP installed locally or you have installed a different version, you can use Docker to
         execute CaptainHook. To do so you must install the hooks a bit differently.
       </p>
-      <pre><code class="bash">$ vendor/bin/captainhook install --run-mode=docker --run-exec="docker exec CONTAINER_NAME"</code></pre>
+      <pre><code class="bash">$ vendor/bin/captainhook install --run-mode=docker --run-exec="docker exec -i CONTAINER_NAME"</code></pre>
       <p>
         You can choose your preferred docker command e.g.:
       </p>
       <ul>
-        <li>docker exec MY_CONTAINER_NAME</li>
+        <li>docker exec -i MY_CONTAINER_NAME</li>
         <li>docker run --rm -v $(pwd):/var/www/html MY_IMAGE_NAME</li>
         <li>docker-compose -f docker/docker-compose.yml run --rm -T MY_SERVICE_NAME</li>
       </ul>
@@ -116,7 +116,7 @@
       <pre><code class="javascript">{
   "config": {
     "run-mode": "docker",
-    "run-exec": "docker exec CONTAINER_NAME"
+    "run-exec": "docker exec -i CONTAINER_NAME"
   }
   "pre-commit": {
     ...
@@ -127,7 +127,7 @@
         will not trigger the creation of a Docker container just to output that the hook is disabled. To make sure you
         only install enabled hooks use the corresponding flag during installation.
       </p>
-      <pre><code class="bash">$ vendor/bin/captainhook install --only-enabled --run-mode=docker --run-exec="docker exec CONTAINER_NAME"</code></pre>
+      <pre><code class="bash">$ vendor/bin/captainhook install --only-enabled --run-mode=docker --run-exec="docker exec -i CONTAINER_NAME"</code></pre>
 
       <h2>A word of warning</h2>
       <p class="pirate">
