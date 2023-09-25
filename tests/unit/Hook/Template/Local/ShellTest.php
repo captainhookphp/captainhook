@@ -66,6 +66,29 @@ class ShellTest extends TestCase
     /**
      * Tests Shell::getCode
      */
+    public function testTemplateWithDefinedPHPAndRunPath(): void
+    {
+        $pathInfo = $this->createMock(PathInfo::class);
+        $pathInfo->method('getExecutablePath')->willReturn('vendor/bin/captainhook');
+        $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
+
+        $config = $this->createConfigMock(false, 'captainhook.json');
+        $config->method('getBootstrap')->willReturn('vendor/autoload.php');
+        $config->method('getPhpPath')->willReturn('/usr/bin/php7.4');
+        $config->method('getRunPath')->willReturn('tools/captainhook.phar');
+
+        $template = new Shell($pathInfo, $config, false);
+        $code     = $template->getCode('commit-msg');
+
+        $this->assertStringContainsString('#!/bin/sh', $code);
+        $this->assertStringContainsString('commit-msg', $code);
+        $this->assertStringContainsString('/usr/bin/php7.4', $code);
+        $this->assertStringContainsString('tools/captainhook.phar $INTERACTIVE', $code);
+    }
+
+    /**
+     * Tests Shell::getCode
+     */
     public function testTemplateExtExecutable(): void
     {
         $pathInfo = $this->createMock(PathInfo::class);

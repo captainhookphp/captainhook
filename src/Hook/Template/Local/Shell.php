@@ -63,10 +63,6 @@ class Shell extends Template\Local
             ];
         }
 
-        $executable = $this->config->getPhpPath() === ''
-                    ? $this->pathInfo->getExecutablePath()
-                    : $this->config->getPhpPath() . ' ' . $this->pathInfo->getExecutablePath();
-
         return array_merge(
             [
                 '#!/bin/sh',
@@ -78,12 +74,28 @@ class Shell extends Template\Local
             $useTTY,
             [
                 '',
-                $executable
+                $this->getExecutable()
                     . ' $INTERACTIVE'
                     . ' --configuration=' . $this->pathInfo->getConfigPath()
                     . ' --bootstrap=' . $this->config->getBootstrap()
                     . ' hook:' . $hook . ' "$@"' . $useStdIn,
             ]
         );
+    }
+
+    /**
+     * Returns the path to the executable including a configured php executable
+     *
+     * @return string
+     */
+    private function getExecutable(): string
+    {
+        $executable = !empty($this->config->getPhpPath()) ? $this->config->getPhpPath() . ' ' : '';
+
+        if (!empty($this->config->getRunPath())) {
+            return $executable . $this->config->getRunPath();
+        }
+
+        return $executable . $this->pathInfo->getExecutablePath();
     }
 }
