@@ -33,55 +33,28 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 0.9.0
  */
-class Installer extends RepositoryAware
+class Installer extends Files
 {
-    /**
-     * Install hooks brute force
-     *
-     * @var bool
-     */
-    private $force = false;
-
     /**
      * Don't overwrite existing hooks
      *
      * @var bool
      */
-    private $skipExisting = false;
-
-    /**
-     * Path where the existing hooks should be moved to
-     *
-     * @var string
-     */
-    private $moveExistingTo = '';
+    private bool $skipExisting = false;
 
     /**
      * Install only enabled hooks
      *
      * @var bool
      */
-    private $onlyEnabled = false;
-
-    /**
-     *
-     * @var array<int, string>
-     */
-    protected $hooksToHandle;
+    private bool $onlyEnabled = false;
 
     /**
      * Hook template
      *
-     * @var Template
+     * @var \CaptainHook\App\Hook\Template
      */
-    private $template;
-
-    /**
-     * Git repository.
-     *
-     * @var \SebastianFeldmann\Git\Repository
-     */
-    protected $repository;
+    private Template $template;
 
     /**
      * HookHandler constructor.
@@ -95,16 +68,6 @@ class Installer extends RepositoryAware
     {
         $this->template = $template;
         parent::__construct($io, $config, $repository);
-    }
-
-    /**
-     * @param  bool $force
-     * @return \CaptainHook\App\Runner\Installer
-     */
-    public function setForce(bool $force): Installer
-    {
-        $this->force = $force;
-        return $this;
     }
 
     /**
@@ -131,8 +94,7 @@ class Installer extends RepositoryAware
         if (!empty($backup) && $this->skipExisting) {
             throw new RuntimeException('choose --skip-existing or --move-existing-to');
         }
-        $this->moveExistingTo = $backup;
-        return $this;
+        return parent::setMoveExistingTo($backup);
     }
 
     /**
@@ -166,22 +128,7 @@ class Installer extends RepositoryAware
             throw new RuntimeException('choose --only-enabled or specific hooks');
         }
 
-        /** @var array<string> $hooks */
-        $hooks = explode(',', $hook);
-        $hooks = array_map('trim', $hooks);
-
-        $hooksValidationCallback = static function (string $hook): bool {
-            return !HookUtil::isInstallable($hook);
-        };
-        if (!empty(($invalidHooks = array_filter($hooks, $hooksValidationCallback)))) {
-            throw new Exception\InvalidHookName(
-                'Invalid hook name \'' . implode('\', \'', $invalidHooks) . '\''
-            );
-        }
-
-        $this->hooksToHandle = $hooks;
-
-        return $this;
+        return parent::setHook($hook);
     }
 
     /**
@@ -210,21 +157,17 @@ class Installer extends RepositoryAware
      */
     public function getHooksToInstall(): array
     {
-        // to make sure the user will be asked to confirm every hook installation
-        // unless the user provided the force or skip option
-        // if specific hooks are set, the use has actively chosen it, so don't ask for permission anymore
-        if (!empty($this->hooksToHandle)) {
-            return array_map(fn($hook) => false, array_flip($this->hooksToHandle));
-        }
-        $hooks = Hooks::nativeHooks();
+        $hooks = $this->getHooksToHandle();
+        // if only enabled hooks should be installed remove disabled ones from $hooks array
         if ($this->onlyEnabled) {
             $hooks = array_filter(
                 $hooks,
-                fn($hook) => $this->config->isHookEnabled($hook),
+                fn(string $key): bool => $this->config->isHookEnabled($key),
                 ARRAY_FILTER_USE_KEY
             );
         }
-        return array_map(fn($hook) => true, $hooks);
+        // make sure to ask for every remaining hook if it should be installed
+        return $hooks;
     }
 
     /**
@@ -267,46 +210,6 @@ class Installer extends RepositoryAware
     }
 
     /**
-     * If a path to incorporate the existing hook is set we should incorporate existing hooks
-     *
-     * @return bool
-     */
-    private function shouldHookBeMoved(): bool
-    {
-        return !empty($this->moveExistingTo);
-    }
-
-    /**
-     * Move the existing hook to the configured location
-     *
-     * @param string $hook
-     */
-    private function backupHook(string $hook): void
-    {
-        // no hook to move just leave
-        if (!$this->repository->hookExists($hook)) {
-            return;
-        }
-
-        $hookFileOrig   = $this->repository->getHooksDir() . DIRECTORY_SEPARATOR . $hook;
-        $hookCmd        = rtrim($this->moveExistingTo, '/\\') . DIRECTORY_SEPARATOR . $hook;
-        $hookCmdArgs    = $hookCmd . Hooks::getOriginalHookArguments($hook);
-        $hookFileTarget = !Check::isAbsolutePath($this->moveExistingTo)
-                        ? dirname($this->config->getPath()) . DIRECTORY_SEPARATOR . $hookCmd
-                        : $hookCmd;
-
-        $this->moveExistingHook($hookFileOrig, $hookFileTarget);
-
-        $this->io->write(
-            [
-                '  Moved existing ' . $hook . ' hook to ' . $hookCmd,
-                '  Add <comment>\'' . $hookCmdArgs . '\'</comment> to your '
-                . $hook . ' configuration to execute it.'
-            ]
-        );
-    }
-
-    /**
      * Write given hook to .git/hooks directory
      *
      * @param  string $hook
@@ -320,7 +223,7 @@ class Installer extends RepositoryAware
 
         // if hook is configured and no force option is set
         // ask the user if overwriting the hook is ok
-        if ($this->needInstallConfirmation($hook)) {
+        if ($this->needConfirmation($hook)) {
             $ans  = $this->io->ask('  <comment>The \'' . $hook . '\' hook exists! Overwrite? [y,n]</comment> ', 'n');
             $doIt = IOUtil::answerToBool($ans);
         }
@@ -343,40 +246,5 @@ class Installer extends RepositoryAware
     private function getHookSourceCode(string $hook): string
     {
         return $this->template->getCode($hook);
-    }
-
-    /**
-     * If the hook already exists the user has to confirm the installation
-     *
-     * @param  string $hook The name of the hook to check
-     * @return bool
-     */
-    private function needInstallConfirmation(string $hook): bool
-    {
-        return $this->repository->hookExists($hook) && !$this->force;
-    }
-
-    /**
-     * Move the existing hook script to the new location
-     *
-     * @param  string $originalLocation
-     * @param  string $newLocation
-     * @return void
-     * @throws \RuntimeException
-     */
-    private function moveExistingHook(string $originalLocation, string $newLocation): void
-    {
-        $dir = dirname($newLocation);
-        // make sure the target directory isn't a file
-        if (file_exists($dir) && !is_dir($dir)) {
-            throw new RuntimeException($dir . ' is not a directory');
-        }
-        // create the directory if it does not exist
-        if (!is_dir($dir)) {
-            mkdir($dir, 0755, true);
-        }
-
-        // move the hook into the target directory
-        rename($originalLocation, $newLocation);
     }
 }
