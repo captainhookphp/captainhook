@@ -36,24 +36,9 @@ class Shell extends Template\Local
      *
      * @var bool[]
      */
-    private $allowUserInput = [
+    private array $allowUserInput = [
         'prepare-commit-msg' => true
     ];
-
-    /**
-     * Return the path to the target path from the git repository root f.e. vendor/bin/captainhook
-     *
-     * @param  \SebastianFeldmann\Camino\Path\Directory $repo
-     * @param  \SebastianFeldmann\Camino\Path           $target
-     * @return string
-     */
-    protected function getPathForHookTo(Directory $repo, Path $target): string
-    {
-        if (!$target->isChildOf($repo)) {
-            return $target->getPath();
-        }
-        return $target->getRelativePathFrom($repo);
-    }
 
     /**
      * Returns lines of code for the local src installation
@@ -78,7 +63,9 @@ class Shell extends Template\Local
             ];
         }
 
-        $executable = $this->phpPath === '' ? $this->executablePath : $this->phpPath . ' ' . $this->executablePath;
+        $executable = $this->config->getPhpPath() === ''
+                    ? $this->pathInfo->getExecutablePath()
+                    : $this->config->getPhpPath() . ' ' . $this->pathInfo->getExecutablePath();
 
         return array_merge(
             [
@@ -93,8 +80,8 @@ class Shell extends Template\Local
                 '',
                 $executable
                     . ' $INTERACTIVE'
-                    . ' --configuration=' . $this->configPath
-                    . ' --bootstrap=' . $this->bootstrap
+                    . ' --configuration=' . $this->pathInfo->getConfigPath()
+                    . ' --bootstrap=' . $this->config->getBootstrap()
                     . ' hook:' . $hook . ' "$@"' . $useStdIn,
             ]
         );

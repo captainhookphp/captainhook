@@ -42,22 +42,6 @@ class PHP extends Template\Local
     }
 
     /**
-     * Return the path to the target path from inside the .git/hooks directory f.e. __DIR__ ../../vendor
-     *
-     * @param  \SebastianFeldmann\Camino\Path\Directory $repo
-     * @param  \SebastianFeldmann\Camino\Path           $target
-     * @return string
-     */
-    protected function getPathForHookTo(Directory $repo, Path $target): string
-    {
-        if (!$target->isChildOf($repo)) {
-            return '\'' . $target->getPath() . '\'';
-        }
-
-        return '__DIR__ . \'/../../' . $target->getRelativePathFrom($repo) . '\'';
-    }
-
-    /**
      * Returns lines of code for the local src installation
      *
      * @param  string $hook
@@ -65,6 +49,9 @@ class PHP extends Template\Local
      */
     private function getSrcHookLines(string $hook): array
     {
+        $configPath = $this->pathInfo->getConfigPath();
+        $bootstrap  = $this->config->getBootstrap();
+
         return [
             '#!/usr/bin/env php',
             '<?php',
@@ -76,7 +63,7 @@ class PHP extends Template\Local
             '',
             '(static function($argv)',
             '{',
-            '    $bootstrap = ' . dirname($this->configPath) . '/' . $this->bootstrap . '\';',
+            '    $bootstrap = ' . dirname($configPath) . '/' . $bootstrap . '\';',
             '    if (!file_exists($bootstrap)) {',
             '        fwrite(STDERR, \'Boostrap file \\\'\' . $bootstrap . \'\\\' could not be found\');',
             '        exit(1);',
@@ -87,7 +74,7 @@ class PHP extends Template\Local
             '        [',
             '            $argv[0],',
             '            \'hook:' . $hook . '\',',
-            '            \'--configuration=\' . ' . $this->configPath . ',',
+            '            \'--configuration=' . $configPath . '\'',
             '            \'--git-directory=\' . dirname(__DIR__, 2) . \'/.git\',',
             '        ],',
             '        array_slice($argv, 1)',
@@ -107,6 +94,13 @@ class PHP extends Template\Local
      */
     private function getPharHookLines(string $hook): array
     {
+        $configPath     = $this->pathInfo->getConfigPath();
+        $executablePath = $this->pathInfo->getExecutablePath();
+        $bootstrap      = $this->config->getBootstrap();
+
+        $executableInclude = substr($executablePath, 0, 1) == '/'
+                           ? '\'' . $executablePath . '\''
+                           : '__DIR__ . \'/../../' . $executablePath  . '\'';
         return [
             '#!/usr/bin/env php',
             '<?php',
@@ -117,13 +111,13 @@ class PHP extends Template\Local
             '        [',
             '            $argv[0],',
             '            \'hook:' . $hook . '\',',
-            '            \'--configuration=\' . ' . $this->configPath . ',',
+            '            \'--configuration=' . $configPath . ',',
             '            \'--git-directory=\' . dirname(__DIR__, 2) . \'/.git\',',
-            '            \'--bootstrap=' . $this->bootstrap . '\',',
+            '            \'--bootstrap=' . $bootstrap . '\',',
             '        ],',
             '        array_slice($argv, 1)',
             '    );',
-            '    include ' . $this->executablePath . ';',
+            '    include ' . $executableInclude . ';',
             '}',
             ')($argv);',
         ];
