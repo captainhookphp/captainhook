@@ -100,7 +100,7 @@ class ActionTest extends TestCase
         $action = new Action('\\Foo\\Bar');
         $config = $action->getJsonData();
 
-        $this->assertCount(0, $config['options']);
+        $this->assertCount(1, $config);
     }
 
     /**
