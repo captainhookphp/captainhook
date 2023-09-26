@@ -73,9 +73,13 @@ class PrepareCommitMsgTest extends TestCase
     {
         $this->expectException(Exception::class);
 
+        $repo     = $this->createRepositoryMock();
+        $configOp = $this->createGitConfigOperator();
+        $configOp->method('getSafely')->willReturn('#');
+        $repo->method('getConfigOperator')->willReturn($configOp);
+
         $io           = $this->createIOMock();
         $config       = $this->createConfigMock();
-        $repo         = $this->createRepositoryMock();
         $hookConfig   = $this->createHookConfigMock();
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(Prepare::class);
