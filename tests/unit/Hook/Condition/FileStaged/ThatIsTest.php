@@ -123,7 +123,7 @@ class ThatIsTest extends TestCase
         $index = $this->createGitIndexOperator(['foo/foo.php', 'bar/bar.js', 'fiz/baz.txt']);
         $repo->expects($this->once())->method('getIndexOperator')->willReturn($index);
 
-        $thatIs = new ThatIs(['inDirectory' => ['foobar/', 'baz/']]);
+        $thatIs = new ThatIs(['inDirectory' => ['foobar/', 'baz/'], 'diffFilter' => ['A', 'C']]);
         $this->assertFalse($thatIs->isTrue($io, $repo));
     }
 

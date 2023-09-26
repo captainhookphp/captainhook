@@ -53,7 +53,7 @@ class InDirectoryTest extends TestCase
         $index = $this->createGitIndexOperator(['src/foo.php', 'src/bar.php']);
         $repo->expects($this->once())->method('getIndexOperator')->willReturn($index);
 
-        $condition = new InDirectory('tests/');
+        $condition = new InDirectory('tests/', ['A', 'C']);
         $this->assertFalse($condition->isTrue($io, $repo));
     }
 }

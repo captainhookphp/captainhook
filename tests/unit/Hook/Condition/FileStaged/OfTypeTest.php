@@ -55,7 +55,7 @@ class OfTypeTest extends TestCase
         $index->expects($this->once())->method('getStagedFilesOfType')->willReturn([]);
         $repo->expects($this->once())->method('getIndexOperator')->willReturn($index);
 
-        $ofType = new OfType('js');
+        $ofType = new OfType('js', ['A', 'C']);
         $this->assertFalse($ofType->isTrue($io, $repo));
     }
 }
