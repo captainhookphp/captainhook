@@ -36,9 +36,9 @@ class PrepareCommitMsg extends Hook
     protected $hook = Hooks::PREPARE_COMMIT_MSG;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $commentChar;
+    private string $commentChar;
 
     /**
      * Path to commit message file

@@ -15,6 +15,7 @@ use CaptainHook\App\Console\Runtime\Resolver;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use SebastianFeldmann\Git\Operator\Diff;
 use SebastianFeldmann\Git\Operator\Index;
+use SebastianFeldmann\Git\Operator\Config;
 use SebastianFeldmann\Git\Operator\Info;
 use SebastianFeldmann\Git\Operator\Log;
 use SebastianFeldmann\Git\Repository;
@@ -98,7 +99,6 @@ trait Mockery
     /**
      * Create log operator mock
      *
-     * @param  array $changedFiles
      * @return \SebastianFeldmann\Git\Operator\Log&\PHPUnit\Framework\MockObject\MockObject
      */
     public function createGitLogOperator(): Log
@@ -125,6 +125,16 @@ trait Mockery
         $operator->method('getStagedFiles')->willReturn($stagedFiles);
 
         return $operator;
+    }
+
+    /**
+     * Create config operator mock
+     *
+     * @return \SebastianFeldmann\Git\Operator\Config&\PHPUnit\Framework\MockObject\MockObject
+     */
+    public function createGitConfigOperator(): Config
+    {
+        return $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
     }
 
     /**

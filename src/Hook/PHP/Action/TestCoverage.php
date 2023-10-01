@@ -35,21 +35,21 @@ class TestCoverage implements Action
      *
      * @var string
      */
-    private $cloverXmlFile;
+    private string $cloverXmlFile;
 
     /**
      * Path to PHPUnit
      *
      * @var string
      */
-    private $phpUnit;
+    private string $phpUnit;
 
     /**
      * Minimum coverage in percent
      *
      * @var int
      */
-    private $minCoverage;
+    private int $minCoverage;
 
     /**
      * Executes the action.

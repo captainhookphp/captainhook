@@ -41,14 +41,14 @@ class Options
     /**
      * Return a option value
      *
-     * @template T
-     * @param  string $name
-     * @param  T      $default
-     * @return T|null
+     * @template ProvidedDefault
+     * @param  string          $name
+     * @param  ProvidedDefault $default
+     * @return ProvidedDefault|mixed
      */
     public function get(string $name, $default = null)
     {
-        return isset($this->options[$name]) ? $this->options[$name] : $default;
+        return $this->options[$name] ?? $default;
     }
 
     /**
