@@ -63,4 +63,10 @@ class HooksTest extends TestCase
         $this->expectException(Exception::class);
         Hooks::getVirtualHook('pre-commit');
     }
+
+    public function testAllowsUserInput(): void
+    {
+        $this->assertTrue(Hooks::allowsUserInput(Hooks::PREPARE_COMMIT_MSG));
+        $this->assertFalse(Hooks::allowsUserInput(Hooks::PRE_COMMIT));
+    }
 }

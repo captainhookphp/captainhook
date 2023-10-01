@@ -51,10 +51,19 @@ final class Hooks
      *
      * @var string[]
      */
-    private static $virtualHookTriggers = [
+    private static array $virtualHookTriggers = [
         self::POST_CHECKOUT => self::POST_CHANGE,
         self::POST_MERGE    => self::POST_CHANGE,
         self::POST_REWRITE  => self::POST_CHANGE,
+    ];
+
+    /**
+     * Is it necessary to give the Captain access to user input
+     *
+     * @var array<string, bool>
+     */
+    private static array $hooksAllowingUserInput = [
+        self::PREPARE_COMMIT_MSG => true,
     ];
 
     /**
@@ -135,6 +144,17 @@ final class Hooks
         ];
 
         return $arguments[$hook];
+    }
+
+    /**
+     * Does a given hook allow for user input to be used
+     *
+     * @param  string $hook
+     * @return bool
+     */
+    public static function allowsUserInput(string $hook): bool
+    {
+        return self::$hooksAllowingUserInput[$hook] ?? false;
     }
 
     /**
