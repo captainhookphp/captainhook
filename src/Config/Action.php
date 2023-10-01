@@ -173,9 +173,13 @@ class Action
     public function getJsonData(): array
     {
         $data = [
-            'action'  => $this->action,
-            'options' => $this->options->getAll(),
+            'action'  => $this->action
         ];
+
+        $options = $this->options->getAll();
+        if (!empty($options)) {
+            $data['options'] = $options;
+        }
 
         $conditions = $this->getConditionJsonData();
         if (!empty($conditions)) {
