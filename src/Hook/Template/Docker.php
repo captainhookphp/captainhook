@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace CaptainHook\App\Hook\Template;
 
 use CaptainHook\App\CH;
+use CaptainHook\App\Config;
 use CaptainHook\App\Hook\Template;
-use CaptainHook\App\Hook\Template\Docker\Config as DockerConfig;
+use CaptainHook\App\Hook\Template\Docker\RunConfig as DockerConfig;
 use SebastianFeldmann\Camino\Path\Directory;
 use SebastianFeldmann\Camino\Path\File;
 
@@ -33,47 +34,37 @@ use SebastianFeldmann\Camino\Path\File;
 class Docker implements Template
 {
     /**
-     * Path to the repository root
+     * All path required for template creation
      *
-     * @var \SebastianFeldmann\Camino\Path\Directory
+     * @var \CaptainHook\App\Hook\Template\PathInfo
      */
-    private $repository;
+    private PathInfo $pathInfo;
 
     /**
-     * Path to the configuration file
+     * CaptainHook configuration
      *
-     * @var \SebastianFeldmann\Camino\Path\File
+     * @var \CaptainHook\App\Config
      */
-    private $config;
-
-    /**
-     * Docker configuration with run-command & run-path
-     *
-     * @var \CaptainHook\App\Hook\Template\Docker\Config
-     */
-    private $dockerConfig;
+    private Config $config;
 
     /**
      * Path to the CaptainHook binary script or PHAR
      *
      * @var string
      */
-    private $binaryPath;
+    private string $binaryPath;
 
     /**
      * Docker constructor
      *
-     * @param \SebastianFeldmann\Camino\Path\Directory     $repo
-     * @param \SebastianFeldmann\Camino\Path\File          $config
-     * @param \SebastianFeldmann\Camino\Path\File          $captain
-     * @param \CaptainHook\App\Hook\Template\Docker\Config $docker
+     * @param \CaptainHook\App\Hook\Template\PathInfo $pathInfo
+     * @param \CaptainHook\App\Config                 $config
      */
-    public function __construct(Directory $repo, File $config, File $captain, DockerConfig $docker)
+    public function __construct(PathInfo $pathInfo, Config $config)
     {
-        $this->repository   = $repo;
-        $this->config       = $config;
-        $this->dockerConfig = $docker;
-        $this->binaryPath   = $this->resolveBinaryPath($repo, $captain);
+        $this->pathInfo   = $pathInfo;
+        $this->config     = $config;
+        $this->binaryPath = $this->resolveBinaryPath();
     }
 
     /**
@@ -84,15 +75,20 @@ class Docker implements Template
      */
     public function getCode(string $hook): string
     {
-        $path2Config = $this->config->getRelativePathFrom($this->repository);
+        $path2Config = $this->pathInfo->getConfigPath();
         $config      = $path2Config !== CH::CONFIG ? ' --configuration=' . escapeshellarg($path2Config) : '';
+        $bootstrap   = !empty($this->config->getBootstrap()) ? ' --bootstrap=' . $this->config->getBootstrap() : '';
 
         $lines = [
             '#!/bin/sh',
             '',
             '# installed by CaptainHook ' . CH::VERSION,
             '',
-            $this->dockerConfig->getDockerCommand() . ' ' . $this->binaryPath . ' hook:' . $hook . $config . ' "$@"'
+            $this->config->getRunExec() . ' '
+            . $this->binaryPath . ' hook:' . $hook
+            . $config
+            . $bootstrap
+            . ' "$@"'
         ];
         return implode(PHP_EOL, $lines) . PHP_EOL;
     }
@@ -100,39 +96,27 @@ class Docker implements Template
     /**
      * Resolves the path to the captainhook binary and returns it
      *
-     * @param  \SebastianFeldmann\Camino\Path\Directory $repo       Absolute path to the git repository root
-     * @param  \SebastianFeldmann\Camino\Path\File      $executable Absolute path to the executable
      * @return string
      */
-    private function resolveBinaryPath(Directory $repo, File $executable): string
+    private function resolveBinaryPath(): string
     {
         // if a specific executable is configured use just that
-        if (!empty($this->dockerConfig->getPathToCaptainHookExecutable())) {
-            return $this->dockerConfig->getPathToCaptainHookExecutable();
+        if (!empty($this->config->getRunPath())) {
+            return $this->config->getRunPath();
         }
 
-        // check if the captainhook binary is in the repository bin directory
-        // this is only the case if we work in the captainhook repository
-        if (file_exists($repo->getPath() . '/bin/captainhook')) {
-            return './bin/captainhook';
-        }
-
-        // For docker we need to strip down the current working directory.
+        // For Docker we need to strip down the current working directory.
         // This is caused because docker will always connect to a specific working directory
         // where the absolute path will not be recognized.
         // E.g.:
         //   cwd    => /project/
         //   path   => /project/vendor/bin/captainhook
         //   docker => ./vendor/bin/captainhook
-        $pathToExecutable = $executable->getPath();
-
-        // if executable is located inside the repository use a relative path
+        // if the executable is located inside the repository we can use a relative path
         // by default this should return something like ./vendor/bin/captainhook
-        if ($executable->isChildOf($repo)) {
-            $pathToExecutable = './' . $executable->getRelativePathFrom($repo);
-        }
-
         // if the executable is not located in your git repository it will return the absolute path
-        return $pathToExecutable;
+        // which will most likely not work from within the docker container
+        // you have to use the 'run_path' config then
+        return $this->pathInfo->getExecutablePath();
     }
 }

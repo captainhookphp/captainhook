@@ -11,25 +11,28 @@
 
 namespace CaptainHook\App\Hook\Template\Local;
 
+use CaptainHook\App\Config\Mockery as ConfigMockery;
+use CaptainHook\App\Hook\Template\PathInfo;
 use PHPUnit\Framework\TestCase;
-use SebastianFeldmann\Camino\Path\Directory;
-use SebastianFeldmann\Camino\Path\File;
 
 class PHPTest extends TestCase
 {
+    use ConfigMockery;
+
     /**
      * Tests PHP::getCode
      */
     public function testSrcTemplate(): void
     {
-        $repo       = new Directory('/foo/bar');
-        $config     = new File('/foo/bar/captainhook.json');
-        $bootstrap  = new File('/foo/bar/vendor/autoload.php');
-        $executable = new File('/foo/bar/vendor/bin/captainhook');
-        $phpPath    = '';
+        $pathInfo = $this->createMock(PathInfo::class);
+        $pathInfo->method('getExecutablePath')->willReturn('./vendor/bin/captainhook');
+        $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
 
-        $template   = new PHP($repo, $config, $executable, $bootstrap, false, $phpPath);
-        $code       = $template->getCode('commit-msg');
+        $config = $this->createConfigMock(false, 'captainhook.json');
+        $config->method('getBootstrap')->willReturn('vendor/autoload.php');
+
+        $template = new PHP($pathInfo, $config, false);
+        $code     = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/usr/bin/env php', $code);
         $this->assertStringContainsString('commit-msg', $code);
@@ -41,13 +44,14 @@ class PHPTest extends TestCase
      */
     public function testSrcTemplateExtExecutable(): void
     {
-        $repo       = new Directory('/foo/bar');
-        $config     = new File('/foo/bar/captainhook.json');
-        $bootstrap  = new File('/foo/bar/vendor/autoload.php');
-        $executable = new File('/usr/local/bin/captainhook');
-        $phpPath    = '';
+        $pathInfo = $this->createMock(PathInfo::class);
+        $pathInfo->method('getExecutablePath')->willReturn('./vendor/bin/captainhook');
+        $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
 
-        $template   = new PHP($repo, $config, $executable, $bootstrap, false, $phpPath);
+        $config = $this->createConfigMock(false, 'captainhook.json');
+        $config->method('getBootstrap')->willReturn('vendor/autoload.php');
+
+        $template   = new PHP($pathInfo, $config, false);
         $code       = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/usr/bin/env php', $code);
@@ -60,13 +64,14 @@ class PHPTest extends TestCase
      */
     public function testPharTemplate(): void
     {
-        $repo       = new Directory('/foo/bar');
-        $config     = new File('/foo/bar/captainhook.json');
-        $bootstrap  = new File('/foo/bar/vendor/autoload.php');
-        $executable = new File('/foo/bar/tools/captainhook.phar');
-        $phpPath    = '';
+        $pathInfo = $this->createMock(PathInfo::class);
+        $pathInfo->method('getExecutablePath')->willReturn('tools/captainhook.phar');
+        $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
 
-        $template   = new PHP($repo, $config, $executable, $bootstrap, true, $phpPath);
+        $config = $this->createConfigMock(false, 'captainhook.json');
+        $config->method('getBootstrap')->willReturn('vendor/autoload.php');
+
+        $template   = new PHP($pathInfo, $config, true);
         $code       = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/usr/bin/env php', $code);

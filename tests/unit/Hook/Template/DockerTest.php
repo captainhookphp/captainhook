@@ -11,25 +11,29 @@
 
 namespace CaptainHook\App\Hook\Template;
 
-use CaptainHook\App\Hook\Template\Docker\Config as DockerConfig;
 use PHPUnit\Framework\TestCase;
-use SebastianFeldmann\Camino\Path\Directory;
-use SebastianFeldmann\Camino\Path\File;
+use CaptainHook\App\Config\Mockery as ConfigMockery;
 
 class DockerTest extends TestCase
 {
+    use ConfigMockery;
+
     /**
      * Tests Docker::getCode
      */
     public function testTemplateCaptainHookDevelopment(): void
     {
-        $repo       = new Directory(realpath(__DIR__ . '/../../../files/template-ch'));
-        $executable = new File($repo->getPath() . '/does/not/matter');
-        $config     = new File($repo->getPath() . '/captainhook.json');
-        $docker     = new DockerConfig('docker exec cap-container', '');
+        $repo       = realpath(__DIR__ . '/../../../files/template-ch');
+        $config     = $repo . '/captainhook.json';
+        $executable = $repo . '/does/not/matter';
+        $pathInfo   = new PathInfo($repo, $config, $executable);
 
-        $template = new Docker($repo, $config, $executable, $docker);
-        $code     = $template->getCode('commit-msg');
+        $configMock = $this->createConfigMock(false, $repo . '/captainhook.json');
+        $configMock->method('getBootstrap')->willReturn('vendor/autoload.php');
+        $configMock->method('getRunExec')->willReturn('docker exec cap-container');
+
+        $template   = new Docker($pathInfo, $configMock);
+        $code       = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);
         $this->assertStringContainsString('docker exec cap-container', $code);
@@ -41,12 +45,16 @@ class DockerTest extends TestCase
      */
     public function testTemplateCaptainHookAsLibrary(): void
     {
-        $repo       = new Directory(realpath(__DIR__));
-        $executable = new File($repo->getPath() . '/vendor/bin/captainhook');
-        $config     = new File($repo->getPath() . '/captainhook.json');
-        $docker     = new DockerConfig('docker exec cap-container', '');
+        $pathInfo = $this->createMock(PathInfo::class);
+        $pathInfo->method('getExecutablePath')->willReturn('./vendor/bin/captainhook');
+        $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
 
-        $template = new Docker($repo, $config, $executable, $docker);
+        $configMock = $this->createConfigMock(false, 'captainhook.json');
+        $configMock->method('getBootstrap')->willReturn('');
+        $configMock->method('getRunExec')->willReturn('docker exec cap-container');
+
+
+        $template = new Docker($pathInfo, $configMock);
         $code     = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);
@@ -59,16 +67,22 @@ class DockerTest extends TestCase
      */
     public function testTemplateCustomPath(): void
     {
-        $repo       = new Directory(realpath(__DIR__ . '/../../../files/template-ch'));
-        $executable = new File($repo->getPath() . '/does/not/matter');
-        $config     = new File($repo->getPath() . '/captainhook.json');
-        $docker     = new DockerConfig('docker exec cap-container', './foo/captainhook');
+        $repo       = realpath(__DIR__ . '/../../../files/template-ch');
+        $executable = $repo . '/does/not/matter';
+        $config     = $repo . '/captainhook.json';
+        $pathInfo   = new PathInfo($repo, $config, $executable);
 
-        $template = new Docker($repo, $config, $executable, $docker);
+        $configMock = $this->createConfigMock(false, $repo . '/captainhook.json');
+        $configMock->method('getBootstrap')->willReturn('vendor/autoload.php');
+        $configMock->method('getRunExec')->willReturn('docker exec cap-container');
+        $configMock->method('getRunPath')->willReturn('./foo/captainhook');
+
+        $template = new Docker($pathInfo, $configMock);
         $code     = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);
         $this->assertStringContainsString('docker exec cap-container', $code);
         $this->assertStringContainsString('./foo/captainhook', $code);
+        $this->assertStringContainsString('bootstrap=vendor/autoload.php', $code);
     }
 }

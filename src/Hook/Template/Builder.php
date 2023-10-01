@@ -46,57 +46,31 @@ abstract class Builder
      */
     public static function build(Config $config, Repository $repository, Resolver $resolver): Template
     {
-        $repositoryPath = self::toAbsolutePath($repository->getRoot());
-        $configPath     = self::toAbsolutePath($config->getPath());
-        $bootstrapPath  = dirname($configPath) . '/' . $config->getBootstrap();
-        $captainPath    = self::toAbsolutePath($resolver->getExecutable());
+        $pathInfo       = new PathInfo($repository->getRoot(), $config->getPath(), $resolver->getExecutable());
+        $bootstrapPath  = dirname($config->getPath()) . '/' . $config->getBootstrap();
 
         if (!file_exists($bootstrapPath)) {
             throw new RuntimeException('bootstrap file not found: \'' . $bootstrapPath . '\'');
         }
 
-        $phpPath = $config->getPhpPath();
-
         switch ($config->getRunMode()) {
             case Template::DOCKER:
                 return new Docker(
-                    new Directory($repositoryPath),
-                    new File($configPath),
-                    new File($captainPath),
-                    new Docker\Config($config->getRunExec(), $config->getRunPath())
+                    $pathInfo,
+                    $config
                 );
             case Template::PHP:
                 return new PHP(
-                    new Directory($repositoryPath),
-                    new File($configPath),
-                    new File($captainPath),
-                    $config->getBootstrap(),
-                    $resolver->isPharRelease(),
-                    $phpPath
+                    $pathInfo,
+                    $config,
+                    $resolver->isPharRelease()
                 );
             default:
                 return new Shell(
-                    new Directory($repositoryPath),
-                    new File($configPath),
-                    new File($captainPath),
-                    $config->getBootstrap(),
-                    $resolver->isPharRelease(),
-                    $phpPath
+                    $pathInfo,
+                    $config,
+                    $resolver->isPharRelease()
                 );
         }
-    }
-
-    /**
-     * Make sure the given path is absolute
-     *
-     * @param  string $path
-     * @return string
-     */
-    private static function toAbsolutePath(string $path): string
-    {
-        if (Check::isAbsolutePath($path)) {
-            return $path;
-        }
-        return (string) realpath($path);
     }
 }

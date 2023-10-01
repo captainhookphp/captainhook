@@ -36,24 +36,9 @@ class Shell extends Template\Local
      *
      * @var bool[]
      */
-    private $allowUserInput = [
+    private array $allowUserInput = [
         'prepare-commit-msg' => true
     ];
-
-    /**
-     * Return the path to the target path from the git repository root f.e. vendor/bin/captainhook
-     *
-     * @param  \SebastianFeldmann\Camino\Path\Directory $repo
-     * @param  \SebastianFeldmann\Camino\Path           $target
-     * @return string
-     */
-    protected function getPathForHookTo(Directory $repo, Path $target): string
-    {
-        if (!$target->isChildOf($repo)) {
-            return $target->getPath();
-        }
-        return $target->getRelativePathFrom($repo);
-    }
 
     /**
      * Returns lines of code for the local src installation
@@ -78,8 +63,6 @@ class Shell extends Template\Local
             ];
         }
 
-        $executable = $this->phpPath === '' ? $this->executablePath : $this->phpPath . ' ' . $this->executablePath;
-
         return array_merge(
             [
                 '#!/bin/sh',
@@ -91,12 +74,28 @@ class Shell extends Template\Local
             $useTTY,
             [
                 '',
-                $executable
+                $this->getExecutable()
                     . ' $INTERACTIVE'
-                    . ' --configuration=' . $this->configPath
-                    . ' --bootstrap=' . $this->bootstrap
+                    . ' --configuration=' . $this->pathInfo->getConfigPath()
+                    . ' --bootstrap=' . $this->config->getBootstrap()
                     . ' hook:' . $hook . ' "$@"' . $useStdIn,
             ]
         );
+    }
+
+    /**
+     * Returns the path to the executable including a configured php executable
+     *
+     * @return string
+     */
+    private function getExecutable(): string
+    {
+        $executable = !empty($this->config->getPhpPath()) ? $this->config->getPhpPath() . ' ' : '';
+
+        if (!empty($this->config->getRunPath())) {
+            return $executable . $this->config->getRunPath();
+        }
+
+        return $executable . $this->pathInfo->getExecutablePath();
     }
 }
