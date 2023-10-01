@@ -45,16 +45,25 @@ class InDirectory implements Condition, Constrained
      *
      * @var string
      */
-    private $directory;
+    private string $directory;
+
+    /**
+     * --diff-filter options
+     *
+     * @var array<int, string>
+     */
+    private array $diffFilter;
 
     /**
      * InDirectory constructor
      *
-     * @param string $directory
+     * @param string             $directory
+     * @param array<int, string> $diffFilter
      */
-    public function __construct(string $directory)
+    public function __construct(string $directory, array $diffFilter = [])
     {
-        $this->directory = $directory;
+        $this->directory  = $directory;
+        $this->diffFilter = $diffFilter;
     }
 
     /**
@@ -76,7 +85,7 @@ class InDirectory implements Condition, Constrained
      */
     public function isTrue(IO $io, Repository $repository): bool
     {
-        $files = $repository->getIndexOperator()->getStagedFiles();
+        $files = $repository->getIndexOperator()->getStagedFiles($this->diffFilter);
 
         $filtered = [];
         foreach ($files as $file) {

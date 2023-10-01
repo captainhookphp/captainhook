@@ -22,6 +22,7 @@ use SebastianFeldmann\Git\Repository;
  * Class OfType
  *
  * All FileStaged conditions are only applicable for `pre-commit` hooks.
+ * The diff filter argument is optional.
  *
  * Example configuration:
  *
@@ -29,7 +30,8 @@ use SebastianFeldmann\Git\Repository;
  * "conditions": [
  *   {"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
  *    "args": [
- *      "php"
+ *      "php",
+ *      ["A", "C"]
  *    ]}
  * ]
  *
@@ -45,16 +47,25 @@ class OfType implements Condition, Constrained
      *
      * @var string
      */
-    private $suffix;
+    private string $suffix;
+
+    /**
+     * --diff-filter option
+     *
+     * @var array<int, string>
+     */
+    private array $diffFilter;
 
     /**
      * OfType constructor
      *
-     * @param string $type
+     * @param string             $type
+     * @param array<int, string> $filter
      */
-    public function __construct(string $type)
+    public function __construct(string $type, array $filter = [])
     {
-        $this->suffix = $type;
+        $this->suffix     = $type;
+        $this->diffFilter = $filter;
     }
 
     /**
@@ -76,7 +87,7 @@ class OfType implements Condition, Constrained
      */
     public function isTrue(IO $io, Repository $repository): bool
     {
-        $files = $repository->getIndexOperator()->getStagedFilesOfType($this->suffix);
+        $files = $repository->getIndexOperator()->getStagedFilesOfType($this->suffix, $this->diffFilter);
         return count($files) > 0;
     }
 }

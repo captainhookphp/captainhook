@@ -69,7 +69,7 @@ class AllTest extends TestCase
         $repository = $this->createRepositoryMock('');
         $repository->expects($this->once())->method('getIndexOperator')->willReturn($operator);
 
-        $fileStaged = new All(['foo.php', 'bar.php']);
+        $fileStaged = new All(['foo.php', 'bar.php'], ['A', 'C']);
 
         $this->assertTrue($fileStaged->isTrue($io, $repository));
     }

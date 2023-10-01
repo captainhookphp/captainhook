@@ -31,16 +31,25 @@ abstract class FileStaged extends File
      *
      * @var array<string>
      */
-    protected $filesToWatch;
+    protected array $filesToWatch;
 
     /**
-     * FileChange constructor
+     * --diff-filter options
      *
-     * @param array<string> $files
+     * @var array<int, string>
      */
-    public function __construct(array $files)
+    protected array $diffFilter;
+
+    /**
+     * FileStaged constructor
+     *
+     * @param array<int, string> $files
+     * @param array<int, string> $diffFilter
+     */
+    public function __construct(array $files, array $diffFilter = [])
     {
         $this->filesToWatch = $files;
+        $this->diffFilter   = $diffFilter;
     }
 
     /**
@@ -70,6 +79,6 @@ abstract class FileStaged extends File
      */
     protected function getStagedFiles(Repository $repository)
     {
-        return $repository->getIndexOperator()->getStagedFiles();
+        return $repository->getIndexOperator()->getStagedFiles($this->diffFilter);
     }
 }

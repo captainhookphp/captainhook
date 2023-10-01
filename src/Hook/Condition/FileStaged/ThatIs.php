@@ -29,7 +29,7 @@ use SebastianFeldmann\Git\Repository;
  * "conditions": [
  *   {"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\ThatIs",
  *    "args": [
- *      {"ofType": "php", "inDirectory": "foo/"}
+ *      {"ofType": "php", "inDirectory": "foo/", "diff-filter": ["A", "C"]}
  *    ]}
  * ]
  *
@@ -55,14 +55,22 @@ class ThatIs implements Condition, Constrained
     private array $suffixes;
 
     /**
+     * --diff-filter options
+     *
+     * @var array<int, string>
+     */
+    private array $diffFilter;
+
+    /**
      * OfType constructor
      *
-     * @param array<string, string> $options
+     * @param array<string, mixed> $options
      */
     public function __construct(array $options)
     {
         $this->directories = (array)($options['inDirectory'] ?? []);
         $this->suffixes    = (array)($options['ofType'] ?? []);
+        $this->diffFilter  = (array)($options['diffFilter'] ?? []);
     }
 
     /**
@@ -84,7 +92,7 @@ class ThatIs implements Condition, Constrained
      */
     public function isTrue(IO $io, Repository $repository): bool
     {
-        $files = $repository->getIndexOperator()->getStagedFiles();
+        $files = $repository->getIndexOperator()->getStagedFiles($this->diffFilter);
         $files = $this->filterFilesByDirectory($files);
         $files = $this->filterFilesByType($files);
         return count($files) > 0;
