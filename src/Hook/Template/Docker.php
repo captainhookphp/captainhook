@@ -16,9 +16,7 @@ namespace CaptainHook\App\Hook\Template;
 use CaptainHook\App\CH;
 use CaptainHook\App\Config;
 use CaptainHook\App\Hook\Template;
-use CaptainHook\App\Hook\Template\Docker\RunConfig as DockerConfig;
-use SebastianFeldmann\Camino\Path\Directory;
-use SebastianFeldmann\Camino\Path\File;
+use CaptainHook\App\Hooks;
 
 /**
  * Docker class
@@ -78,19 +76,51 @@ class Docker implements Template
         $path2Config = $this->pathInfo->getConfigPath();
         $config      = $path2Config !== CH::CONFIG ? ' --configuration=' . escapeshellarg($path2Config) : '';
         $bootstrap   = !empty($this->config->getBootstrap()) ? ' --bootstrap=' . $this->config->getBootstrap() : '';
+        $tty         = Hooks::allowsUserInput($hook) ? 'exec < /dev/tty' : '';
 
         $lines = [
             '#!/bin/sh',
-            '',
+            $tty,
             '# installed by CaptainHook ' . CH::VERSION,
             '',
-            $this->config->getRunExec() . ' '
+            $this->getOptimizeDockerCommand($hook) . ' '
             . $this->binaryPath . ' hook:' . $hook
             . $config
             . $bootstrap
             . ' "$@"'
         ];
         return implode(PHP_EOL, $lines) . PHP_EOL;
+    }
+
+
+    /**
+     * Returns the optimized docker exec command
+     *
+     * This tries to optimize the `docker exec` commands. Docker exec should always run in --interactive mode.
+     * During hooks that could need user input it should use --tty.
+     * In case of `commit -a` we have to pass the GIT_INDEX_FILE env variable so `git` inside the container
+     * can recognize the temp index.
+     *
+     * @param  string $hook
+     * @return string
+     */
+    private function getOptimizeDockerCommand(string $hook): string
+    {
+        $command  = $this->config->getRunExec();
+        $position = strpos($command, 'docker exec');
+        // add interactive and tty flags if docker exec is used
+        if ($position !== false) {
+            $endExec    = $position + 11;
+            $executable = substr($command, 0, $endExec);
+            $options    = substr($command, $endExec);
+            $tty        = Hooks::allowsUserInput($hook) ? ' -t' : '';
+
+            $interactive = !preg_match('# -[a-z]*i| --interactive#', $options) ? ' -i' : '';
+            $useTTY      = !preg_match('# -[a-z]*t| --tty#', $options) ? $tty : '';
+            $env         = !preg_match('# (-[a-z]*e|--env)[= ]+GIT_INDEX_FILE#', $options) ? ' -e GIT_INDEX_FILE' : '';
+            $command     = trim($executable) . $interactive . $useTTY . $env . ' ' . trim($options);
+        }
+        return $command;
     }
 
     /**
