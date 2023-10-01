@@ -55,7 +55,7 @@ class BuilderTest extends TestCase
 
         $code = $template->getCode('pre-commit');
         $this->assertStringContainsString('pre-commit', $code);
-        $this->assertStringContainsString('docker exec captain-container', $code);
+        $this->assertStringContainsString('docker exec -i -e GIT_INDEX_FILE captain-container', $code);
         $this->assertStringContainsString('vendor/bin/captainhook', $code);
     }
 
@@ -88,7 +88,7 @@ class BuilderTest extends TestCase
 
         $this->assertInstanceOf(Docker::class, $template);
         $this->assertStringContainsString('pre-commit', $code);
-        $this->assertStringContainsString('docker exec captain-container', $code);
+        $this->assertStringContainsString('docker exec -i -e GIT_INDEX_FILE captain-container', $code);
         $this->assertStringContainsString($executable, $code);
     }
 

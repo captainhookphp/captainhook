@@ -15,12 +15,13 @@ namespace CaptainHook\App\Hook\Template\Local;
 
 use CaptainHook\App\CH;
 use CaptainHook\App\Hook\Template;
+use CaptainHook\App\Hooks;
 use SebastianFeldmann\Camino\Path;
 use SebastianFeldmann\Camino\Path\Directory;
 use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
- * Local class
+ * Shell class
  *
  * Generates the sourcecode for the php hook scripts in .git/hooks/*.
  *
@@ -32,15 +33,6 @@ use Symfony\Component\Process\PhpExecutableFinder;
 class Shell extends Template\Local
 {
     /**
-     * Does the hook allow user input
-     *
-     * @var bool[]
-     */
-    private array $allowUserInput = [
-        'prepare-commit-msg' => true
-    ];
-
-    /**
      * Returns lines of code for the local src installation
      *
      * @param  string $hook
@@ -51,7 +43,7 @@ class Shell extends Template\Local
         $useStdIn = ' <&0';
         $useTTY   = [];
 
-        if (isset($this->allowUserInput[$hook])) {
+        if (Hooks::allowsUserInput($hook)) {
             $useStdIn = '';
             $useTTY   = [
                 'if [ -t 1 ]; then',
