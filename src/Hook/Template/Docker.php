@@ -113,10 +113,14 @@ class Docker implements Template
             $endExec    = $position + 11;
             $executable = substr($command, 0, $endExec);
             $options    = substr($command, $endExec);
-            $tty        = Hooks::allowsUserInput($hook) ? ' -t' : '';
 
+            // Because this currently breaks working with Jetbrains IDEs I will deactivate it for now
+            //
+            // $tty        = Hooks::allowsUserInput($hook) ? ' -t' : '';
+            // $useTTY      = !preg_match('# -[a-z]*t| --tty#', $options) ? $tty : '';
+
+            $useTTY      = '';
             $interactive = !preg_match('# -[a-z]*i| --interactive#', $options) ? ' -i' : '';
-            $useTTY      = !preg_match('# -[a-z]*t| --tty#', $options) ? $tty : '';
             $env         = !preg_match('# (-[a-z]*e|--env)[= ]+GIT_INDEX_FILE#', $options) ? ' -e GIT_INDEX_FILE' : '';
             $command     = trim($executable) . $interactive . $useTTY . $env . ' ' . trim($options);
         }

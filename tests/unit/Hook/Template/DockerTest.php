@@ -117,7 +117,7 @@ class DockerTest extends TestCase
     public function replacementPossibilities(): array
     {
         return [
-            ['cap-container', '-i -t -e GIT_INDEX_FILE cap-container', 'none'],
+            ['cap-container', '-i -e GIT_INDEX_FILE cap-container', 'none'],
             ['-it cap-container', '-e GIT_INDEX_FILE -it cap-container', '-it'],
             ['-ti cap-container', '-e GIT_INDEX_FILE -ti cap-container', '-ti'],
             ['--interactive --tty cap-container', '-e GIT_INDEX_FILE --interactive --tty cap-container', 'long it'],
@@ -125,7 +125,7 @@ class DockerTest extends TestCase
             ['--tty cap-container', '-i -e GIT_INDEX_FILE --tty cap-container', 'no i'],
             ['-xit cap-container', '-e GIT_INDEX_FILE -xit cap-container', 'prefixed i'],
             ['-xite=GIT_INDEX_FILE cap-container', '-xite=GIT_INDEX_FILE cap-container', 'prefixed e'],
-            ['--env=GIT_INDEX_FILE cap-container', '-i -t --env=GIT_INDEX_FILE cap-container', 'long e'],
+            ['--env=GIT_INDEX_FILE cap-container', '-i --env=GIT_INDEX_FILE cap-container', 'long e'],
         ];
     }
 }
