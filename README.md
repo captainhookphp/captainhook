@@ -52,7 +52,7 @@ vendor/bin/captainhook install
 
 Have a look at this short installation video.
 
-[![Install demo](http://img.youtube.com/vi/qQyDc-Wxk7Y/0.jpg)](http://www.youtube.com/watch?v=qQyDc-Wxk7Y)
+[![Install demo](http://img.youtube.com/vi/qQyDc-Wxk7Y/hq720.jpg)](http://www.youtube.com/watch?v=qQyDc-Wxk7Y)
 
 If you want to make sure your whole team uses the same hooks, and you want to make sure everybody has the
 hooks installed you can add the following `scripts` command to your `composer.json` file.
