@@ -73,6 +73,7 @@ class Application extends SymfonyApplication
                 new Cmd\Hook\PreCommit($resolver),
                 new Cmd\Hook\PrepareCommitMsg($resolver),
                 new Cmd\Hook\PrePush($resolver),
+                new Cmd\Uninstall($resolver),
             ]
         );
     }
