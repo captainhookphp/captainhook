@@ -61,6 +61,7 @@ class Application extends SymfonyApplication
             parent::getDefaultCommands(),
             [
                 new Cmd\Install($resolver),
+                new Cmd\Uninstall($resolver),
                 new Cmd\Configuration($resolver),
                 new Cmd\Add($resolver),
                 new Cmd\Disable($resolver),
