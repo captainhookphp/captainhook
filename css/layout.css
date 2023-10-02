@@ -83,15 +83,15 @@ em.hl {
   padding-left: 30px;
 }
 .table .tool.ch {
-  background: transparent url("/gfx/ch.png") no-repeat left center;
+  background: transparent url("gfx/ch.png") no-repeat left center;
   background-size: auto 25px;
 }
 .table .tool.grumphp {
-  background: transparent url("/gfx/grumphp.png") no-repeat left center;
+  background: transparent url("gfx/grumphp.png") no-repeat left center;
   background-size: auto 25px;
 }
 .table .tool.whiskey {
-  background: transparent url("/gfx/whiskey.png") no-repeat left center;
+  background: transparent url("gfx/whiskey.png") no-repeat left center;
   background-size: auto 22px;
 }
 .table.compare th {
