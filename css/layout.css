@@ -106,7 +106,7 @@ em.hl {
   width: 30px;
   height: 30px;
   margin: 0 auto;
-  background: transparent url("/gfx/ok.svg") no-repeat;
+  background: transparent url("gfx/ok.svg") no-repeat;
   background-size: contain;
 }
 
@@ -115,12 +115,12 @@ em.hl {
   width: 30px;
   height: 30px;
   margin: 0 auto;
-  background: transparent url("/gfx/no.svg") no-repeat;
+  background: transparent url("gfx/no.svg") no-repeat;
   background-size: contain;
 }
 
 .pirate {
-  background: #ebebeb url("/gfx/ch.png") no-repeat right center;
+  background: #ebebeb url("gfx/ch.png") no-repeat right center;
   background-size: auto 90%;
   border-radius: 5px;
   padding: 15px 100px 15px 15px;
