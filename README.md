@@ -44,7 +44,7 @@ vendor/bin/captainhook configure
 ```
 Now there should be a *captainhook.json* configuration file.
 
-If you are not using the `composer-plugin` yet you have to activate the hooks manually by installing them to
+Now you have to activate the hooks by installing them to
 your local .git repository. To do so just run the following *captainhook* command.
 ```bash
 vendor/bin/captainhook install
@@ -54,13 +54,8 @@ Have a look at this short installation video.
 
 [![Install demo](http://img.youtube.com/vi/agwTZ0jhDDs/0.jpg)](http://www.youtube.com/watch?v=agwTZ0jhDDs)
 
-If you want to make sure your whole team uses the same hooks and you want to make sure everybody has the
-hooks installed you can use the *CaptainHook* `composer-plugin` as an addition.
-```bash
-composer require --dev captainhook/plugin-composer
-```
-The plugin will make sure that the hooks get activated after every `composer install` or `update`.
-If you don't like the extra dependency just add the following `scripts` command to your `composer.json` file instead.
+If you want to make sure your whole team uses the same hooks, and you want to make sure everybody has the
+hooks installed you can add the following `scripts` command to your `composer.json` file.
 
 ```json
 {
@@ -80,7 +75,6 @@ Here's an example *captainhook.json* configuration file.
     "actions": [
       {
         "action": "\\CaptainHook\\App\\Hook\\Message\\Action\\Beams",
-        "options": []
       }
     ]
   },
