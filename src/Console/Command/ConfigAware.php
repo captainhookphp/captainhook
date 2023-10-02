@@ -30,7 +30,7 @@ use Symfony\Component\Console\Input\InputOption;
 abstract class ConfigAware extends Command
 {
     /**
-     * Setup the configuration command option
+     * Set up the configuration command option
      *
      * @return void
      */
@@ -41,7 +41,7 @@ abstract class ConfigAware extends Command
             'configuration',
             'c',
             InputOption::VALUE_OPTIONAL,
-            'Path to your json configuration',
+            'Path to your captainhook.json configuration',
             './' . CH::CONFIG
         );
     }

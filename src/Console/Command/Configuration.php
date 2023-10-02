@@ -37,8 +37,8 @@ class Configuration extends ConfigAware
     {
         parent::configure();
         $this->setName('configure')
-             ->setDescription('Configure your hooks')
-             ->setHelp('This command creates or updates your captainhook configuration')
+             ->setDescription('Create or update a captainhook.json configuration')
+             ->setHelp('Create or update a captainhook.json configuration')
              ->addOption('extend', 'e', InputOption::VALUE_NONE, 'Extend existing configuration file')
              ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing configuration file')
              ->addOption('advanced', 'a', InputOption::VALUE_NONE, 'More options, but more to type')
@@ -55,10 +55,10 @@ class Configuration extends ConfigAware
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return int|null
+     * @return int
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io       = $this->getIO($input, $output);
         $config   = $this->createConfig($input, false, ['bootstrap']);

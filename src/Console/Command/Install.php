@@ -41,21 +41,21 @@ class Install extends RepositoryAware
     {
         parent::configure();
         $this->setName('install')
-             ->setDescription('Install git hooks')
-             ->setHelp('This command will install the git hooks to your .git directory')
+             ->setDescription('Install hooks to your .git/hooks directory')
+             ->setHelp('Install git hooks to your .git/hooks directory')
              ->addArgument(
                  'hook',
                  InputArgument::OPTIONAL,
                  'Limit the hooks you want to install. ' .
                  'You can specify multiple hooks with comma as delimiter. ' .
-                 'By default all hooks get installed.'
+                 'By default all hooks get installed'
              )
              ->addOption(
                  'only-enabled',
                  null,
                  InputOption::VALUE_NONE,
                  'Limit the hooks you want to install to those enabled in your conf. ' .
-                 'By default all hooks get installed.'
+                 'By default all hooks get installed'
              )
              ->addOption(
                  'force',
@@ -109,7 +109,7 @@ class Install extends RepositoryAware
      * @return int
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io     = $this->getIO($input, $output);
         $config = $this->createConfig($input, true, ['git-directory', 'run-mode', 'run-exec', 'run-path', 'bootstrap']);

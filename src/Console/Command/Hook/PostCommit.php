@@ -29,5 +29,5 @@ class PostCommit extends Hook
      *
      * @var string
      */
-    protected $hookName = Hooks::POST_COMMIT;
+    protected string $hookName = Hooks::POST_COMMIT;
 }

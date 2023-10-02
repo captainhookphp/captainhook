@@ -38,7 +38,7 @@ abstract class Command extends SymfonyCommand
      *
      * @var \CaptainHook\App\Console\Runtime\Resolver
      */
-    protected $resolver;
+    protected Resolver $resolver;
 
     /**
      * Command constructor

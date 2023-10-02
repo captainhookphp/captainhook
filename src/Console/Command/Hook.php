@@ -36,7 +36,7 @@ abstract class Hook extends RepositoryAware
      *
      * @var string
      */
-    protected $hookName;
+    protected string $hookName;
 
     /**
      * Configure the command
@@ -47,8 +47,9 @@ abstract class Hook extends RepositoryAware
     {
         parent::configure();
         $this->setName('hook:' . $this->hookName)
-             ->setDescription('Run git ' . $this->hookName . ' hook.')
-             ->setHelp('This command executes the ' . $this->hookName . ' hook.');
+             ->setAliases([$this->hookName])
+             ->setDescription('Run git ' . $this->hookName . ' hook')
+             ->setHelp('This command executes the ' . $this->hookName . ' hook');
 
         $this->addOption(
             'bootstrap',

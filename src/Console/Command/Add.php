@@ -35,9 +35,10 @@ class Add extends ConfigAware
     protected function configure(): void
     {
         parent::configure();
-        $this->setName('add')
-             ->setDescription('Add an action to a hook configuration')
-             ->setHelp('This command will add an action configuration to a given hook configuration')
+        $this->setName('config:add')
+             ->setAliases(['add'])
+             ->setDescription('Add an action to your hook configuration')
+             ->setHelp('Add an action to your hook configuration')
              ->addArgument('hook', InputArgument::REQUIRED, 'Hook you want to add the action to');
     }
 
@@ -46,11 +47,11 @@ class Add extends ConfigAware
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return int|null
+     * @return int
      * @throws \CaptainHook\App\Exception\InvalidHookName
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io     = $this->getIO($input, $output);
         $config = $this->createConfig($input, true);

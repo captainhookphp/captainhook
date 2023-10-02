@@ -23,14 +23,14 @@ class Resolver
      *
      * @var string
      */
-    private $runtime = '@runtime@';
+    private string $runtime = '@runtime@';
 
     /**
      * Path to the currently executed 'binary'
      *
      * @var string
      */
-    private $executable;
+    private string $executable;
 
     /**
      * Resolver constructor.

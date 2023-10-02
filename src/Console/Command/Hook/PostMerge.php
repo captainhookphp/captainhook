@@ -30,7 +30,7 @@ class PostMerge extends Hook
      *
      * @var string
      */
-    protected $hookName = Hooks::POST_MERGE;
+    protected string $hookName = Hooks::POST_MERGE;
 
     /**
      * Configure the command

@@ -35,9 +35,10 @@ class Enable extends ConfigAware
     protected function configure(): void
     {
         parent::configure();
-        $this->setName('enable')
-             ->setDescription('Enable a hook execution')
-             ->setHelp('This command will enable a hook configuration for a given hook')
+        $this->setName('config:enable')
+             ->setAliases(['enable'])
+             ->setDescription('Enable the handling for a hook in your configuration')
+             ->setHelp('Enable the handling for a hook in your configuration')
              ->addArgument('hook', InputArgument::REQUIRED, 'Hook you want to enable');
     }
 
@@ -46,11 +47,11 @@ class Enable extends ConfigAware
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return int|null
+     * @return int
      * @throws \CaptainHook\App\Exception\InvalidHookName
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io     = $this->getIO($input, $output);
         $config = $this->createConfig($input, true);

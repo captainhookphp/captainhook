@@ -30,7 +30,7 @@ class PostRewrite extends Hook
      *
      * @var string
      */
-    protected $hookName = Hooks::POST_REWRITE;
+    protected string $hookName = Hooks::POST_REWRITE;
 
     /**
      * Configure the command

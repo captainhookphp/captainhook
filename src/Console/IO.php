@@ -32,7 +32,7 @@ interface IO
     /**
      * Return the original cli arguments
      *
-     * @return array<string, mixed>
+     * @return array<mixed>
      */
     public function getArguments(): array;
 

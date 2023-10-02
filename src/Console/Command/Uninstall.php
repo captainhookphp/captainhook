@@ -37,18 +37,18 @@ class Uninstall extends RepositoryAware
     {
         parent::configure();
         $this->setName('uninstall')
-             ->setDescription('Uninstall git hooks')
-             ->setHelp('This command will remove the git hooks from your .git directory')
+             ->setDescription('Remove all git hooks from your .git/hooks directory')
+             ->setHelp('Remove all git hooks from your .git/hooks directory')
              ->addArgument(
                  'hook',
                  InputArgument::OPTIONAL,
-                 'Limit the hook you want to uninstall. By default all hooks get uninstalled.'
+                 'Remove only this one hook. By default all hooks get uninstalled'
              )
              ->addOption(
                  'move-existing-to',
                  null,
                  InputOption::VALUE_OPTIONAL,
-                 'Move existing hooks to given directory'
+                 'Move existing hooks to this directory'
              );
     }
 
@@ -60,7 +60,7 @@ class Uninstall extends RepositoryAware
      * @return int
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io     = $this->getIO($input, $output);
         $config = $this->createConfig($input, true, ['git-directory']);

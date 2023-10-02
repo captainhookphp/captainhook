@@ -30,7 +30,7 @@ class CommitMsg extends Hook
      *
      * @var string
      */
-    protected $hookName = Hooks::COMMIT_MSG;
+    protected string $hookName = Hooks::COMMIT_MSG;
 
     /**
      * Configure the command

@@ -30,7 +30,7 @@ class PrepareCommitMsg extends Hook
      *
      * @var string
      */
-    protected $hookName = Hooks::PREPARE_COMMIT_MSG;
+    protected string $hookName = Hooks::PREPARE_COMMIT_MSG;
 
     /**
      * Configure the command

@@ -31,7 +31,7 @@ abstract class IOUtil
      *
      * @var array<string, int>
      */
-    private static $verbosityMap = [
+    private static array $verbosityMap = [
         'quiet'        => OutputInterface::VERBOSITY_QUIET,
         'normal'       => OutputInterface::VERBOSITY_NORMAL,
         'verbose'      => OutputInterface::VERBOSITY_VERBOSE,
@@ -105,7 +105,7 @@ abstract class IOUtil
      * @param  string                         $default
      * @return string
      */
-    public static function argToString($arg, $default = ''): string
+    public static function argToString($arg, string $default = ''): string
     {
         return is_string($arg) ? $arg : $default;
     }
@@ -117,7 +117,7 @@ abstract class IOUtil
      * @param  bool                           $default
      * @return bool
      */
-    public static function argToBool($arg, $default = false): bool
+    public static function argToBool($arg, bool $default = false): bool
     {
         return is_bool($arg) ? $arg : $default;
     }

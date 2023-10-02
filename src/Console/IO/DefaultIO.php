@@ -40,29 +40,30 @@ class DefaultIO extends Base
 
     /**
      * Contents of the STDIN
-     * @var array<string>
+     *
+     * @var array<mixed>
      */
-    private $stdIn;
+    private array $stdIn;
 
     /**
      * @var \Symfony\Component\Console\Input\InputInterface
      */
-    protected $input;
+    protected InputInterface $input;
 
     /**
      * @var \Symfony\Component\Console\Output\OutputInterface
      */
-    protected $output;
+    protected OutputInterface $output;
 
     /**
-     * @var \Symfony\Component\Console\Helper\HelperSet
+     * @var \Symfony\Component\Console\Helper\HelperSet|null
      */
-    protected $helperSet;
+    protected ?HelperSet $helperSet;
 
     /**
      * @var array<int, int>
      */
-    private $verbosityMap;
+    private array $verbosityMap;
 
     /**
      * Constructor
@@ -70,9 +71,9 @@ class DefaultIO extends Base
      * @param resource                                          $stdIn
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \Symfony\Component\Console\Helper\HelperSet       $helperSet
+     * @param \Symfony\Component\Console\Helper\HelperSet|null  $helperSet
      */
-    public function __construct($stdIn, InputInterface $input, OutputInterface $output, HelperSet $helperSet = null)
+    public function __construct($stdIn, InputInterface $input, OutputInterface $output, ?HelperSet $helperSet = null)
     {
         $this->stdInStream = $stdIn;
         $this->input       = $input;

@@ -31,7 +31,7 @@ class Application extends SymfonyApplication
      *
      * @var string
      */
-    protected $executable;
+    protected string $executable;
 
     /**
      * Cli constructor.

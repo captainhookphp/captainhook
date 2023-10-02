@@ -30,7 +30,7 @@ class PostCheckout extends Hook
      *
      * @var string
      */
-    protected $hookName = Hooks::POST_CHECKOUT;
+    protected string $hookName = Hooks::POST_CHECKOUT;
 
     /**
      * Configure the command
