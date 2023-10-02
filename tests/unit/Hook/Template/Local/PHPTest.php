@@ -62,6 +62,26 @@ class PHPTest extends TestCase
     /**
      * Tests PHP::getCode
      */
+    public function testPharAbsoluteExecutablePath(): void
+    {
+        $pathInfo = $this->createMock(PathInfo::class);
+        $pathInfo->method('getExecutablePath')->willReturn('/usr/local/bin/captainhook');
+        $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
+
+        $config = $this->createConfigMock(false, 'captainhook.json');
+        $config->method('getBootstrap')->willReturn('vendor/autoload.php');
+
+        $template   = new PHP($pathInfo, $config, true);
+        $code       = $template->getCode('commit-msg');
+
+        $this->assertStringContainsString('#!/usr/bin/env php', $code);
+        $this->assertStringContainsString('commit-msg', $code);
+        $this->assertStringContainsString('/usr/local/bin/captainhook', $code);
+    }
+
+    /**
+     * Tests PHP::getCode
+     */
     public function testPharTemplate(): void
     {
         $pathInfo = $this->createMock(PathInfo::class);

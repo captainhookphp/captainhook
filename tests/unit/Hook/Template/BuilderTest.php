@@ -115,6 +115,28 @@ class BuilderTest extends TestCase
     /**
      * Tests Builder::build
      */
+    public function testBuildBootstrapNotFound(): void
+    {
+        $this->expectException(Exception::class);
+
+        $resolver   = $this->createResolverMock(CH_PATH_FILES . '/bin/captainhook', false);
+        $repository = $this->createRepositoryMock(CH_PATH_FILES);
+        $config     = $this->createConfigMock(true, CH_PATH_FILES . '/template/captainhook.json');
+        $config->method('getRunMode')->willReturn('php');
+        $config->method('getRunExec')->willReturn('');
+        $config->method('getBootstrap')->willReturn('vendorXX/autoload.php');
+
+        $template = Builder::build($config, $repository, $resolver);
+        $this->assertInstanceOf(Local\PHP::class, $template);
+
+        $code = $template->getCode('pre-commit');
+        $this->assertStringContainsString('pre-commit', $code);
+        $this->assertStringContainsString('$captainHook->run', $code);
+    }
+
+    /**
+     * Tests Builder::build
+     */
     public function testBuildInvalidVendor(): void
     {
         $this->expectException(Exception::class);
