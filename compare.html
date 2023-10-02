@@ -45,34 +45,146 @@
 
   <h1>Why use the Cap'n</h1>
   <p>
-    The idea behind the Cap'n is to make sharing git hooks with your team easier. Whether you already use git hooks
-    or you are starting from scratch the Cap'n got you covered. Integrating existing hook scripts is equally simple as
-    writing your first custom commit message validation rule. You can listen to all git hook events and use included
-    functionality or write your own.
+    Git hooks are a great way for automating tasks, enforcing coding standards, and performing actions before or after
+    Git commands are executed. Here are some reasons why you might use Git hooks:
+  </p>
+  <ul>
+    <li>Enforcing Code Quality</li>
+    <li>Running Tests</li>
+    <li>Automating Builds</li>
+    <li>Notification and Alerts</li>
+    <li>Custom Workflows</li>
+    <li>Preventing mistakes</li>
+    <li>gging and Auditing</li>
+  </ul>
+  <p>
+    The Cap'n is designed to simplify the process of sharing Git hooks within your team.
+    Whether you already use git hooks or you are starting from scratch the Cap'n got you covered.
+    It makes it equally easy to integrate existing hook scripts or create custom hooks from scratch.
+    With the Cap'n, you have the flexibility to listen to all Git hook events
+    or selectively target the ones that matter most to your workflow.
+    While it offers a rich set of features, the primary mission of the Cap'n is to streamline the integration
+    of your unique functionalities, making the entire process as straightforward as possible.
   </p>
   <p>
     To better understand the Captain's capabilities you can have a look at the <a href="favorites.html">Captain's favorite hooks</a>.
   </p>
 
-  <h3 id="grumphp">How does the Cap'n compare to other great tools like GrumPHP</h3>
+
+
+  <h2>Comparing the Cap'n to other solutions</h2>
   <p>
-    Compared to GrumPHP the Cap'n is more some kind of workflow tool instead of a local CI.
-    GrumPHP focuses on quality tools and on hooks like <em>pre-commit</em> and <em>commit-message</em>
-    The Cap'n can basically do the same, but you would have to do more configuration work by yourself.
+    While there are certainly other fantastic tools available, like GrumPHP and Whiskey,
+    CaptainHook distinguishes itself by providing a large set of advanced features that empower
+    you to implement even more sophisticated automations.
+    While GrumPHP and Whiskey are excellent choices for many Git hook-related tasks,
+    the Cap'n takes it a step further by offering a wider array of options and configurations.
+    This makes it the preferred choice when you need to tackle complex automation scenarios
+    that demand a higher level of customization and control over your Git workflow.
   </p>
-  <p>
-    The Cap'n however can utilize other hooks as well and is much easier to customize.
-    With hooks like <em>pre-push</em>, <em>post-merge</em>, <em>post-rewrite</em>
-    and <em>prepare-commit-message</em> you can do way more than just checking your
-    code quality and your commit messages. Here are some ideas people realized with the Cap'n.
-  </p>
+
+  <p><strong>Here's a list of examples demonstrating what you can achieve with the Cap'n</strong></p>
   <ul>
-    <li>Use commit messages to log development time in a work time tracking system</li>
-    <li>Make sure to not push certain branches or commits to customer repositories</li>
-    <li>Trigger ticket transitions in issue tracking systems like Jira or Gitlab</li>
-    <li>Create template commit messages</li>
-    <li>Communicate breaking changes to the team with <em>git-notify</em></li>
+    <li>Logging development time in a work time tracking system using commit messages</li>
+    <li>Preventing the unintentional push of specific branches or commits to customer repositories</li>
+    <li>Automatically triggering ticket transitions in issue tracking systems such as Jira or Gitlab</li>
+    <li>Generating prefilled commit messages</li>
+    <li>Notifying the team about breaking changes using <em>git-notify</em></li>
   </ul>
+
+  <h4>Feature comparison</h4>
+
+  <table class="table compare">
+    <tbody>
+    <tr>
+      <th></th>
+      <th class="tool ch">CaptainHook</th>
+      <th class="tool grumphp">GrumPHP</th>
+      <th class="tool whiskey">Whiskey</th>
+    </tr>
+    <tr>
+      <td>PHAR installation via PHIVE</td>
+      <td><span class="yes"></span></td>
+      <td><span class="yes"></span></td>
+      <td><span class="no"></span></td>
+    </tr>
+    <tr>
+      <td>Check commit messages</td>
+      <td><span class="yes"></span></td>
+      <td><span class="yes"></span></td>
+      <td><span class="no"></span></td>
+    </tr>
+    <tr>
+      <td>Integrate your custom hooks easily</td>
+      <td><span class="yes"></span></td>
+      <td><span class="yes"></span></td>
+      <td><span class="yes"></span></td>
+    </tr>
+    <tr>
+      <td>Supports the <em>git-notify</em> standard</td>
+      <td><span class="yes"></span></td>
+      <td><span class="no"></span></td>
+      <td><span class="no"></span></td>
+    </tr>
+    <tr>
+      <td>Allow access to original hook arguments and input</td>
+      <td><span class="yes"></span></td>
+      <td><span class="no"></span></td>
+      <td><span class="no"></span></td>
+    </tr>
+    <tr>
+      <td>Conditional hook execution to only run hooks when needed</td>
+      <td><span class="yes"></span></td>
+      <td><span class="no"></span></td>
+      <td><span class="no"></span></td>
+    </tr>
+    <tr>
+      <td>Extensive PHP hook api to build you own hook packages</td>
+      <td><span class="yes"></span></td>
+      <td><span class="no"></span></td>
+      <td><span class="no"></span></td>
+    </tr>
+    <tr>
+      <td>Include custom hook package configurations</td>
+      <td><span class="yes"></span></td>
+      <td><span class="no"></span></td>
+      <td><span class="no"></span></td>
+    </tr>
+    <tr>
+      <td>Handle all hooks</td>
+      <td><span class="yes"></span></td>
+      <td><span class="no"></span></td>
+      <td><span class="yes"></span></td>
+    </tr>
+    <tr>
+      <td>Allow different settings for the team and individuals (e.g. shell vs. docker)</td>
+      <td><span class="yes"></span></td>
+      <td><span class="no"></span></td>
+      <td><span class="no"></span></td>
+    </tr>
+    <tr>
+      <td>Supports virtual hooks to prevent copy paste configuration</td>
+      <td><span class="yes"></span></td>
+      <td><span class="no"></span></td>
+      <td><span class="no"></span></td>
+    </tr>
+    <tr>
+      <td>Docker support out of the box</td>
+      <td><span class="yes"></span></td>
+      <td><span class="no"></span></td>
+      <td><span class="no"></span></td>
+    </tr>
+    <tr>
+      <td>Will not overwrite your stuff without asking</td>
+      <td><span class="yes"></span></td>
+      <td><span class="no"></span></td>
+      <td><span class="no"></span></td>
+    </tr>
+    </tbody>
+  </table>
+  <p>
+    by October 2023
+  </p>
 
 </div>
 
@@ -96,3 +208,4 @@
 <script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>
+

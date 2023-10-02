@@ -78,11 +78,53 @@ em.hl {
   border-radius: 3px;
 }
 
+.table .tool {
+  width: 150px;
+  padding-left: 30px;
+}
+.table .tool.ch {
+  background: transparent url("/gfx/ch.png") no-repeat left center;
+  background-size: auto 25px;
+}
+.table .tool.grumphp {
+  background: transparent url("/gfx/grumphp.png") no-repeat left center;
+  background-size: auto 25px;
+}
+.table .tool.whiskey {
+  background: transparent url("/gfx/whiskey.png") no-repeat left center;
+  background-size: auto 22px;
+}
+.table.compare th {
+  border-top: 0;
+}
+.table.compare td {
+  vertical-align: middle;
+}
+
+.yes {
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+  background: transparent url("/gfx/ok.svg") no-repeat;
+  background-size: contain;
+}
+
+.no {
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+  background: transparent url("/gfx/no.svg") no-repeat;
+  background-size: contain;
+}
+
 .pirate {
+  background: #ebebeb url("/gfx/ch.png") no-repeat right center;
+  background-size: auto 90%;
   border-radius: 5px;
-  padding: 10px;
+  padding: 15px 100px 15px 15px;
   font-style: italic !important;
-  background-color: #ebebeb;
 }
 
 /* Responsive: Portrait tablets and up */
