@@ -31,7 +31,7 @@ class DoesNotContainRegex extends Check
      *
      * @var string
      */
-    private $regex;
+    private string $regex;
 
     /**
      * Descriptive regex name
@@ -45,21 +45,21 @@ class DoesNotContainRegex extends Check
      *
      * @var array<string>
      */
-    private $fileExtensions;
+    private array $fileExtensions;
 
     /**
      * Log of all checked files and found matches
      *
      * @var array<string, int>
      */
-    private $fileMatches = [];
+    private array $fileMatches = [];
 
     /**
      * Total amount of found matches
      *
      * @var int
      */
-    private $totalMatches = 0;
+    private int $totalMatches = 0;
 
     /**
      * Extract and validate config settings

@@ -35,7 +35,7 @@ abstract class Check implements Action, Constrained
      *
      * @var string
      */
-    protected $actionName;
+    protected string $actionName;
 
     /**
      * Make sure this action is only used pro pre-commit hooks

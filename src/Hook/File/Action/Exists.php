@@ -19,7 +19,7 @@ use SebastianFeldmann\Git\Repository;
  * Exists (in repository)
  *
  * This hook makes sure that a configured list of files exist in the repository.
- * For example you can use this to make sure you have committed some unit tests
+ * For example, you can use this to make sure you have committed some unit tests
  * before pushing your changes.
  *
  * {

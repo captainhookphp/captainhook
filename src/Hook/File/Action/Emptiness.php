@@ -30,14 +30,14 @@ abstract class Emptiness extends Check
      *
      * @var string
      */
-    protected $actionName;
+    protected string $actionName;
 
     /**
      * List of configured file patterns to watch
      *
      * @var array<string>
      */
-    private $filePatterns;
+    private array $filePatterns;
 
     /**
      * Extract and validate all config settings

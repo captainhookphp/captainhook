@@ -28,7 +28,7 @@ class IsEmpty extends Emptiness
      *
      * @var string
      */
-    protected $actionName = 'IsEmpty';
+    protected string $actionName = 'IsEmpty';
 
     /**
      * Checks if the file is valid or not

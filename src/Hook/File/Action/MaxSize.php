@@ -37,14 +37,14 @@ class MaxSize extends Check
     /**
      * @var int
      */
-    private $maxBytes;
+    private int $maxBytes;
 
     /**
      * File sizes for all checked files
      *
      * @var array<string, int>
      */
-    private $fileSizes = [];
+    private array $fileSizes = [];
 
     protected function setUp(Config\Options $options): void
     {
@@ -109,9 +109,9 @@ class MaxSize extends Check
      * Return given size in bytes
      * Allowed units:
      *   B => byte
-     *   K => kilo byte
-     *   M => mega byte
-     *   G => giga byte
+     *   K => kilobyte
+     *   M => megabyte
+     *   G => gigabyte
      *   T => terra byte
      *   P => peta byte
      *
