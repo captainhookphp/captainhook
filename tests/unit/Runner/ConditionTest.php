@@ -12,7 +12,9 @@
 namespace CaptainHook\App\Runner;
 
 use CaptainHook\App\Config;
+use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
+use CaptainHook\App\Hook\Condition\Config\CustomValueIsTruthy;
 use CaptainHook\App\Hook\Condition\FileChanged\Any;
 use CaptainHook\App\Hook\Condition\FileStaged;
 use CaptainHook\App\Mockery as CHMockery;
@@ -21,6 +23,7 @@ use PHPUnit\Framework\TestCase;
 
 class ConditionTest extends TestCase
 {
+    use ConfigMockery;
     use IOMockery;
     use CHMockery;
 
@@ -29,6 +32,8 @@ class ConditionTest extends TestCase
      */
     public function testPHPConditionApply(): void
     {
+        $config = $this->createConfigMock();
+
         $io = $this->createIOMock();
         $io->expects($this->exactly(2))->method('getArgument')->willReturn('');
 
@@ -43,7 +48,7 @@ class ConditionTest extends TestCase
             ]
         );
 
-        $runner = new Condition($io, $repository, 'post-checkout');
+        $runner = new Condition($io, $repository, $config, 'post-checkout');
         $this->assertTrue($runner->doesConditionApply($conditionConfig));
     }
 
@@ -52,6 +57,8 @@ class ConditionTest extends TestCase
      */
     public function testConditionNotExecutedDueToConstraint(): void
     {
+        $config = $this->createConfigMock();
+
         $io         = $this->createIOMock();
         $repository = $this->createRepositoryMock('');
         $repository->expects($this->never())->method('getDiffOperator');
@@ -63,7 +70,7 @@ class ConditionTest extends TestCase
             ]
         );
 
-        $runner = new Condition($io, $repository, 'pre-commit');
+        $runner = new Condition($io, $repository, $config, 'pre-commit');
         $this->assertTrue($runner->doesConditionApply($conditionConfig));
     }
 
@@ -76,8 +83,32 @@ class ConditionTest extends TestCase
 
         $conditionConfig = new Config\Condition('\\NotFoundForSure', []);
 
-        $runner = new Condition($this->createIOMock(), $this->createRepositoryMock(), 'pre-commit');
+        $runner = new Condition(
+            $this->createIOMock(),
+            $this->createRepositoryMock(),
+            $this->createConfigMock(),
+            'pre-commit'
+        );
         $runner->doesConditionApply($conditionConfig);
+    }
+
+    /**
+     * Test Condition::doesConditionApply
+     */
+    public function testConfigDependantCondition(): void
+    {
+        $config = $this->createConfigMock();
+        $config->expects($this->once())->method('getCustomSettings')->willReturn(['FOO' => 'yes']);
+
+        $conditionConfig = new Config\Condition('\\' . CustomValueIsTruthy::class, ['FOO']);
+
+        $runner = new Condition(
+            $this->createIOMock(),
+            $this->createRepositoryMock(),
+            $config,
+            'pre-commit'
+        );
+        $this->assertTrue($runner->doesConditionApply($conditionConfig));
     }
 
     /**
@@ -94,7 +125,7 @@ class ConditionTest extends TestCase
 
         $conditionConfig = new Config\Condition(CH_PATH_FILES . '/bin/phpunit');
 
-        $runner = new Condition($io, $repository, 'pre-commit');
+        $runner = new Condition($io, $repository, $this->createConfigMock(), 'pre-commit');
         $this->assertTrue($runner->doesConditionApply($conditionConfig));
     }
 
@@ -125,7 +156,7 @@ class ConditionTest extends TestCase
              ]]
         );
 
-        $runner = new Condition($io, $repository, 'post-checkout');
+        $runner = new Condition($io, $repository, $this->createConfigMock(), 'post-checkout');
         $this->assertTrue($runner->doesConditionApply($conditionConfig));
     }
 
@@ -161,7 +192,7 @@ class ConditionTest extends TestCase
              ]]
         );
 
-        $runner = new Condition($io, $repository, 'post-checkout');
+        $runner = new Condition($io, $repository, $this->createConfigMock(), 'post-checkout');
         $this->assertTrue($runner->doesConditionApply($conditionConfig));
     }
 }

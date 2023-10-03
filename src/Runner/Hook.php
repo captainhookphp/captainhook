@@ -391,7 +391,7 @@ abstract class Hook extends RepositoryAware
      */
     private function doConditionsApply(array $conditions): bool
     {
-        $conditionRunner = new Condition($this->io, $this->repository, $this->hook);
+        $conditionRunner = new Condition($this->io, $this->repository, $this->config, $this->hook);
         foreach ($conditions as $config) {
             if (!$conditionRunner->doesConditionApply($config)) {
                 return false;

@@ -35,31 +35,38 @@ class Condition
     /**
      * @var \CaptainHook\App\Console\IO
      */
-    private $io;
+    private IO $io;
 
     /**
      * @var \SebastianFeldmann\Git\Repository
      */
-    private $repository;
+    private Repository $repository;
+
+    /**
+     * @var \CaptainHook\App\Config
+     */
+    private Config $config;
 
     /**
      * Currently executed hook
      *
      * @var string
      */
-    private $hook;
+    private string $hook;
 
     /**
      * Condition constructor.
      *
      * @param \CaptainHook\App\Console\IO       $io
      * @param \SebastianFeldmann\Git\Repository $repository
+     * @param \CaptainHook\App\Config           $config
      * @param string                            $hook
      */
-    public function __construct(IO $io, Repository $repository, string $hook)
+    public function __construct(IO $io, Repository $repository, Config $config, string $hook)
     {
         $this->io         = $io;
         $this->repository = $repository;
+        $this->config     = $config;
         $this->hook       = $hook;
     }
 
@@ -72,7 +79,10 @@ class Condition
     public function doesConditionApply(Config\Condition $config): bool
     {
         $condition = $this->createCondition($config);
-        // check for any given restrictions
+        if ($condition instanceof ConditionInterface\ConfigDependant) {
+            $condition->setConfig($this->config);
+        }
+        // check all given restrictions
         if (!$this->isApplicable($condition)) {
             $this->io->write('Condition skipped due to hook constraint', true, IO::VERBOSE);
             return true;
