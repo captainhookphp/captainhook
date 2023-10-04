@@ -79,9 +79,6 @@ class Condition
     public function doesConditionApply(Config\Condition $config): bool
     {
         $condition = $this->createCondition($config);
-        if ($condition instanceof ConditionInterface\ConfigDependant) {
-            $condition->setConfig($this->config);
-        }
         // check all given restrictions
         if (!$this->isApplicable($condition)) {
             $this->io->write('Condition skipped due to hook constraint', true, IO::VERBOSE);
@@ -115,7 +112,11 @@ class Condition
         if (!class_exists($class)) {
             throw new RuntimeException('could not find condition class: ' . $class);
         }
-        return new $class(...$config->getArgs());
+        $condition = new $class(...$config->getArgs());
+        if ($condition instanceof ConditionInterface\ConfigDependant) {
+            $condition->setConfig($this->config);
+        }
+        return $condition;
     }
 
     /**
@@ -133,9 +134,6 @@ class Condition
             if (!$this->isApplicable($condition)) {
                 $this->io->write('Condition skipped due to hook constraint', true, IO::VERBOSE);
                 continue;
-            }
-            if ($condition instanceof ConditionInterface\ConfigDependant) {
-                $condition->setConfig($this->config);
             }
             $conditions[] = $condition;
         }
