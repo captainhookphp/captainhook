@@ -31,7 +31,7 @@ abstract class Logic implements Condition
      *
      * @var \CaptainHook\App\Hook\Condition[]
      */
-    protected $conditions = [];
+    protected array $conditions = [];
 
     final private function __construct(Condition ...$conditions)
     {
