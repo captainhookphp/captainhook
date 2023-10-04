@@ -38,6 +38,21 @@ class AnyTest extends TestCase
     /**
      * Tests Any::isTrue
      */
+    public function testIsTrueWithStringFilter(): void
+    {
+        $io = $this->createIOMock();
+        $operator   = $this->createGitIndexOperator(['fiz.php', 'baz.php', 'foo.php']);
+        $repository = $this->createRepositoryMock('');
+        $repository->expects($this->once())->method('getIndexOperator')->willReturn($operator);
+
+        $fileStaged = new Any(['foo.php', 'bar.php'], 'ARC');
+
+        $this->assertTrue($fileStaged->isTrue($io, $repository));
+    }
+
+    /**
+     * Tests Any::isTrue
+     */
     public function testWithWildcardIsTrue(): void
     {
         $io = $this->createIOMock();

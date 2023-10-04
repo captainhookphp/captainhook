@@ -57,13 +57,13 @@ class InDirectory implements Condition, Constrained
     /**
      * InDirectory constructor
      *
-     * @param string             $directory
-     * @param array<int, string> $diffFilter
+     * @param string                    $directory
+     * @param array<int, string>|string $diffFilter
      */
-    public function __construct(string $directory, array $diffFilter = [])
+    public function __construct($directory, $diffFilter = [])
     {
-        $this->directory  = $directory;
-        $this->diffFilter = $diffFilter;
+        $this->directory  = (string) $directory;
+        $this->diffFilter = is_array($diffFilter) ? $diffFilter : str_split($diffFilter);
     }
 
     /**

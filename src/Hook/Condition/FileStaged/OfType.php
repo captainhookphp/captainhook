@@ -59,13 +59,13 @@ class OfType implements Condition, Constrained
     /**
      * OfType constructor
      *
-     * @param string             $type
-     * @param array<int, string> $filter
+     * @param string                    $type
+     * @param array<int, string>|string $filter
      */
-    public function __construct(string $type, array $filter = [])
+    public function __construct($type, $filter = [])
     {
-        $this->suffix     = $type;
-        $this->diffFilter = $filter;
+        $this->suffix     = (string) $type;
+        $this->diffFilter = is_array($filter) ? $filter : str_split($filter);
     }
 
     /**

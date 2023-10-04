@@ -43,13 +43,13 @@ abstract class FileStaged extends File
     /**
      * FileStaged constructor
      *
-     * @param array<int, string> $files
-     * @param array<int, string> $diffFilter
+     * @param array<int, string>|string $files
+     * @param array<int, string>|string $diffFilter
      */
-    public function __construct(array $files, array $diffFilter = [])
+    public function __construct($files, $diffFilter = [])
     {
-        $this->filesToWatch = $files;
-        $this->diffFilter   = $diffFilter;
+        $this->filesToWatch = is_array($files)      ? $files      : explode(' ', $files);
+        $this->diffFilter   = is_array($diffFilter) ? $diffFilter : str_split($diffFilter);
     }
 
     /**
@@ -77,7 +77,7 @@ abstract class FileStaged extends File
      * @param  \SebastianFeldmann\Git\Repository $repository
      * @return array<string>
      */
-    protected function getStagedFiles(Repository $repository)
+    protected function getStagedFiles(Repository $repository): array
     {
         return $repository->getIndexOperator()->getStagedFiles($this->diffFilter);
     }
