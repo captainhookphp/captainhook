@@ -36,6 +36,10 @@ use SebastianFeldmann\Git\Repository;
  *    ]}
  * ]
  *
+ * Multiple types can be configured using a comma separated string or an array
+ * "php,html,xml"
+ * ["php", "html", "xml"]
+ *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
@@ -46,9 +50,9 @@ class OfType implements Condition, Constrained
     /**
      * File type to check e.g. 'php' or 'html'
      *
-     * @var string
+     * @var array<int, string>
      */
-    private string $suffix;
+    private array $suffixes;
 
     /**
      * --diff-filter option
@@ -60,12 +64,12 @@ class OfType implements Condition, Constrained
     /**
      * OfType constructor
      *
-     * @param mixed                     $type
+     * @param mixed                     $types
      * @param array<int, string>|string $filter
      */
-    public function __construct($type, $filter = [])
+    public function __construct($types, $filter = [])
     {
-        $this->suffix     = (string) $type;
+        $this->suffixes   = is_array($types) ? $types : explode(',', (string) $types);
         $this->diffFilter = FilterUtil::filterFromConfigValue($filter);
     }
 
@@ -88,7 +92,7 @@ class OfType implements Condition, Constrained
      */
     public function isTrue(IO $io, Repository $repository): bool
     {
-        $files = $repository->getIndexOperator()->getStagedFilesOfType($this->suffix, $this->diffFilter);
+        $files = $repository->getIndexOperator()->getStagedFilesOfTypes($this->suffixes, $this->diffFilter);
         return count($files) > 0;
     }
 }
