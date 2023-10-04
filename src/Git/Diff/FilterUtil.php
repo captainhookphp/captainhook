@@ -34,9 +34,6 @@ abstract class FilterUtil
      */
     public static function sanitize(array $filter): array
     {
-        return array_filter($filter, fn($e) => in_array($e, ['A', 'C', 'D', 'M', 'R', 'T', 'U', 'X', 'B', '*']) );
+        return array_filter($filter, fn($e) => in_array($e, ['A', 'C', 'D', 'M', 'R', 'T', 'U', 'X', 'B', '*']));
     }
 }
-
-
-
