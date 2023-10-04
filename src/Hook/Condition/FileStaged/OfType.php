@@ -12,6 +12,7 @@
 namespace CaptainHook\App\Hook\Condition\FileStaged;
 
 use CaptainHook\App\Console\IO;
+use CaptainHook\App\Git\Diff\FilterUtil;
 use CaptainHook\App\Hook\Condition;
 use CaptainHook\App\Hook\Constrained;
 use CaptainHook\App\Hook\Restriction;
@@ -59,13 +60,13 @@ class OfType implements Condition, Constrained
     /**
      * OfType constructor
      *
-     * @param string                    $type
+     * @param mixed                     $type
      * @param array<int, string>|string $filter
      */
     public function __construct($type, $filter = [])
     {
         $this->suffix     = (string) $type;
-        $this->diffFilter = is_array($filter) ? $filter : str_split($filter);
+        $this->diffFilter = FilterUtil::filterFromConfigValue($filter);
     }
 
     /**

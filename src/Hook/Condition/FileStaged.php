@@ -12,6 +12,7 @@
 namespace CaptainHook\App\Hook\Condition;
 
 use CaptainHook\App\Console\IO;
+use CaptainHook\App\Git\Diff\FilterUtil;
 use CaptainHook\App\Hook\Restriction;
 use CaptainHook\App\Hooks;
 use SebastianFeldmann\Git\Repository;
@@ -43,13 +44,13 @@ abstract class FileStaged extends File
     /**
      * FileStaged constructor
      *
-     * @param array<int, string>|string $files
-     * @param array<int, string>|string $diffFilter
+     * @param mixed $files
+     * @param mixed $diffFilter
      */
     public function __construct($files, $diffFilter = [])
     {
-        $this->filesToWatch = is_array($files)      ? $files      : explode(' ', $files);
-        $this->diffFilter   = is_array($diffFilter) ? $diffFilter : str_split($diffFilter);
+        $this->filesToWatch = is_array($files) ? $files : explode(',', (string) $files);
+        $this->diffFilter   = FilterUtil::filterFromConfigValue($diffFilter);
     }
 
     /**

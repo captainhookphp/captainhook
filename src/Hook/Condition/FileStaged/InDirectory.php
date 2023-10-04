@@ -12,6 +12,7 @@
 namespace CaptainHook\App\Hook\Condition\FileStaged;
 
 use CaptainHook\App\Console\IO;
+use CaptainHook\App\Git\Diff\FilterUtil;
 use CaptainHook\App\Hook\Condition;
 use CaptainHook\App\Hook\Constrained;
 use CaptainHook\App\Hook\Restriction;
@@ -57,13 +58,13 @@ class InDirectory implements Condition, Constrained
     /**
      * InDirectory constructor
      *
-     * @param string                    $directory
+     * @param mixed                     $directory
      * @param array<int, string>|string $diffFilter
      */
     public function __construct($directory, $diffFilter = [])
     {
         $this->directory  = (string) $directory;
-        $this->diffFilter = is_array($diffFilter) ? $diffFilter : str_split($diffFilter);
+        $this->diffFilter = FilterUtil::filterFromConfigValue($diffFilter);
     }
 
     /**
