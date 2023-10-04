@@ -56,6 +56,14 @@
           <td>Check if we are on a particular branch</td>
         </tr>
         <tr>
+          <td><a href="#custom-truthy">\CaptainHook\App\Hook\Condition\Config\CustomValueIsTruthy</a></td>
+          <td>Check if a custom config is true, 1, yes or on</td>
+        </tr>
+        <tr>
+          <td><a href="#custom-falsy">\CaptainHook\App\Hook\Condition\Config\CustomValueIsFalsy</a></td>
+          <td>Check if a custom config is false, 0, no or off</td>
+        </tr>
+        <tr>
           <th colspan="2">pre-commit</th>
         </tr>
         <tr>
@@ -120,6 +128,34 @@
       "exec": "\\CaptainHook\\App\\Hook\\Condition\\OnBranch",
       "args": [
         "master"
+      ]
+    }
+  ]
+}</code></pre>
+
+      <h3 id="custom-truthy">CustomValueIsTruthy</h3>
+      <p><em class="hl">all hooks</em></p>
+      <p>This <em>Condition</em> expects just one argument, the name of the custom config value to check.</p>
+      <pre><code class="javascript">{
+  "conditions": [
+    {
+      "exec": "\\CaptainHook\\App\\Hook\\Condition\\Config\\CustomConfigValueIsTruthy",
+      "args": [
+        "MY_CONFIG_VALUE"
+      ]
+    }
+  ]
+}</code></pre>
+
+      <h3 id="custom-falsy">CustomValueIsFalsy</h3>
+      <p><em class="hl">all hooks</em></p>
+      <p>This <em>Condition</em> expects just one argument, the name of the custom config value to check.</p>
+      <pre><code class="javascript">{
+  "conditions": [
+    {
+      "exec": "\\CaptainHook\\App\\Hook\\Condition\\Config\\CustomConfigValueIsFalsy",
+      "args": [
+        "MY_CONFIG_VALUE"
       ]
     }
   ]
