@@ -134,6 +134,9 @@ class Condition
                 $this->io->write('Condition skipped due to hook constraint', true, IO::VERBOSE);
                 continue;
             }
+            if ($condition instanceof ConditionInterface\ConfigDependant) {
+                $condition->setConfig($this->config);
+            }
             $conditions[] = $condition;
         }
         return $class::fromConditionsArray($conditions);
