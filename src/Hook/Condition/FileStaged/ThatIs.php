@@ -12,6 +12,7 @@
 namespace CaptainHook\App\Hook\Condition\FileStaged;
 
 use CaptainHook\App\Console\IO;
+use CaptainHook\App\Git\Diff\FilterUtil;
 use CaptainHook\App\Hook\Condition;
 use CaptainHook\App\Hook\Constrained;
 use CaptainHook\App\Hook\Restriction;
@@ -70,7 +71,9 @@ class ThatIs implements Condition, Constrained
     {
         $this->directories = (array)($options['inDirectory'] ?? []);
         $this->suffixes    = (array)($options['ofType'] ?? []);
-        $this->diffFilter  = (array)($options['diffFilter'] ?? []);
+
+        $diffFilter = $options['diffFilter'] ?? [];
+        $this->diffFilter  = FilterUtil::sanitize(is_array($diffFilter) ? $diffFilter : str_split($diffFilter));
     }
 
     /**
