@@ -20,6 +20,18 @@ use SebastianFeldmann\Git\Repository;
  *
  * The FileStaged condition is applicable for `pre-commit hooks.
  *
+ *  Example configuration:
+ *
+ *   "action": "some-action"
+ *   "conditions": [
+ *     {"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\Any",
+ *      "args": [
+ *        ["file1", "file2", "file3"]
+ *     ]}
+ *   ]
+ *
+ *  The file list can also be defined as comma seperated string "file1,file2,file3"
+ *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
