@@ -121,8 +121,7 @@ class Docker implements Template
 
             $useTTY      = '';
             $interactive = !preg_match('# -[a-z]*i| --interactive#', $options) ? ' -i' : '';
-            $env         = !preg_match('# (-[a-z]*e|--env)[= ]+GIT_INDEX_FILE#', $options) ? ' -e GIT_INDEX_FILE' : '';
-            $command     = trim($executable) . $interactive . $useTTY . $env . ' ' . trim($options);
+            $command     = trim($executable) . $interactive . $useTTY . ' ' . trim($options);
         }
         return $command;
     }

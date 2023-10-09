@@ -36,7 +36,7 @@ class DockerTest extends TestCase
         $code       = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);
-        $this->assertStringContainsString('docker exec -i -e GIT_INDEX_FILE cap-container', $code);
+        $this->assertStringContainsString('docker exec -i cap-container', $code);
         $this->assertStringContainsString('./bin/captainhook', $code);
     }
 
@@ -58,7 +58,7 @@ class DockerTest extends TestCase
         $code     = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);
-        $this->assertStringContainsString('docker exec -i -e GIT_INDEX_FILE cap-container', $code);
+        $this->assertStringContainsString('docker exec -i cap-container', $code);
         $this->assertStringContainsString('./vendor/bin/captainhook', $code);
     }
 
@@ -81,7 +81,7 @@ class DockerTest extends TestCase
         $code     = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);
-        $this->assertStringContainsString('docker exec -i -e GIT_INDEX_FILE cap-container', $code);
+        $this->assertStringContainsString('docker exec -i cap-container', $code);
         $this->assertStringContainsString('./foo/captainhook', $code);
         $this->assertStringContainsString('bootstrap=vendor/autoload.php', $code);
     }
@@ -117,15 +117,15 @@ class DockerTest extends TestCase
     public function replacementPossibilities(): array
     {
         return [
-            ['cap-container', '-i -e GIT_INDEX_FILE cap-container', 'none'],
-            ['-it cap-container', '-e GIT_INDEX_FILE -it cap-container', '-it'],
-            ['-ti cap-container', '-e GIT_INDEX_FILE -ti cap-container', '-ti'],
-            ['--interactive --tty cap-container', '-e GIT_INDEX_FILE --interactive --tty cap-container', 'long it'],
-            ['--tty --interactive cap-container', '-e GIT_INDEX_FILE --tty --interactive cap-container', 'long ti'],
-            ['--tty cap-container', '-i -e GIT_INDEX_FILE --tty cap-container', 'no i'],
-            ['-xit cap-container', '-e GIT_INDEX_FILE -xit cap-container', 'prefixed i'],
-            ['-xite=GIT_INDEX_FILE cap-container', '-xite=GIT_INDEX_FILE cap-container', 'prefixed e'],
-            ['--env=GIT_INDEX_FILE cap-container', '-i --env=GIT_INDEX_FILE cap-container', 'long e'],
+            ['cap-container', '-i cap-container', 'none'],
+            ['-it cap-container', '-it cap-container', '-it'],
+            ['-ti cap-container', '-ti cap-container', '-ti'],
+            ['--interactive --tty cap-container', '--interactive --tty cap-container', 'long it'],
+            ['--tty --interactive cap-container', '--tty --interactive cap-container', 'long ti'],
+            ['--tty cap-container', '-i --tty cap-container', 'no i'],
+            ['-xit cap-container', '-xit cap-container', 'prefixed i'],
+            ['-xit cap-container', '-xit cap-container', 'prefixed e'],
+            ['cap-container', '-i cap-container', 'long e'],
         ];
     }
 }
