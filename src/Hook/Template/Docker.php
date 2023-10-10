@@ -109,7 +109,7 @@ class Docker implements Template
             $command     = trim($executable)
                          . $this->createInteractiveOptions($options)
                          . $this->createTTYOptions($options)
-                         . $this->createEnvOptions($options)
+                         . $this->createEnvOptions($options, $hook)
                          . ' ' . trim($options);
         }
         return $command;
@@ -132,12 +132,20 @@ class Docker implements Template
     /**
      * Create the env settings if needed
      *
+     * Only force the -e option for pre-commit hooks because with `commit -a` needs
+     * the GIT_INDEX_FILE environment variable.
+     *
      * @param  string $options
+     * @param  string $hook
      * @return string
      */
-    private function createEnvOptions(string $options): string
+    private function createEnvOptions(string $options, string $hook): string
     {
-        return ($this->hasGitPathMappingConfigured() && $this->dockerHasNoEnvSettings($options))
+        return (
+            $this->hasGitPathMappingConfigured()
+            && $this->dockerHasNoEnvSettings($options)
+            && in_array($hook, [Hooks::PRE_COMMIT, Hooks::PREPARE_COMMIT_MSG])
+        )
             ? ' -e GIT_INDEX_FILE="' . $this->config->getRunConfig()->getGitPath() . '/$(basename $GIT_INDEX_FILE)"'
             : '';
     }

@@ -160,9 +160,11 @@ class DockerTest extends TestCase
 
         $template = new Docker($pathInfo, $configMock);
         $code     = $template->getCode('prepare-commit-msg');
+        $codePush = $template->getCode('pre-push');
 
         $this->assertStringContainsString('docker exec' . $expected, $code, $msg);
         $this->assertStringContainsString('/usr/local/bin/captainhook', $code);
+        $this->assertStringNotContainsString('docker exec' . $expected, $codePush, $msg);
     }
 
     /**
