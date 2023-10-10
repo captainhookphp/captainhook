@@ -21,14 +21,15 @@ use SebastianFeldmann\Git\Repository;
 use RuntimeException;
 
 /**
- * Class Condition
+ * Condition Runner
  *
- * Executes an action condition by creating a condition object from a condition configuration.
+ * Executes a condition of an action by creating a `Condition` object from a condition configuration.
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 4.2.0
+ * @internal
  */
 class Condition
 {
@@ -146,7 +147,7 @@ class Condition
      * @param  \CaptainHook\App\Hook\Condition $condition
      * @return bool
      */
-    private function isApplicable(ConditionInterface $condition)
+    private function isApplicable(ConditionInterface $condition): bool
     {
         if ($condition instanceof Constrained) {
             return $condition->getRestriction()->isApplicableFor($this->hook);
