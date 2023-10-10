@@ -22,7 +22,7 @@ use RuntimeException;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 0.9.0
  */
-class Json extends File
+final class Json extends File
 {
     /**
      * Read and decode the json file

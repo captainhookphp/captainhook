@@ -22,7 +22,7 @@ use RuntimeException;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 1.2.0
  */
-class Xml extends File
+final class Xml extends File
 {
     /**
      * Read the xml file and return a SimpleXML object.

@@ -23,7 +23,7 @@ use RuntimeException;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 0.9.0
  */
-abstract class Util
+final class Util
 {
     /**
      * Checks if a hook name is valid

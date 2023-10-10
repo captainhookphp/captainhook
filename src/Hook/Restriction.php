@@ -23,7 +23,7 @@ use CaptainHook\App\Hooks;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.0.0
  */
-class Restriction
+final class Restriction
 {
     /**
      * List of applicable hooks
@@ -32,7 +32,7 @@ class Restriction
      *
      * @var array<string, bool>
      */
-    private $applicableHooks;
+    private array $applicableHooks;
 
     /**
      * Restriction constructor
