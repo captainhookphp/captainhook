@@ -393,12 +393,15 @@
     "includes-level": 2,
     "includes": [],
     "plugins": [],
-    "run-mode": "docker",
-    "run-exec": "docker exec -i CONTAINER_NAME",
-    "run-path": "vendor/bin/captainhook",
-    "php-path": "/usr/bin/php7.4"
+    "php-path": "/usr/bin/php7.4",
     "custom": {
       "my-custom-index": "my-custom-value"
+    },
+    "run": {
+      "mode": "docker",
+      "exec": "docker exec -i CONTAINER_NAME",
+      "path": "vendor/bin/captainhook",
+      "git": "/docker/.git"
     }
   }
 }</code></pre>
@@ -457,21 +460,6 @@
           <td>-</td>
         </tr>
         <tr>
-          <td>run-mode</td>
-          <td>CaptainHook execution mode (local|docker)</td>
-          <td>local</td>
-        </tr>
-        <tr>
-          <td>run-exec</td>
-          <td>Docker command to spin up the container and execute a script</td>
-          <td>-</td>
-        </tr>
-        <tr>
-          <td>run-path</td>
-          <td>Path to the command inside your docker container</td>
-          <td>-</td>
-        </tr>
-        <tr>
           <td>php-path</td>
           <td>Path to the PHP executable</td>
           <td>-</td>
@@ -481,9 +469,30 @@
           <td>List of custom settings you need for replacements or custom actions</td>
           <td>-</td>
         </tr>
+        <tr><td colspan="3"><strong>Run Configuration</strong></td></tr>
+        <tr>
+          <td>mode</td>
+          <td>CaptainHook execution mode (shell|php|local|docker)</td>
+          <td>shell</td>
+        </tr>
+        <tr>
+          <td>exec</td>
+          <td>Docker command to spin up the container and execute a script</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>path</td>
+          <td>Path to the CaptainHook command inside your Docker container</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>git</td>
+          <td>Absolute path to the .git directory inside your Docker container</td>
+          <td>-</td>
+        </tr>
       </table>
 
-      <a name="settings-overwrite"></a>
+      <a id="settings-overwrite"></a>
       <h3>Overwrite settings</h3>
       <p>
         If you have different preferences as your team does and you want to tweak some settings to your needs but you
@@ -501,9 +510,12 @@
   "verbosity": "quiet",
   "ansi-colors": false,
   "fail-on-first-error": false,
-  "run-mode": "docker",
-  "run-exec": "docker exec -i MY_CONTAINER_NAME",
-  "run-path": "vendor/bin/captainhook",
+  "run": {
+    "mode": "docker",
+    "exec": "docker exec -i MY_CONTAINER_NAME",
+    "path": "vendor/bin/captainhook",
+    "git": "/docker/.git"
+  },
   "custom": {
     "some-key": "some value"
   }
