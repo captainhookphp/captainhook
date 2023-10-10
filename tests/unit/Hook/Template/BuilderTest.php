@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CaptainHook\App\Hook\Template;
 
 use CaptainHook\App\Config\Mockery as ConfigMockery;
+use CaptainHook\App\Config\Run;
 use CaptainHook\App\Git\DummyRepo;
 use CaptainHook\App\Mockery as AppMockery;
 use Exception;
@@ -45,9 +46,8 @@ class BuilderTest extends TestCase
         $resolver   = $this->createResolverMock($repo->getRoot() . '/vendor/bin/captainhook', false);
         $repository = $this->createRepositoryMock($repo->getRoot());
         $config     = $this->createConfigMock(true, $repo->getRoot() . '/captainhook.json');
-        $config->method('getRunMode')->willReturn('docker');
-        $config->method('getRunExec')->willReturn('docker exec captain-container');
-        $config->method('getRunPath')->willReturn('');
+        $runConfig  = new Run(['mode' => 'docker', 'exec' => 'docker exec captain-container', 'path' => '']);
+        $config->method('getRunConfig')->willReturn($runConfig);
         $config->method('getBootstrap')->willReturn('vendor/autoload.php');
 
         $template = Builder::build($config, $repository, $resolver);
@@ -78,9 +78,8 @@ class BuilderTest extends TestCase
         $resolver   = $this->createResolverMock($executable, false);
         $repository = $this->createRepositoryMock($repo->getRoot());
         $config     = $this->createConfigMock(true, $repo->getRoot() . '/captainhook.json');
-        $config->method('getRunMode')->willReturn('docker');
-        $config->method('getRunExec')->willReturn('docker exec captain-container');
-        $config->method('getRunPath')->willReturn('');
+        $runConfig  = new Run(['mode' => 'docker', 'exec' => 'docker exec captain-container', 'path' => '']);
+        $config->method('getRunConfig')->willReturn($runConfig);
         $config->method('getBootstrap')->willReturn('vendor/autoload.php');
 
         $template = Builder::build($config, $repository, $resolver);
@@ -100,8 +99,8 @@ class BuilderTest extends TestCase
         $resolver   = $this->createResolverMock(CH_PATH_FILES . '/bin/captainhook', false);
         $repository = $this->createRepositoryMock(CH_PATH_FILES);
         $config     = $this->createConfigMock(true, CH_PATH_FILES . '/template/captainhook.json');
-        $config->method('getRunMode')->willReturn('php');
-        $config->method('getRunExec')->willReturn('');
+        $runConfig  = new Run(['mode' => 'php', 'exec' => '', 'path' => '']);
+        $config->method('getRunConfig')->willReturn($runConfig);
         $config->method('getBootstrap')->willReturn('vendor/autoload.php');
 
         $template = Builder::build($config, $repository, $resolver);
@@ -122,8 +121,8 @@ class BuilderTest extends TestCase
         $resolver   = $this->createResolverMock(CH_PATH_FILES . '/bin/captainhook', false);
         $repository = $this->createRepositoryMock(CH_PATH_FILES);
         $config     = $this->createConfigMock(true, CH_PATH_FILES . '/template/captainhook.json');
-        $config->method('getRunMode')->willReturn('php');
-        $config->method('getRunExec')->willReturn('');
+        $runConfig  = new Run(['mode' => 'php', 'exec' => '', 'path' => '']);
+        $config->method('getRunConfig')->willReturn($runConfig);
         $config->method('getBootstrap')->willReturn('vendorXX/autoload.php');
 
         $template = Builder::build($config, $repository, $resolver);
@@ -144,8 +143,8 @@ class BuilderTest extends TestCase
         $resolver   = $this->createResolverMock('./captainhook', false);
         $repository = $this->createRepositoryMock(CH_PATH_FILES . '/config');
         $config     = $this->createConfigMock(true, CH_PATH_FILES . '/config/valid.json');
-        $config->method('getRunMode')->willReturn('php');
-        $config->method('getRunExec')->willReturn('');
+        $runConfig  = new Run(['mode' => 'php', 'exec' => '', 'path' => '']);
+        $config->method('getRunConfig')->willReturn($runConfig);
         $config->method('getBootstrap')->willReturn('file-not-there.php');
 
         Builder::build($config, $repository, $resolver);

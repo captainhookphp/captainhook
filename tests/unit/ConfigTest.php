@@ -133,7 +133,7 @@ class ConfigTest extends TestCase
     public function testGetRunMode(): void
     {
         $config = new Config('foo.json', true, ['run-mode' => 'docker', 'run-exec' => 'foo']);
-        $this->assertEquals('docker', $config->getRunMode());
+        $this->assertEquals('docker', $config->getRunConfig()->getMode());
     }
 
     /**
@@ -142,7 +142,7 @@ class ConfigTest extends TestCase
     public function testGetRunExec(): void
     {
         $config = new Config('foo.json', true, ['run-mode' => 'docker', 'run-exec' => 'foo']);
-        $this->assertEquals('foo', $config->getRunExec());
+        $this->assertEquals('foo', $config->getRunConfig()->getDockerCommand());
     }
 
     /**
@@ -151,7 +151,7 @@ class ConfigTest extends TestCase
     public function testGetRunPathEmptyByDefault(): void
     {
         $config = new Config('foo.json', true, ['run-mode' => 'docker', 'run-exec' => 'foo']);
-        $this->assertEquals('', $config->getRunPath());
+        $this->assertEquals('', $config->getRunConfig()->getCaptainsPath());
     }
 
     /**
@@ -169,7 +169,7 @@ class ConfigTest extends TestCase
     public function testGetRunPath(): void
     {
         $config = new Config('foo.json', true, ['run-mode' => 'docker', 'run-exec' => 'foo', 'run-path' => '/foo']);
-        $this->assertEquals('/foo', $config->getRunPath());
+        $this->assertEquals('/foo', $config->getRunConfig()->getCaptainsPath());
     }
 
     /**
@@ -207,6 +207,25 @@ class ConfigTest extends TestCase
     /**
      * Tests Config::getJsonData
      */
+    public function testGetJsonDataWithSettings(): void
+    {
+        $config = new Config(
+            './no-config.json',
+            false,
+            ['run-path' => '/usr/local/bin/captainhook', 'verbosity' => 'debug']
+        );
+        $json   = $config->getJsonData();
+
+        $this->assertIsArray($json);
+        $this->assertIsArray($json['config']);
+        $this->assertIsArray($json['config']['run']);
+        $this->assertIsArray($json['pre-commit']);
+        $this->assertIsArray($json['commit-msg']);
+        $this->assertIsArray($json['pre-push']);
+    }
+    /**
+     * Tests Config::getJsonData
+     */
     public function testGetJsonDataWithoutEmptyConfig(): void
     {
         $config = new Config('foo.json', true, []);
@@ -225,7 +244,7 @@ class ConfigTest extends TestCase
 
         $this->assertIsArray($json);
         $this->assertIsArray($json['config']);
-        $this->assertEquals('foo', $json['config']['run-exec']);
+        $this->assertEquals('foo', $json['config']['run']['exec']);
         $this->assertArrayNotHasKey('plugins', $json);
     }
 

@@ -53,7 +53,7 @@ abstract class Builder
             throw new RuntimeException('bootstrap file not found: \'' . $bootstrapPath . '\'');
         }
 
-        switch ($config->getRunMode()) {
+        switch ($config->getRunConfig()->getMode()) {
             case Template::DOCKER:
                 return new Docker(
                     $pathInfo,

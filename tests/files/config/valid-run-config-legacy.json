@@ -1,0 +1,29 @@
+{
+  "config": {
+    "run-mode": "docker",
+    "run-exec": "docker exec cap-container",
+    "run-path": "./vendor/bin/captainhook",
+    "run-git": "/docker/.git"
+  },
+  "prepare-commit-msg": {
+    "enabled": true,
+    "actions": []
+  },
+  "commit-msg": {
+    "enabled": true,
+    "actions": []
+  },
+  "pre-commit": {
+    "enabled": true,
+    "actions": [
+      {
+        "action": "phpunit --configuration=build/phpunit-hook.xml",
+        "options": []
+      }
+    ]
+  },
+  "pre-push": {
+    "enabled": false,
+    "actions": []
+  }
+}

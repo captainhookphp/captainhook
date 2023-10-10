@@ -11,6 +11,7 @@
 
 namespace CaptainHook\App;
 
+use CaptainHook\App\Config\Run;
 use InvalidArgumentException;
 use SebastianFeldmann\Camino\Check;
 
@@ -35,6 +36,7 @@ class Config
     public const SETTING_RUN_EXEC            = 'run-exec';
     public const SETTING_RUN_MODE            = 'run-mode';
     public const SETTING_RUN_PATH            = 'run-path';
+    public const SETTING_RUN_GIT             = 'run-git';
     public const SETTING_PHP_PATH            = 'php-path';
     public const SETTING_VERBOSITY           = 'verbosity';
     public const SETTING_FAIL_ON_FIRST_ERROR = 'fail-on-first-error';
@@ -44,42 +46,49 @@ class Config
      *
      * @var string
      */
-    private $path;
+    private string $path;
 
     /**
      * Does the config file exist
      *
      * @var bool
      */
-    private $fileExists;
+    private bool $fileExists;
 
     /**
      * CaptainHook settings
      *
      * @var array<string, string>
      */
-    private $settings;
+    private array $settings;
+
+    /**
+     * All options related to running CaptainHook
+     *
+     * @var \CaptainHook\App\Config\Run
+     */
+    private Run $runConfig;
 
     /**
      * List of users custom settings
      *
      * @var array<string, mixed>
      */
-    private $custom = [];
+    private array $custom = [];
 
     /**
      * List of plugins
      *
      * @var array<string, \CaptainHook\App\Config\Plugin>
      */
-    private $plugins = [];
+    private array $plugins = [];
 
     /**
      * List of hook configs
      *
      * @var array<string, \CaptainHook\App\Config\Hook>
      */
-    private $hooks = [];
+    private array $hooks = [];
 
     /**
      * Config constructor
@@ -92,6 +101,8 @@ class Config
     {
         $settings = $this->setupPlugins($settings);
         $settings = $this->setupCustom($settings);
+        $settings = $this->setupRunConfig($settings);
+
 
         $this->path       = $path;
         $this->fileExists = $fileExists;
@@ -136,6 +147,37 @@ class Config
                 : [];
             $this->plugins[$name] = new Config\Plugin($name, $options);
         }
+        return $settings;
+    }
+
+    /**
+     * Extract all running related settings into a run configuration
+     *
+     * @param  array<string, mixed> $settings
+     * @return array<string, mixed>
+     */
+    private function setupRunConfig(array $settings): array
+    {
+        // extract the legacy settings
+        $settingsToMove = [
+            self::SETTING_RUN_MODE,
+            self::SETTING_RUN_EXEC,
+            self::SETTING_RUN_PATH,
+            self::SETTING_RUN_GIT
+        ];
+        $config = [];
+        foreach ($settingsToMove as $setting) {
+            if (!empty($settings[$setting])) {
+                $config[substr($setting, 4)] = $settings[$setting];
+            }
+            unset($settings[$setting]);
+        }
+        // make sure the new run configuration supersedes the legacy settings
+        if (isset($settings['run']) && is_array($settings['run'])) {
+            $config = array_merge($config, $settings['run']);
+            unset($settings['run']);
+        }
+        $this->runConfig = new Run($config);
         return $settings;
     }
 
@@ -245,36 +287,6 @@ class Config
     }
 
     /**
-     * Get configured run-mode
-     *
-     * @return string
-     */
-    public function getRunMode(): string
-    {
-        return (string) ($this->settings[self::SETTING_RUN_MODE] ?? 'local');
-    }
-
-    /**
-     * Get configured run-exec
-     *
-     * @return string
-     */
-    public function getRunExec(): string
-    {
-        return (string) ($this->settings[self::SETTING_RUN_EXEC] ?? '');
-    }
-
-    /**
-     * Get configured run-path
-     *
-     * @return string
-     */
-    public function getRunPath(): string
-    {
-        return (string) ($this->settings[self::SETTING_RUN_PATH] ?? '');
-    }
-
-    /**
      * Get configured php-path
      *
      * @return string
@@ -285,9 +297,19 @@ class Config
     }
 
     /**
+     * Get run configuration
+     *
+     * @return \CaptainHook\App\Config\Run
+     */
+    public function getRunConfig(): Run
+    {
+        return $this->runConfig;
+    }
+
+    /**
      * Returns the users custom config values
      *
-     * @return array<string, mixed>
+     * @return array<mixed>
      */
     public function getCustomSettings(): array
     {
@@ -334,25 +356,40 @@ class Config
     /**
      * Return config array to write to disc
      *
-     * @return array<mixed>
+     * @return array<string, mixed>
      */
     public function getJsonData(): array
     {
         $data = [];
-        // only append config settings if at least one setting is present
         if (!empty($this->settings)) {
             $data['config'] = $this->settings;
         }
 
-        foreach ($this->plugins as $plugin) {
-            $data['config']['plugins'][] = $plugin->getJsonData();
+        $runConfigData = $this->runConfig->getJsonData();
+        if (!empty($runConfigData)) {
+            $data['config']['run'] = $runConfigData;
         }
-
-        // append all configured hooks
+        if (!empty($this->plugins)) {
+            $data['config']['plugins'] = $this->getPluginsJsonData();
+        }
         foreach (Hooks::getValidHooks() as $hook => $value) {
             $data[$hook] = $this->hooks[$hook]->getJsonData();
         }
 
         return $data;
+    }
+
+    /**
+     * Collect and return plugin json data for all plugins
+     *
+     * @return array<int, mixed>
+     */
+    private function getPluginsJsonData(): array
+    {
+        $plugins = [];
+        foreach ($this->plugins as $plugin) {
+            $plugins[] = $plugin->getJsonData();
+        }
+        return $plugins;
     }
 }

@@ -118,9 +118,12 @@ class Install extends RepositoryAware
         // use the configured verbosity to manage general output verbosity
         $output->setVerbosity(IOUtil::mapConfigVerbosity($config->getVerbosity()));
 
-        if ($config->getRunMode() === Template::DOCKER && empty($config->getRunExec())) {
+        if (
+            $config->getRunConfig()->getMode() === Template::DOCKER
+            && empty($config->getRunConfig()->getDockerCommand())
+        ) {
             throw new RuntimeException(
-                'Option "run-exec" missing for run-mode docker.'
+                'Run "exec" option missing for run-mode docker.'
             );
         }
 

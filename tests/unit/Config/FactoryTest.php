@@ -90,6 +90,32 @@ class FactoryTest extends TestCase
 
     /**
      * Tests Factory::create
+     */
+    public function testCreateWithRunConfig(): void
+    {
+        $path   = realpath(__DIR__ . '/../../files/config/valid-run-config-nested.json');
+        $config = Factory::create($path, []);
+
+        $this->assertEquals('./vendor/bin/captainhook', $config->getRunConfig()->getCaptainsPath());
+        $this->assertEquals('docker', $config->getRunConfig()->getMode());
+        $this->assertEquals('/docker/.git', $config->getRunConfig()->getGitPath());
+    }
+
+    /**
+     * Tests Factory::create
+     */
+    public function testCreateWithRunConfigLegacy(): void
+    {
+        $path   = realpath(__DIR__ . '/../../files/config/valid-run-config-legacy.json');
+        $config = Factory::create($path, []);
+
+        $this->assertEquals('./vendor/bin/captainhook', $config->getRunConfig()->getCaptainsPath());
+        $this->assertEquals('docker', $config->getRunConfig()->getMode());
+        $this->assertEquals('/docker/.git', $config->getRunConfig()->getGitPath());
+    }
+
+    /**
+     * Tests Factory::create
      *
      * @throws \Exception
      */
@@ -141,8 +167,8 @@ class FactoryTest extends TestCase
         $this->assertEquals('verbose', $config->getVerbosity());
         $this->assertEquals($gitDir, $config->getGitDirectory());
         $this->assertEquals(false, $config->useAnsiColors());
-        $this->assertEquals('docker', $config->getRunMode());
-        $this->assertEquals('docker exec CONTAINER_NAME', $config->getRunExec());
+        $this->assertEquals('docker', $config->getRunConfig()->getMode());
+        $this->assertEquals('docker exec CONTAINER_NAME', $config->getRunConfig()->getDockerCommand());
         $this->assertEquals(false, $config->failOnFirstError());
     }
 

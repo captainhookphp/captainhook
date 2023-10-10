@@ -12,6 +12,7 @@
 namespace CaptainHook\App\Hook\Template\Local;
 
 use CaptainHook\App\Config\Mockery as ConfigMockery;
+use CaptainHook\App\Config\Run;
 use CaptainHook\App\Hook\Template\PathInfo;
 use PHPUnit\Framework\TestCase;
 
@@ -72,10 +73,11 @@ class ShellTest extends TestCase
         $pathInfo->method('getExecutablePath')->willReturn('vendor/bin/captainhook');
         $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
 
-        $config = $this->createConfigMock(false, 'captainhook.json');
+        $config    = $this->createConfigMock(false, 'captainhook.json');
+        $runConfig = new Run(['path' => 'tools/captainhook.phar']);
+        $config->method('getRunConfig')->willReturn($runConfig);
         $config->method('getBootstrap')->willReturn('vendor/autoload.php');
         $config->method('getPhpPath')->willReturn('/usr/bin/php7.4');
-        $config->method('getRunPath')->willReturn('tools/captainhook.phar');
 
         $template = new Shell($pathInfo, $config, false);
         $code     = $template->getCode('commit-msg');

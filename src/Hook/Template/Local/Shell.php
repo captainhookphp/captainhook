@@ -84,8 +84,8 @@ class Shell extends Template\Local
     {
         $executable = !empty($this->config->getPhpPath()) ? $this->config->getPhpPath() . ' ' : '';
 
-        if (!empty($this->config->getRunPath())) {
-            return $executable . $this->config->getRunPath();
+        if (!empty($this->config->getRunConfig()->getCaptainsPath())) {
+            return $executable . $this->config->getRunConfig()->getCaptainsPath();
         }
 
         return $executable . $this->pathInfo->getExecutablePath();

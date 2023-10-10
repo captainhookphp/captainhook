@@ -46,13 +46,6 @@ class Docker implements Template
     private Config $config;
 
     /**
-     * Path to the CaptainHook binary script or PHAR
-     *
-     * @var string
-     */
-    private string $binaryPath;
-
-    /**
      * Docker constructor
      *
      * @param \CaptainHook\App\Hook\Template\PathInfo $pathInfo
@@ -60,9 +53,8 @@ class Docker implements Template
      */
     public function __construct(PathInfo $pathInfo, Config $config)
     {
-        $this->pathInfo   = $pathInfo;
-        $this->config     = $config;
-        $this->binaryPath = $this->resolveBinaryPath();
+        $this->pathInfo = $pathInfo;
+        $this->config   = $config;
     }
 
     /**
@@ -84,7 +76,7 @@ class Docker implements Template
             '# installed by CaptainHook ' . CH::VERSION,
             '',
             $this->getOptimizeDockerCommand($hook) . ' '
-            . $this->binaryPath . ' hook:' . $hook
+            . $this->resolveBinaryPath() . ' hook:' . $hook
             . $config
             . $bootstrap
             . ' "$@"'
@@ -106,7 +98,7 @@ class Docker implements Template
      */
     private function getOptimizeDockerCommand(string $hook): string
     {
-        $command  = $this->config->getRunExec();
+        $command  = $this->config->getRunConfig()->getDockerCommand();
         $position = strpos($command, 'docker exec');
         // add interactive and tty flags if docker exec is used
         if ($position !== false) {
@@ -114,16 +106,83 @@ class Docker implements Template
             $executable = substr($command, 0, $endExec);
             $options    = substr($command, $endExec);
 
-            // Because this currently breaks working with Jetbrains IDEs I will deactivate it for now
-            //
-            // $tty        = Hooks::allowsUserInput($hook) ? ' -t' : '';
-            // $useTTY      = !preg_match('# -[a-z]*t| --tty#', $options) ? $tty : '';
-
-            $useTTY      = '';
-            $interactive = !preg_match('# -[a-z]*i| --interactive#', $options) ? ' -i' : '';
-            $command     = trim($executable) . $interactive . $useTTY . ' ' . trim($options);
+            $command     = trim($executable)
+                         . $this->createInteractiveOptions($options)
+                         . $this->createTTYOptions($options)
+                         . $this->createEnvOptions($options)
+                         . ' ' . trim($options);
         }
         return $command;
+    }
+
+    /**
+     * Creates the TTY options if needed
+     *
+     * @param  string $options
+     * @return string
+     */
+    private function createTTYOptions(string $options): string
+    {
+        // Because this currently breaks working with Jetbrains IDEs it is deactivated for now
+        // $tty        = Hooks::allowsUserInput($hook) ? ' -t' : '';
+        // $useTTY      = !preg_match('# -[a-z]*t| --tty#', $options) ? $tty : '';
+        return '';
+    }
+
+    /**
+     * Create the env settings if needed
+     *
+     * @param  string $options
+     * @return string
+     */
+    private function createEnvOptions(string $options): string
+    {
+        return ($this->hasGitPathMappingConfigured() && $this->dockerHasNoEnvSettings($options))
+            ? ' -e GIT_INDEX_FILE="' . $this->config->getRunConfig()->getGitPath() . '/$(basename $GIT_INDEX_FILE)"'
+            : '';
+    }
+
+    /**
+     * Checks if the ENV settings are present
+     *
+     * @param string $options
+     * @return bool
+     */
+    private function dockerHasNoEnvSettings(string $options): bool
+    {
+        return !preg_match('# (-[a-z]*e|--env)[= ]+GIT_INDEX_FILE#', $options);
+    }
+
+    /**
+     * Creates the interactive option if needed, returns ' -i' or ''
+     *
+     * @param  string $options
+     * @return string
+     */
+    private function createInteractiveOptions(string $options): string
+    {
+        return $this->dockerIsNotInteractive($options) ? ' -i' : '';
+    }
+
+    /**
+     * Checks if the interactive flag is set
+     *
+     * @param  string $options
+     * @return bool
+     */
+    private function dockerIsNotInteractive(string $options): bool
+    {
+        return !preg_match('# -[a-z]*i| --interactive#', $options);
+    }
+
+    /**
+     * Check if a git path is configured
+     *
+     * @return bool
+     */
+    private function hasGitPathMappingConfigured(): bool
+    {
+        return !empty($this->config->getRunConfig()->getGitPath());
     }
 
     /**
@@ -134,11 +193,11 @@ class Docker implements Template
     private function resolveBinaryPath(): string
     {
         // if a specific executable is configured use just that
-        if (!empty($this->config->getRunPath())) {
-            return $this->config->getRunPath();
+        if (!empty($this->config->getRunConfig()->getCaptainsPath())) {
+            return $this->config->getRunConfig()->getCaptainsPath();
         }
 
-        // For Docker we need to strip down the current working directory.
+        // For Docker, we need to strip down the current working directory.
         // This is caused because docker will always connect to a specific working directory
         // where the absolute path will not be recognized.
         // E.g.:
@@ -149,7 +208,7 @@ class Docker implements Template
         // by default this should return something like ./vendor/bin/captainhook
         // if the executable is not located in your git repository it will return the absolute path
         // which will most likely not work from within the docker container
-        // you have to use the 'run_path' config then
+        // you have to use the 'run' 'path' config then
         return $this->pathInfo->getExecutablePath();
     }
 }
