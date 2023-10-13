@@ -53,6 +53,9 @@ jobs:
     - name: Execute integration tests
       run: tools/phpunit --no-coverage --testsuite IntegrationTests
 
+    - name: Execute dummy pre commit
+      run: bin/captainhook --configuration=build/captainhook.json hook:pre-commit
+
     - name: Check coding style
       run: tools/phpcs --standard=psr12 src tests
 
@@ -78,3 +81,11 @@ jobs:
     - name: Run phar
       if: ${{ matrix.buildphar }}
       run: ${{ env.PHAR }} --help
+
+    - name: Run phar pre-commit
+      if: ${{ matrix.buildphar }}
+      run: ${{ env.PHAR }} --configuration=build/captainhook.json hook:pre-commit
+
+    - name: Run phar pre-push
+      if: ${{ matrix.buildphar }}
+      run: ${{ env.PHAR }} --configuration=build/captainhook.json hook:pre-push

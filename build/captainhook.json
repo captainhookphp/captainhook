@@ -1,0 +1,137 @@
+{
+    "config": {
+        "verbosity": "normal",
+        "fail-on-first-error": false,
+        "ansi-colors": true,
+        "git-directory": "../.git",
+        "custom": {"FOO": "yes", "BAR": "no"},
+        "bootstrap": "../vendor/autoload.php"
+    },
+    "commit-msg": {
+        "enabled": true,
+        "actions": [
+            {
+                "action": "\\CaptainHook\\App\\Hook\\Message\\Action\\Beams",
+                "options": {
+                    "subjectLength": 50,
+                    "bodyLineLength": 72
+                },
+                "config": {
+                    "label": "Verify commit message format"
+                }
+            },
+            {
+                "action": "\\CaptainHook\\App\\Hook\\Message\\Action\\Regex",
+                "options": {
+                    "regex": "#.*#"
+                },
+                "config": {
+                    "label": "Fake regex validation"
+                }
+            }
+        ]
+    },
+    "pre-push": {
+        "enabled": true,
+        "actions": [
+            {
+                "action": "\\CaptainHook\\App\\Hook\\Branch\\Action\\BlockFixupAndSquashCommits",
+                "options": {
+                    "protectedBranches": ["main", "master"]
+                },
+                "config": {
+                    "label": "Block fixup commits from main"
+                }
+            },
+            {
+                "action": "tools/phpstan analyse",
+                "conditions": [
+                    {
+                        "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileChanged\\OfType",
+                        "args": [
+                            "php"
+                        ]
+                    }
+                ],
+                "config": {
+                    "label": "Static code analysis"
+                }
+            }
+        ]
+    },
+    "pre-commit": {
+        "enabled": true,
+        "actions": [
+            {
+                "action": "\\CaptainHook\\App\\Hook\\PHP\\Action\\Linting",
+                "conditions": [
+                    {
+                        "exec": "OR",
+                        "args": [{
+                            "exec": "\\CaptainHook\\App\\Hook\\Condition\\Config\\CustomValueIsTruthy",
+                            "args": [
+                                "FOO"
+                            ]
+                        },{
+                            "exec": "\\CaptainHook\\App\\Hook\\Condition\\Config\\CustomValueIsFalsy",
+                            "args": [
+                                "BAR"
+                            ]
+                        }]
+                    }
+                ]
+
+            },
+            {
+                "action": "\\CaptainHook\\App\\Hook\\File\\Action\\IsNotEmpty",
+                "options": {
+                    "files": [
+                        "src/CH.php",
+                        "src/Hook/Debug.php"
+                    ]
+                }
+            },
+            {
+                "action": "\\CaptainHook\\App\\Hook\\File\\Action\\MaxSize",
+                "config": {
+                    "allow-failure": true,
+                    "label": "Max size check"
+                },
+                "options": {
+                    "maxSize": "1M"
+                }
+            },
+            {
+                "action": "echo 'This should work'"
+            }
+        ]
+    },
+    "prepare-commit-msg": {
+        "enabled": true,
+        "actions": []
+    },
+    "post-commit": {
+        "enabled": false,
+        "actions": []
+    },
+    "post-merge": {
+        "enabled": false,
+        "actions": []
+    },
+    "post-checkout": {
+        "enabled": false,
+        "actions": []
+    },
+    "post-rewrite": {
+        "enabled": false,
+        "actions": []
+    },
+    "post-change": {
+        "enabled": false,
+        "actions": [
+            {
+                "action": "\\CaptainHook\\App\\Hook\\Notify\\Action\\Notify"
+            }
+        ]
+    }
+}
