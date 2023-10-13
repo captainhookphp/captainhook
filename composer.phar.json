@@ -38,7 +38,7 @@
     "ext-xml": "*",
     "sebastianfeldmann/camino": "^0.9.2",
     "sebastianfeldmann/cli": "^3.3",
-    "sebastianfeldmann/git": "^3.8.1",
+    "sebastianfeldmann/git": "^3.9.3",
     "symfony/console": "^5.0",
     "symfony/filesystem": "^5.0",
     "symfony/process": "^5.0"
