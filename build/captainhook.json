@@ -5,7 +5,7 @@
         "ansi-colors": true,
         "git-directory": "../.git",
         "custom": {"FOO": "yes", "BAR": "no"},
-        "bootstrap": "../vendor/autoload.php"
+        "bootstrap": "bootstrap.php"
     },
     "commit-msg": {
         "enabled": true,
