@@ -43,7 +43,7 @@ class DefaultIO extends Base
      *
      * @var array<mixed>
      */
-    private array $stdIn;
+    private array $stdIn = [];
 
     /**
      * @var \Symfony\Component\Console\Input\InputInterface
@@ -75,8 +75,8 @@ class DefaultIO extends Base
      */
     public function __construct($stdIn, InputInterface $input, OutputInterface $output, ?HelperSet $helperSet = null)
     {
-        $this->stdInStream = $stdIn;
-        $this->input       = $input;
+        $this->stdInStream  = $stdIn;
+        $this->input        = $input;
         $this->output       = $output;
         $this->helperSet    = $helperSet;
         $this->verbosityMap = [
