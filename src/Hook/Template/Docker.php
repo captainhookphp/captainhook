@@ -68,7 +68,9 @@ class Docker implements Template
         $path2Config = $this->pathInfo->getConfigPath();
         $config      = $path2Config !== CH::CONFIG ? ' --configuration=' . escapeshellarg($path2Config) : '';
         $bootstrap   = !empty($this->config->getBootstrap()) ? ' --bootstrap=' . $this->config->getBootstrap() : '';
-        $tty         = Hooks::allowsUserInput($hook) ? 'exec < /dev/tty' : '';
+        $tty         = Hooks::allowsUserInput($hook) 
+            ? "if sh -c \": >/dev/tty\" >/dev/null 2>/dev/null; then\n\texec < /dev/tty\nfi"
+            : '';
 
         $lines = [
             '#!/bin/sh',
