@@ -120,7 +120,7 @@ em.hl {
 }
 
 .pirate {
-  background: #ebebeb url("gfx/ch.png") no-repeat right center;
+  background: #ebebeb url("../gfx/ch.png") no-repeat right center;
   background-size: auto 90%;
   border-radius: 5px;
   padding: 15px 100px 15px 15px;
