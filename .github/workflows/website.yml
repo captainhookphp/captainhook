@@ -21,7 +21,7 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v3
         with:
-          ref: ph-pages
+          ref: gh-pages
       - name: "SFTP Deploy"
         uses: milanmk/actions-file-deployer@master
         with:
