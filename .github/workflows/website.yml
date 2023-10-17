@@ -21,7 +21,8 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v3
         with:
-          ref: pg-pages
+          fetch-depth: 0
+          ref: gh-pages
       - name: "SFTP Deploy"
         uses: milanmk/actions-file-deployer@master
         with:
@@ -29,4 +30,4 @@ jobs:
           remote-host: "${{ secrets.SFTP_HOST }}"
           remote-user: "${{ secrets.SFTP_USER }}"
           remote-password: "${{ secrets.SFTP_PASSWORD }}"
-          remote-path: "captainhook.info/www/htdocs"
+          remote-path: "/captainhook.info/www/htdocs"
