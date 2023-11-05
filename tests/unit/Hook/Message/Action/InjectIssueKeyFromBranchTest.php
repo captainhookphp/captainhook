@@ -105,7 +105,10 @@ class InjectIssueKeyFromBranchTest extends TestCase
         $hook = new InjectIssueKeyFromBranch();
         $hook->execute($config, $io, $repo, $action);
 
-        $this->assertEquals('bar' . PHP_EOL . PHP_EOL . 'issue: ABCD-12345', $repo->getCommitMsg()->getBody());
+        $this->assertEquals(
+            'bar' . PHP_EOL . PHP_EOL . 'issue: ABCD-12345' . PHP_EOL,
+            $repo->getCommitMsg()->getBody()
+        );
     }
 
     /**

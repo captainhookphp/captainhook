@@ -26,12 +26,12 @@ use SebastianFeldmann\Git\Repository;
  *
  * Example configuration:
  * {
- *   "action": "\\CaptainHook\\App\\Hook\\Message\\Action\\InjectIssueKeyFromBranch"
+ *   "action": "\\CaptainHook\\App\\Hook\\Message\\Action\\InjectIssueKeyFromBranch",
  *   "options": {
  *     "regex": "#([A-Z]+\\-[0-9]+)#i",
- *     "into": "body"
+ *     "into": "body",
  *     "mode": "append",
- *     "prefix": "\\nissue: ",
+ *     "prefix": "\nissue: ",
  *     "force": true
  *   }
  * }
@@ -74,7 +74,7 @@ class InjectIssueKeyFromBranch implements Action
         $msg     = $repository->getCommitMsg();
 
         // make sure the issue key is not already in our commit message
-        if (stripos($msg->getRawContent(), $issueID) !== false) {
+        if (stripos($msg->getSubject() . $msg->getContent(), $issueID) !== false) {
             return;
         }
         $repository->setCommitMsg($this->createNewCommitMessage($options, $msg, $issueID));
@@ -99,8 +99,15 @@ class InjectIssueKeyFromBranch implements Action
         $newMsgData          = ['subject' => $msg->getSubject(), 'body' => $msg->getBody()];
         $newMsgData[$target] = $this->injectIssueId($issueID, $newMsgData[$target], $mode, $prefix);
 
+        $comments = '';
+        foreach ($msg->getLines() as $line) {
+            if (strpos(trim($line), $msg->getCommentCharacter()) === 0) {
+                $comments .= $line . PHP_EOL;
+            }
+        }
+
         return new CommitMessage(
-            $newMsgData['subject'] . PHP_EOL . PHP_EOL . $newMsgData['body'],
+            $newMsgData['subject'] . PHP_EOL . PHP_EOL . $newMsgData['body'] . PHP_EOL . $comments,
             $msg->getCommentCharacter()
         );
     }
