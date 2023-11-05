@@ -4,20 +4,17 @@ namespace CaptainHook\App\Integration;
 
 class ProcessResult
 {
-    /** @var string */
-    private $stdout;
+    private int $exitCode;
 
-    /** @var string */
-    private $stderr;
+    private string $stdout;
 
-    /** @var int */
-    private $exitCode;
+    private string $stderr;
 
     public function __construct(int $exitCode, string $stdout, string $stderr)
     {
         $this->exitCode = $exitCode;
-        $this->stdout = $stdout;
-        $this->stderr = $stderr;
+        $this->stdout   = $stdout;
+        $this->stderr   = $stderr;
     }
 
     public function getExitCode(): int

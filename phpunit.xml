@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd" bootstrap="tests/bootstrap.php">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+         colors="true"
+         bootstrap="tests/bootstrap.php"
+         defaultTestSuite="UnitTests">
   <coverage>
     <include>
       <directory>src</directory>
@@ -15,6 +19,9 @@
     </testsuite>
     <testsuite name="IntegrationTests">
       <directory>tests/integration</directory>
+    </testsuite>
+    <testsuite name="PharEndToEndTests">
+      <directory>tests/phar-e2e</directory>
     </testsuite>
   </testsuites>
   <logging>
