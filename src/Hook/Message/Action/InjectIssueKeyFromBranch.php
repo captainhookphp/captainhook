@@ -18,6 +18,9 @@ use CaptainHook\App\Config\Options;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Action;
+use CaptainHook\App\Hook\Constrained;
+use CaptainHook\App\Hook\Restriction;
+use CaptainHook\App\Hooks;
 use SebastianFeldmann\Git\CommitMessage;
 use SebastianFeldmann\Git\Repository;
 
@@ -43,8 +46,18 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.16.0
  */
-class InjectIssueKeyFromBranch implements Action
+class InjectIssueKeyFromBranch implements Action, Constrained
 {
+    /**
+     * Returns a list of applicable hooks
+     *
+     * @return \CaptainHook\App\Hook\Restriction
+     */
+    public static function getRestriction(): Restriction
+    {
+        return Restriction::fromArray([Hooks::PREPARE_COMMIT_MSG]);
+    }
+
     /**
      * Execute the configured action
      *
