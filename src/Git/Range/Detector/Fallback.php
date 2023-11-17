@@ -15,6 +15,7 @@ use CaptainHook\App\Console\IO;
 use CaptainHook\App\Git\Range;
 use CaptainHook\App\Git\Range\Detecting;
 use CaptainHook\App\Git\Ref;
+use CaptainHook\App\Hooks;
 
 /**
  * Fallback Detector
@@ -38,7 +39,7 @@ class Fallback implements Detecting
     {
         return [
             new Range\Generic(
-                new Ref\Generic($io->getArgument('previousHead', 'HEAD@{1}')),
+                new Ref\Generic($io->getArgument(Hooks::ARG_PREVIOUS_HEAD, 'HEAD@{1}')),
                 new Ref\Generic('HEAD')
             )
         ];

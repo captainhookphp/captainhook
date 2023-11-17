@@ -13,6 +13,7 @@ namespace CaptainHook\App\Console\Command\Hook;
 
 use CaptainHook\App\Console\Runtime\Resolver;
 use CaptainHook\App\Git\DummyRepo;
+use CaptainHook\App\Hooks;
 use Symfony\Component\Console\Input\ArrayInput;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\NullOutput;
@@ -30,10 +31,10 @@ class PrepareCommitMsgTest extends TestCase
         $output = new NullOutput();
         $input  = new ArrayInput(
             [
-                '--configuration' => CH_PATH_FILES . '/config/valid.json',
-                '--git-directory' => $repo->getGitDir(),
-                'file'            => CH_PATH_FILES . '/git/message/valid.txt',
-                'mode'            => 'message'
+                '--configuration'       => CH_PATH_FILES . '/config/valid.json',
+                '--git-directory'       => $repo->getGitDir(),
+                Hooks::ARG_MESSAGE_FILE => CH_PATH_FILES . '/git/message/valid.txt',
+                Hooks::ARG_MODE         => 'message'
             ]
         );
 

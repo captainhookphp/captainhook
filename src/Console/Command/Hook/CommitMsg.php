@@ -40,6 +40,6 @@ class CommitMsg extends Hook
     protected function configure(): void
     {
         parent::configure();
-        $this->addArgument('file', InputArgument::REQUIRED, 'File containing the commit message.');
+        $this->addArgument(Hooks::ARG_MESSAGE_FILE, InputArgument::REQUIRED, 'File containing the commit message.');
     }
 }

@@ -40,6 +40,6 @@ class PostMerge extends Hook
     protected function configure(): void
     {
         parent::configure();
-        $this->addArgument('squash', InputArgument::OPTIONAL, 'Merge was done with a squash merge.');
+        $this->addArgument(Hooks::ARG_SQUASH, InputArgument::OPTIONAL, 'Merge was done with a squash merge.');
     }
 }

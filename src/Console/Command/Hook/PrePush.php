@@ -40,7 +40,7 @@ class PrePush extends Hook
     protected function configure(): void
     {
         parent::configure();
-        $this->addArgument('target', InputArgument::OPTIONAL, 'Target repository name');
-        $this->addArgument('url', InputArgument::OPTIONAL, 'Target repository url');
+        $this->addArgument(Hooks::ARG_TARGET, InputArgument::OPTIONAL, 'Target repository name');
+        $this->addArgument(Hooks::ARG_URL, InputArgument::OPTIONAL, 'Target repository url');
     }
 }

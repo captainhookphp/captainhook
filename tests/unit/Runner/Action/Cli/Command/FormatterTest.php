@@ -30,10 +30,10 @@ class FormatterTest extends TestCase
         $config = $this->createConfigMock();
         $repo   = $this->createRepositoryMock();
         $io     = $this->createIOMock();
-        $io->method('getArguments')->willReturn(['foo' => 'bar']);
+        $io->method('getArgument')->with('message-file')->willReturn('bar');
 
         $formatter = new Formatter($io, $config, $repo);
-        $command   = $formatter->format('cmd argument {$FOO}');
+        $command   = $formatter->format('cmd argument {$FILE}');
 
         $this->assertEquals('cmd argument bar', $command);
     }

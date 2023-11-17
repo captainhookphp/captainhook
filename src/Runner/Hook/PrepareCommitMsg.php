@@ -69,9 +69,9 @@ class PrepareCommitMsg extends Hook
     public function beforeHook(): void
     {
         $this->commentChar = $this->repository->getConfigOperator()->getSafely('core.commentchar', '#');
-        $this->file        = $this->io->getArgument('file');
-        $this->mode        = $this->io->getArgument('mode');
-        $this->hash        = $this->io->getArgument('hash');
+        $this->file        = $this->io->getArgument(Hooks::ARG_MESSAGE_FILE);
+        $this->mode        = $this->io->getArgument(Hooks::ARG_MODE);
+        $this->hash        = $this->io->getArgument(Hooks::ARG_HASH);
 
         if (empty($this->file)) {
             throw new RuntimeException('commit message file argument is missing');

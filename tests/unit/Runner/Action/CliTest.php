@@ -60,14 +60,13 @@ class CliTest extends TestCase
             $this->markTestSkipped('not tested on windows');
         }
 
-        $args   = ['file' => 'bin', 'mode' => 'success'];
         $io     = $this->createIOMock();
         $repo   = $this->createRepositoryMock();
         $config = $this->createConfigMock();
         $action = $this->createActionConfigMock();
-        $cmd    = CH_PATH_FILES . '/{$FILE}/{$MODE}';
+        $cmd    = CH_PATH_FILES . '/{$ARG|value-of:MESSAGE_FILE|default:bin}/success';
 
-        $io->method('getArguments')->willReturn($args);
+        $io->method('getArgument')->willReturn('bin');
         $io->expects($this->atLeast(1))->method('write');
         $action->expects($this->once())->method('getAction')->willReturn($cmd);
 

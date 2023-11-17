@@ -40,6 +40,6 @@ class PostRewrite extends Hook
     protected function configure(): void
     {
         parent::configure();
-        $this->addArgument('git-command', InputArgument::OPTIONAL, 'Executed command');
+        $this->addArgument(Hooks::ARG_GIT_COMMAND, InputArgument::OPTIONAL, 'Executed command');
     }
 }

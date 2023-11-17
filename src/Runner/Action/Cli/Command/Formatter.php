@@ -13,6 +13,8 @@ namespace CaptainHook\App\Runner\Action\Cli\Command;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
+use CaptainHook\App\Hooks;
+use CaptainHook\App\Runner\Action\Cli\Command\Placeholder\Arg;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -52,10 +54,28 @@ class Formatter
      * @var array<string, string>
      */
     private static array $placeholders = [
+        'arg'           => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\Arg',
         'config'        => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\Config',
         'env'           => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\Env',
         'staged_files'  => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\StagedFiles',
         'changed_files' => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\ChangedFiles'
+    ];
+
+    /**
+     * Previously used placeholders to replace arguments
+     *
+     * @var array<string, string>
+     */
+    private static array $legacyPlaceHolder = [
+        'FILE'         => Hooks::ARG_MESSAGE_FILE,
+        'GITCOMMAND'   => Hooks::ARG_GIT_COMMAND,
+        'HASH'         => Hooks::ARG_HASH,
+        'MODE'         => Hooks::ARG_MODE,
+        'NEWHEAD'      => Hooks::ARG_NEW_HEAD,
+        'PREVIOUSHEAD' => Hooks::ARG_PREVIOUS_HEAD,
+        'SQUASH'       => Hooks::ARG_SQUASH,
+        'TARGET'       => Hooks::ARG_TARGET,
+        'URL'          => Hooks::ARG_URL,
     ];
 
     /**
@@ -124,9 +144,13 @@ class Formatter
      */
     private function replace(string $placeholder): string
     {
-        // if placeholder references an original hook argument return the argument
-        // otherwise compute the placeholder
-        return $this->io->getArguments()[strtolower($placeholder)] ?? $this->computedPlaceholder($placeholder);
+        // if the placeholder references an original hook argument set up the real placeholder
+        // {$FILE} => ARG|value-of:message-file
+        if (array_key_exists($placeholder, self::$legacyPlaceHolder)) {
+            $argument = self::$legacyPlaceHolder[$placeholder];
+            $placeholder = 'ARG|value-of:' . Arg::toPlaceholder($argument);
+        }
+        return $this->computedPlaceholder($placeholder);
     }
 
     /**

@@ -12,6 +12,7 @@
 namespace CaptainHook\App\Git\Range;
 
 use CaptainHook\App\Console\IO;
+use CaptainHook\App\Hooks;
 
 /**
  * Detector class
@@ -43,7 +44,7 @@ class Detector
      */
     public static function getRanges(IO $io): array
     {
-        $command = $io->getArgument('command');
+        $command = $io->getArgument(Hooks::ARG_COMMAND);
 
         /** @var \CaptainHook\App\Git\Range\Detecting $class */
         $class    = self::$detectors[$command] ?? '\\CaptainHook\\App\\Git\\Range\\Detector\\Fallback';

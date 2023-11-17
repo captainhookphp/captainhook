@@ -28,23 +28,26 @@ use RuntimeException;
  */
 final class Hooks
 {
-    public const PRE_COMMIT = 'pre-commit';
-
-    public const PRE_PUSH = 'pre-push';
-
-    public const COMMIT_MSG = 'commit-msg';
-
+    public const PRE_COMMIT         = 'pre-commit';
+    public const PRE_PUSH           = 'pre-push';
+    public const COMMIT_MSG         = 'commit-msg';
     public const PREPARE_COMMIT_MSG = 'prepare-commit-msg';
+    public const POST_COMMIT        = 'post-commit';
+    public const POST_MERGE         = 'post-merge';
+    public const POST_CHECKOUT      = 'post-checkout';
+    public const POST_REWRITE       = 'post-rewrite';
+    public const POST_CHANGE        = 'post-change';
 
-    public const POST_COMMIT = 'post-commit';
-
-    public const POST_MERGE = 'post-merge';
-
-    public const POST_CHECKOUT = 'post-checkout';
-
-    public const POST_REWRITE = 'post-rewrite';
-
-    public const POST_CHANGE = 'post-change';
+    public const ARG_COMMAND       = 'command';
+    public const ARG_GIT_COMMAND   = 'git-command';
+    public const ARG_HASH          = 'hash';
+    public const ARG_MESSAGE_FILE  = 'message-file';
+    public const ARG_MODE          = 'mode';
+    public const ARG_NEW_HEAD      = 'new-head';
+    public const ARG_PREVIOUS_HEAD = 'previous-head';
+    public const ARG_SQUASH        = 'squash';
+    public const ARG_TARGET        = 'target';
+    public const ARG_URL           = 'url';
 
     /**
      * This defines which native hook trigger which virtual hook

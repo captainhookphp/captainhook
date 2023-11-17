@@ -106,6 +106,6 @@ final class Util
             return isset($info[1]) ? trim($info[1]) . '^' :  'HEAD@{1}';
         }
 
-        return $io->getArgument('previousHead', 'HEAD@{1}');
+        return $io->getArgument(Hooks::ARG_PREVIOUS_HEAD, 'HEAD@{1}');
     }
 }

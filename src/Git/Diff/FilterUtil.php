@@ -22,18 +22,18 @@ abstract class FilterUtil
     public static function filterFromConfigValue($value): array
     {
         return self::sanitize(
-            is_array($value) ? $value : str_split((string) strtoupper($value))
+            is_array($value) ? $value : str_split((string) strtoupper($value === null ? '' : $value))
         );
     }
 
     /**
      * Remove all invalid filter options
      *
-     * @param  array<int, string> $filter
+     * @param  array<int, string> $data
      * @return array<int, string>
      */
-    public static function sanitize(array $filter): array
+    public static function sanitize(array $data): array
     {
-        return array_filter($filter, fn($e) => in_array($e, ['A', 'C', 'D', 'M', 'R', 'T', 'U', 'X', 'B', '*']));
+        return array_filter($data, fn($e) => in_array($e, ['A', 'C', 'D', 'M', 'R', 'T', 'U', 'X', 'B', '*']));
     }
 }

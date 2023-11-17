@@ -67,7 +67,7 @@ class Notify implements Action, Constrained
     {
         $this->prefix  = $action->getOptions()->get('prefix', self::DEFAULT_PREFIX);
         $oldHash       = Util::findPreviousHead($io);
-        $newHash       = $io->getArgument('newHead', 'HEAD');
+        $newHash       = $io->getArgument(Hooks::ARG_NEW_HEAD, 'HEAD');
 
         $logOp = $repository->getLogOperator();
         $log   = $logOp->getCommitsBetween($oldHash, $newHash);

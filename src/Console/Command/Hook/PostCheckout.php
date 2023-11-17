@@ -40,8 +40,8 @@ class PostCheckout extends Hook
     protected function configure(): void
     {
         parent::configure();
-        $this->addArgument('previousHead', InputArgument::OPTIONAL, 'Previous HEAD');
-        $this->addArgument('newHead', InputArgument::OPTIONAL, 'New HEAD');
-        $this->addArgument('mode', InputArgument::OPTIONAL, 'Checkout mode 1 branch 0 file');
+        $this->addArgument(Hooks::ARG_PREVIOUS_HEAD, InputArgument::OPTIONAL, 'Previous HEAD');
+        $this->addArgument(Hooks::ARG_NEW_HEAD, InputArgument::OPTIONAL, 'New HEAD');
+        $this->addArgument(Hooks::ARG_MODE, InputArgument::OPTIONAL, 'Checkout mode 1 branch 0 file');
     }
 }

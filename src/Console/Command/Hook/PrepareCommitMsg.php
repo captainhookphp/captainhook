@@ -40,8 +40,8 @@ class PrepareCommitMsg extends Hook
     protected function configure(): void
     {
         parent::configure();
-        $this->addArgument('file', InputArgument::REQUIRED, 'File containing the commit log message');
-        $this->addArgument('mode', InputArgument::OPTIONAL, 'Current commit mode');
-        $this->addArgument('hash', InputArgument::OPTIONAL, 'Given commit hash');
+        $this->addArgument(Hooks::ARG_MESSAGE_FILE, InputArgument::REQUIRED, 'File containing the commit log message');
+        $this->addArgument(Hooks::ARG_MODE, InputArgument::OPTIONAL, 'Current commit mode');
+        $this->addArgument(Hooks::ARG_HASH, InputArgument::OPTIONAL, 'Given commit hash');
     }
 }

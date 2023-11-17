@@ -13,6 +13,7 @@ namespace CaptainHook\App\Console\Command\Hook;
 
 use CaptainHook\App\Console\Runtime\Resolver;
 use CaptainHook\App\Git\DummyRepo;
+use CaptainHook\App\Hooks;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use PHPUnit\Framework\TestCase;
@@ -30,11 +31,11 @@ class PostCheckoutTest extends TestCase
         $output = new NullOutput();
         $input  = new ArrayInput(
             [
-                '--configuration' => CH_PATH_FILES . '/config/valid.json',
-                '--git-directory' => $repo->getGitDir(),
-                'previousHead'    => '3e76d8',
-                'newHead'         => '7d9ac4',
-                'mode'            => 'branch'
+                '--configuration'        => CH_PATH_FILES . '/config/valid.json',
+                '--git-directory'        => $repo->getGitDir(),
+                Hooks::ARG_PREVIOUS_HEAD => '3e76d8',
+                Hooks::ARG_NEW_HEAD      => '7d9ac4',
+                Hooks::ARG_MODE          => 'branch'
             ]
         );
 
