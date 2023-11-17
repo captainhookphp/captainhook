@@ -30,4 +30,4 @@ jobs:
           remote-host: "${{ secrets.SFTP_HOST }}"
           remote-user: "${{ secrets.SFTP_USER }}"
           remote-password: "${{ secrets.SFTP_PASSWORD }}"
-          remote-path: "/captainhook.info/www/htdocs"
+          remote-path: "/captainhook.info/www/htdocs/php"
