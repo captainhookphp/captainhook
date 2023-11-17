@@ -45,8 +45,17 @@
     <div class="container theme-showcase" role="main">
 
       <h1>Configuration</h1>
+
+      <ul class="subNav">
+        <li class="first">Looking for:</li>
+        <li><a href="actions.html">Actions</a></li>
+        <li><a href="conditions.html">Conditions</a></li>
+        <li><a href="#placeholder">Placeholders</a></li>
+        <li class="last"><a href="#settings">CaptainHook Settings</a></li>
+      </ul>
+
       <p>
-        If you look at a <em class="hl">captainhook.json</em> configuration, it consists of a config block for each
+        The <em class="hl">captainhook.json</em> configuration consists of a config block for each
         hook and an optional <a href="#settings"><em>config</em></a> section to tweak some <em>CaptainHook</em> settings.
       </p>
 
@@ -102,66 +111,8 @@
       <h5>Placeholders</h5>
       <p>
         You can use placeholders in CLI actions that will get replaced by the Cap'n before execution. This way you can
-        access the the original hook arguments and some other neat stuff.
+        access the original hook arguments and some other neat stuff.
       </p>
-      <h5>Static placeholders</h5>
-      <table class="table">
-        <tr>
-          <th>Placeholder</th>
-          <th>Hook</th>
-          <th>Description</th>
-        </tr>
-        <tr>
-          <td>{$FILE}</td>
-          <td>commit-message</td>
-          <td>The path to the file containing the commit message.</td>
-        </tr>
-        <tr>
-          <td>{$FILE}</td>
-          <td style="word-break: keep-all">prepare-commit-message</td>
-          <td>The path to the file containing the commit message.</td>
-        </tr>
-        <tr>
-          <td>{$MODE}</td>
-          <td style="word-break: keep-all">prepare-commit-message</td>
-          <td>Source of the commit message e.g. file, template ...</td>
-        </tr>
-        <tr>
-          <td>{$HASH}</td>
-          <td style="word-break: keep-all">prepare-commit-message</td>
-          <td>Hash of commit e.g. if --amend is used.</td>
-        </tr>
-        <tr>
-          <td>{$TARGET}</td>
-          <td>pre-push</td>
-          <td>The push target name.</td>
-        </tr>
-        <tr>
-          <td>{$URL}</td>
-          <td>pre-push</td>
-          <td>The target url.</td>
-        </tr>
-        <tr>
-          <td>{$PREVIOUSHEAD}</td>
-          <td>post-checkout</td>
-          <td>Old version hash.</td>
-        </tr>
-        <tr>
-          <td>{$NEWHEAD}</td>
-          <td>post-checkout</td>
-          <td>New version hash (can be the same as the old head).</td>
-        </tr>
-        <tr>
-          <td>{$MODE}</td>
-          <td>post-checkout</td>
-          <td>A flag indicating whether the checkout was a branch checkout.</td>
-        </tr>
-        <tr>
-          <td>{$SQUASH}</td>
-          <td>post-merge</td>
-          <td>A flag specifying whether or not the merge being done was a squash merge.</td>
-        </tr>
-      </table>
 
       <pre><code class="javascript">{
   "pre-commit": {
@@ -174,9 +125,9 @@
   }
 }</code></pre>
 
-      <h5>Dynamic placeholders</h5>
+      <h5 id="placeholder">Placeholders</h5>
       <p>
-        Dynamic placeholders work like this:
+        Action placeholders work like this:
         <pre>{$ PLACEHOLDER | OPTION : ARGUMENT }</pre>
       </p>
       <table class="table">
@@ -186,7 +137,34 @@
           <th>Description</th>
         </tr>
         <tr>
-          <td>{$CONFIG}</td>
+          <td><strong>{$ARG}</strong></td>
+          <td>*</td>
+          <td>Access original hook arguments.</td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <h7>Hooks and their arguments:</h7>
+            <ul>
+              <li>commit-message (MESSAGE_FILE)</li>
+              <li>post-checkout (PREVIOUS_HEAD, NEW_HEAD, MODE)</li>
+              <li>post-commit</li>
+              <li>post-merge (MODE)</li>
+              <li>pre-commit</li>
+              <li>pre-push (TARGET, URL)</li>
+              <li>prepare-commit-msg (MESSAGE_FILE, MODE, HASH)</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <h7>Examples:</h7>
+            <pre>
+{$ARG|value-of:MESSAGE_FILE}
+{$ARG|value-of:PREVIOUS_HEAD|default:HEAD^}</pre>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>{$CONFIG}</strong></td>
           <td>*</td>
           <td>Access config values.</td>
         </tr>
@@ -199,7 +177,7 @@
           </td>
         </tr>
         <tr>
-          <td>{$ENV}</td>
+          <td><strong>{$ENV}</strong></td>
           <td>*</td>
           <td>Access environment variables</td>
         </tr>
@@ -212,7 +190,7 @@
           </td>
         </tr>
         <tr>
-          <td>{$STAGED_FILES}</td>
+          <td><strong>{$STAGED_FILES}</strong></td>
           <td>pre-commit</td>
           <td>Gets replaced with a list of staged files</td>
         </tr>
@@ -227,7 +205,7 @@
           </td>
         </tr>
         <tr>
-          <td>{$CHANGED_FILES}</td>
+          <td><strong>{$CHANGED_FILES}</strong></td>
           <td>pre-push, post-merge, post-checkout, post-rewrite</td>
           <td>Gets replaced with a list of changed files</td>
         </tr>
@@ -246,10 +224,32 @@
 
       <h4>PHP scripts</h4>
       <p>
-        Secondly you can execute any PHP class implementing an interfaces defined by <em>CaptainHook</em>.
+        You can execute static methods and any PHP class implementing an interfaces defined by <em>CaptainHook</em>.
         The interface you have to implement is <em class="hl">\CaptainHook\App\Hook\Action</em>.
         CaptainHook comes with some built-in, basic validation classes. So let's have a look at how to configure
         those.
+      </p>
+
+      <pre><code class="javascript">{
+  "commit-msg": {
+    "enabled": true,
+    "actions": [
+      {
+        "action": "\\Some\\Namespace\\SomeClassThatImplementsTheInterface",
+        "options": {
+          "someData": "someValue"
+        }
+      },
+      {
+        "action": "\\Some\\Namespace\\SomeClass::someMethod",
+      }
+    ]
+  }
+}</code></pre>
+
+      <p>
+        With the following configuration you can validate your commit messages against a regular expression. If your commit
+        message doesn't match your regular expression the commit fails.
       </p>
 
       <pre><code class="javascript">{
@@ -266,10 +266,6 @@
   }
 }</code></pre>
 
-      <p>
-        With this configuration you can validate your commit messages against a regular expression. If your commit
-        message doesn't match your regular expression your commit fails.
-      </p>
       <p>
         Here's a <a href="actions.html">list of all available actions</a>.
       </p>
