@@ -146,6 +146,6 @@ class CollectorIO implements IO
 
     public function askAndValidate($question, $validator, $attempts = null, $default = null)
     {
-        $this->io->askAndValidate($question, $validator, $attempts, $default);
+        return $this->io->askAndValidate($question, $validator, $attempts, $default);
     }
 }

@@ -72,7 +72,7 @@ class NullIO extends Base
      */
     public function ask($question, $default = null)
     {
-        return (string) $default;
+        return $default;
     }
 
     /**
@@ -88,6 +88,6 @@ class NullIO extends Base
      */
     public function askAndValidate($question, $validator, $attempts = null, $default = null)
     {
-        return (string) $default;
+        return $default;
     }
 }

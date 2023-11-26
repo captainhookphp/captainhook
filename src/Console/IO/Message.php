@@ -21,10 +21,25 @@ namespace CaptainHook\App\Console\IO;
  */
 class Message
 {
+    /**
+     * Message, either a string or list of string for multiple lines
+     *
+     * @var string|array<string>
+     */
     private string|array $message;
 
+    /**
+     * Should message be ended with a new line character
+     *
+     * @var bool
+     */
     private bool $newLine;
 
+    /**
+     * Current application verbosity
+     *
+     * @var int
+     */
     private int $verbosity;
 
     /**
@@ -44,7 +59,7 @@ class Message
     /**
      * Returns the message to print
      *
-     * @return string|array
+     * @return string|array<string>
      */
     public function message(): string|array
     {
