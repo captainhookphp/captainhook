@@ -22,7 +22,6 @@ use CaptainHook\App\Runner\Action\Log as ActionLog;
 use CaptainHook\App\Runner\Hook\Log as HookLog;
 use CaptainHook\App\Runner\Hook\Printer;
 use Exception;
-use RuntimeException;
 use SebastianFeldmann\Git\Repository;
 
 /**
