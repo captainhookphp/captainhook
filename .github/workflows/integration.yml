@@ -13,12 +13,9 @@ jobs:
         buildphar: [true]
         experimental: [false]
         include:
-          - php: 7.4
-            buildphar: false
-            experimental: false
           - php: 8.3
             buildphar: false
-            experimental: true
+            experimental: false
     env:
       PHAR: build/phar/captainhook.phar
 
