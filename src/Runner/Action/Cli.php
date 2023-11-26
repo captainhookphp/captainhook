@@ -49,7 +49,7 @@ class Cli implements ActionRunner
         // if any placeholders got replaced display the finally executed command
         if ($cmdFormatted !== $cmdOriginal) {
             $io->write(
-                ' - <comment>' . $cmdFormatted . '</comment>',
+                '  <comment>cmd:</comment> ' . $cmdFormatted,
                 true,
                 IO::VERBOSE
             );
@@ -65,22 +65,22 @@ class Cli implements ActionRunner
             $output .= PHP_EOL . $result->getStdErr();
         }
 
-        if (!$result->isSuccessful()) {
-            throw new Exception\ActionFailed(
-                'failed to execute: <comment>' . $cmdFormatted . '</comment>' . PHP_EOL . $output
+        if (!empty($output)) {
+            $io->write(
+                [
+                    '  <comment>command output:</comment>',
+                    trim($output),
+                ],
+                true,
+                IO::VERBOSE
             );
         }
 
-        $io->write(
-            [
-                ' - <comment>command output</comment>',
-                '',
-                empty($output) ? '<info>command executed successfully</info>' : trim($output),
-                '',
-            ],
-            true,
-            IO::VERBOSE
-        );
+        if (!$result->isSuccessful()) {
+            throw new Exception\ActionFailed(
+                'failed to execute: <comment>' . $cmdFormatted . '</comment>'
+            );
+        }
     }
 
     /**

@@ -45,6 +45,11 @@ class Log
      */
     private array $log = [];
 
+    /**
+     * @param \CaptainHook\App\Config\Action             $action
+     * @param int                                        $status
+     * @param array<\CaptainHook\App\Console\IO\Message> $log
+     */
     public function __construct(Action $action, int $status, array $log)
     {
         $this->action = $action;
