@@ -44,7 +44,7 @@ class Exists extends Check
      *
      * @var string[]
      */
-    private $files;
+    private array $files;
 
     /**
      * Extract and validate config settings

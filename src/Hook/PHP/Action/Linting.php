@@ -52,25 +52,20 @@ class Linting implements Action
         $changedPHPFiles  = $repository->getIndexOperator()->getStagedFilesOfType('php', ['A', 'C', 'M']);
         $this->php        = !empty($config->getPhpPath()) ? $config->getPhpPath() : 'php';
         $failedFilesCount = 0;
-        $failedFiles      = [];
-        $messages         = [];
 
         foreach ($changedPHPFiles as $file) {
             $prefix = IOUtil::PREFIX_OK;
             if ($this->hasSyntaxErrors($file)) {
-                $prefix = IOUtil::PREFIX_FAIL;
                 $failedFilesCount++;
+                $io->write('  ' . IOUtil::PREFIX_FAIL . ' ' . $file, true, IO::NORMAL);
             }
-            $messages[] = $prefix . ' ' . $file;
+            $io->write('  ' . $prefix . ' ' . $file, true, IO::VERBOSE);
         }
 
-        $io->write(['', '', implode(PHP_EOL, $messages), ''], true, IO::VERBOSE);
-
         if ($failedFilesCount > 0) {
+            $s = $failedFilesCount > 1 ? 's' : '';
             throw new ActionFailed(
-                'Linting failed: PHP syntax errors in ' . $failedFilesCount . ' file(s)' . PHP_EOL
-                . PHP_EOL
-                . implode(PHP_EOL, $failedFiles)
+                'Linting failed: PHP syntax errors in ' . $failedFilesCount . ' file' . $s
             );
         }
     }

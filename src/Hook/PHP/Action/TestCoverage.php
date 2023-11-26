@@ -70,7 +70,7 @@ class TestCoverage implements Action
         $coverage         = $coverageResolver->getCoverage();
 
         $this->verifyCoverage($coverage);
-        $io->write(['', '', '<info>Test coverage: ' . $coverage . '%</info>', ''], true, IO::VERBOSE);
+        $io->write('<info>Test coverage: ' . $coverage . '%</info>', true, IO::VERBOSE);
     }
 
     /**

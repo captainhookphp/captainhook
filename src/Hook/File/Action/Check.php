@@ -63,27 +63,24 @@ abstract class Check implements Action, Constrained
 
         $filesToCheck = $this->getFilesToCheck($repository);
         $filesFailed  = 0;
-        $messages     = [];
-        $failures     = [];
 
-        foreach ($filesToCheck as $file) {
-            $prefix = IOUtil::PREFIX_OK;
-            if (!$this->isValid($repository, $file)) {
-                $prefix     = IOUtil::PREFIX_FAIL;
-                $failures[] = $prefix . ' ' . $file . $this->errorDetails($file);
-                $filesFailed++;
-            }
-            $messages[] = $prefix . ' ' . $file;
+        if (!count($filesToCheck)) {
+            $io->write('  no files had to be checked', true, IO::VERBOSE);
+            return;
         }
 
-        $msg = count($messages) ? implode(PHP_EOL, $messages) : 'no files had to be checked';
-        $io->write(['', '', $msg, ''], true, IO::VERBOSE);
+        foreach ($filesToCheck as $file) {
+            if (!$this->isValid($repository, $file)) {
+                $io->write('  ' . IOUtil::PREFIX_FAIL . ' ' . $file . $this->errorDetails($file));
+                $filesFailed++;
+                continue;
+            }
+            $io->write('  ' . IOUtil::PREFIX_OK . ' ' . $file, true, IO::VERBOSE);
+        }
 
         if ($filesFailed > 0) {
             throw new ActionFailed(
-                $this->errorMessage($filesFailed) . PHP_EOL
-                . PHP_EOL
-                . implode(PHP_EOL, $failures)
+                $this->errorMessage($filesFailed)
             );
         }
     }
@@ -118,7 +115,8 @@ abstract class Check implements Action, Constrained
      */
     protected function errorMessage(int $filesFailed): string
     {
-        return '<error>Error: ' . $filesFailed . ' files failed</error>';
+        $s = $filesFailed > 1 ? 's' : '';
+        return '<error>Error: ' . $filesFailed . ' file' . $s . ' failed</error>';
     }
 
     /**
