@@ -18,6 +18,9 @@ use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Constrained;
 use CaptainHook\App\Hooks;
 use CaptainHook\App\Plugin;
+use CaptainHook\App\Runner\Action\Log as ActionLog;
+use CaptainHook\App\Runner\Hook\Log as HookLog;
+use CaptainHook\App\Runner\Hook\Printer;
 use Exception;
 use RuntimeException;
 use SebastianFeldmann\Git\Repository;
@@ -32,6 +35,12 @@ use SebastianFeldmann\Git\Repository;
  */
 abstract class Hook extends RepositoryAware
 {
+    /**
+     * Hook status constants
+     */
+    public const HOOK_SUCCEEDED = 0;
+    public const HOOK_FAILED    = 1;
+
     /**
      * Hook that should be handled
      *
@@ -54,22 +63,32 @@ abstract class Hook extends RepositoryAware
     protected Dispatcher $dispatcher;
 
     /**
-     * List of error messages to display after all action have finished
-     *
-     * @var array<\Exception>
-     */
-    protected array $errors = [];
-
-    /**
      * Plugins to apply to this hook
      *
      * @var array<Plugin\Hook>|null
      */
     private ?array $hookPlugins = null;
 
+    /**
+     * Handling the hook output
+     *
+     * @var \CaptainHook\App\Runner\Hook\Printer
+     */
+    private Printer $printer;
+
+    /**
+     * Logs all output to do it at the end
+     *
+     * @var \CaptainHook\App\Runner\Hook\Log
+     */
+    private HookLog $hookLog;
+
     public function __construct(IO $io, Config $config, Repository $repository)
     {
         $this->dispatcher = new Dispatcher($io, $config, $repository);
+        $this->printer    = new Printer($io);
+        $this->hookLog    = new HookLog();
+
         parent::__construct($io, $config, $repository);
     }
 
@@ -239,6 +258,8 @@ abstract class Hook extends RepositoryAware
      */
     private function executeActions(array $actions): void
     {
+        $status = self::HOOK_SUCCEEDED;
+        $start  = microtime(true);
         try {
             if ($this->config->failOnFirstError()) {
                 $this->executeFailOnFirstError($actions);
@@ -246,8 +267,12 @@ abstract class Hook extends RepositoryAware
                 $this->executeFailAfterAllActions($actions);
             }
         } catch (Exception $e) {
+            $status = self::HOOK_FAILED;
             $this->dispatcher->dispatch('onHookFailure');
             throw $e;
+        } finally {
+            $duration = microtime(true) - $start;
+            $this->printer->hookEnded($status, $this->hookLog, $duration);
         }
     }
 
@@ -280,7 +305,6 @@ abstract class Hook extends RepositoryAware
             try {
                 $this->handleAction($action);
             } catch (Exception $exception) {
-                $this->errors[] = $exception;
                 $failedActions++;
             }
         }
@@ -288,8 +312,6 @@ abstract class Hook extends RepositoryAware
         if ($failedActions > 0) {
             throw new ActionFailed(
                 $failedActions . ' action' . ($failedActions > 1 ? 's' : '') . ' failed'
-                . PHP_EOL
-                . $this->formatCollectedErrors()
             );
         }
     }
@@ -304,17 +326,15 @@ abstract class Hook extends RepositoryAware
     private function handleAction(Config\Action $action): void
     {
         if ($this->shouldSkipActions()) {
-            $this->io->write($this->formatActionOutput($action->getLabel()) . ': <comment>deactivated</comment>');
+            $this->printer->actionDeactivated($action);
             return;
         }
 
-        $this->io->write(
-            ' - <fg=blue>' . $this->formatActionOutput($action->getLabel()) . '</> : ',
-            $this->io->isVerbose()
-        );
+        $io     = new IO\CollectorIO($this->io);
+        $status = ActionLog::ACTION_SUCCEEDED;
 
-        if (!$this->doConditionsApply($action->getConditions())) {
-            $this->io->write('<comment>skipped</comment>', true);
+        if (!$this->doConditionsApply($action->getConditions(), $io)) {
+            $this->printer->actionSkipped($action);
             return;
         }
 
@@ -326,94 +346,56 @@ abstract class Hook extends RepositoryAware
             return;
         }
 
+
         try {
-            $execMethod = self::getExecMethod(Util::getExecType($action->getAction()));
-            $this->{$execMethod}($action);
-            $this->io->write('<info>done</info>', true);
+            $runner = $this->createActionRunner(Util::getExecType($action->getAction()));
+            $runner->execute($this->config, $io, $this->repository, $action);
+            $this->printer->actionSucceeded($action);
         } catch (Exception  $e) {
-            $this->io->write('<error>failed</error>', true);
+            $status = ActionLog::ACTION_FAILED;
+            $this->printer->actionFailed($action);
+            $io->write($e->getMessage());
             if (!$action->isFailureAllowed($this->config->isFailureAllowed())) {
                 throw $e;
             }
-            $this->errors[] = $e;
+        } finally {
+            $this->hookLog->addActionLog(new ActionLog($action, $status, $io->getMessages()));
         }
 
         $this->afterAction($action);
     }
 
     /**
-     * Execute a php hook action
-     *
-     * @param  \CaptainHook\App\Config\Action $action
-     * @return void
-     * @throws \CaptainHook\App\Exception\ActionFailed
-     */
-    private function executePhpAction(Config\Action $action): void
-    {
-        $runner = new Action\PHP($this->hook, $this->dispatcher);
-        $runner->execute($this->config, $this->io, $this->repository, $action);
-    }
-
-    /**
-     * Execute a cli hook action
-     *
-     * @param  \CaptainHook\App\Config\Action $action
-     * @return void
-     * @throws \CaptainHook\App\Exception\ActionFailed
-     */
-    private function executeCliAction(Config\Action $action): void
-    {
-        $runner = new Action\Cli();
-        $runner->execute($this->config, $this->io, $this->repository, $action);
-    }
-
-    /**
      * Return the right method name to execute an action
      *
      * @param  string $type
-     * @return string
+     * @return \CaptainHook\App\Runner\Action
      */
-    public static function getExecMethod(string $type): string
+    private function createActionRunner(string $type): Action
     {
-        $valid = ['php' => 'executePhpAction', 'cli' => 'executeCliAction'];
-
-        if (!isset($valid[$type])) {
-            throw new RuntimeException('invalid action type: ' . $type);
-        }
-        return $valid[$type];
+        $valid = [
+            'php' => fn(): Action => new Action\PHP($this->hook, $this->dispatcher),
+            'cli' => fn(): Action => new Action\Cli(),
+        ];
+        return $valid[$type]();
     }
 
     /**
      * Check if conditions apply
      *
-     * @param  \CaptainHook\App\Config\Condition[] $conditions
+     * @param \CaptainHook\App\Config\Condition[] $conditions
+     * @param \CaptainHook\App\Console\IO         $collectorIO
      * @return bool
      */
-    private function doConditionsApply(array $conditions): bool
+    private function doConditionsApply(array $conditions, IO $collectorIO): bool
     {
-        $conditionRunner = new Condition($this->io, $this->repository, $this->config, $this->hook);
+        $conditionRunner = new Condition($collectorIO, $this->repository, $this->config, $this->hook);
         foreach ($conditions as $config) {
             if (!$conditionRunner->doesConditionApply($config)) {
                 return false;
             }
         }
         return true;
-    }
-
-    /**
-     * Some fancy output formatting
-     *
-     * @param  string $action
-     * @return string
-     */
-    private function formatActionOutput(string $action): string
-    {
-        $actionLength = 65;
-        if (mb_strlen($action) < $actionLength) {
-            return str_pad($action, $actionLength, ' ');
-        }
-
-        return mb_substr($action, 0, $actionLength - 3) . '...';
     }
 
     /**
@@ -491,17 +473,5 @@ abstract class Hook extends RepositoryAware
             $this->io->write('<info>- Running ' . get_class($plugin) . '::' . $method . '</info>', true, IO::DEBUG);
             $plugin->{$method}(...$params);
         }
-    }
-
-    /**
-     * Displays all collected errors
-     */
-    private function formatCollectedErrors(): string
-    {
-        $errorMessage = '';
-        foreach ($this->errors as $e) {
-            $errorMessage .= PHP_EOL . $e->getMessage() . PHP_EOL;
-        }
-        return $errorMessage;
     }
 }

@@ -91,11 +91,11 @@ abstract class Hook extends RepositoryAware
             $hook  = new $class($io, $config, $repository);
             $hook->run();
             return 0;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             if ($output->isDebug()) {
                 throw $e;
             }
-            return $this->handleError($output, $e);
+            return 1;
         }
     }
 
@@ -120,19 +120,6 @@ abstract class Hook extends RepositoryAware
                 );
             }
         }
-    }
-
-    /**
-     * Handle all hook errors
-     *
-     * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @param  \Exception                                        $e
-     * @return int
-     */
-    private function handleError(OutputInterface $output, Exception $e): int
-    {
-        $output->writeLn('<error>' . PHP_EOL . $e->getMessage() . '</error>');
-        return 1;
     }
 
     /**

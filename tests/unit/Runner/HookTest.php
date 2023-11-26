@@ -60,28 +60,6 @@ class HookTest extends TestCase
         DummyConstrainedPlugin::$restriction = null;
     }
 
-    /**
-     * Tests Hook::getActionRunner
-     */
-    public function testGetExecMethod(): void
-    {
-        $php = Hook::getExecMethod('php');
-        $cli = Hook::getExecMethod('cli');
-
-        $this->assertEquals('executePhpAction', $php);
-        $this->assertEquals('executeCliAction', $cli);
-    }
-
-    /**
-     * Tests Hook::getActionRunner
-     */
-    public function testGetRunnerFailure(): void
-    {
-        $this->expectException(Exception::class);
-
-        Hook::getExecMethod('foo');
-    }
-
     public function testGetName(): void
     {
         $io = $this->createIOMock();

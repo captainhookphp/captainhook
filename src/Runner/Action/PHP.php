@@ -18,6 +18,7 @@ use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Action;
 use CaptainHook\App\Hook\Constrained;
 use CaptainHook\App\Hook\EventSubscriber;
+use CaptainHook\App\Runner\Action as ActionRunner;
 use Error;
 use Exception;
 use RuntimeException;
@@ -32,7 +33,7 @@ use SebastianFeldmann\Git\Repository;
  * @since   Class available since Release 0.9.0
  * @internal
  */
-class PHP
+class PHP implements ActionRunner
 {
     /**
      * Name of the currently executed hook

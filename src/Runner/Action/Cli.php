@@ -14,6 +14,7 @@ namespace CaptainHook\App\Runner\Action;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Exception;
+use CaptainHook\App\Runner\Action as ActionRunner;
 use CaptainHook\App\Runner\Action\Cli\Command\Formatter;
 use SebastianFeldmann\Cli\Processor\Symfony as Processor;
 use SebastianFeldmann\Git\Repository;
@@ -27,7 +28,7 @@ use SebastianFeldmann\Git\Repository;
  * @since   Class available since Release 0.9.0
  * @internal
  */
-class Cli
+class Cli implements ActionRunner
 {
     /**
      * Execute the configured action
