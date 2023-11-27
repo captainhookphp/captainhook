@@ -63,6 +63,7 @@
     <li><a href="#file-empty">Prevent committing any content to files</a></li>
     <li><a href="#file-not-empty">Prevent committing empty files</a></li>
     <li><a href="#file-does-not-contain">Prevent committing specific content to files</a></li>
+    <li><a href="#block-secrets">Prevent committing secrets of any kind to the repository</a></li>
     <li><a href="#file-exists">Ensure a files exists</a></li>
     <li><a href="#branch-naming">Enforce branch naming</a></li>
     <li><a href="#branch-fixup">Block pushing of squash or fixup commits</a></li>
@@ -260,6 +261,22 @@
       "inc",
       "php"
     ]
+  }
+}</code></pre>
+
+  <h4 id="bloc-secrets">Block secrets from being stored in the repository</h4>
+  <p>
+    Make sure you are not committing passwords or api tokens to the repository.
+    By default, it tries to detect AWS keys and some generic password.
+    If that interferes with you file deactivate the default scan by setting
+    <em>blockDefault</em> to <em>false</em>.
+  </p>
+  <pre><code class="javascript">{
+  "action": "\CaptainHook\App\Hook\File\Action\BlockSecrets",
+  "options": {
+    "blockDefault": true,
+    "blocked": ["#password\": \"[\S]+\"#i"],
+    "allowed": ["#my-dummy-token#", "#root#"]
   }
 }</code></pre>
 
