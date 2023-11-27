@@ -81,7 +81,6 @@ class BlockSecrets extends Check
      */
     protected function isValid(Repository $repository, string $file): bool
     {
-        $matchCount  = 0;
         $fileContent = (string) file_get_contents($file);
         $blocked     = $this->blockedByUser;
         if ($this->blockDefault) {
