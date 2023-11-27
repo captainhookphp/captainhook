@@ -74,52 +74,43 @@ abstract class Book implements Action, Constrained
         $problems = $ruleBook->validate($repository->getCommitMsg());
 
         if (count($problems)) {
-            throw new ActionFailed($this->getErrorOutput($problems, $repository));
+            $this->errorOutput($problems, $io, $repository);
+            throw new ActionFailed('commit message validation failed');
         }
     }
 
     /**
-     * Format the error output
+     * Write the error message
      *
-     * @param  array<string>                     $problems
-     * @param  \SebastianFeldmann\Git\Repository $repository
-     * @return string
+     * @param array                             $problems
+     * @param \CaptainHook\App\Console\IO       $io
+     * @param \SebastianFeldmann\Git\Repository $repository
+     * @return void
      */
-    private function getErrorOutput(array $problems, Repository $repository): string
+    private function errorOutput(array $problems, IO $io, Repository $repository): void
     {
-        $err  = count($problems);
-        $head = [
-            IOUtil::getLineSeparator(80, '-'),
-            '<error>CAPTAINHOOK FOUND ' . $err
-            . ' PROBLEM' . ($err === 1 ? '' : 'S')
-            . ' IN YOUR COMMIT MESSAGE</error>',
-            IOUtil::getLineSeparator(80, '-')
-        ];
-        $msg   = OutputUtil::trimEmptyLines($repository->getCommitMsg()->getLines());
-        $lines = [IOUtil::getLineSeparator(80, '-')];
+        $s = count($problems) > 1 ? 's' : '';
+        $io->write('found ' . count($problems) . ' problem' . $s . ' in your commit message');
         foreach ($problems as $problem) {
-            $lines[] = '  ' . $this->formatProblem($problem);
+            $io->write($this->formatProblem($problem));
         }
-        $lines[] = IOUtil::getLineSeparator(80, '-');
-
-        return implode(PHP_EOL, array_merge($head, $msg, $lines));
+        $io->write('<comment>--------------------------------------------[ your original message ]----</comment>');
+        $io->write(OutputUtil::trimEmptyLines($repository->getCommitMsg()->getLines()));
+        $io->write('<comment>-------------------------------------------------------------------------</comment>');
     }
 
     /**
      * Indent multi line problems so the lines after the first one are indented for better readability
      *
      * @param  string $problem
-     * @return string
+     * @return array
      */
-    private function formatProblem(string $problem): string
+    private function formatProblem(string $problem): array
     {
-        $lines  = explode(PHP_EOL, $problem);
-        $amount = count($lines);
-
-        for ($i = 1; $i < $amount; $i++) {
-            $lines[$i] = '    ' . $lines[$i];
+        $lines = explode(PHP_EOL, $problem);
+        foreach ($lines as $index => $line) {
+            $lines[$index] = '  ' . $line;
         }
-
-        return implode(PHP_EOL, $lines);
+        return $lines;
     }
 }

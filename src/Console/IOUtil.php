@@ -62,18 +62,6 @@ abstract class IOUtil
     }
 
     /**
-     * Return cli line separator string
-     *
-     * @param  int    $length
-     * @param  string $char
-     * @return string
-     */
-    public static function getLineSeparator(int $length = 80, string $char = '='): string
-    {
-        return str_repeat($char, $length);
-    }
-
-    /**
      * Create formatted cli headline
      *
      * >>>> HEADLINE <<<<
