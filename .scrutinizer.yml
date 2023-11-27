@@ -12,7 +12,7 @@ build:
     coverage:
       tests:
         override:
-          - command: ./tools/phpunit --coverage-clover=clover.xml
+          - command: XDEBUG_MODE=coverage php ./tools/phpunit --coverage-clover=clover.xml
             coverage:
               file: clover.xml
               format: clover
