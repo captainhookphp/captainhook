@@ -11,10 +11,7 @@
 
 namespace CaptainHook\App\Hook;
 
-use CaptainHook\App\Config;
-use CaptainHook\App\Config\Action;
-use CaptainHook\App\Console\IO;
-use SebastianFeldmann\Git\Repository;
+use CaptainHook\App\Config\Action as ActionConfig;
 
 /**
  * Interface EventSubscriber
@@ -33,5 +30,5 @@ interface EventSubscriber
      * @return array<string, array<int, \CaptainHook\App\Event\Handler>>
      * @throws \Exception
      */
-    public static function getEventHandlers(Action $action): array;
+    public static function getEventHandlers(ActionConfig $action): array;
 }
