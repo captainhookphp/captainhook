@@ -87,7 +87,7 @@ class Installer extends Files
      * Set the path where the current hooks should be moved to
      *
      * @param  string $backup
-     * @return \CaptainHook\App\Runner\Installer
+     * @return static
      */
     public function setMoveExistingTo(string $backup): static
     {

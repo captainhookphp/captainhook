@@ -82,7 +82,7 @@ abstract class Book implements Action, Constrained
     /**
      * Write the error message
      *
-     * @param array                             $problems
+     * @param array<string>                     $problems
      * @param \CaptainHook\App\Console\IO       $io
      * @param \SebastianFeldmann\Git\Repository $repository
      * @return void
@@ -103,7 +103,7 @@ abstract class Book implements Action, Constrained
      * Indent multi line problems so the lines after the first one are indented for better readability
      *
      * @param  string $problem
-     * @return array
+     * @return array<string>
      */
     private function formatProblem(string $problem): array
     {

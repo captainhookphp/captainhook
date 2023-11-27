@@ -89,7 +89,7 @@ class Hook
     /**
      * Add an action to the list
      *
-     * @param \CaptainHook\App\Config\Action[] $actions
+     * @param \CaptainHook\App\Config\Action ...$actions
      * @return void
      */
     public function addAction(Action ...$actions): void
