@@ -4,9 +4,6 @@
          colors="true"
          bootstrap="tests/bootstrap.php"
          defaultTestSuite="UnitTests">
-  <php>
-    <ini name="xdebug.mode" value="coverage" />
-  </php>
   <coverage>
     <include>
       <directory>src</directory>
