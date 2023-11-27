@@ -345,6 +345,30 @@ class Config
     }
 
     /**
+     * Returns a hook config containing all the actions to execute
+     *
+     * Returns all actions from the triggered hook but also any actions of virtual hooks that might be triggered.
+     * E.g. 'post-rewrite' or 'post-checkout' trigger the virtual/artificial 'post-change' hook.
+     * Virtual hooks are special hooks to simplify configuration.
+     *
+     * @param  string $hook
+     * @return \CaptainHook\App\Config\Hook
+     */
+    public function getHookConfigToExecute(string $hook): Config\Hook
+    {
+        $config     = new Config\Hook($hook, true);
+        $hookConfig = $this->getHookConfig($hook);
+        $config->addAction(...$hookConfig->getActions());
+        if (Hooks::triggersVirtualHook($hookConfig->getName())) {
+            $vHookConfig = $this->getHookConfig(Hooks::getVirtualHook($hookConfig->getName()));
+            if ($vHookConfig->isEnabled()) {
+                $config->addAction(...$vHookConfig->getActions());
+            }
+        }
+        return $config;
+    }
+
+    /**
      * Return plugins
      *
      * @return Config\Plugin[]
@@ -376,7 +400,6 @@ class Config
         foreach (Hooks::getValidHooks() as $hook => $value) {
             $data[$hook] = $this->hooks[$hook]->getJsonData();
         }
-
         return $data;
     }
 

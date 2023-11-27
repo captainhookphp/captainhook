@@ -151,8 +151,6 @@ abstract class Hook extends RepositoryAware
      */
     public function run(): void
     {
-        $hookConfigs = $this->getHookConfigsToHandle();
-
         $this->io->write('<comment>' . $this->hook . ':</comment> ');
 
         if (!$this->config->isHookEnabled($this->hook)) {
@@ -161,45 +159,27 @@ abstract class Hook extends RepositoryAware
         }
 
         $this->beforeHook();
-
         try {
-            $this->runHook($hookConfigs);
+            $this->runHook();
         } finally {
             $this->afterHook();
         }
     }
 
     /**
-     * @param  \CaptainHook\App\Config\Hook[] $hookConfigs
      * @return void
      * @throws \Exception
      */
-    protected function runHook(array $hookConfigs): void
+    protected function runHook(): void
     {
-        $actions = $this->getActionsToExecute($hookConfigs);
+        $hookConfig = $this->config->getHookConfigToExecute($this->hook);
+        $actions    = $hookConfig->getActions();
         // are any actions configured
         if (count($actions) === 0) {
             $this->io->write(' - no actions to execute');
         } else {
             $this->executeActions($actions);
         }
-    }
-
-    /**
-     * Return all configs that should be handled original and virtual
-     *
-     * @return \CaptainHook\App\Config\Hook[]
-     */
-    public function getHookConfigsToHandle(): array
-    {
-        $hookConfig = $this->config->getHookConfig($this->hook);
-        $configs    = [$hookConfig];
-
-        if (Hooks::triggersVirtualHook($hookConfig->getName())) {
-            $configs[] = $this->config->getHookConfig(Hooks::getVirtualHook($hookConfig->getName()));
-        }
-
-        return $configs;
     }
 
     /**
@@ -226,27 +206,6 @@ abstract class Hook extends RepositoryAware
             $this->skipActions = $shouldSkip;
         }
         return $this->skipActions;
-    }
-
-    /**
-     * Return all the actions to execute
-     *
-     * Returns all actions from the triggered hook but also any actions of virtual hooks that might be triggered.
-     * E.g. 'post-rewrite' or 'post-checkout' trigger the virtual/artificial 'post-change' hook.
-     * Virtual hooks are special hooks to simplify configuration.
-     *
-     * @param  \CaptainHook\App\Config\Hook[] $hookConfigs
-     * @return \CaptainHook\App\Config\Action[]
-     */
-    private function getActionsToExecute(array $hookConfigs): array
-    {
-        $actions = [];
-        foreach ($hookConfigs as $hookConfig) {
-            if ($hookConfig->isEnabled()) {
-                $actions = array_merge($actions, $hookConfig->getActions());
-            }
-        }
-        return $actions;
     }
 
     /**
@@ -299,7 +258,6 @@ abstract class Hook extends RepositoryAware
     private function executeFailAfterAllActions(array $actions): void
     {
         $failedActions = 0;
-
         foreach ($actions as $action) {
             try {
                 $this->handleAction($action);
@@ -307,11 +265,8 @@ abstract class Hook extends RepositoryAware
                 $failedActions++;
             }
         }
-
         if ($failedActions > 0) {
-            throw new ActionFailed(
-                $failedActions . ' action' . ($failedActions > 1 ? 's' : '') . ' failed'
-            );
+            throw new ActionFailed($failedActions . ' action' . ($failedActions > 1 ? 's' : '') . ' failed');
         }
     }
 
@@ -345,7 +300,6 @@ abstract class Hook extends RepositoryAware
             return;
         }
 
-
         try {
             $runner = $this->createActionRunner(Util::getExecType($action->getAction()));
             $runner->execute($this->config, $io, $this->repository, $action);
@@ -353,15 +307,14 @@ abstract class Hook extends RepositoryAware
         } catch (Exception  $e) {
             $status = ActionLog::ACTION_FAILED;
             $this->printer->actionFailed($action);
-            $io->write($e->getMessage());
+            $io->write('<fg=yellow>' . $e->getMessage() . '</>');
             if (!$action->isFailureAllowed($this->config->isFailureAllowed())) {
                 throw $e;
             }
         } finally {
             $this->hookLog->addActionLog(new ActionLog($action, $status, $io->getMessages()));
+            $this->afterAction($action);
         }
-
-        $this->afterAction($action);
     }
 
     /**
@@ -426,11 +379,7 @@ abstract class Hook extends RepositoryAware
                 is_a($pluginClass, Constrained::class, true)
                 && !$pluginClass::getRestriction()->isApplicableFor($this->hook)
             ) {
-                $this->io->write(
-                    'Skipped because plugin is not applicable for hook ' . $this->hook,
-                    true,
-                    IO::VERBOSE
-                );
+                $this->io->write('Skipped because plugin is not applicable for hook ' . $this->hook, true, IO::VERBOSE);
                 continue;
             }
 
@@ -439,7 +388,6 @@ abstract class Hook extends RepositoryAware
 
             $this->hookPlugins[] = $plugin;
         }
-
         return $this->hookPlugins;
     }
 

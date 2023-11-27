@@ -40,9 +40,9 @@ class PrepareCommitMsgTest extends TestCase
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn('\\' . Prepare::class);
         $actionConfig->method('getOptions')->willReturn(new Config\Options(['message' => 'Prepared commit msg']));
-        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
+        $hookConfig->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
-        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $config->expects($this->once())->method('getHookConfigToExecute')->willReturn($hookConfig);
         $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
 
         // setup fake vfs repos directory
@@ -80,13 +80,9 @@ class PrepareCommitMsgTest extends TestCase
 
         $io           = $this->createIOMock();
         $config       = $this->createConfigMock();
-        $hookConfig   = $this->createHookConfigMock();
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(Prepare::class);
         $actionConfig->method('getOptions')->willReturn(new Config\Options(['message' => 'Prepared commit msg']));
-        $hookConfig->method('isEnabled')->willReturn(true);
-        $hookConfig->method('getActions')->willReturn([$actionConfig]);
-        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
         $io->expects($this->exactly(3))->method('getArgument')->willReturn('');
 

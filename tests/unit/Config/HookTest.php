@@ -64,4 +64,17 @@ class HookTest extends TestCase
         $this->assertCount(1, $hook->getActions());
         $this->assertCount(1, $config['actions']);
     }
+
+    /**
+     * Tests Hook::addAction
+     */
+    public function testAddMultiAction(): void
+    {
+        $hook   = new Hook('pre-commit');
+        $hook->addAction(new Action('\\Foo\\Bar'), new Action('\\Foo\\Bar'));
+        $config = $hook->getJsonData();
+
+        $this->assertCount(2, $hook->getActions());
+        $this->assertCount(2, $config['actions']);
+    }
 }

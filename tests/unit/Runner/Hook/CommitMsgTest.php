@@ -45,9 +45,8 @@ class CommitMsgTest extends TestCase
         $hookConfig   = $this->createHookConfigMock();
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
-        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
-        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $config->expects($this->once())->method('getHookConfigToExecute')->willReturn($hookConfig);
         $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
         $io->expects($this->atLeast(1))->method('write');
         $io->expects($this->once())->method('getArgument')->willReturn(CH_PATH_FILES . '/git/message/valid.txt');
@@ -79,7 +78,7 @@ class CommitMsgTest extends TestCase
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
         $hookConfig->method('isEnabled')->willReturn(true);
         $hookConfig->method('getActions')->willReturn([$actionConfig]);
-        $config->method('getHookConfig')->willReturn($hookConfig);
+        $config->method('getHookConfigToExecute')->willReturn($hookConfig);
         $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
         $io->expects($this->atLeast(1))->method('write');
         $io->expects($this->once())->method('getArgument')->willReturn(CH_PATH_FILES . '/git/message/valid.txt');
@@ -106,7 +105,7 @@ class CommitMsgTest extends TestCase
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
         $hookConfig->method('isEnabled')->willReturn(true);
         $hookConfig->method('getActions')->willReturn([$actionConfig]);
-        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $config->method('getHookConfigToExecute')->willReturn($hookConfig);
         $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
         $io->expects($this->once())->method('getArgument')->willReturn('');
 

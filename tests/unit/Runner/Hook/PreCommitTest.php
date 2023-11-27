@@ -44,9 +44,9 @@ class PreCommitTest extends TestCase
         $hookConfig   = $this->createHookConfigMock();
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
-        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
+        $hookConfig->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
-        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $config->expects($this->once())->method('getHookConfigToExecute')->willReturn($hookConfig);
         $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
         $io->expects($this->atLeast(1))->method('write');
 
@@ -86,13 +86,13 @@ class PreCommitTest extends TestCase
                             ->method('getAction')
                             ->willReturn(CH_PATH_FILES . '/bin/failure');
 
-        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
+        $hookConfig->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())
                    ->method('getActions')
                    ->willReturn([$actionConfigFail, $actionConfigSuccess]);
 
-        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
-        $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
+        $config->expects($this->once())->method('getHookConfigToExecute')->willReturn($hookConfig);
+        $config->method('isHookEnabled')->willReturn(true);
         $io->expects($this->atLeast(1))->method('write');
 
         $runner = new PreCommit($io, $config, $repo);
@@ -123,12 +123,12 @@ class PreCommitTest extends TestCase
         // so even if the first actions fails this action has to get executed
         $actionConfigFail = new Action(CH_PATH_FILES . '/bin/failure', [], [], ['allow-failure' => true]);
 
-        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
+        $hookConfig->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())
                    ->method('getActions')
                    ->willReturn([$actionConfigFail, $actionConfigSuccess]);
 
-        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $config->expects($this->once())->method('getHookConfigToExecute')->willReturn($hookConfig);
         $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
         $io->expects($this->atLeast(1))->method('write');
 
@@ -164,12 +164,12 @@ class PreCommitTest extends TestCase
         // so even if the first actions fails this action has to get executed
         $actionConfigFail = new Action(CH_PATH_FILES . '/bin/failure');
 
-        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
+        $hookConfig->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())
             ->method('getActions')
             ->willReturn([$actionConfigFail, $actionConfigSuccess]);
 
-        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $config->expects($this->once())->method('getHookConfigToExecute')->willReturn($hookConfig);
         $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
         $io->expects($this->atLeast(1))->method('write');
 
@@ -186,9 +186,7 @@ class PreCommitTest extends TestCase
     {
         $io           = $this->createIOMock();
         $config       = $this->createConfigMock();
-        $hookConfig   = $this->createHookConfigMock();
         $repo         = $this->createRepositoryMock();
-        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(false);
         $io->expects($this->atLeast(1))->method('write');
 

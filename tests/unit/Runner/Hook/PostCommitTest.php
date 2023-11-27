@@ -39,9 +39,9 @@ class PostCommitTest extends TestCase
         $hookConfig   = $this->createHookConfigMock();
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
-        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
+        $hookConfig->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig]);
-        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $config->expects($this->once())->method('getHookConfigToExecute')->willReturn($hookConfig);
         $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
         $io->expects($this->atLeast(1))->method('write');
 
@@ -58,9 +58,7 @@ class PostCommitTest extends TestCase
     {
         $io           = $this->createIOMock();
         $config       = $this->createConfigMock();
-        $hookConfig   = $this->createHookConfigMock();
         $repo         = $this->createRepositoryMock();
-        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(false);
         $io->expects($this->atLeast(1))->method('write');
 

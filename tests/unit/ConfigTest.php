@@ -11,6 +11,7 @@
 
 namespace CaptainHook\App;
 
+use CaptainHook\App\Config\Action;
 use CaptainHook\App\Config\Plugin;
 use CaptainHook\App\Plugin\CaptainHook as CaptainHookPlugin;
 use Exception;
@@ -44,6 +45,22 @@ class ConfigTest extends TestCase
         $this->expectException(Exception::class);
         $config = new Config('./no-config.json');
         $config->getHookConfig('foo');
+    }
+
+    /**
+     * Tests Config::getHookConfigToExecute
+     */
+    public function testGetHookConfigWithVirtualHooks(): void
+    {
+        $config = new Config('./no-config.json');
+        $config->getHookConfig('post-rewrite')->setEnabled(true);
+        $config->getHookConfig('post-rewrite')->addAction(new Action('echo foo'));
+        $config->getHookConfig('post-change')->setEnabled(true);
+        $config->getHookConfig('post-change')->addAction(new Action('echo bar'));
+
+        $hookConfig = $config->getHookConfigToExecute('post-rewrite');
+
+        $this->assertCount(2, $hookConfig->getActions());
     }
 
     /**
@@ -115,7 +132,7 @@ class ConfigTest extends TestCase
     public function testAnsiColorsEnabledByDefault(): void
     {
         $config = new Config('foo.json', true);
-        $this->assertEquals(true, $config->useAnsiColors());
+        $this->assertTrue($config->useAnsiColors());
     }
 
     /**
@@ -124,7 +141,7 @@ class ConfigTest extends TestCase
     public function testDisableAnsiColors(): void
     {
         $config = new Config('foo.json', true, ['ansi-colors' => false]);
-        $this->assertEquals(false, $config->useAnsiColors());
+        $this->assertFalse($config->useAnsiColors());
     }
 
     /**
@@ -178,7 +195,7 @@ class ConfigTest extends TestCase
     public function testFailOnFirstErrorDefault(): void
     {
         $config = new Config('foo.json', true, []);
-        $this->assertEquals(true, $config->failOnFirstError());
+        $this->assertTrue($config->failOnFirstError());
     }
 
     /**
@@ -187,7 +204,7 @@ class ConfigTest extends TestCase
     public function testFailOnFirstError(): void
     {
         $config = new Config('foo.json', true, ['fail-on-first-error' => false]);
-        $this->assertEquals(false, $config->failOnFirstError());
+        $this->assertFalse($config->failOnFirstError());
     }
 
     /**
@@ -223,6 +240,7 @@ class ConfigTest extends TestCase
         $this->assertIsArray($json['commit-msg']);
         $this->assertIsArray($json['pre-push']);
     }
+
     /**
      * Tests Config::getJsonData
      */

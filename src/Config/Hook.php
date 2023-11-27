@@ -89,12 +89,14 @@ class Hook
     /**
      * Add an action to the list
      *
-     * @param  \CaptainHook\App\Config\Action $action
+     * @param \CaptainHook\App\Config\Action[] $actions
      * @return void
      */
-    public function addAction(Action $action): void
+    public function addAction(Action ...$actions): void
     {
-        $this->actions[] = $action;
+        foreach ($actions as $action) {
+            $this->actions[] = $action;
+        }
     }
 
     /**

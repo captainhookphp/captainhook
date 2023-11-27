@@ -35,9 +35,9 @@ class PostCheckoutTest extends TestCase
         $hookConfig    = $this->createHookConfigMock();
         $actionConfig1 = $this->createActionConfigMock();
         $actionConfig2 = $this->createActionConfigMock();
-        $hookConfig->expects($this->atLeast(1))->method('isEnabled')->willReturn(true);
+        $hookConfig->method('isEnabled')->willReturn(true);
         $hookConfig->expects($this->once())->method('getActions')->willReturn([$actionConfig1, $actionConfig2]);
-        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
+        $config->expects($this->once())->method('getHookConfigToExecute')->willReturn($hookConfig);
         $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
         $io->expects($this->atLeast(1))->method('write');
 
@@ -60,9 +60,7 @@ class PostCheckoutTest extends TestCase
     {
         $io           = $this->createIOMock();
         $config       = $this->createConfigMock();
-        $hookConfig   = $this->createHookConfigMock();
         $repo         = $this->createRepositoryMock();
-        $config->expects($this->once())->method('getHookConfig')->willReturn($hookConfig);
         $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(false);
         $io->expects($this->atLeast(1))->method('write');
 
