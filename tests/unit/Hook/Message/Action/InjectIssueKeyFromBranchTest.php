@@ -26,6 +26,16 @@ class InjectIssueKeyFromBranchTest extends TestCase
     use CHMockery;
     use IOMockery;
 
+
+    /**
+     * Tests Beams::getRestriction
+     */
+    public function testConstraint(): void
+    {
+        $this->assertTrue(InjectIssueKeyFromBranch::getRestriction()->isApplicableFor('prepare-commit-msg'));
+        $this->assertFalse(InjectIssueKeyFromBranch::getRestriction()->isApplicableFor('pre-push'));
+    }
+
     /**
      * Tests InjectIssueKeyFromBranch::execute
      *
@@ -109,6 +119,44 @@ class InjectIssueKeyFromBranchTest extends TestCase
             'bar' . PHP_EOL . PHP_EOL . 'issue: ABCD-12345' . PHP_EOL,
             $repo->getCommitMsg()->getBody()
         );
+    }
+
+
+    /**
+     * Tests InjectIssueKeyFromBranch::execute
+     *
+     * @throws \Exception
+     */
+    public function testAppendBodyWithPrefixWithComments(): void
+    {
+        $repo = new RepoMock();
+        $info = $this->createGitInfoOperator('5.0.0', 'freature/ABCD-12345-foo-bar-baz');
+
+        $repo->setCommitMsg(
+            new CommitMessage(
+                implode(PHP_EOL, ['foo', '', 'bar', '# some comment', '# some comment'])
+            )
+        );
+        $repo->setInfoOperator($info);
+
+        $io      = $this->createIOMock();
+        $config  = $this->createConfigMock();
+        $action  = $this->createActionConfigMock();
+        $action->method('getOptions')->willReturn(new Options([
+            'into'   => 'body',
+            'mode'   => 'append',
+            'prefix' => PHP_EOL . PHP_EOL . 'issue: '
+        ]));
+
+        $expected = 'bar' . PHP_EOL . PHP_EOL . 'issue: ABCD-12345' . PHP_EOL;
+        $hook     = new InjectIssueKeyFromBranch();
+        $hook->execute($config, $io, $repo, $action);
+
+        $this->assertEquals(
+            $expected,
+            $repo->getCommitMsg()->getBody()
+        );
+        $this->assertStringContainsString('# some comment', $repo->getCommitMsg()->getRawContent());
     }
 
     /**
