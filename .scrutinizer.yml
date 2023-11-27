@@ -8,7 +8,6 @@ build:
       - chmod +x composer.phar
       - ./composer.phar install
       - ./tools/phive update-repository-list
-      - echo GITHUB_AUTH_TOKEN
       - ./tools/phive install --force-accept-unsigned --trust-gpg-keys 4AA394086372C20A,31C7E470E2138192,8E730BA25823D8B5,CF1A108D0E7AE720,2DF45277AEF09A2F,51C67305FFC2E5C0
   tests:
     override:
