@@ -66,7 +66,7 @@ abstract class Files extends RepositoryAware
      * @param  string $backup
      * @return static
      */
-    public function setMoveExistingTo(string $backup): self
+    public function setMoveExistingTo(string $backup): static
     {
         $this->moveExistingTo = $backup;
         return $this;

@@ -89,7 +89,7 @@ class Installer extends Files
      * @param  string $backup
      * @return \CaptainHook\App\Runner\Installer
      */
-    public function setMoveExistingTo(string $backup): Installer
+    public function setMoveExistingTo(string $backup): static
     {
         if (!empty($backup) && $this->skipExisting) {
             throw new RuntimeException('choose --skip-existing or --move-existing-to');
