@@ -67,18 +67,15 @@ class Cli implements ActionRunner
 
         if (!empty($output)) {
             $io->write(
-                [
-                    '  <comment>command output:</comment>',
-                    trim($output),
-                ],
+                ['  <comment>command output:</comment>', trim($output)],
                 true,
-                IO::VERBOSE
+                !$result->isSuccessful() ? IO::NORMAL : IO::VERBOSE
             );
         }
 
         if (!$result->isSuccessful()) {
             throw new Exception\ActionFailed(
-                'failed to execute: <comment>' . $cmdFormatted . '</comment>'
+                'failed to execute: ' . $cmdFormatted
             );
         }
     }
