@@ -12,6 +12,11 @@
 namespace CaptainHook\App\Hook\File\Action;
 
 use CaptainHook\App\Config;
+use CaptainHook\App\Exception\ActionFailed;
+use CaptainHook\App\Hook\File\Regex;
+use CaptainHook\App\Hook\File\Regex\Aws;
+use CaptainHook\App\Hook\File\Regex\Google;
+use CaptainHook\App\Hook\File\Regex\Password;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -25,21 +30,14 @@ use SebastianFeldmann\Git\Repository;
 class BlockSecrets extends Check
 {
     /**
-     * Should the default block regexes be used
-     *
-     * @var bool
-     */
-    private bool $blockDefault;
-
-    /**
-     * List of default regexes to block
+     * List of user regex patterns collected from all configured providers
      *
      * @var array<string>
      */
-    private array $blockedByDefault;
+    private array $blockedByProvider = [];
 
     /**
-     * List of user defined regex patterns
+     * List of default regexes to block
      *
      * @var array<string>
      */
@@ -50,7 +48,7 @@ class BlockSecrets extends Check
      *
      * @var array<string>
      */
-    private array $allowedByUser;
+    private array $allowed;
 
     /**
      * Additional information for a file
@@ -62,14 +60,14 @@ class BlockSecrets extends Check
     /**
      * Extract and validate config settings
      *
-     * @param  \CaptainHook\App\Config\Options $options
+     * @param \CaptainHook\App\Config\Options $options
+     * @throws \CaptainHook\App\Exception\ActionFailed
      */
     protected function setUp(Config\Options $options): void
     {
-        $this->setUpDefaultBlocks();
-        $this->blockDefault  = $options->get('blockDefaults', true);
+        $this->setUpProvider($options);
         $this->blockedByUser = $options->get('blocked', []);
-        $this->allowedByUser = $options->get('allowed', []);
+        $this->allowed       = $options->get('allowed', []);
     }
 
     /**
@@ -82,11 +80,11 @@ class BlockSecrets extends Check
     protected function isValid(Repository $repository, string $file): bool
     {
         $fileContent = (string) file_get_contents($file);
-        $blocked     = $this->blockedByUser;
-        if ($this->blockDefault) {
-            $blocked = array_merge($blocked, $this->blockedByDefault);
+        $blocking    = $this->blockedByUser;
+        if (!empty($this->blockedByProvider)) {
+            $blocking = array_merge($blocking, $this->blockedByProvider);
         }
-        foreach ($blocked as $regex) {
+        foreach ($blocking as $regex) {
             $matchCount = (int)preg_match($regex, $fileContent, $matches);
             if ($matchCount && !$this->isAllowed($matches[0])) {
                 $this->info[$file] = $matches[0];
@@ -104,7 +102,7 @@ class BlockSecrets extends Check
      */
     private function isAllowed(string $blocked): bool
     {
-        foreach ($this->allowedByUser as $regex) {
+        foreach ($this->allowed as $regex) {
             $matchCount = preg_match($regex, $blocked, $matches);
             if ($matchCount) {
                 return true;
@@ -113,25 +111,26 @@ class BlockSecrets extends Check
         return false;
     }
 
-    private function setUpDefaultBlocks(): void
+    /**
+     * Set up the blocked regex
+     *
+     * @param \CaptainHook\App\Config\Options $options
+     * @throws \CaptainHook\App\Exception\ActionFailed
+     */
+    private function setUpProvider(Config\Options $options): void
     {
-        $aws      = '(AWS|aws|Aws)?_?';
-        $quote    = '("|\')';
-        $optQuote = $quote . '?';
-        $connect  = '\s*(:|=>|=|:=)\s*';
-
-        $this->blockedByDefault = [
-            // AWS token
-            '#(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}#',
-            // AWS secrets, keys, access token
-            '#' . $optQuote . $aws . '(SECRET|secret|Secret)?_?(ACCESS|access|Access)?_?(KEY|key|Key)' . $optQuote
-            . $connect . $optQuote . '[A-Za-z0-9/\\+=]{40}' . $optQuote . '#',
-            // AWS account id
-            '#' . $optQuote . $aws . '(ACCOUNT|account|Account)_?(ID|id|Id)?' . $optQuote
-            . $connect . $optQuote . '[0-9]{4}\\-?[0-9]{4}\\-?[0-9]{4}' . $optQuote . '#',
-            // try to find any password
-            '#password' . $optQuote . $connect . $optQuote . '[a-z\\-_\\#/\\+0-9]{16,}' . $optQuote . '#i',
-        ];
+        $provider = $options->get('providers', []);
+        foreach ($provider as $class) {
+            if (!class_exists($class)) {
+                throw new ActionFailed('Regex class ' . $class . ' not found');
+            }
+            /** @var Regex $reg */
+            $reg = new $class();
+            if (!$reg instanceof Regex) {
+                throw new ActionFailed('Regex class ' . $class . ' is not implementing the correct interface');
+            }
+            $this->blockedByProvider = array_merge($this->blockedByProvider, $reg->patterns());
+        }
     }
 
     /**

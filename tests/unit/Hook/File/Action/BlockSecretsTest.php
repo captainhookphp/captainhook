@@ -13,6 +13,12 @@ namespace CaptainHook\App\Hook\File\Action;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO\NullIO;
+use CaptainHook\App\Hook\Debug;
+use CaptainHook\App\Hook\File\Regex\Aws;
+use CaptainHook\App\Hook\File\Regex\GitHub;
+use CaptainHook\App\Hook\File\Regex\Google;
+use CaptainHook\App\Hook\File\Regex\Password;
+use CaptainHook\App\Hook\File\Regex\Stripe;
 use CaptainHook\App\Mockery;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -53,9 +59,77 @@ class BlockSecretsTest extends TestCase
     {
         $this->expectException(Exception::class);
 
+        $options = [
+            'providers' => [
+                Aws::class,
+                Password::class,
+                Google::class,
+                GitHub::class,
+                Stripe::class
+            ]
+        ];
+
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
-        $action = new Config\Action(BlockSecrets::class, []);
+        $action = new Config\Action(BlockSecrets::class, $options);
+        $repo   = $this->createRepositoryMock();
+        $repo->method('getIndexOperator')->willReturn(
+            $this->createGitIndexOperator([
+                CH_PATH_FILES . '/storage/secrets-fail.txt',
+            ])
+        );
+
+        $standard = new BlockSecrets();
+        $standard->execute($config, $io, $repo, $action);
+    }
+
+    /**
+     * Tests BlockSecrets::execute
+     *
+     * @throws \Exception
+     */
+    public function testExecuteProviderNotFound(): void
+    {
+        $this->expectException(Exception::class);
+
+        $options = [
+            'providers' => [
+                'Fooooooooooooo'
+            ]
+        ];
+
+        $io     = new NullIO();
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
+        $action = new Config\Action(BlockSecrets::class, $options);
+        $repo   = $this->createRepositoryMock();
+        $repo->method('getIndexOperator')->willReturn(
+            $this->createGitIndexOperator([
+                CH_PATH_FILES . '/storage/secrets-fail.txt',
+            ])
+        );
+
+        $standard = new BlockSecrets();
+        $standard->execute($config, $io, $repo, $action);
+    }
+
+    /**
+     * Tests BlockSecrets::execute
+     *
+     * @throws \Exception
+     */
+    public function testExecuteInvalidProvider(): void
+    {
+        $this->expectException(Exception::class);
+
+        $options = [
+            'providers' => [
+                Debug::class
+            ]
+        ];
+
+        $io     = new NullIO();
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
+        $action = new Config\Action(BlockSecrets::class, $options);
         $repo   = $this->createRepositoryMock();
         $repo->method('getIndexOperator')->willReturn(
             $this->createGitIndexOperator([
@@ -75,11 +149,10 @@ class BlockSecretsTest extends TestCase
         $io     = new NullIO();
         $config = new Config(CH_PATH_FILES . '/captainhook.json');
         $action = new Config\Action(BlockSecrets::class, [
-            'blockDefaults'  => false,
-            'blocked' => ['#f[a-z]+#'],
-            'allowed' => ['#foo#']
+            'blocked'   => ['#f[a-z]+#'],
+            'allowed'   => ['#foo#']
         ]);
-        $repo   = $this->createRepositoryMock();
+        $repo = $this->createRepositoryMock();
         $repo->expects($this->atLeast(1))->method('getIndexOperator')->willReturn(
             $this->createGitIndexOperator([
                 CH_PATH_FILES . '/storage/secrets-ok.txt',
