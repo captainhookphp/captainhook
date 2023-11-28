@@ -63,7 +63,7 @@
     <li><a href="#file-empty">Prevent committing any content to files</a></li>
     <li><a href="#file-not-empty">Prevent committing empty files</a></li>
     <li><a href="#file-does-not-contain">Prevent committing specific content to files</a></li>
-    <li><a href="#block-secrets">Prevent committing secrets of any kind to the repository</a></li>
+    <li><a href="#block-secrets">Block secrets of any kind from the repository</a></li>
     <li><a href="#file-exists">Ensure a files exists</a></li>
     <li><a href="#branch-naming">Enforce branch naming</a></li>
     <li><a href="#branch-fixup">Block pushing of squash or fixup commits</a></li>
@@ -264,7 +264,7 @@
   }
 }</code></pre>
 
-  <h4 id="bloc-secrets">Block secrets from being stored in the repository</h4>
+  <h4 id="block-secrets">Block secrets from being stored in the repository</h4>
   <p>
     Make sure you are not committing passwords or api tokens to the repository.
     By default, it tries to detect AWS keys and some generic password.
@@ -274,7 +274,13 @@
   <pre><code class="javascript">{
   "action": "\CaptainHook\App\Hook\File\Action\BlockSecrets",
   "options": {
-    "blockDefault": true,
+    "providers": [
+      "\\CaptainHook\\App\\Hook\\File\\Regex\\Aws",
+      "\\CaptainHook\\App\\Hook\\File\\Regex\\Github",
+      "\\CaptainHook\\App\\Hook\\File\\Regex\\Stripe",
+      "\\CaptainHook\\App\\Hook\\File\\Regex\\Google",
+      "\\CaptainHook\\App\\Hook\\File\\Regex\\Password"
+    ],
     "blocked": ["#password\": \"[\S]+\"#i"],
     "allowed": ["#my-dummy-token#", "#root#"]
   }
