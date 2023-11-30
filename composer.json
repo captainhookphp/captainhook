@@ -3,7 +3,7 @@
   "type": "library",
   "description": "PHP git hook manager",
   "keywords": ["git", "hooks", "pre-commit", "pre-push", "commit-msg", "prepare-commit-msg", "post-merge"],
-  "homepage": "https://github.com/captainhookphp/captainhook",
+  "homepage": "http://php.captainhook.info/",
   "license": "MIT",
   "authors": [
     {
@@ -36,6 +36,7 @@
     "ext-json": "*",
     "ext-spl": "*",
     "ext-xml": "*",
+    "captainhook/secrets": "^0.9.4",
     "sebastianfeldmann/camino": "^0.9.2",
     "sebastianfeldmann/cli": "^3.3",
     "sebastianfeldmann/git": "^3.9",
