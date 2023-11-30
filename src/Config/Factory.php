@@ -211,26 +211,32 @@ final class Factory
         if (empty($config->getPhpPath())) {
             return;
         }
-        $foundPHP    = false;
         $pathToCheck = [$config->getPhpPath()];
         $parts       = explode(' ', $config->getPhpPath());
         // if there are spaces in the php-path and they are not escaped
         // it looks like an executable is used to find the PHP binary
         // so at least check if the executable exists
-        if (count($parts) > 1 && substr($parts[0], -1) !== '\\') {
+        if ($this->usesPathResolver($parts)) {
             $pathToCheck[] = $parts[0];
         }
 
         foreach ($pathToCheck as $path) {
             if (file_exists($path)) {
-                $foundPHP = true;
-                break;
+                return;
             }
         }
+        throw new RuntimeException('The configured php-path is wrong: ' . $config->getPhpPath());
+    }
 
-        if (!$foundPHP) {
-            throw new RuntimeException('The configured php-path is wrong: ' . $config->getPhpPath());
-        }
+    /**
+     * Is a binary used to resolve the php path
+     *
+     * @param array<int, string> $parts
+     * @return bool
+     */
+    private function usesPathResolver(array $parts): bool
+    {
+        return count($parts) > 1 && !str_ends_with($parts[0], '\\');
     }
 
     /**
