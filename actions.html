@@ -267,19 +267,22 @@
   <h4 id="block-secrets">Block secrets from being stored in the repository</h4>
   <p>
     Make sure you are not committing passwords or api tokens to the repository.
-    By default, it tries to detect AWS keys and some generic password.
-    If that interferes with you file deactivate the default scan by setting
+    You can configure existing regex supplier oder define your own ones.
+    If it detects something wrongfully you can define an allow list.
+    If you configure an `entropyThreshold` greater than zero. The Cap'n will do
+    some entropy calculations to detect passwords.
     <em>blockDefault</em> to <em>false</em>.
   </p>
   <pre><code class="javascript">{
   "action": "\CaptainHook\App\Hook\File\Action\BlockSecrets",
   "options": {
+    "entropyThreshold": 3.8,
     "providers": [
-      "\\CaptainHook\\App\\Hook\\File\\Regex\\Aws",
-      "\\CaptainHook\\App\\Hook\\File\\Regex\\Github",
-      "\\CaptainHook\\App\\Hook\\File\\Regex\\Stripe",
-      "\\CaptainHook\\App\\Hook\\File\\Regex\\Google",
-      "\\CaptainHook\\App\\Hook\\File\\Regex\\Password"
+      "\\CaptainHook\\Secrets\\Regex\\Supplier\\Aws",
+      "\\CaptainHook\\Secrets\\Regex\\Supplier\\Github",
+      "\\CaptainHook\\Secrets\\Regex\\Supplier\\Stripe",
+      "\\CaptainHook\\Secrets\\Regex\\Supplier\\Google",
+      "\\CaptainHook\\Secrets\\Regex\\Supplier\\Password"
     ],
     "blocked": ["#password\": \"[\S]+\"#i"],
     "allowed": ["#my-dummy-token#", "#root#"]
