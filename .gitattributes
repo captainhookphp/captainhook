@@ -1,11 +1,21 @@
-* text=auto eol=lf
+/.docker/                export-ignore
+/docker-compose.yml      export-ignore
 
-.gitattributes export-ignore
-.gitignore export-ignore
-.github/ export-ignore
-.scrutinizer.yml export-ignore
-captainhook.json.sample export-ignore
-phpstan.neon export-ignore
-phpunit.xml export-ignore
-README.md export-ignore
-tests/ export-ignore
+/.github/                export-ignore
+/.gitattributes          export-ignore
+/.gitignore              export-ignore
+
+/.scrutinizer.yml        export-ignore
+/build/                  export-ignore
+/box.json                export-ignore
+/composer.phar.json      export-ignore
+/captainhook.json.sample export-ignore
+/phpstan.neon            export-ignore
+
+/phpunit.xml             export-ignore
+/tests/                  export-ignore
+
+/tools/                  export-ignore
+
+/README.md               export-ignore
+/CONTRIBUTING.md         export-ignore
