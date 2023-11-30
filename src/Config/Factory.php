@@ -149,7 +149,7 @@ final class Factory
     }
 
     /**
-     * Return `config` section of captainhook.json
+     * Return the `config` section of some json
      *
      * @param  array<string, mixed> $json
      * @return array<string, mixed>
@@ -157,6 +157,28 @@ final class Factory
     private function extractSettings(array $json): array
     {
         return isset($json['config']) && is_array($json['config']) ? $json['config'] : [];
+    }
+
+    /**
+     * Returns the `conditions` section of an actionJson
+     *
+     * @param array<string, mixed> $json
+     * @return array<string, mixed>
+     */
+    private function extractConditions(mixed $json): array
+    {
+        return isset($json['conditions']) && is_array($json['conditions']) ? $json['conditions'] : [];
+    }
+
+    /**
+     * Returns the `options` section af some json
+     *
+     * @param array<string, mixed> $json
+     * @return array<string, string>
+     */
+    private function extractOptions(mixed $json): array
+    {
+        return isset($json['options']) && is_array($json['options']) ? $json['options'] : [];
     }
 
     /**
@@ -171,15 +193,9 @@ final class Factory
     {
         $config->setEnabled($json['enabled']);
         foreach ($json['actions'] as $actionJson) {
-            $options    = isset($actionJson['options']) && is_array($actionJson['options'])
-                        ? $actionJson['options']
-                        : [];
-            $conditions = isset($actionJson['conditions']) && is_array($actionJson['conditions'])
-                        ? $actionJson['conditions']
-                        : [];
-            $settings   = isset($actionJson['config']) && is_array($actionJson['config'])
-                        ? $actionJson['config']
-                        : [];
+            $options    = $this->extractOptions($actionJson);
+            $conditions = $this->extractConditions($actionJson);
+            $settings   = $this->extractSettings($actionJson);
             $config->addAction(new Config\Action($actionJson['action'], $options, $conditions, $settings));
         }
     }
