@@ -154,9 +154,8 @@ class BlockSecrets implements Action, Constrained
         if ($this->entropyThreshold < 0.1) {
             return false;
         }
-        $fileInfo = pathinfo($file);
-        $ext      = $fileInfo['extension'] ?? '';
-        // we don't have a supplier for this filetype just exit
+        $ext = $this->getFileExtension($file);
+        // if we don't have a supplier for this filetype just exit
         if (!isset($this->fileTypeSupplier[$ext])) {
             return false;
         }
@@ -169,14 +168,8 @@ class BlockSecrets implements Action, Constrained
             if (!$result->wasSecretDetected()) {
                 continue;
             }
-            $match   = $result->matches()[0];
-            $entropy = Shannon::entropy($match);
-            $this->io->write('Entropy of ' . $match . ' is ' . $entropy, true, IO::DEBUG);
-            if ($entropy > $this->entropyThreshold) {
-                if (!$this->isAllowed($match)) {
-                    $this->info[$file] = $match;
-                    return true;
-                }
+            if ($this->isBlockedByEntropyCheck($file, $result->matches()[0])) {
+                return true;
             }
         }
         return false;
@@ -280,5 +273,37 @@ class BlockSecrets implements Action, Constrained
             return $repository->getDiffOperator()->compare($oldHash, $newHash);
         }
         return $repository->getDiffOperator()->compareIndexTo('HEAD');
+    }
+
+    /**
+     * Return the file suffix for a given file name
+     *
+     * @param string $file
+     * @return string
+     */
+    private function getFileExtension(string $file): string
+    {
+        $fileInfo = pathinfo($file);
+        return $fileInfo['extension'] ?? '';
+    }
+
+    /**
+     * Should match be blocked because of entropy value
+     *
+     * @param string $file
+     * @param string $match
+     * @return bool
+     */
+    private function isBlockedByEntropyCheck(string $file, string $match): bool
+    {
+        $entropy = Shannon::entropy($match);
+        $this->io->write('Entropy of ' . $match . ' is ' . $entropy, true, IO::DEBUG);
+        if ($entropy > $this->entropyThreshold) {
+            if (!$this->isAllowed($match)) {
+                $this->info[$file] = $match;
+                return true;
+            }
+        }
+        return false;
     }
 }
