@@ -84,6 +84,18 @@ final class Util
     }
 
     /**
+     * Checks if a given hook was executed
+     *
+     * @param \CaptainHook\App\Console\IO $io
+     * @param string                      $hook
+     * @return bool
+     */
+    public static function isRunningHook(IO $io, string $hook): bool
+    {
+        return str_contains($io->getArgument(Hooks::ARG_COMMAND), $hook);
+    }
+
+    /**
      * Detects the previous head commit hash
      *
      * @param \CaptainHook\App\Console\IO $io

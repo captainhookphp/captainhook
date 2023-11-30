@@ -29,7 +29,7 @@ abstract class IOUtil
     /**
      * Maps config values to Symfony verbosity values
      *
-     * @var array<string, int>
+     * @var array<string, 16|32|64|128|256>
      */
     private static array $verbosityMap = [
         'quiet'        => OutputInterface::VERBOSITY_QUIET,
@@ -42,8 +42,8 @@ abstract class IOUtil
     /**
      * Return the Symfony verbosity for a given config value
      *
-     * @param  string $verbosity
-     * @return int
+     * @param string $verbosity
+     * @return OutputInterface::VERBOSITY_*
      */
     public static function mapConfigVerbosity(string $verbosity): int
     {
