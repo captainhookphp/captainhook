@@ -274,10 +274,10 @@
     <em>blockDefault</em> to <em>false</em>.
   </p>
   <pre><code class="javascript">{
-  "action": "\CaptainHook\App\Hook\File\Action\BlockSecrets",
+  "action": "\CaptainHook\App\Hook\Diff\Action\BlockSecrets",
   "options": {
-    "entropyThreshold": 3.8,
-    "providers": [
+    "entropyThreshold": 3.7,
+    "suppliers": [
       "\\CaptainHook\\Secrets\\Regex\\Supplier\\Aws",
       "\\CaptainHook\\Secrets\\Regex\\Supplier\\Github",
       "\\CaptainHook\\Secrets\\Regex\\Supplier\\Stripe",
