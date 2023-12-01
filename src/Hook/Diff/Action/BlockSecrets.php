@@ -157,22 +157,9 @@ class BlockSecrets implements Action, Constrained
         $ext = $this->getFileExtension($file);
         // if we don't have a supplier for this filetype just exit
         if (!isset($this->fileTypeSupplier[$ext])) {
-            return false;
+            return $this->lookForSecretsBruteForce($file, $lines);
         }
-        $supplierToUse = $this->fileTypeSupplier[$ext];
-        /** @var \CaptainHook\Secrets\Regex\Grouped $supplier */
-        $supplier = new $supplierToUse();
-
-        foreach ($lines as $line) {
-            $result = Regexer::create()->useGroupedSupplier($supplier)->detectIn($line);
-            if (!$result->wasSecretDetected()) {
-                continue;
-            }
-            if ($this->isBlockedByEntropyCheck($file, $result->matches()[0])) {
-                return true;
-            }
-        }
-        return false;
+        return $this->lookForSecretsWithSupplier($this->fileTypeSupplier[$ext], $lines, $file);
     }
 
     /**
@@ -294,7 +281,7 @@ class BlockSecrets implements Action, Constrained
      * @param string $match
      * @return bool
      */
-    private function isBlockedByEntropyCheck(string $file, string $match): bool
+    private function isEntropyTooHigh(string $file, string $match): bool
     {
         $entropy = Shannon::entropy($match);
         $this->io->write('Entropy of ' . $match . ' is ' . $entropy, true, IO::DEBUG);
@@ -302,6 +289,51 @@ class BlockSecrets implements Action, Constrained
             if (!$this->isAllowed($match)) {
                 $this->info[$file] = $match;
                 return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Uses supplier and regexer to find possible risky parts of a string
+     *
+     * @param string        $supplierClass
+     * @param array<string> $lines
+     * @param string $file
+     * @return bool
+     */
+    private function lookForSecretsWithSupplier(string $supplierClass, array $lines, string $file): bool
+    {
+        /** @var \CaptainHook\Secrets\Regex\Grouped $supplier */
+        $supplier = new $supplierClass();
+        $regexer  = Regexer::create()->useGroupedSupplier($supplier);
+        foreach ($lines as $line) {
+            $result = $regexer->detectIn($line);
+            if (!$result->wasSecretDetected()) {
+                continue;
+            }
+            if ($this->isEntropyTooHigh($file, $result->matches()[0])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check every word in a file if the entropy is too high
+     *
+     * @param string        $file
+     * @param array<string> $lines
+     * @return bool
+     */
+    private function lookForSecretsBruteForce(string $file, array $lines): bool
+    {
+        $matches = [];
+        if (preg_match_all('#\b\S{8,}\b#', implode(' ', $lines), $matches)) {
+            foreach ($matches[0] as $word) {
+                if ($this->isEntropyTooHigh($file, $word)) {
+                    return true;
+                }
             }
         }
         return false;

@@ -206,6 +206,32 @@ class BlockSecretsTest extends TestCase
      *
      * @throws \Exception
      */
+    public function testExecuteFailedByEntropyBruteForce(): void
+    {
+        $this->expectException(Exception::class);
+
+        $options = ['entropyThreshold' => 3.6];
+
+        $diffOperator = $this->createGitDiffOperator();
+        $diffOperator->expects($this->once())->method('compareIndexTo')->willReturn(
+            $this->createChanges('fail.txt', ['foo', 'SuperDuperVeryVeryLongWord', 'password = 5ad7$_9Op0-x2§d', 'bar'])
+        );
+
+        $io     = new NullIO();
+        $config = new Config(CH_PATH_FILES . '/captainhook.json');
+        $action = new Config\Action(BlockSecrets::class, $options);
+        $repo   = $this->createRepositoryMock();
+        $repo->expects($this->once())->method('getDiffOperator')->willReturn($diffOperator);
+
+        $standard = new BlockSecrets();
+        $standard->execute($config, $io, $repo, $action);
+    }
+
+    /**
+     * Tests BlockSecrets::execute
+     *
+     * @throws \Exception
+     */
     public function testExecuteProviderNotFound(): void
     {
         $this->expectException(Exception::class);
