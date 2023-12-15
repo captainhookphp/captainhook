@@ -48,23 +48,26 @@
 
       <h1>Composer integration</h1>
       <p>
-        If you want to make sure everybody in your team installs the git hooks to their local repository you have two options.
+        If you want to make sure everybody in your teammates install the git hooks to their local repository you have two options.
       </p>
 
       <h2>1. Composer plugin</h2>
       <p>
-        Additionally to requiring <em>captainhook/captainhook</em> in your <em>composer.json</em> file you can require <em>captainhook/plugin-composer</em>.
-        This will install <em>CaptainHook</em> and a composer plugin, that makes sure the hooks get activated for everyone's local repository.
+        Additionally, to installing the Cap' you can require the <em class="hl">captainhook/hook-installer</em> package.
+        This will install a Composer plugin, that executes the <em class="hl">captainhook install</em> command after you
+        run any Composer command like <em class="hl">install</em> or <em class="hl">update</em>.
       </p>
 
       <pre><code class="javascript">{
   "require-dev": {
-    "captainhook/plugin-composer": "^5.0"
+    "captainhook/captainhook-phar": "^5.0"
+    "captainhook/hook-installer": "^1.0"
   }
 }</code></pre>
 
       <p>
-        If you are using the PHAR release you have to configure the path to your PHAR file using the <em>extra</em> configuration in your <em>composer.json</em> file.
+        If you are using a PHAR release that you installed via <a href="https://phar.io">PHIVE</a> or you downloaded manually you have to configure
+        the path to your PHAR file using the <em>extra</em> configuration in your <em>composer.json</em> file.
         You can also configure a custom <em>CaptainHook</em> configuration path or file name.
       </p>
       <pre><code class="javascript">{
@@ -72,14 +75,16 @@
     "captainhook": {
         "exec": "tools/captainhook.phar",
         "config": "hooks.json",
-        "disable-plugin": false
+        "disable-plugin": false,
+        "force-install": false
     }
   }
 }</code></pre>
 
       <H2>2. Post install command</H2>
       <p>
-        If you don't want to use the Composer plugin you can use the <em>post-autoload-dump</em> command just add the following lines to your projects <em class="hl">composer.json</em> file.
+        If you don't want to use the Composer plugin you can use the <em>post-autoload-dump</em> command just add the
+        following lines to your projects <em class="hl">composer.json</em> file.
       </p>
 
       <pre><code class="javascript">{
@@ -89,13 +94,19 @@
 }</code></pre>
 
       <p>
-        Including this lines, <em>Composer</em> will execute the CaptainHook <em>install</em> command every time
+        Including these lines, <em>Composer</em> will execute the CaptainHook <em>install</em> command every time
         <em class="hl">composer install</em> or <em class="hl">update</em> is executed.
       </p>
-
-      <h2>A word of warning</h2>
+      <h4>Watch out!</h4>
       <p>
-        It is still possible to commit without invoking the hooks. So make sure you run appropriate backend-sanity checks on your code!
+        This method has the disadvantage that if you install your dependencies with <em>--no-dev</em> and
+        the Cap'n is not installed this will crash your Composer command.
+      </p>
+
+      <p class="pirate">
+        A word of warning matey:
+        It is still possible to commit without invoking the hooks.
+        So make sure you run appropriate backend-sanity checks on your code as well.
       </p>
     </div>
 
