@@ -27,12 +27,16 @@ For more information have a look at the [documentation](https://captainhookphp.g
 
 ## Installation
 
-Install the *CaptainHook* PHAR using [Phive](https://phar.io/) or download the PHAR from the github [release page](https://github.com/captainhookphp/captainhook/releases/latest).
+The preferred method to install *CaptainHook* is to install the PHAR file.
+You can do so by using [Phive](https://phar.io/) or download the PHAR from the GitHub [release page](https://github.com/captainhookphp/captainhook/releases/latest).
 ```bash
 phive install captainhook
 ```
-
-Or use *Composer* to install *CaptainHook*.
+Or use *Composer* to install it.
+```bash
+composer require --dev captainhook/captainhook-phar
+```
+If you want to get the source code with all its dependencies you can use:
 ```bash
 composer require --dev captainhook/captainhook
 ```
@@ -42,10 +46,8 @@ After installing CaptainHook you can use the *captainhook* executable to create 
 ```bash
 vendor/bin/captainhook configure
 ```
-Now there should be a *captainhook.json* configuration file.
-
-Now you have to activate the hooks by installing them to
-your local .git repository. To do so just run the following *captainhook* command.
+After creating the *captainhook.json* configuration file you have to activate the hooks by installing them to
+your local .git directory. To do so just run the following *CaptainHook* command.
 ```bash
 vendor/bin/captainhook install
 ```
@@ -54,16 +56,17 @@ Have a look at this short installation video.
 
 [![Install demo](http://img.youtube.com/vi/qQyDc-Wxk7Y/hq720.jpg)](http://www.youtube.com/watch?v=qQyDc-Wxk7Y)
 
-If you want to make sure your whole team uses the same hooks, and you want to make sure everybody has the
-hooks installed you can add the following `scripts` command to your `composer.json` file.
+One of the goals of *CaptainHook* is to make it easy for a team to use the same git hooks. If you want to make sure
+everybody actually installs the hooks you can use the small *Composer* plugin `hook-installer`.
+It runs the `captainhook install` command everytime you run a *Composer* command.
 
-```json
-{
-  "scripts": {
-    "post-autoload-dump": "vendor/bin/captainhook install -f -s"
-  }
-}
+```bash
+composer require --dev captainhook/hook-installer
 ```
+
+Off course teammates can still commit without executing the hooks,
+that's why you should run appropriate checks on the backend as well.
+But at least this way nobody can forget to install them "by accident".
 
 ## Configuration
 
