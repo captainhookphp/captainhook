@@ -39,7 +39,7 @@ class ChangedFiles extends CheckFiles
     public function replacement(array $options): string
     {
         $files = [];
-        foreach (Git\Range\Detector::getRanges($this->io) as $range) {
+        foreach (Git\Range\Detector::getRanges($this->io, $this->repository) as $range) {
             $filesInDiff  = isset($options['of-type'])
                           ? $this->repository->getDiffOperator()->getChangedFilesOfType(
                               $range->from()->id(),

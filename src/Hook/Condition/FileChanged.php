@@ -87,7 +87,7 @@ abstract class FileChanged extends File
      */
     protected function getChangedFiles(IO $io, Repository $repository): array
     {
-        $ranges  = Detector::getRanges($io);
+        $ranges  = Detector::getRanges($io, $repository);
         $oldHash = isset($ranges[0]) ? $ranges[0]->from()->id() : 'HEAD@{1}';
         $newHash = isset($ranges[0]) ? $ranges[0]->to()->id() : 'HEAD';
 

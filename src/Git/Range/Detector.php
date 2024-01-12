@@ -13,6 +13,7 @@ namespace CaptainHook\App\Git\Range;
 
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Hooks;
+use SebastianFeldmann\Git\Repository;
 
 /**
  * Detector class
@@ -39,10 +40,12 @@ class Detector
     /**
      * Returns the list of ranges to check
      *
-     * @param  \CaptainHook\App\Console\IO $io
+     * @param \CaptainHook\App\Console\IO       $io
+     * @param \SebastianFeldmann\Git\Repository $repository
+     *
      * @return array<\CaptainHook\App\Git\Range>
      */
-    public static function getRanges(IO $io): array
+    public static function getRanges(IO $io, Repository $repository): array
     {
         $command = $io->getArgument(Hooks::ARG_COMMAND);
 
@@ -50,6 +53,6 @@ class Detector
         $class    = self::$detectors[$command] ?? '\\CaptainHook\\App\\Git\\Range\\Detector\\Fallback';
         $detector = new $class();
 
-        return $detector->getRanges($io);
+        return $detector->getRanges($io, $repository);
     }
 }

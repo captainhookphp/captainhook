@@ -14,6 +14,7 @@ namespace CaptainHook\App\Hook\Input;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Git\Range;
 use CaptainHook\App\Git\Ref;
+use SebastianFeldmann\Git\Repository;
 
 /**
  * Class to access the pre-push stdIn data
@@ -28,10 +29,12 @@ class PostRewrite implements Range\Detecting
     /**
      * Returns list of refs
      *
-     * @param  \CaptainHook\App\Console\IO $io
+     * @param \CaptainHook\App\Console\IO       $io
+     * @param \SebastianFeldmann\Git\Repository $repository
+     *
      * @return \CaptainHook\App\Git\Range[]
      */
-    public function getRanges(IO $io): array
+    public function getRanges(IO $io, Repository $repository): array
     {
         return $this->createFromStdIn($io->getStandardInput());
     }

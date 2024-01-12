@@ -12,6 +12,7 @@
 namespace CaptainHook\App\Git\Range;
 
 use CaptainHook\App\Console\IO;
+use SebastianFeldmann\Git\Repository;
 
 /**
  * Detecting interface
@@ -29,8 +30,10 @@ interface Detecting
     /**
      * Returns a list of ranges marking before and after points to collect the changes happening in between
      *
-     * @param  \CaptainHook\App\Console\IO $io
+     * @param \CaptainHook\App\Console\IO       $io
+     * @param \SebastianFeldmann\Git\Repository $repository
+     *
      * @return array<\CaptainHook\App\Git\Range>
      */
-    public function getRanges(IO $io): array;
+    public function getRanges(IO $io, Repository $repository): array;
 }

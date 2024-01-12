@@ -75,7 +75,7 @@ class OfType implements Condition, Constrained
      */
     public function isTrue(IO $io, Repository $repository): bool
     {
-        foreach (Git\Range\Detector::getRanges($io) as $range) {
+        foreach (Git\Range\Detector::getRanges($io, $repository) as $range) {
             $files = $repository->getDiffOperator()->getChangedFilesOfType(
                 $range->from()->id(),
                 $range->to()->id(),

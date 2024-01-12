@@ -16,6 +16,8 @@ use CaptainHook\App\Git\Range\Detecting;
 use CaptainHook\App\Git\Ref\Util;
 use CaptainHook\App\Hook\Input\PrePush\Range;
 use CaptainHook\App\Hook\Input\PrePush\Ref;
+use SebastianFeldmann\Cli\Processor\ProcOpen as Processor;
+use SebastianFeldmann\Git\Repository;
 
 /**
  * Class to access the pre-push stdIn data
@@ -27,21 +29,30 @@ use CaptainHook\App\Hook\Input\PrePush\Ref;
  */
 class PrePush implements Detecting
 {
+    private Repository $repository;
+
+    private string $hashOfBranchOrigin;
+
     /**
      * Returns list of refs
      *
-     * @param  \CaptainHook\App\Console\IO $io
+     * @param \CaptainHook\App\Console\IO       $io
+     * @param \SebastianFeldmann\Git\Repository $repository
+     *
      * @return array<\CaptainHook\App\Hook\Input\PrePush\Range>
      */
-    public function getRanges(IO $io): array
+    public function getRanges(IO $io, Repository $repository): array
     {
+        $this->repository = $repository;
+
         return $this->createFromStdIn($io->getStandardInput());
     }
 
     /**
      * Factory method
      *
-     * @param  array<string> $stdIn
+     * @param array<string> $stdIn
+     *
      * @return array<\CaptainHook\App\Hook\Input\PrePush\Range>
      */
     private function createFromStdIn(array $stdIn): array
@@ -55,13 +66,41 @@ class PrePush implements Detecting
             [$localRef, $localHash, $remoteRef, $remoteHash] = explode(' ', trim($line));
 
             if (Util::isZeroHash($remoteHash)) {
-                continue;
+                $remoteHash = $this->getHashOfBranchOrigin();
+
+                if (Util::isZeroHash($remoteHash)) {
+                    continue;
+                }
             }
 
-            $from     = new Ref($remoteRef, $remoteHash, Util::extractBranchFromRefPath($remoteRef));
-            $to       = new Ref($localRef, $localHash, Util::extractBranchFromRefPath($localRef));
+            $from = new Ref($remoteRef, $remoteHash, Util::extractBranchFromRefPath($remoteRef));
+            $to = new Ref($localRef, $localHash, Util::extractBranchFromRefPath($localRef));
             $ranges[] = new Range($from, $to);
         }
+
         return $ranges;
+    }
+
+    private function getHashOfBranchOrigin(): string
+    {
+        if (!isset($this->hashOfBranchOrigin)) {
+            $currentBranch = $this->repository->getInfoOperator()
+                                              ->getCurrentBranch();
+
+            $processor = new Processor();
+            $reflog = $processor->run(sprintf('git reflog show --no-abbrev %s', $currentBranch))
+                                ->getStdOutAsArray();
+
+            if (empty($reflog)) {
+                $this->hashOfBranchOrigin = '0000000000000000000000000000000000000000';
+            } else {
+                $branchCreation = array_pop($reflog);
+                [$hash] = explode(' ', trim($branchCreation));
+
+                $this->hashOfBranchOrigin = $hash;
+            }
+        }
+
+        return $this->hashOfBranchOrigin;
     }
 }

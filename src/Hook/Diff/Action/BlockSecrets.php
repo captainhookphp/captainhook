@@ -250,7 +250,7 @@ class BlockSecrets implements Action, Constrained
     private function getChanges(Repository $repository): array
     {
         if (Util::isRunningHook($this->io, Hooks::PRE_PUSH)) {
-            $ranges  = \CaptainHook\App\Git\Range\Detector::getRanges($this->io);
+            $ranges  = \CaptainHook\App\Git\Range\Detector::getRanges($this->io, $repository);
             $newHash = 'HEAD';
             $oldHash = 'HEAD@{1}';
             if (!empty($ranges)) {

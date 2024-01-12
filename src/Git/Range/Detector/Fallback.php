@@ -16,6 +16,7 @@ use CaptainHook\App\Git\Range;
 use CaptainHook\App\Git\Range\Detecting;
 use CaptainHook\App\Git\Ref;
 use CaptainHook\App\Hooks;
+use SebastianFeldmann\Git\Repository;
 
 /**
  * Fallback Detector
@@ -32,10 +33,12 @@ class Fallback implements Detecting
     /**
      * Returns the fallback range
      *
-     * @param  \CaptainHook\App\Console\IO $io
+     * @param \CaptainHook\App\Console\IO       $io
+     * @param \SebastianFeldmann\Git\Repository $repository
+     *
      * @return \CaptainHook\App\Git\Range\Generic[]
      */
-    public function getRanges(IO $io): array
+    public function getRanges(IO $io, Repository $repository): array
     {
         return [
             new Range\Generic(
