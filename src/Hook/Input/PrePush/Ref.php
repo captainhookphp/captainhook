@@ -26,21 +26,21 @@ class Ref implements \CaptainHook\App\Git\Ref
      *
      * @var string
      */
-    private $head;
+    private string $head;
 
     /**
      * Git hash
      *
      * @var string
      */
-    private $hash;
+    private string $hash;
 
     /**
      * Branch name
      *
      * @var string
      */
-    private $branch;
+    private string $branch;
 
     /**
      * Constructor
@@ -95,6 +95,6 @@ class Ref implements \CaptainHook\App\Git\Ref
      */
     public function id(): string
     {
-        return  $this->hash;
+        return $this->hash;
     }
 }
