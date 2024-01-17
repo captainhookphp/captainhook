@@ -14,6 +14,7 @@ namespace CaptainHook\App\Hook\Branch\Action;
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Exception\ActionFailed;
+use CaptainHook\App\Git\Range\Detector\PrePush;
 use CaptainHook\App\Hook\Action;
 use CaptainHook\App\Hook\Input;
 use CaptainHook\App\Hook\Restriction;
@@ -90,7 +91,7 @@ class BlockFixupAndSquashCommits implements Action
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
     {
-        $refDetector = new Input\PrePush();
+        $refDetector = new PrePush();
         $refsToPush  = $refDetector->getRanges($io);
 
         if (empty($refsToPush)) {

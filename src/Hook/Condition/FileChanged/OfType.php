@@ -15,6 +15,7 @@ use CaptainHook\App\Console\IO;
 use CaptainHook\App\Git;
 use CaptainHook\App\Hook\Condition;
 use CaptainHook\App\Hook\Constrained;
+use CaptainHook\App\Hook\FileList;
 use CaptainHook\App\Hook\Restriction;
 use CaptainHook\App\Hooks;
 use SebastianFeldmann\Git\Repository;
@@ -44,7 +45,7 @@ class OfType implements Condition, Constrained
      *
      * @var string
      */
-    private $suffix;
+    private string $suffix;
 
     /**
      * OfType constructor
@@ -75,15 +76,14 @@ class OfType implements Condition, Constrained
      */
     public function isTrue(IO $io, Repository $repository): bool
     {
-        foreach (Git\Range\Detector::getRanges($io) as $range) {
-            $files = $repository->getDiffOperator()->getChangedFilesOfType(
-                $range->from()->id(),
-                $range->to()->id(),
-                $this->suffix
-            );
-            if (count($files) > 0) {
-                return true;
-            }
+        $factory  = new Git\ChangedFiles\Detector\Factory();
+        $detector = $factory->getDetector($io, $repository);
+
+        $files = $detector->getChangedFiles();
+        $files = FileList::filterByType($files, ['by-type' => $this->suffix]);
+
+        if (count($files) > 0) {
+            return true;
         }
         return false;
     }

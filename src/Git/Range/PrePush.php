@@ -11,38 +11,34 @@
 
 namespace CaptainHook\App\Git\Range;
 
-use CaptainHook\App\Git\Range;
-use CaptainHook\App\Git\Rev;
+use CaptainHook\App\Git;
+use CaptainHook\App\Git\Rev\PrePush as Rev;
 
 /**
- * Generic range implementation
- *
- * Most simple range implementation
+ * Class
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.15.0
  */
-class Generic implements Range
+class PrePush implements Git\Range
 {
     /**
-     * Starting reference
-     *
-     * @var \CaptainHook\App\Git\Rev
+     * @var \CaptainHook\App\Git\Rev\PrePush
      */
     private Rev $from;
 
     /**
-     * Ending reference
-     *
-     * @var \CaptainHook\App\Git\Rev
+     * @var \CaptainHook\App\Git\Rev\PrePush
      */
     private Rev $to;
 
     /**
      * Constructor
      *
+     * @param \CaptainHook\App\Git\Rev\PrePush $from
+     * @param \CaptainHook\App\Git\Rev\PrePush $to
      */
     public function __construct(Rev $from, Rev $to)
     {
@@ -51,9 +47,9 @@ class Generic implements Range
     }
 
     /**
-     * Return the git reference
+     * Returns the start ref
      *
-     * @return \CaptainHook\App\Git\Rev
+     * @return \CaptainHook\App\Git\Rev\PrePush
      */
     public function from(): Rev
     {
@@ -61,7 +57,9 @@ class Generic implements Range
     }
 
     /**
-     * @return \CaptainHook\App\Git\Rev
+     * Returns the end ref
+     *
+     * @return \CaptainHook\App\Git\Rev\PrePush
      */
     public function to(): Rev
     {

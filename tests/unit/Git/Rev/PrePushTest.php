@@ -9,27 +9,26 @@
  * file that was distributed with this source code.
  */
 
-namespace CaptainHook\App\Hook\Input\PrePush;
+namespace CaptainHook\App\Git\Rev;
 
-use CaptainHook\App\Config;
-use CaptainHook\App\Console\IO\NullIO;
-use CaptainHook\App\Exception\ActionFailed;
-use CaptainHook\App\Hook\File\Action\MaxSize;
-use CaptainHook\App\Hooks;
-use CaptainHook\App\Mockery;
-use Exception;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 
-class RefTest extends TestCase
+/**
+ * Class PrePushTest
+ *
+ * @package CaptainHook
+ * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
+ * @link    https://github.com/captainhookphp/captainhook
+ * @since   Class available since Release 5.15.0
+ */
+class PrePushTest extends TestCase
 {
     /**
-     * Tests all ref getter
-     *
+     * Tests all ref getters
      */
     public function testGetter(): void
     {
-        $ref = new Ref('refs/heads/main', '12345', 'main');
+        $ref = new PrePush('refs/heads/main', '12345', 'main');
 
         $this->assertEquals('refs/heads/main', $ref->head());
         $this->assertEquals('12345', $ref->hash());

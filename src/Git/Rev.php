@@ -22,7 +22,7 @@ namespace CaptainHook\App\Git;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.15.0
  */
-interface Ref
+interface Rev
 {
     /**
      * Returns the ref id that can be used in a git command

@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace CaptainHook\App\Hook\Input;
+namespace CaptainHook\App\Git\Range\Detector;
 
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Git\Range\Detecting;
-use CaptainHook\App\Git\Ref\Util;
-use CaptainHook\App\Hook\Input\PrePush\Range;
-use CaptainHook\App\Hook\Input\PrePush\Ref;
+use CaptainHook\App\Git\Range\Generic as Range;
+use CaptainHook\App\Git\Rev\Generic as Rev;
 
 /**
  * Class to access the pre-push stdIn data
@@ -25,13 +24,13 @@ use CaptainHook\App\Hook\Input\PrePush\Ref;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.15.0
  */
-class PrePush implements Detecting
+class PostRewrite implements Detecting
 {
     /**
      * Returns list of refs
      *
      * @param  \CaptainHook\App\Console\IO $io
-     * @return array<\CaptainHook\App\Hook\Input\PrePush\Range>
+     * @return \CaptainHook\App\Git\Range[]
      */
     public function getRanges(IO $io): array
     {
@@ -39,28 +38,21 @@ class PrePush implements Detecting
     }
 
     /**
-     * Factory method
+     * Create ranges from stdIn
      *
      * @param  array<string> $stdIn
-     * @return array<\CaptainHook\App\Hook\Input\PrePush\Range>
+     * @return array<\CaptainHook\App\Git\Range>
      */
     private function createFromStdIn(array $stdIn): array
     {
         $ranges = [];
         foreach ($stdIn as $line) {
-            if (empty($line)) {
-                continue;
+            if (!empty($line)) {
+                $parts    = explode(' ', trim($line));
+                $from     = new Rev(!empty($parts[1]) ? $parts[1] . '^' : 'HEAD@{1}');
+                $to       = new Rev('HEAD');
+                $ranges[] = new Range($from, $to);
             }
-
-            [$localRef, $localHash, $remoteRef, $remoteHash] = explode(' ', trim($line));
-
-            if (Util::isZeroHash($remoteHash)) {
-                continue;
-            }
-
-            $from     = new Ref($remoteRef, $remoteHash, Util::extractBranchFromRefPath($remoteRef));
-            $to       = new Ref($localRef, $localHash, Util::extractBranchFromRefPath($localRef));
-            $ranges[] = new Range($from, $to);
         }
         return $ranges;
     }

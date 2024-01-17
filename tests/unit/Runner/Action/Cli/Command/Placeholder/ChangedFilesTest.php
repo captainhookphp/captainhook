@@ -16,6 +16,14 @@ use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Mockery as AppMockery;
 use PHPUnit\Framework\TestCase;
 
+/**
+ *  Class ChangedFilesTest
+ *
+ * @package CaptainHook
+ * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
+ * @link    https://github.com/captainhookphp/captainhook
+ * @since   Class available since Release 5.14.0
+ */
 class ChangedFilesTest extends TestCase
 {
     use IOMockery;
@@ -49,7 +57,6 @@ class ChangedFilesTest extends TestCase
         $repo   = $this->createRepositoryMock();
         $index  = $this->createGitDiffOperator(['file1.php', 'file2.php', 'README.md']);
         $repo->expects($this->once())->method('getDiffOperator')->willReturn($index);
-        $index->expects($this->once())->method('getChangedFilesOfType')->willReturn(['file1.php', 'file2.php']);
 
         $placeholder = new ChangedFiles($io, $config, $repo);
         $command     = $placeholder->replacement(['of-type' => 'php']);

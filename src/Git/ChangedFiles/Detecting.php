@@ -9,31 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace CaptainHook\App\Git;
+namespace CaptainHook\App\Git\ChangedFiles;
 
 /**
- * Range class
+ * Detector interface
  *
- * Represents a git range with a starting ref and an end ref.
+ * Interface to detect changed files for the different hooks.
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
- * @since   Class available since Release 5.15.0
+ * @since   Class available since Release 5.20.0
  */
-interface Range
+interface Detecting
 {
     /**
-     * Returns the start ref
+     * Returns a list of changed files
      *
-     * @return \CaptainHook\App\Git\Rev
+     * @param  array<string> $filter
+     * @return array<string>
      */
-    public function from(): Rev;
-
-    /**
-     * Returns the end ref
-     *
-     * @return \CaptainHook\App\Git\Rev
-     */
-    public function to(): Rev;
+    public function getChangedFiles(array $filter = []): array;
 }

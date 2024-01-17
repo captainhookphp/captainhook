@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CaptainHook\App\Git\Ref;
+namespace CaptainHook\App\Git\Rev;
 
 /**
  * Util class
@@ -35,16 +35,22 @@ abstract class Util
     }
 
     /**
-     * Extract branch name from head path
+     * Splits remote and branch
      *
-     *   refs/heads/main => main
+     *   origin/main     => ['remote' => 'origin', 'branch' => 'main']
+     *   main            => ['remote' => 'origin', 'branch' => 'main']
+     *   ref/origin/main => ['remote' => 'origin', 'branch' => 'main']
      *
-     * @param string $head
-     * @return string
+     * @param string $ref
+     * @return array<string, string>
      */
-    public static function extractBranchFromRefPath(string $head): string
+    public static function extractBranchInfo(string $ref): array
     {
-        $parts = explode('/', $head);
-        return array_pop($parts);
+        $parts = explode('/', $ref);
+
+        return [
+            'branch' => array_pop($parts),
+            'remote' => array_pop($parts) ?? 'origin',
+        ];
     }
 }

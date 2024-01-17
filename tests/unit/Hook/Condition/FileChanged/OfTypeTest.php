@@ -15,6 +15,14 @@ use CaptainHook\App\Console\IO\Mockery as IOMockery;
 use CaptainHook\App\Mockery as CHMockery;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class OfTypeTest
+ *
+ * @package CaptainHook
+ * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
+ * @link    https://github.com/captainhookphp/captainhook
+ * @since   Class available since Release 5.0.0
+ */
 class OfTypeTest extends TestCase
 {
     use IOMockery;
@@ -44,9 +52,8 @@ class OfTypeTest extends TestCase
                    ' refs/heads/main 8309f6e16097754469c485e604900c573bf2c5d8'
                ]
            );
-        $operator   = $this->createGitDiffOperator();
+        $operator   = $this->createGitDiffOperator(['fiz.php', 'foo.txt']);
         $repository = $this->createRepositoryMock('');
-        $operator->method('getChangedFilesOfType')->willReturn(['fiz.php', 'foo.txt']);
         $repository->expects($this->once())->method('getDiffOperator')->willReturn($operator);
 
         $fileChange = new OfType('php');

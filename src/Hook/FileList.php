@@ -9,18 +9,44 @@
  * file that was distributed with this source code.
  */
 
-namespace CaptainHook\App\Runner\Action\Cli\Command\Placeholder;
+namespace CaptainHook\App\Hook;
 
 /**
- * Class CheckFiles
+ * Class FileList
+ *
+ * Helper class performing some manipulation operations on plain file lists.
+ *
+ *   ['file1.txt', 'file2.txt' ...]
  *
  * @package CaptainHook
  * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
  * @link    https://github.com/captainhookphp/captainhook
- * @since   Class available since Release 5.0.0
+ * @since   Class available since Release 5.20.0
  */
-abstract class CheckFiles extends Foundation
+abstract class FileList
 {
+    /**
+     * Filter files by type
+     *
+     * @param  array<string>         $files
+     * @param  array<string, string> $options
+     * @return array<string>
+     */
+    public static function filterByType(array $files, array $options): array
+    {
+        if (!isset($options['of-type'])) {
+            return $files;
+        }
+
+        $filtered = [];
+        foreach ($files as $file) {
+            if (str_ends_with($file, $options['of-type'])) {
+                $filtered[] = $file;
+            }
+        }
+        return $filtered;
+    }
+
     /**
      * Filter staged files by directory
      *
@@ -28,7 +54,7 @@ abstract class CheckFiles extends Foundation
      * @param  array<string, string> $options
      * @return array<string>
      */
-    protected function filterByDirectory(array $files, array $options): array
+    public static function filterByDirectory(array $files, array $options): array
     {
         if (!isset($options['in-dir'])) {
             return $files;
@@ -37,7 +63,7 @@ abstract class CheckFiles extends Foundation
         $directory = $options['in-dir'];
         $filtered  = [];
         foreach ($files as $file) {
-            if (strpos($file, $directory, 0) === 0) {
+            if (str_starts_with($file, $directory)) {
                 $filtered[] = $file;
             }
         }
@@ -52,7 +78,7 @@ abstract class CheckFiles extends Foundation
      * @param  array<string, string> $options
      * @return array<string>
      */
-    protected function replaceInAll(array $files, array $options): array
+    public static function replaceInAll(array $files, array $options): array
     {
         if (!isset($options['replace'])) {
             return $files;

@@ -12,6 +12,7 @@
 namespace CaptainHook\App\Runner\Action\Cli\Command\Placeholder;
 
 use CaptainHook\App\Git;
+use CaptainHook\App\Hook\FileList;
 
 /**
  * Changed Files Placeholder
@@ -30,7 +31,7 @@ use CaptainHook\App\Git;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.15.3
  */
-class ChangedFiles extends CheckFiles
+class ChangedFiles extends Foundation
 {
     /**
      * @param  array<string, string> $options
@@ -38,24 +39,13 @@ class ChangedFiles extends CheckFiles
      */
     public function replacement(array $options): string
     {
-        $files = [];
-        foreach (Git\Range\Detector::getRanges($this->io) as $range) {
-            $filesInDiff  = isset($options['of-type'])
-                          ? $this->repository->getDiffOperator()->getChangedFilesOfType(
-                              $range->from()->id(),
-                              $range->to()->id(),
-                              $options['of-type']
-                          )
-                          : $this->repository->getDiffOperator()->getChangedFiles(
-                              $range->from()->id(),
-                              $range->to()->id()
-                          );
+        $factory  = new Git\ChangedFiles\Detector\Factory();
+        $detector = $factory->getDetector($this->io, $this->repository);
 
-            $files = array_merge($files, $filesInDiff);
-        }
-        $files = array_unique($files);
-        $files = $this->filterByDirectory($files, $options);
-        $files = $this->replaceInAll($files, $options);
+        $files = $detector->getChangedFiles();
+        $files = FileList::filterByType($files, $options);
+        $files = FileList::filterByDirectory($files, $options);
+        $files = FileList::replaceInAll($files, $options);
 
         return implode(($options['separated-by'] ?? ' '), $files);
     }

@@ -15,6 +15,7 @@ use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Exception\ActionFailed;
+use CaptainHook\App\Git\Range\Detector\PrePush;
 use CaptainHook\App\Hook\Action;
 use CaptainHook\App\Hook\Constrained;
 use CaptainHook\App\Hook\Restriction;
@@ -250,10 +251,11 @@ class BlockSecrets implements Action, Constrained
     private function getChanges(Repository $repository): array
     {
         if (Util::isRunningHook($this->io, Hooks::PRE_PUSH)) {
-            $ranges  = \CaptainHook\App\Git\Range\Detector::getRanges($this->io);
+            $detector = new PrePush();
+            $ranges  = $detector->getRanges($this->io);
             $newHash = 'HEAD';
             $oldHash = 'HEAD@{1}';
-            if (!empty($ranges)) {
+            if (!empty($ranges) && !$ranges[0]->to()->isZeroRev()) {
                 $oldHash = $ranges[0]->from()->id();
                 $newHash = $ranges[0]->to()->id();
             }

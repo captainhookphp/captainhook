@@ -11,6 +11,8 @@
 
 namespace CaptainHook\App\Runner\Action\Cli\Command\Placeholder;
 
+use CaptainHook\App\Hook\FileList;
+
 /**
  * Class UpdatedFiles
  *
@@ -19,7 +21,7 @@ namespace CaptainHook\App\Runner\Action\Cli\Command\Placeholder;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.0.0
  */
-class StagedFiles extends CheckFiles
+class StagedFiles extends Foundation
 {
     /**
      * @param  array<string, string> $options
@@ -32,8 +34,8 @@ class StagedFiles extends CheckFiles
                 ? $this->repository->getIndexOperator()->getStagedFilesOfType($options['of-type'], $filter)
                 : $this->repository->getIndexOperator()->getStagedFiles($filter);
 
-        $files = $this->filterByDirectory($files, $options);
-        $files = $this->replaceInAll($files, $options);
+        $files = FileList::filterByDirectory($files, $options);
+        $files = FileList::replaceInAll($files, $options);
 
         return implode(($options['separated-by'] ?? ' '), $files);
     }

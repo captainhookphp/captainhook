@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace CaptainHook\App\Git\Ref;
+namespace CaptainHook\App\Git\Rev;
 
-use CaptainHook\App\Git\Ref;
+use CaptainHook\App\Git\Rev;
 
 /**
  * Generic range implementation
@@ -23,7 +23,7 @@ use CaptainHook\App\Git\Ref;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.15.0
  */
-class Generic implements Ref
+class Generic implements Rev
 {
     /**
      * Referencing a git state

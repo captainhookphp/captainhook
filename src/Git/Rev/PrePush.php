@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace CaptainHook\App\Hook\Input\PrePush;
+namespace CaptainHook\App\Git\Rev;
+
+use CaptainHook\App\Git\Rev;
 
 /**
  * Git pre-push reference
@@ -19,7 +21,7 @@ namespace CaptainHook\App\Hook\Input\PrePush;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 5.15.0
  */
-class Ref implements \CaptainHook\App\Git\Ref
+class PrePush implements Rev
 {
     /**
      * Head path - refs/heads/main
@@ -96,5 +98,15 @@ class Ref implements \CaptainHook\App\Git\Ref
     public function id(): string
     {
         return $this->hash;
+    }
+
+    /**
+     * Is this a git dummy hash
+     *
+     * @return bool
+     */
+    public function isZeroRev(): bool
+    {
+        return Util::isZeroHash($this->hash);
     }
 }

@@ -19,6 +19,14 @@ use PHPUnit\Framework\TestCase;
 use SebastianFeldmann\Git\CommitMessage as GitCommitMessage;
 use SebastianFeldmann\Git\Operator\Config as ConfigOperator;
 
+/**
+ * Class CommitMsgTest
+ *
+ * @package CaptainHook
+ * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
+ * @link    https://github.com/captainhookphp/captainhook
+ * @since   Class available since Release 3.1.0
+ */
 class CommitMsgTest extends TestCase
 {
     use ConfigMockery;
@@ -87,7 +95,6 @@ class CommitMsgTest extends TestCase
         $runner->run();
     }
 
-
     /**
      * Tests CommitMsg::run
      *
@@ -101,12 +108,15 @@ class CommitMsgTest extends TestCase
         $config       = $this->createConfigMock();
         $hookConfig   = $this->createHookConfigMock();
         $repo         = $this->createRepositoryMock();
+        $configOp     = $this->createGitConfigOperator();
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
         $hookConfig->method('isEnabled')->willReturn(true);
         $hookConfig->method('getActions')->willReturn([$actionConfig]);
         $config->method('getHookConfigToExecute')->willReturn($hookConfig);
         $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
+        $configOp->method('getSafely')->willReturn('#');
+        $repo->method('getConfigOperator')->willReturn($configOp);
         $io->expects($this->once())->method('getArgument')->willReturn('');
 
         $runner = new CommitMsg($io, $config, $repo);

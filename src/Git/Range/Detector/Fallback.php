@@ -14,7 +14,7 @@ namespace CaptainHook\App\Git\Range\Detector;
 use CaptainHook\App\Console\IO;
 use CaptainHook\App\Git\Range;
 use CaptainHook\App\Git\Range\Detecting;
-use CaptainHook\App\Git\Ref;
+use CaptainHook\App\Git\Rev;
 use CaptainHook\App\Hooks;
 
 /**
@@ -39,8 +39,8 @@ class Fallback implements Detecting
     {
         return [
             new Range\Generic(
-                new Ref\Generic($io->getArgument(Hooks::ARG_PREVIOUS_HEAD, 'HEAD@{1}')),
-                new Ref\Generic('HEAD')
+                new Rev\Generic($io->getArgument(Hooks::ARG_PREVIOUS_HEAD, 'HEAD@{1}')),
+                new Rev\Generic('HEAD')
             )
         ];
     }
