@@ -18,6 +18,7 @@ use SebastianFeldmann\Git\Operator\Index;
 use SebastianFeldmann\Git\Operator\Config;
 use SebastianFeldmann\Git\Operator\Info;
 use SebastianFeldmann\Git\Operator\Log;
+use SebastianFeldmann\Git\Operator\Remote;
 use SebastianFeldmann\Git\Repository;
 
 trait Mockery
@@ -94,6 +95,18 @@ trait Mockery
         $operator->method('getChangedFiles')->willReturn($changedFiles);
 
         return $operator;
+    }
+
+    /**
+     * Create remote operator mock
+     *
+     * @return \SebastianFeldmann\Git\Operator\Remote&\PHPUnit\Framework\MockObject\MockObject
+     */
+    public function createGitRemoteOperator(): Remote
+    {
+        return $this->getMockBuilder(Remote::class)
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**
