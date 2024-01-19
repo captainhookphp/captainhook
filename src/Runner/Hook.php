@@ -287,20 +287,20 @@ abstract class Hook extends RepositoryAware
         $io     = new IO\CollectorIO($this->io);
         $status = ActionLog::ACTION_SUCCEEDED;
 
-        if (!$this->doConditionsApply($action->getConditions(), $io)) {
-            $this->printer->actionSkipped($action);
-            return;
-        }
-
-        $this->beforeAction($action);
-
-        // The beforeAction() method may indicate that the current and all
-        // remaining actions should be skipped. If so, return here.
-        if ($this->shouldSkipActions()) {
-            return;
-        }
-
         try {
+            if (!$this->doConditionsApply($action->getConditions(), $io)) {
+                $this->printer->actionSkipped($action);
+                return;
+            }
+
+            $this->beforeAction($action);
+
+            // The beforeAction() method may indicate that the current and all
+            // remaining actions should be skipped. If so, return here.
+            if ($this->shouldSkipActions()) {
+                return;
+            }
+
             $runner = $this->createActionRunner(Util::getExecType($action->getAction()));
             $runner->execute($this->config, $io, $this->repository, $action);
             $this->printer->actionSucceeded($action);

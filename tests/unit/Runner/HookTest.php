@@ -240,7 +240,7 @@ class HookTest extends TestCase
 
         $this->assertSame(1, DummyHookPlugin::$beforeHookCalled);
         $this->assertSame(3, DummyHookPlugin::$beforeActionCalled);
-        $this->assertSame(2, DummyHookPlugin::$afterActionCalled);
+        $this->assertSame(3, DummyHookPlugin::$afterActionCalled);
         $this->assertSame(1, DummyHookPlugin::$afterHookCalled);
     }
 }
