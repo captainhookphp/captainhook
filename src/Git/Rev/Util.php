@@ -46,11 +46,12 @@ abstract class Util
      */
     public static function extractBranchInfo(string $ref): array
     {
+        $ref   = preg_replace('#^refs/#', '', $ref);
         $parts = explode('/', $ref);
 
         return [
-            'branch' => array_pop($parts),
-            'remote' => array_pop($parts) ?? 'origin',
+            'remote' => count($parts) > 1 ? array_shift($parts) : 'origin',
+            'branch' => implode('/', $parts),
         ];
     }
 }
