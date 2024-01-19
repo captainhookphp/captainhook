@@ -46,14 +46,11 @@ class Cli implements ActionRunner
         $cmdOriginal  = $action->getAction();
         $cmdFormatted = $this->formatCommand($io, $config, $repository, $cmdOriginal);
 
-        // if any placeholders got replaced display the finally executed command
-        if ($cmdFormatted !== $cmdOriginal) {
-            $io->write(
-                '  <comment>cmd:</comment> ' . $cmdFormatted,
-                true,
-                IO::VERBOSE
-            );
-        }
+        $io->write(
+            '  <comment>cmd:</comment> ' . $cmdFormatted,
+            true,
+            IO::VERBOSE
+        );
 
         $result = $processor->run($cmdFormatted);
         $output = '';
