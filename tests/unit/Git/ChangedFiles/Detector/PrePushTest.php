@@ -100,7 +100,8 @@ class PrePushTest extends TestCase
         $repo->method('getLogOperator')->willReturn($log);
         $repo->method('getDiffOperator')->willReturn($diff);
 
-        $d     = new PrePush($io, $repo);
+        $d = new PrePush($io, $repo);
+        $d->useReflogFallback(true);
         $files = $d->getChangedFiles();
 
         $this->assertEquals('foo.txt', $files[0]);
@@ -139,7 +140,9 @@ class PrePushTest extends TestCase
         $repo->method('getLogOperator')->willReturn($log);
         $repo->method('getDiffOperator')->willReturn($diff);
 
-        $d     = new PrePush($io, $repo);
+        $d = new PrePush($io, $repo);
+        $d->useReflogFallback(true);
+
         $files = $d->getChangedFiles();
 
         $this->assertEquals('foo.txt', $files[0]);

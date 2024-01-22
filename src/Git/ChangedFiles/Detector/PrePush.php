@@ -28,6 +28,24 @@ use SebastianFeldmann\Git\Repository;
 class PrePush extends Detector
 {
     /**
+     * Reflog fallback switch
+     *
+     * @var bool
+     */
+    private bool $reflogFallback = false;
+
+    /**
+     * Activate the reflog fallback file detection
+     *
+     * @param bool $bool
+     * @return void
+     */
+    public function useReflogFallback(bool $bool): void
+    {
+        $this->reflogFallback = $bool;
+    }
+
+    /**
      * Return list of changed files
      *
      * @param  array<string> $filter
@@ -40,7 +58,7 @@ class PrePush extends Detector
             return [];
         }
         $files = $this->collectChangedFiles($ranges, $filter);
-        if (count($files) > 0) {
+        if (count($files) > 0 || !$this->reflogFallback) {
             return $files;
         }
         // by now we should have found something but if the "branch: created" entry is gone from the reflog
@@ -76,6 +94,9 @@ class PrePush extends Detector
                 $oldHash = $range->from()->id();
                 $newHash = $range->to()->id();
             } else {
+                if (!$this->reflogFallback) {
+                    continue;
+                }
                 // remote branch does not exist
                 // try to find the branch starting point with the reflog
                 $oldHash = $this->repository->getLogOperator()->getBranchRevFromRefLog($range->to()->branch());
