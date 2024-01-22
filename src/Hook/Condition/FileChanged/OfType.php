@@ -79,7 +79,7 @@ class OfType implements Condition, Constrained
         $factory  = new Git\ChangedFiles\Detector\Factory();
         $detector = $factory->getDetector($io, $repository);
 
-        $files = $detector->getChangedFiles();
+        $files = $detector->getChangedFiles(['A', 'C', 'M', 'R']);
         $files = FileList::filterByType($files, ['by-type' => $this->suffix]);
 
         if (count($files) > 0) {

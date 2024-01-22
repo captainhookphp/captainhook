@@ -42,7 +42,7 @@ class ChangedFiles extends Foundation
         $factory  = new Git\ChangedFiles\Detector\Factory();
         $detector = $factory->getDetector($this->io, $this->repository);
 
-        $files = $detector->getChangedFiles();
+        $files = $detector->getChangedFiles(['A', 'C', 'M', 'R']);
         $files = FileList::filterByType($files, $options);
         $files = FileList::filterByDirectory($files, $options);
         $files = FileList::replaceInAll($files, $options);
