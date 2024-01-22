@@ -20,39 +20,12 @@ use SebastianFeldmann\Git\Repository;
 /**
  * OnBranch condition
  *
- * @package CaptainHook
- * @author  Sebastian Feldmann <sf@sebastian-feldmann.info>
- * @link    https://github.com/captainhookphp/captainhook
- * @since   Class available since Release 5.0.0
+ * @package    CaptainHook
+ * @author     Sebastian Feldmann <sf@sebastian-feldmann.info>
+ * @link       https://github.com/captainhookphp/captainhook
+ * @since      Class available since Release 5.0.0
+ * @deprecated Replaced be CaptainHook\App\Hook\Condition\Branch\CurrentlyOn
  */
-class OnBranch implements Condition
+class OnBranch extends Condition\Branch\On
 {
-    /**
-     * Branch name to compare
-     *
-     * @var string
-     */
-    private $name;
-
-    /**
-     * OnBranch constructor.
-     *
-     * @param string $name
-     */
-    public function __construct(string $name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * Check is the current branch is equal to the configured one
-     *
-     * @param  \CaptainHook\App\Console\IO       $io
-     * @param  \SebastianFeldmann\Git\Repository $repository
-     * @return bool
-     */
-    public function isTrue(IO $io, Repository $repository): bool
-    {
-        return trim($repository->getInfoOperator()->getCurrentBranch()) === $this->name;
-    }
 }
