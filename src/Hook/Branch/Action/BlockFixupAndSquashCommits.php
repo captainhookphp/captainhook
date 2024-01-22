@@ -16,7 +16,6 @@ use CaptainHook\App\Console\IO;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Git\Range\Detector\PrePush;
 use CaptainHook\App\Hook\Action;
-use CaptainHook\App\Hook\Input;
 use CaptainHook\App\Hook\Restriction;
 use CaptainHook\App\Hooks;
 use SebastianFeldmann\Git\Repository;
@@ -91,16 +90,16 @@ class BlockFixupAndSquashCommits implements Action
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
     {
-        $refDetector = new PrePush();
-        $refsToPush  = $refDetector->getRanges($io);
+        $rangeDetector = new PrePush();
+        $rangesToPush  = $rangeDetector->getRanges($io);
 
-        if (empty($refsToPush)) {
+        if (!$this->hasFoundRangesToCheck($rangesToPush)) {
             return;
         }
 
         $this->handleOptions($action->getOptions());
 
-        foreach ($refsToPush as $range) {
+        foreach ($rangesToPush as $range) {
             if (!empty($this->protectedBranches) && !in_array($range->from()->branch(), $this->protectedBranches)) {
                 return;
             }
@@ -175,7 +174,7 @@ class BlockFixupAndSquashCommits implements Action
     private function hasToBeBlocked(string $message, array $typesToCheck): bool
     {
         foreach ($typesToCheck as $type) {
-            if (strpos($message, $type) === 0) {
+            if (str_starts_with($message, $type)) {
                 return true;
             }
         }
@@ -202,5 +201,25 @@ class BlockFixupAndSquashCommits implements Action
             . PHP_EOL
             . implode(PHP_EOL, $out)
         );
+    }
+
+    /**
+     * Checks if we found valid ranges to check
+     *
+     * @param array<\CaptainHook\App\Git\Range\PrePush> $rangesToPush
+     * @return bool
+     */
+    private function hasFoundRangesToCheck(array $rangesToPush): bool
+    {
+        if (empty($rangesToPush)) {
+            return false;
+        }
+        if ($rangesToPush[0]->from()->isZeroRev()) {
+            return false;
+        }
+        if ($rangesToPush[0]->to()->isZeroRev()) {
+            return false;
+        }
+        return true;
     }
 }
