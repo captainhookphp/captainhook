@@ -54,8 +54,12 @@
           <th colspan="2">All hooks</th>
         </tr>
         <tr>
-          <td><a href="#on-branch">\CaptainHook\App\Hook\Condition\OnBranch</a></td>
+          <td><a href="#on-branch">\CaptainHook\App\Hook\Condition\Branch\On</a></td>
           <td>Check if we are on a particular branch</td>
+        </tr>
+        <tr>
+          <td><a href="#not-on-branch">\CaptainHook\App\Hook\Condition\Branch\NotOn</a></td>
+          <td>Check if we are not on a particular branch</td>
         </tr>
         <tr>
           <td><a href="#custom-truthy">\CaptainHook\App\Hook\Condition\Config\CustomValueIsTruthy</a></td>
@@ -121,15 +125,29 @@
         <a href="extend.html#conditions">"how to extend CaptainHook"</a> section.
       </p>
 
-      <h3 id="on-branch">OnBranch</h3>
+      <h3 id="on-branch">CurrentlyOn</h3>
       <p><em class="hl">all hooks</em></p>
       <p>This <em>Condition</em> expects just one argument, the name of the branch.</p>
       <pre><code class="javascript">{
   "conditions": [
     {
-      "exec": "\\CaptainHook\\App\\Hook\\Condition\\OnBranch",
+      "exec": "\\CaptainHook\\App\\Hook\\Condition\\Branch\\On",
       "args": [
-        "master"
+        "main"
+      ]
+    }
+  ]
+}</code></pre>
+
+      <h3 id="not-on-branch">CurrentlyNotOn</h3>
+      <p><em class="hl">all hooks</em></p>
+      <p>This <em>Condition</em> expects just one argument, the name of the branch.</p>
+      <pre><code class="javascript">{
+  "conditions": [
+    {
+      "exec": "\\CaptainHook\\App\\Hook\\Condition\\Branch\\NotOn",
+      "args": [
+        "main"
       ]
     }
   ]
