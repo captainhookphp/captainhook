@@ -62,6 +62,14 @@
           <td>Check if we are not on a particular branch</td>
         </tr>
         <tr>
+          <td><a href="#on-matching-branch">\CaptainHook\App\Hook\Condition\Branch\OnMatching</a></td>
+          <td>Check if we are on a particular branch that matches a given regex</td>
+        </tr>
+        <tr>
+          <td><a href="#not-on-matching-branch">\CaptainHook\App\Hook\Condition\Branch\NotOnMatching</a></td>
+          <td>Check if we are not on a particular branch that matches a given regex</td>
+        </tr>
+        <tr>
           <td><a href="#custom-truthy">\CaptainHook\App\Hook\Condition\Config\CustomValueIsTruthy</a></td>
           <td>Check if a custom config is true, 1, yes or on</td>
         </tr>
@@ -125,7 +133,7 @@
         <a href="extend.html#conditions">"how to extend CaptainHook"</a> section.
       </p>
 
-      <h3 id="on-branch">CurrentlyOn</h3>
+      <h3 id="on-branch">On</h3>
       <p><em class="hl">all hooks</em></p>
       <p>This <em>Condition</em> expects just one argument, the name of the branch.</p>
       <pre><code class="javascript">{
@@ -139,7 +147,7 @@
   ]
 }</code></pre>
 
-      <h3 id="not-on-branch">CurrentlyNotOn</h3>
+      <h3 id="not-on-branch">NotOn</h3>
       <p><em class="hl">all hooks</em></p>
       <p>This <em>Condition</em> expects just one argument, the name of the branch.</p>
       <pre><code class="javascript">{
@@ -148,6 +156,34 @@
       "exec": "\\CaptainHook\\App\\Hook\\Condition\\Branch\\NotOn",
       "args": [
         "main"
+      ]
+    }
+  ]
+}</code></pre>
+
+      <h3 id="on-matching-branch">OnMatching</h3>
+      <p><em class="hl">all hooks</em></p>
+      <p>This <em>Condition</em> expects just one argument, the regex to match the branch.</p>
+      <pre><code class="javascript">{
+  "conditions": [
+    {
+      "exec": "\\CaptainHook\\App\\Hook\\Condition\\Branch\\OnMatching",
+      "args": [
+        "#feature/[a-z0-9\-_]+#i"
+      ]
+    }
+  ]
+}</code></pre>
+
+      <h3 id="not-on-matching-branch">NotOnMatching</h3>
+      <p><em class="hl">all hooks</em></p>
+      <p>This <em>Condition</em> expects just one argument, the regex to match the branch.</p>
+      <pre><code class="javascript">{
+  "conditions": [
+    {
+      "exec": "\\CaptainHook\\App\\Hook\\Condition\\Branch\\NotOnMatching",
+      "args": [
+        "#feature/[a-z0-9\-_]+#i"
       ]
     }
   ]
