@@ -24,7 +24,7 @@ use SebastianFeldmann\Git\Repository;
  * @link    https://github.com/captainhookphp/captainhook
  * @since   Class available since Release 4.0.4
  */
-class Debug implements Action
+abstract class Debug implements Action
 {
     /**
      * Executes the action
@@ -36,7 +36,17 @@ class Debug implements Action
      * @return void
      * @throws \Exception
      */
-    public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
+    abstract public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void;
+
+    /**
+     * Generate some debug output
+     *
+     * @param \CaptainHook\App\Console\IO       $io
+     * @param \SebastianFeldmann\Git\Repository $repository
+     * @return void
+     * @throws \CaptainHook\App\Exception\ActionFailed
+     */
+    protected function debugOutput(IO $io, Repository $repository): void
     {
         $originalHookArguments = $io->getArguments();
         $currentGitTag         = $repository->getInfoOperator()->getCurrentTag();
@@ -46,11 +56,6 @@ class Debug implements Action
         $io->write($this->getArgumentOutput($originalHookArguments));
         $io->write('  Current git-tag: <comment>' . $currentGitTag . '</comment>');
         $io->write('  StandardInput: ' . PHP_EOL . '    ' . implode(PHP_EOL . '    ', $io->getStandardInput()));
-
-        throw new ActionFailed(
-            'The \'Debug\' action is only for debugging purposes, '
-            . 'please remove the \'Debug\' action from your config'
-        );
     }
 
     /**

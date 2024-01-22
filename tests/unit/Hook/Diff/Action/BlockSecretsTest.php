@@ -263,7 +263,7 @@ class BlockSecretsTest extends TestCase
 
         $options = [
             'suppliers' => [
-                Debug::class
+                Debug\Failure::class
             ]
         ];
 

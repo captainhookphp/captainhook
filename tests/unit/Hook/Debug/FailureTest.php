@@ -9,16 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace CaptainHook\App\Hook;
+namespace CaptainHook\App\Hook\Debug;
 
-use Exception;
-use PHPUnit\Framework\TestCase;
 use CaptainHook\App\Config\Action;
 use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
+use CaptainHook\App\Hook\Debug;
 use CaptainHook\App\Mockery as CHMockery;
+use Exception;
+use PHPUnit\Framework\TestCase;
 
-class DebugTest extends TestCase
+class FailureTest extends TestCase
 {
     use ConfigMockery;
     use IOMockery;
@@ -43,7 +44,7 @@ class DebugTest extends TestCase
         $io->expects($this->atLeast(3))->method('write');
         $repository->expects($this->exactly(1))->method('getInfoOperator')->willReturn($infoOperator);
 
-        $debug = new Debug();
+        $debug = new Failure();
         $debug->execute($config, $io, $repository, $action);
     }
 }
