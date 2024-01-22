@@ -67,6 +67,7 @@
     <li><a href="#file-exists">Ensure a files exists</a></li>
     <li><a href="#branch-naming">Enforce branch naming</a></li>
     <li><a href="#branch-fixup">Block pushing of squash or fixup commits</a></li>
+    <li><a href="#integrate-before-push">Force update before push</a></li>
   </ul>
 
   <h2>Actions</h2>
@@ -324,6 +325,18 @@
   "action": "\CaptainHook\App\Hook\Branch\Action\BlockFixupAndSquashCommits",
   "options": {
     "protectedBranches": ["main", "master"]
+  }
+}</code></pre>
+
+  <h4 id="integrate-before-push">Force update before push</h4>
+  <p>
+    Checks if a branch contains any trigger commits, if so it forces you to update your local branch before you can push.
+  </p>
+  <pre><code class="javascript">{
+  "action": "\CaptainHook\App\Hook\Notify\Action\IntegrateBeforePush",
+  "options": {
+    "trigger": "[merge]",
+    "branch": "main"
   }
 }</code></pre>
 
