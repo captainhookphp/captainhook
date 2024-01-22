@@ -214,10 +214,7 @@ class BlockFixupAndSquashCommits implements Action
         if (empty($rangesToPush)) {
             return false;
         }
-        if ($rangesToPush[0]->from()->isZeroRev()) {
-            return false;
-        }
-        if ($rangesToPush[0]->to()->isZeroRev()) {
+        if ($rangesToPush[0]->from()->isZeroRev() || $rangesToPush[0]->to()->isZeroRev()) {
             return false;
         }
         return true;
