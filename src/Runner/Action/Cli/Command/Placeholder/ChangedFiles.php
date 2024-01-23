@@ -43,10 +43,7 @@ class ChangedFiles extends Foundation
         $detector = $factory->getDetector($this->io, $this->repository);
 
         $files = $detector->getChangedFiles(['A', 'C', 'M', 'R']);
-        $files = FileList::filterByType($files, $options);
-        $files = FileList::filterByDirectory($files, $options);
-        $files = FileList::replaceInAll($files, $options);
 
-        return implode(($options['separated-by'] ?? ' '), $files);
+        return implode(($options['separated-by'] ?? ' '), FileList::filter($files, $options));
     }
 }

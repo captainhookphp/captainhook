@@ -26,6 +26,20 @@ namespace CaptainHook\App\Hook;
 abstract class FileList
 {
     /**
+     * Use all filters
+     *
+     * @param  array<string> $files
+     * @param  array<string> $options
+     * @return array<string>
+     */
+    public static function filter(array $files, array $options): array
+    {
+        $files = self::filterByType($files, $options);
+        $files = self::filterByDirectory($files, $options);
+        return self::replaceInAll($files, $options);
+    }
+
+    /**
      * Filter files by type
      *
      * @param  array<string>         $files
