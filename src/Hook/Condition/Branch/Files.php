@@ -74,7 +74,7 @@ class Files implements Condition
             return false;
         }
 
-        $files = $repository->getLogOperator()->getChangedFilesSince($start . '..HEAD', ['A', 'C', 'M', 'R']);
+        $files = $repository->getLogOperator()->getChangedFilesSince($start, ['A', 'C', 'M', 'R']);
 
         return count(FileList::filter($files, $this->options)) > 0;
     }
