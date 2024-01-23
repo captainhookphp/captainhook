@@ -221,6 +221,20 @@
 {$CHANGED_FILES|replace:foo|with:bar}        // bar/bar/file1 bar3.php</pre>
           </td>
         </tr>
+        <tr>
+          <td><strong>{$BRANCH_FILES}</strong></td>
+          <td>*</td>
+          <td>Gets replaced with a list of files changed within this branch.</td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <h7>Examples:</h7>
+            <pre>
+{$BRANCH_FILES|compared-to:main|separated-by: }               // foo/bar/file1 file2.php foo3.php
+{$BRANCH_FILES|compared-to:main||of-type:php|separated-by:, } // file2.php, foo3.php
+{$BRANCH_FILES|in-dir:foo/bar}                                // foo/bar/file1</pre>
+          </td>
+        </tr>
       </table>
 
 

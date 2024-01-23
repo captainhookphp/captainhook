@@ -78,6 +78,10 @@
           <td>Check if a custom config is false, 0, no or off</td>
         </tr>
         <tr>
+          <td><a href="#branch-files">\CaptainHook\App\Hook\Condition\Branch\Files</a></td>
+          <td>Check if the current branch has changed files</td>
+        </tr>
+        <tr>
           <th colspan="2">pre-commit</th>
         </tr>
         <tr>
@@ -212,6 +216,22 @@
       "exec": "\\CaptainHook\\App\\Hook\\Condition\\Config\\CustomConfigValueIsFalsy",
       "args": [
         "MY_CONFIG_VALUE"
+      ]
+    }
+  ]
+}</code></pre>
+
+      <h3 id="branch-files">Branch files changed</h3>
+      <p><em class="hl">all hooks</em></p>
+      <p>This <em>Condition</em> accepts an options object, all values are optional.</p>
+      <p>This will not work in the main branch and should most likely combined with a <em>NotOn</em> condition</p>
+      <p>If you don't provide the <em>compare-to</em> option, it will try to figure out the branching point using the <em>reflog</em>.</p>
+      <pre><code class="javascript">{
+  "conditions": [
+    {
+      "exec": "\\CaptainHook\\App\\Hook\\Condition\\Branch\\Files",
+      "args": [
+        {"compared-to": "main", "of-type": "php", "in-dir": "foo/"}
       ]
     }
   ]
