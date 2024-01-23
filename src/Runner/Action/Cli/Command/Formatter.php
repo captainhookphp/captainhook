@@ -54,11 +54,12 @@ class Formatter
      * @var array<string, string>
      */
     private static array $placeholders = [
-        'arg'           => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\Arg',
-        'config'        => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\Config',
-        'env'           => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\Env',
-        'staged_files'  => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\StagedFiles',
-        'changed_files' => '\\CaptainHook\\App\\Runner\\Action\\Cli\\Command\\Placeholder\\ChangedFiles'
+        'arg'           => Placeholder\Arg::class,
+        'config'        => Placeholder\Config::class,
+        'env'           => Placeholder\Env::class,
+        'staged_files'  => Placeholder\StagedFiles::class,
+        'changed_files' => Placeholder\ChangedFiles::class,
+        'branch_files'  => Placeholder\BranchFiles::class,
     ];
 
     /**
