@@ -67,6 +67,7 @@ final class Hooks
      */
     private static array $hooksAllowingUserInput = [
         self::PREPARE_COMMIT_MSG => true,
+        self::PRE_PUSH => true,
     ];
 
     /**
