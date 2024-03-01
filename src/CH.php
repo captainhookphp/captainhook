@@ -23,7 +23,23 @@ namespace CaptainHook\App;
  */
 final class CH
 {
-    public const VERSION      = '5.21.2';
+    /**
+     * Current CaptainHook version
+     */
+    public const VERSION = '5.21.2';
+
+    /**
+     * Release date of the current version
+     */
     public const RELEASE_DATE = '2024-01-23';
-    public const CONFIG       = 'captainhook.json';
+
+    /**
+     * Default configuration file
+     */
+    public const CONFIG = 'captainhook.json';
+
+    /**
+     * Minimal required version for the installer
+     */
+    public const MIN_REQ_INSTALLER = '5.20.0';
 }
