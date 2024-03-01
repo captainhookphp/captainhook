@@ -13,6 +13,7 @@ namespace CaptainHook\App\Hook\Branch\Action;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Console\IO;
+use CaptainHook\App\Console\IOUtil;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Git\Range\Detector\PrePush;
 use CaptainHook\App\Hook\Action;
@@ -103,7 +104,7 @@ class BlockFixupAndSquashCommits implements Action
             if (!empty($this->protectedBranches) && !in_array($range->from()->branch(), $this->protectedBranches)) {
                 return;
             }
-            $commits = $this->getBlockedCommits($repository, $range->from()->id(), $range->to()->id());
+            $commits = $this->getBlockedCommits($io, $repository, $range->from()->id(), $range->to()->id());
 
             if (count($commits) > 0) {
                 $this->handleFailure($commits, $range->from()->branch());
@@ -127,20 +128,28 @@ class BlockFixupAndSquashCommits implements Action
     /**
      * Returns a list of commits that should be blocked
      *
-     * @param  \SebastianFeldmann\Git\Repository $repository
-     * @param  string                            $remoteHash
-     * @param  string                            $localHash
+     * @param \CaptainHook\App\Console\IO       $io
+     * @param \SebastianFeldmann\Git\Repository $repository
+     * @param string                            $remoteHash
+     * @param string                            $localHash
      * @return array<\SebastianFeldmann\Git\Log\Commit>
      * @throws \Exception
      */
-    private function getBlockedCommits(Repository $repository, string $remoteHash, string $localHash): array
+    private function getBlockedCommits(IO $io, Repository $repository, string $remoteHash, string $localHash): array
     {
         $typesToCheck = $this->getTypesToBlock();
         $blocked      = [];
         foreach ($repository->getLogOperator()->getCommitsBetween($remoteHash, $localHash) as $commit) {
+            $prefix = IOUtil::PREFIX_OK;
             if ($this->hasToBeBlocked($commit->getSubject(), $typesToCheck)) {
+                $prefix    = IOUtil::PREFIX_FAIL;
                 $blocked[] = $commit;
             }
+            $io->write(
+                '  ' . $prefix . ' ' . $commit->getHash() . ' ' . $commit->getSubject(),
+                true,
+                IO::VERBOSE
+            );
         }
         return $blocked;
     }
