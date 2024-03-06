@@ -104,15 +104,15 @@
           <th colspan="2">post-checkout / post-merge / post-rewrite / pre-push</th>
         </tr>
         <tr>
-          <td><a href="#file-changed-all">\CaptainHook\App\Hook\Condition\FileChange\All</a></td>
+          <td><a href="#file-changed-all">\CaptainHook\App\Hook\Condition\FileChanged\All</a></td>
           <td>Check if <strong>all</strong> of the configured files are changed</td>
         </tr>
         <tr>
-          <td><a href="#file-staged-any">\CaptainHook\App\Hook\Condition\FileChange\Any</a></td>
+          <td><a href="#file-changed-any">\CaptainHook\App\Hook\Condition\FileChanged\Any</a></td>
           <td>Check if <strong>any</strong> of the configured files is changed</td>
         </tr>
         <tr>
-          <td><a href="#file-changed-oftype">\CaptainHook\App\Hook\Condition\FileChange\OfType</a></td>
+          <td><a href="#file-changed-oftype">\CaptainHook\App\Hook\Condition\FileChanged\OfType</a></td>
           <td>Check if changes to a typy of file will be pushed</td>
         </tr>
         <tr>
@@ -327,7 +327,7 @@
       <pre><code class="javascript">{
   "conditions": [
     {
-      "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileChange\\OfType",
+      "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileChanged\\OfType",
       "args": [
         "php"
       ]
