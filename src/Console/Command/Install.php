@@ -129,11 +129,11 @@ class Install extends RepositoryAware
 
         $template  = Template\Builder::build($config, $repo, $this->resolver);
         $installer = new Installer($io, $config, $repo, $template);
-        $installer->setForce(IOUtil::argToBool($input->getOption('force')))
+        $installer->setHook(IOUtil::argToString($input->getArgument('hook')))
+                  ->setForce(IOUtil::argToBool($input->getOption('force')))
                   ->setSkipExisting(IOUtil::argToBool($input->getOption('skip-existing')))
                   ->setMoveExistingTo(IOUtil::argToString($input->getOption('move-existing-to')))
                   ->setOnlyEnabled(IOUtil::argToBool($input->getOption('only-enabled')))
-                  ->setHook(IOUtil::argToString($input->getArgument('hook')))
                   ->run();
 
         return 0;

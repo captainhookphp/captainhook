@@ -180,13 +180,17 @@ class Installer extends Files
     {
         if ($this->shouldHookBeSkipped($hook)) {
             $hint = $this->io->isDebug() ? ', remove the --skip-existing option to overwrite.' : '';
-            $this->io->write('  <comment>' . $hook . '</comment> is already installed' . $hint, true, IO::VERBOSE);
+            $this->io->write(
+                IOUtil::PREFIX_FAIL . ' <comment>' . $hook . '</comment> exists' . $hint,
+                true,
+                IO::VERBOSE
+            );
             return;
         }
 
         $doIt = true;
         if ($ask) {
-            $answer = $this->io->ask('  <info>Install \'' . $hook . '\' hook?</info> <comment>[Y,n]</comment> ', 'y');
+            $answer = $this->io->ask('Install <comment>' . $hook . '</comment> hook? <comment>[Y,n]</comment> ', 'y');
             $doIt   = IOUtil::answerToBool($answer);
         }
 
@@ -224,7 +228,10 @@ class Installer extends Files
         // if hook is configured and no force option is set
         // ask the user if overwriting the hook is ok
         if ($this->needConfirmation($hook)) {
-            $ans  = $this->io->ask('  <comment>The \'' . $hook . '\' hook exists! Overwrite? [y,n]</comment> ', 'n');
+            $ans  = $this->io->ask(
+                'The <comment>' . $hook . '</comment> hook exists! Overwrite? <comment>[y,N]</comment> ',
+                'n'
+            );
             $doIt = IOUtil::answerToBool($ans);
         }
 
@@ -233,8 +240,10 @@ class Installer extends Files
             $file = new File($hookFile);
             $file->write($code);
             chmod($hookFile, 0755);
-            $this->io->write('  <info>\'' . $hook . '\' hook installed successfully</info>');
+            $this->io->write(IOUtil::PREFIX_OK . ' <comment>' . $hook . '</comment> installed');
+            return;
         }
+        $this->io->write(IOUtil::PREFIX_FAIL . ' <comment>' . $hook . '</comment> skipped');
     }
 
     /**

@@ -71,6 +71,25 @@ class InstallerTest extends TestCase
      *
      * @throws \CaptainHook\App\Exception\InvalidHookName
      */
+    public function testSetHookAndEnabledOnly(): void
+    {
+        $this->expectException(Exception::class);
+
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock();
+        $repo     = $this->createRepositoryMock();
+        $template = $this->createTemplateMock();
+
+        $runner = new Installer($io, $config, $repo, $template);
+        $runner->setOnlyEnabled(true);
+        $runner->setHook('pre-push');
+    }
+
+    /**
+     * Tests Installer::setHook
+     *
+     * @throws \CaptainHook\App\Exception\InvalidHookName
+     */
     public function testMoveAfterSkippingFail(): void
     {
         $this->expectException(RuntimeException::class);
