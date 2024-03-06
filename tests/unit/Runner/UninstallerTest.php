@@ -17,6 +17,7 @@ use CaptainHook\App\Exception\InvalidHookName;
 use CaptainHook\App\Git\DummyRepo;
 use CaptainHook\App\Hook\Mockery as HookMockery;
 use CaptainHook\App\Mockery as CHMockery;
+use Exception;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -44,6 +45,24 @@ class UninstallerTest extends TestCase
 
         $runner = new Uninstaller($io, $config, $repo);
         $runner->setHook('itDoesNotExist');
+    }
+
+    /**
+     * Tests Uninstaller::setHook
+     *
+     * @throws \CaptainHook\App\Exception\InvalidHookName
+     */
+    public function testSetHookAndEnabledOnly(): void
+    {
+        $this->expectException(Exception::class);
+
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock();
+        $repo     = $this->createRepositoryMock();
+
+        $runner = new Uninstaller($io, $config, $repo);
+        $runner->setHook('pre-push');
+        $runner->setOnlyDisabled(true);
     }
 
     /**
@@ -121,6 +140,40 @@ class UninstallerTest extends TestCase
 
         $runner = new Uninstaller($io, $config, $repo);
         $runner->setHook('pre-commit');
+        $runner->run();
+
+        $this->assertFileDoesNotExist($fakeRepo->getHookDir() . '/pre-commit');
+        $this->assertFileExists($fakeRepo->getHookDir() . '/pre-push');
+    }
+
+    /**
+     * Tests Uninstaller::run
+     */
+    public function testRemoveOnlyDisabled(): void
+    {
+        $fakeRepo = new DummyRepo(
+            [
+                'config' => '# fake git config',
+                'hooks'  => [
+                    'pre-commit' => '# fake pre-commit file',
+                    'pre-push'   => '# fake pre-push file',
+                ]
+            ]
+        );
+
+        $io       = $this->createIOMock();
+        $config   = $this->createConfigMock(true);
+        $repo     = new Repository($fakeRepo->getRoot());
+
+        $config->method('isHookEnabled')->willReturnCallback(
+            function (string $hook): bool {
+                return $hook === 'pre-push';
+            }
+        );
+
+        $runner = new Uninstaller($io, $config, $repo);
+        $runner->setOnlyDisabled(true);
+        $runner->setForce(true);
         $runner->run();
 
         $this->assertFileDoesNotExist($fakeRepo->getHookDir() . '/pre-commit');

@@ -45,6 +45,19 @@ class Uninstall extends RepositoryAware
                  'Remove only this one hook. By default all hooks get uninstalled'
              )
              ->addOption(
+                 'force',
+                 'f',
+                 InputOption::VALUE_NONE,
+                 'Force install without confirmation'
+             )
+             ->addOption(
+                 'only-disabled',
+                 null,
+                 InputOption::VALUE_NONE,
+                 'Limit the hooks you want to remove to those that are not enabled in your conf. ' .
+                 'By default all hooks get uninstalled'
+             )
+             ->addOption(
                  'move-existing-to',
                  null,
                  InputOption::VALUE_OPTIONAL,
@@ -70,8 +83,10 @@ class Uninstall extends RepositoryAware
         $output->setVerbosity(IOUtil::mapConfigVerbosity($config->getVerbosity()));
 
         $uninstaller = new Uninstaller($io, $config, $repo);
-        $uninstaller->setMoveExistingTo(IOUtil::argToString($input->getOption('move-existing-to')))
-                    ->setHook(IOUtil::argToString($input->getArgument('hook')))
+        $uninstaller->setHook(IOUtil::argToString($input->getArgument('hook')))
+                    ->setForce(IOUtil::argToBool($input->getOption('force')))
+                    ->setOnlyDisabled(IOUtil::argToBool($input->getOption('only-disabled')))
+                    ->setMoveExistingTo(IOUtil::argToString($input->getOption('move-existing-to')))
                     ->run();
         return 0;
     }
