@@ -30,7 +30,7 @@ use SebastianFeldmann\Camino\Check;
 abstract class Files extends RepositoryAware
 {
     /**
-     * Install hooks brute force
+     * Handle hooks brute force
      *
      * @var bool
      */
