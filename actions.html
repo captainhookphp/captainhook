@@ -59,6 +59,7 @@
     <li><a href="#linting">PHP syntax check</a></li>
     <li><a href="#test-coverage">Enforce PHPUnit test coverage</a></li>
     <li><a href="#notify">Git commit message notifications</a></li>
+    <li><a href="#user-confirmation">Prompt the user to confirm the operation</a></li>
     <li><a href="#file-size">Check file size</a></li>
     <li><a href="#file-empty">Prevent committing any content to files</a></li>
     <li><a href="#file-not-empty">Prevent committing empty files</a></li>
@@ -337,6 +338,18 @@
   "options": {
     "trigger": "[merge]",
     "branch": "main"
+  }
+}</code></pre>
+
+  <h4 id="user-confirmation">Prompt the user to confirm the operation</h4>
+  <p>
+    Ask the user to confirm to continue the current git operation.
+  </p>
+  <pre><code class="javascript">{
+  "action": "\CaptainHook\App\Hook\UserInput\AskConfirmation",
+  "options": {
+    "message": "Do you really want to continue? [Yes|no]",
+    "default": true
   }
 }</code></pre>
 
