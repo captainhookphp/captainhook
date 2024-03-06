@@ -62,9 +62,9 @@ class Inspector
     public function inspect(): void
     {
         $path = $this->repository->getHooksDir() . '/' . $this->hook;
+        // hook script not installed or at different location
         if (!file_exists($path)) {
-            $this->io->write('<fg=red>Can\'t read hook script at: ' . $path . '</>');
-            throw new Exception('hook script not found: ' . $path);
+            return;
         }
 
         $hookScript       = file_get_contents($path);
