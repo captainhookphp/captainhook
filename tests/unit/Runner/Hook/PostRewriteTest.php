@@ -13,6 +13,7 @@ namespace CaptainHook\App\Runner\Hook;
 
 use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
+use CaptainHook\App\Git\DummyRepo;
 use CaptainHook\App\Mockery as CHMockery;
 use PHPUnit\Framework\TestCase;
 
@@ -29,9 +30,12 @@ class PostRewriteTest extends TestCase
      */
     public function testRunHookEnabled(): void
     {
+        $dummy = new DummyRepo(['hooks' => ['post-rewrite' => '# hook script']]);
+        $repo  = $this->createRepositoryMock($dummy->getRoot());
+        $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
+
         $io           = $this->createIOMock();
         $config       = $this->createConfigMock();
-        $repo         = $this->createRepositoryMock();
         $hookConfig   = $this->createHookConfigMock();
 
         // configure the actually called hook

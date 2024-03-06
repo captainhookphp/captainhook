@@ -64,9 +64,10 @@ class HooksTest extends TestCase
         Hooks::getVirtualHook('pre-commit');
     }
 
-    public function testAllowsUserInput(): void
+    public function testReceivesStdIn(): void
     {
-        $this->assertTrue(Hooks::allowsUserInput(Hooks::PREPARE_COMMIT_MSG));
-        $this->assertFalse(Hooks::allowsUserInput(Hooks::PRE_COMMIT));
+        $this->assertTrue(Hooks::receivesStdIn(Hooks::PRE_PUSH));
+        $this->assertTrue(Hooks::receivesStdIn(Hooks::POST_REWRITE));
+        $this->assertFalse(Hooks::receivesStdIn(Hooks::PRE_COMMIT));
     }
 }

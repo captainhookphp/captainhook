@@ -14,6 +14,7 @@ namespace CaptainHook\App\Runner\Hook;
 use CaptainHook\App\Config;
 use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
+use CaptainHook\App\Git\DummyRepo;
 use CaptainHook\App\Mockery as CHMockery;
 use PHPUnit\Framework\TestCase;
 
@@ -33,10 +34,12 @@ class PostMergeTest extends TestCase
         if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
+        $dummy = new DummyRepo(['hooks' => ['post-merge' => '# hook script']]);
+        $repo  = $this->createRepositoryMock($dummy->getRoot());
+        $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
 
         $io           = $this->createIOMock();
         $config       = $this->createConfigMock();
-        $repo         = $this->createRepositoryMock();
         $hookConfig   = $this->createHookConfigMock();
         $actionConfig = $this->createActionConfigMock();
         $hookConfig->method('isEnabled')->willReturn(true);
@@ -56,9 +59,12 @@ class PostMergeTest extends TestCase
      */
     public function testRunHookWithConditionsApply(): void
     {
+        $dummy = new DummyRepo(['hooks' => ['post-merge' => '# hook script']]);
+        $repo  = $this->createRepositoryMock($dummy->getRoot());
+        $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
+
         $io              = $this->createIOMock();
         $config          = $this->createConfigMock();
-        $repo            = $this->createRepositoryMock();
         $hookConfig      = $this->createHookConfigMock();
         $actionConfig    = $this->createActionConfigMock();
         $conditionConfig = new Config\Condition(CH_PATH_FILES . '/bin/success');
@@ -81,9 +87,12 @@ class PostMergeTest extends TestCase
      */
     public function testRunHookWithConditionsFail()
     {
+        $dummy = new DummyRepo(['hooks' => ['post-merge' => '# hook script']]);
+        $repo  = $this->createRepositoryMock($dummy->getRoot());
+        $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
+
         $io              = $this->createIOMock();
         $config          = $this->createConfigMock();
-        $repo            = $this->createRepositoryMock();
         $hookConfig      = $this->createHookConfigMock();
         $actionConfig    = $this->createActionConfigMock();
         $conditionConfig = new Config\Condition(CH_PATH_FILES . '/bin/failure');

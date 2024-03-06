@@ -42,6 +42,26 @@ class PHPTest extends TestCase
     /**
      * Tests PHP::getCode
      */
+    public function testSrcStdInHook(): void
+    {
+        $pathInfo = $this->createMock(PathInfo::class);
+        $pathInfo->method('getExecutablePath')->willReturn('./vendor/bin/captainhook');
+        $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
+
+        $config = $this->createConfigMock(false, 'captainhook.json');
+        $config->method('getBootstrap')->willReturn('vendor/autoload.php');
+
+        $template = new PHP($pathInfo, $config, false);
+        $code     = $template->getCode('pre-push');
+
+        $this->assertStringContainsString('#!/usr/bin/env php', $code);
+        $this->assertStringContainsString('STDIN', $code);
+        $this->assertStringContainsString('$captainHook->run(', $code);
+    }
+
+    /**
+     * Tests PHP::getCode
+     */
     public function testSrcTemplateExtExecutable(): void
     {
         $pathInfo = $this->createMock(PathInfo::class);
@@ -97,5 +117,25 @@ class PHPTest extends TestCase
         $this->assertStringContainsString('#!/usr/bin/env php', $code);
         $this->assertStringContainsString('hook:commit-msg', $code);
         $this->assertStringContainsString('tools/captainhook.phar', $code);
+    }
+
+    /**
+     * Tests PHP::getCode
+     */
+    public function testPharStdIn(): void
+    {
+        $pathInfo = $this->createMock(PathInfo::class);
+        $pathInfo->method('getExecutablePath')->willReturn('tools/captainhook.phar');
+        $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
+
+        $config = $this->createConfigMock(false, 'captainhook.json');
+        $config->method('getBootstrap')->willReturn('vendor/autoload.php');
+
+        $template   = new PHP($pathInfo, $config, true);
+        $code       = $template->getCode('post-rewrite');
+
+        $this->assertStringContainsString('#!/usr/bin/env php', $code);
+        $this->assertStringContainsString('hook:post-rewrite', $code);
+        $this->assertStringContainsString('STDIN', $code);
     }
 }

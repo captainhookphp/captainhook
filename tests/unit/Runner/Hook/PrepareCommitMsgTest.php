@@ -45,11 +45,13 @@ class PrepareCommitMsgTest extends TestCase
         $config->expects($this->once())->method('getHookConfigToExecute')->willReturn($hookConfig);
         $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
 
+        $configOp = $this->createGitConfigOperator();
+        $configOp->method('getSafely')->willReturn('#');
         // setup fake vfs repos directory
-        $repoDir = new DummyRepo();
-        $repo    = new Repository($repoDir->getRoot());
+        $dummy = new DummyRepo(['config' => '#config', 'hooks' => ['prepare-commit-msg' => '# hook script']]);
+        $repo  = new Repository($dummy->getRoot());
 
-        $commitMessageFile = $repoDir->getGitDir() . '/prepare-commit-msg';
+        $commitMessageFile = $dummy->getGitDir() . '/prepare-commit-msg';
         file_put_contents($commitMessageFile, 'Commit Message');
 
         $io->expects($this->atLeast(1))->method('write');
@@ -73,7 +75,10 @@ class PrepareCommitMsgTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        $repo     = $this->createRepositoryMock();
+        $dummy = new DummyRepo(['hooks' => ['prepare-commit-msg' => '# hook script']]);
+        $repo  = $this->createRepositoryMock($dummy->getRoot());
+        $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
+
         $configOp = $this->createGitConfigOperator();
         $configOp->method('getSafely')->willReturn('#');
         $repo->method('getConfigOperator')->willReturn($configOp);

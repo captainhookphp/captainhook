@@ -13,6 +13,7 @@ namespace CaptainHook\App\Runner\Hook;
 
 use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
+use CaptainHook\App\Git\DummyRepo;
 use CaptainHook\App\Mockery as CHMockery;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -47,7 +48,9 @@ class CommitMsgTest extends TestCase
         $configOp = $this->createMock(ConfigOperator::class);
         $configOp->expects($this->once())->method('getSafely')->willReturn('#');
 
-        $repo = $this->createRepositoryMock();
+        $dummy = new DummyRepo(['hooks' => ['commit-msg' => '# hook script']]);
+        $repo  = $this->createRepositoryMock($dummy->getRoot());
+        $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
         $repo->expects($this->once())->method('getConfigOperator')->willReturn($configOp);
 
         $hookConfig   = $this->createHookConfigMock();
@@ -77,7 +80,9 @@ class CommitMsgTest extends TestCase
         $configOp = $this->createMock(ConfigOperator::class);
         $configOp->expects($this->once())->method('getSafely')->willReturn('#');
 
-        $repo = $this->createRepositoryMock();
+        $dummy = new DummyRepo(['hooks' => ['commit-msg' => '# hook script']]);
+        $repo  = $this->createRepositoryMock($dummy->getRoot());
+        $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
         $repo->expects($this->once())->method('getConfigOperator')->willReturn($configOp);
         $repo->expects($this->once())->method('getCommitMsg')->willReturn(new GitCommitMessage('fixup! foo', '#'));
 
@@ -104,10 +109,14 @@ class CommitMsgTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        $io           = $this->createIOMock();
-        $config       = $this->createConfigMock();
-        $hookConfig   = $this->createHookConfigMock();
-        $repo         = $this->createRepositoryMock();
+        $io         = $this->createIOMock();
+        $config     = $this->createConfigMock();
+        $hookConfig = $this->createHookConfigMock();
+
+        $dummy = new DummyRepo(['hooks' => ['commit-msg' => '# hook script']]);
+        $repo  = $this->createRepositoryMock($dummy->getRoot());
+        $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
+
         $configOp     = $this->createGitConfigOperator();
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');

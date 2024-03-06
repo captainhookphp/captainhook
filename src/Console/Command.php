@@ -71,7 +71,7 @@ abstract class Command extends SymfonyCommand
     public function getIO(InputInterface $input, OutputInterface $output): IO
     {
         if (null === $this->io) {
-            $this->io = new IO\DefaultIO(STDIN, $input, $output, $this->getHelperSet());
+            $this->io = new IO\DefaultIO($input, $output, $this->getHelperSet());
         }
         return $this->io;
     }

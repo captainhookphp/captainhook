@@ -108,7 +108,6 @@ class ShellTest extends TestCase
         $this->assertStringContainsString('commit-msg', $code);
         $this->assertStringNotContainsString('php7.4', $code);
         $this->assertStringContainsString('/usr/local/bin/captainhook $INTERACTIVE', $code);
-        $this->assertStringNotContainsString($this->getTtyRedirectionLines(), $code);
     }
 
     /**
@@ -132,7 +131,6 @@ class ShellTest extends TestCase
 
         $this->assertStringContainsString('/usr/bin/php7.4', $code);
         $this->assertStringContainsString('/usr/local/bin/captainhook $INTERACTIVE', $code);
-        $this->assertStringNotContainsString($this->getTtyRedirectionLines(), $code);
     }
 
     /**

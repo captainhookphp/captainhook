@@ -14,6 +14,7 @@ namespace CaptainHook\App\Runner;
 use CaptainHook\App\Config;
 use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
+use CaptainHook\App\Git\DummyRepo;
 use CaptainHook\App\Hook\Restriction;
 use CaptainHook\App\Hooks;
 use CaptainHook\App\Mockery as CHMockery;
@@ -144,9 +145,11 @@ class HookTest extends TestCase
             $pluginConfig4,
             $pluginConfig5,
         ]);
+        $dummy = new DummyRepo(['hooks' => ['pre-commit' => '# hook script']]);
+        $repo  = $this->createRepositoryMock($dummy->getRoot());
+        $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
 
         $io           = $this->createIOMock();
-        $repo         = $this->createRepositoryMock();
         $hookConfig   = $this->createHookConfigMock();
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
@@ -173,12 +176,15 @@ class HookTest extends TestCase
 
         $pluginConfig = new Config\Plugin(DummyHookPluginSkipsActions::class);
 
+        $dummy = new DummyRepo(['hooks' => ['pre-commit' => '# hook script']]);
+        $repo  = $this->createRepositoryMock($dummy->getRoot());
+        $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
+
         $config = $this->createConfigMock();
         $config->method('failOnFirstError')->willReturn(true);
         $config->method('getPlugins')->willReturn([$pluginConfig]);
 
         $io = $this->createIOMock();
-        $repo = $this->createRepositoryMock();
         $hookConfig = $this->createHookConfigMock();
         $actionConfig = $this->createActionConfigMock();
         $hookConfig->method('isEnabled')->willReturn(true);
@@ -212,12 +218,15 @@ class HookTest extends TestCase
 
         $pluginConfig = new Config\Plugin(DummyHookPluginSkipsActions::class);
 
+        $dummy = new DummyRepo(['hooks' => ['pre-commit' => '# hook script']]);
+        $repo  = $this->createRepositoryMock($dummy->getRoot());
+        $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
+
         $config = $this->createConfigMock();
         $config->method('failOnFirstError')->willReturn(true);
         $config->method('getPlugins')->willReturn([$pluginConfig]);
 
         $io = $this->createIOMock();
-        $repo = $this->createRepositoryMock();
         $hookConfig = $this->createHookConfigMock();
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');

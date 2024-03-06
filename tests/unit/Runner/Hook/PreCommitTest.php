@@ -15,6 +15,7 @@ use CaptainHook\App\Config\Action;
 use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
 use CaptainHook\App\Exception\ActionFailed;
+use CaptainHook\App\Git\DummyRepo;
 use CaptainHook\App\Mockery as CHMockery;
 use PHPUnit\Framework\TestCase;
 
@@ -35,12 +36,15 @@ class PreCommitTest extends TestCase
             $this->markTestSkipped('not tested on windows');
         }
 
+        $dummy = new DummyRepo(['hooks' => ['pre-commit' => '# hook script']]);
+        $repo  = $this->createRepositoryMock($dummy->getRoot());
+        $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
+
         // fail on first error must be active
         $config = $this->createConfigMock();
         $config->method('failOnFirstError')->willReturn(true);
 
         $io           = $this->createIOMock();
-        $repo         = $this->createRepositoryMock();
         $hookConfig   = $this->createHookConfigMock();
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');
@@ -66,12 +70,15 @@ class PreCommitTest extends TestCase
         if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
+        $dummy = new DummyRepo(['hooks' => ['pre-commit' => '# hook script']]);
+        $repo  = $this->createRepositoryMock($dummy->getRoot());
+        $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
+
         // we have to create a config that does not fail on first error
         $config              = $this->createConfigMock();
         $config->expects($this->once())->method('failOnFirstError')->willReturn(false);
 
         $io                  = $this->createIOMock();
-        $repo                = $this->createRepositoryMock();
         $hookConfig          = $this->createHookConfigMock();
         $actionConfigFail    = $this->createActionConfigMock();
         $actionConfigSuccess = $this->createActionConfigMock();
@@ -107,11 +114,14 @@ class PreCommitTest extends TestCase
         if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
+        $dummy = new DummyRepo(['hooks' => ['pre-commit' => '# hook script']]);
+        $repo  = $this->createRepositoryMock($dummy->getRoot());
+        $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
+
         $config              = $this->createConfigMock();
         $config->expects($this->once())->method('isFailureAllowed')->willReturn(false);
 
         $io                  = $this->createIOMock();
-        $repo                = $this->createRepositoryMock();
         $hookConfig          = $this->createHookConfigMock();
         $actionConfigSuccess = $this->createActionConfigMock();
 
@@ -147,12 +157,15 @@ class PreCommitTest extends TestCase
         if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
             $this->markTestSkipped('not tested on windows');
         }
+        $dummy = new DummyRepo(['hooks' => ['pre-commit' => '# hook script']]);
+        $repo  = $this->createRepositoryMock($dummy->getRoot());
+        $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
+
         // we have to create a config that does not fail even if errors occur
-        $config              = $this->createConfigMock();
+        $config = $this->createConfigMock();
         $config->expects($this->once())->method('isFailureAllowed')->willReturn(true);
 
         $io                  = $this->createIOMock();
-        $repo                = $this->createRepositoryMock();
         $hookConfig          = $this->createHookConfigMock();
         $actionConfigSuccess = $this->createActionConfigMock();
 

@@ -57,6 +57,12 @@ abstract class Hook extends RepositoryAware
             InputOption::VALUE_OPTIONAL,
             'Relative path from your config file to your bootstrap file'
         );
+        $this->addOption(
+            'input',
+            'i',
+            InputOption::VALUE_OPTIONAL,
+            'Original hook stdIn'
+        );
     }
 
     /**

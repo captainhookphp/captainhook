@@ -16,6 +16,7 @@ use CaptainHook\App\Console\IO;
 use CaptainHook\App\Event\Dispatcher;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Constrained;
+use CaptainHook\App\Hook\Template\Inspector;
 use CaptainHook\App\Hooks;
 use CaptainHook\App\Plugin;
 use CaptainHook\App\Runner\Action\Log as ActionLog;
@@ -158,6 +159,8 @@ abstract class Hook extends RepositoryAware
             return;
         }
 
+        $this->checkHookScript();
+
         $this->beforeHook();
         try {
             $this->runHook();
@@ -224,6 +227,7 @@ abstract class Hook extends RepositoryAware
             } else {
                 $this->executeFailAfterAllActions($actions);
             }
+            $this->dispatcher->dispatch('onHookSuccess');
         } catch (Exception $e) {
             $status = self::HOOK_FAILED;
             $this->dispatcher->dispatch('onHookFailure');
@@ -420,5 +424,17 @@ abstract class Hook extends RepositoryAware
             $this->io->write('<info>- Running ' . get_class($plugin) . '::' . $method . '</info>', true, IO::DEBUG);
             $plugin->{$method}(...$params);
         }
+    }
+
+    /**
+     * Makes sure the hook script was installed/created with a decent enough version
+     *
+     * @return void
+     * @throws \Exception
+     */
+    private function checkHookScript(): void
+    {
+        $inspector = new Inspector($this->hook, $this->io, $this->repository);
+        $inspector->inspect();
     }
 }

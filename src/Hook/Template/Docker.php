@@ -68,19 +68,23 @@ class Docker implements Template
         $path2Config = $this->pathInfo->getConfigPath();
         $config      = $path2Config !== CH::CONFIG ? ' --configuration=' . escapeshellarg($path2Config) : '';
         $bootstrap   = !empty($this->config->getBootstrap()) ? ' --bootstrap=' . $this->config->getBootstrap() : '';
-        $tty         = Hooks::allowsUserInput($hook)
-            ? "if sh -c \": >/dev/tty\" >/dev/null 2>/dev/null; then\n\texec < /dev/tty\nfi"
-            : '';
 
         $lines = [
             '#!/bin/sh',
-            $tty,
+            '',
             '# installed by CaptainHook ' . CH::VERSION,
             '',
+            '# read original hook stdIn to pass it in as --input option',
+            'input=$(cat)',
+            '',
+            "if sh -c \": >/dev/tty\" >/dev/null 2>/dev/null; then\n\texec < /dev/tty\nfi",
+            '',
             $this->getOptimizeDockerCommand($hook) . ' '
-            . $this->resolveBinaryPath() . ' hook:' . $hook
+            . $this->resolveBinaryPath()
             . $config
             . $bootstrap
+            . ' --input="$input"'
+            . ' hook:' . $hook
             . ' "$@"'
         ];
         return implode(PHP_EOL, $lines) . PHP_EOL;

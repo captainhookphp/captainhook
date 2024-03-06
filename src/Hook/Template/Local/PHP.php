@@ -15,6 +15,7 @@ namespace CaptainHook\App\Hook\Template\Local;
 
 use CaptainHook\App\CH;
 use CaptainHook\App\Hook\Template;
+use CaptainHook\App\Hooks;
 use SebastianFeldmann\Camino\Path;
 use SebastianFeldmann\Camino\Path\Directory;
 
@@ -51,39 +52,47 @@ class PHP extends Template\Local
     {
         $configPath = $this->pathInfo->getConfigPath();
         $bootstrap  = $this->config->getBootstrap();
+        $stdIn      = $this->getStdInHandling($hook);
 
-        return [
-            '#!/usr/bin/env php',
-            '<?php',
-            '',
-            '# installed by CaptainHook ' . CH::VERSION,
-            '',
-            'use CaptainHook\App\Console\Application as CaptainHook;',
-            'use Symfony\Component\Console\Input\ArgvInput;',
-            '',
-            '(static function($argv)',
-            '{',
-            '    $bootstrap = ' . dirname($configPath) . '/' . $bootstrap . '\';',
-            '    if (!file_exists($bootstrap)) {',
-            '        fwrite(STDERR, \'Boostrap file \\\'\' . $bootstrap . \'\\\' could not be found\');',
-            '        exit(1);',
-            '    }',
-            '    require $bootstrap;',
-            '',
-            '    $argv = array_merge(',
-            '        [',
-            '            $argv[0],',
-            '            \'hook:' . $hook . '\',',
-            '            \'--configuration=' . $configPath . '\'',
-            '            \'--git-directory=\' . dirname(__DIR__, 2) . \'/.git\',',
-            '        ],',
-            '        array_slice($argv, 1)',
-            '    );',
-            '    $captainHook = new CaptainHook($argv[0]);',
-            '    $captainHook->run(new ArgvInput($argv));',
-            '}',
-            ')($argv);',
-        ];
+        return array_merge(
+            [
+                '#!/usr/bin/env php',
+                '<?php',
+                '',
+                '# installed by CaptainHook ' . CH::VERSION,
+                '',
+                'use CaptainHook\App\Console\Application as CaptainHook;',
+                'use SebastianFeldmann\Cli\Reader\StandardInput;',
+                'use Symfony\Component\Console\Input\ArgvInput;',
+                '',
+                '(static function($argv)',
+                '{',
+                '    $bootstrap = \'' . dirname($configPath) . '/' . $bootstrap . '\';',
+                '    if (!file_exists($bootstrap)) {',
+                '        fwrite(STDERR, \'Boostrap file \\\'\' . $bootstrap . \'\\\' could not be found\');',
+                '        exit(1);',
+                '    }',
+                '    require $bootstrap;',
+                '',
+            ],
+            $stdIn,
+            [
+                '    $argv = array_merge(',
+                '        [',
+                '            $argv[0],',
+                '            \'hook:' . $hook . '\',',
+                '            \'--configuration=' . $configPath . '\',',
+                '            \'--git-directory=\' . dirname(__DIR__, 2) . \'/.git\',',
+                '            \'--input=\' . trim($input) . \'\',',
+                '        ],',
+                '        array_slice($argv, 1)',
+                '    );',
+                '    $captainHook = new CaptainHook($argv[0]);',
+                '    $captainHook->run(new ArgvInput($argv));',
+                '}',
+                ')($argv);',
+            ]
+        );
     }
 
     /**
@@ -97,29 +106,65 @@ class PHP extends Template\Local
         $configPath     = $this->pathInfo->getConfigPath();
         $executablePath = $this->pathInfo->getExecutablePath();
         $bootstrap      = $this->config->getBootstrap();
+        $stdIn          = $this->getStdInHandling($hook);
 
         $executableInclude = substr($executablePath, 0, 1) == '/'
                            ? '\'' . $executablePath . '\''
                            : '__DIR__ . \'/../../' . $executablePath  . '\'';
-        return [
-            '#!/usr/bin/env php',
-            '<?php',
+        return array_merge(
+            [
+                '#!/usr/bin/env php',
+                '<?php',
+                '',
+                '(static function($argv)',
+                '{',
+            ],
+            $stdIn,
+            [
+                '    $argv = array_merge(',
+                '        [',
+                '            $argv[0],',
+                '            \'hook:' . $hook . '\',',
+                '            \'--configuration=' . $configPath . ',',
+                '            \'--git-directory=\' . dirname(__DIR__, 2) . \'/.git\',',
+                '            \'--bootstrap=' . $bootstrap . '\',',
+                '            \'--input=\' . trim($input) . \'\',',
+                '        ],',
+                '        array_slice($argv, 1)',
+                '    );',
+                '    include ' . $executableInclude . ';',
+                '}',
+                ')($argv);',
+            ]
+        );
+    }
+
+    /**
+     * Read data from stdIn or allow hooks to ask for user input
+     *
+     * @param  string $hook
+     * @return string[]
+     */
+    private function getStdInHandling(string $hook): array
+    {
+        // if the hook supplies input via std in we have to read that data
+        // then we can't support reading user input from the TTY anymore
+        $useStdIn = [
+            '    $stdIn = new StandardInput(STDIN);',
+            '    $i     = [];',
+            '    foreach ($stdIn as $line) {',
+            '        $i[] = $line;',
+            '    }',
+            '    $input = implode(PHP_EOL, $i);',
             '',
-            '(static function($argv)',
-            '{',
-            '    $argv = array_merge(',
-            '        [',
-            '            $argv[0],',
-            '            \'hook:' . $hook . '\',',
-            '            \'--configuration=' . $configPath . ',',
-            '            \'--git-directory=\' . dirname(__DIR__, 2) . \'/.git\',',
-            '            \'--bootstrap=' . $bootstrap . '\',',
-            '        ],',
-            '        array_slice($argv, 1)',
-            '    );',
-            '    include ' . $executableInclude . ';',
-            '}',
-            ')($argv);',
         ];
+
+        // if the hook does not receive data via stdIn ignore it and just use the tty
+        // sp the user can be asked for some input
+        $useTTY = [
+            '    $input     = \'\';'
+        ];
+
+        return Hooks::receivesStdIn($hook) ? $useStdIn : $useTTY;
     }
 }

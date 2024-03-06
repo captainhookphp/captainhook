@@ -13,6 +13,7 @@ namespace CaptainHook\App\Runner\Hook;
 
 use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
+use CaptainHook\App\Git\DummyRepo;
 use CaptainHook\App\Mockery as CHMockery;
 use PHPUnit\Framework\TestCase;
 
@@ -29,9 +30,13 @@ class PostCheckoutTest extends TestCase
      */
     public function testRunHookEnabled(): void
     {
-        $io            = $this->createIOMock();
-        $config        = $this->createConfigMock();
-        $repo          = $this->createRepositoryMock();
+        $io     = $this->createIOMock();
+        $config = $this->createConfigMock();
+
+        $dummy = new DummyRepo(['hooks' => ['post-checkout' => '# hook script']]);
+        $repo  = $this->createRepositoryMock($dummy->getRoot());
+        $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
+
         $hookConfig    = $this->createHookConfigMock();
         $actionConfig1 = $this->createActionConfigMock();
         $actionConfig2 = $this->createActionConfigMock();

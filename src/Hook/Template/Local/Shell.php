@@ -15,10 +15,6 @@ namespace CaptainHook\App\Hook\Template\Local;
 
 use CaptainHook\App\CH;
 use CaptainHook\App\Hook\Template;
-use CaptainHook\App\Hooks;
-use SebastianFeldmann\Camino\Path;
-use SebastianFeldmann\Camino\Path\Directory;
-use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * Shell class
@@ -40,39 +36,30 @@ class Shell extends Template\Local
      */
     protected function getHookLines(string $hook): array
     {
-        $useStdIn = ' <&0';
-        $useTTY   = [];
-
-        if (Hooks::allowsUserInput($hook)) {
-            $useStdIn = '';
-            $useTTY   = [
-                'if [ -t 1 ]; then',
-                '    # If we\'re in a terminal, redirect stdout and stderr to /dev/tty and',
-                '    # read stdin from /dev/tty. Allow interactive mode for CaptainHook.',
-                '    exec >/dev/tty 2>/dev/tty </dev/tty',
-                '    INTERACTIVE=""',
-                'fi',
-            ];
-        }
-
-        return array_merge(
-            [
-                '#!/bin/sh',
-                '',
-                '# installed by CaptainHook ' . CH::VERSION,
-                '',
-                'INTERACTIVE="--no-interaction"',
-            ],
-            $useTTY,
-            [
-                '',
-                $this->getExecutable()
-                    . ' $INTERACTIVE'
-                    . ' --configuration=' . $this->pathInfo->getConfigPath()
-                    . ' --bootstrap=' . $this->config->getBootstrap()
-                    . ' hook:' . $hook . ' "$@"' . $useStdIn,
-            ]
-        );
+        return [
+            '#!/bin/sh',
+            '',
+            '# installed by CaptainHook ' . CH::VERSION,
+            '',
+            'INTERACTIVE="--no-interaction"',
+            '',
+            '# read original hook stdIn to pass it in as --input option',
+            'input=$(cat)',
+            '',
+            'if [ -t 1 ]; then',
+            '    # If we\'re in a terminal, redirect stdout and stderr to /dev/tty and',
+            '    # read stdin from /dev/tty. Allow interactive mode for CaptainHook.',
+            '    exec >/dev/tty 2>/dev/tty </dev/tty',
+            '    INTERACTIVE=""',
+            'fi',
+            '',
+            $this->getExecutable()
+                . ' $INTERACTIVE'
+                . ' --configuration=' . $this->pathInfo->getConfigPath()
+                . ' --bootstrap=' . $this->config->getBootstrap()
+                . ' --input="$input"'
+                . ' hook:' . $hook . ' "$@"'
+        ];
     }
 
     /**

@@ -13,6 +13,7 @@ namespace CaptainHook\App\Runner\Hook;
 
 use CaptainHook\App\Config\Mockery as ConfigMockery;
 use CaptainHook\App\Console\IO\Mockery as IOMockery;
+use CaptainHook\App\Git\DummyRepo;
 use CaptainHook\App\Mockery as CHMockery;
 use PHPUnit\Framework\TestCase;
 
@@ -33,9 +34,12 @@ class PostCommitTest extends TestCase
             $this->markTestSkipped('not tested on windows');
         }
 
+        $dummy = new DummyRepo(['hooks' => ['post-commit' => '# hook script']]);
+        $repo  = $this->createRepositoryMock($dummy->getRoot());
+        $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
+
         $io           = $this->createIOMock();
         $config       = $this->createConfigMock();
-        $repo         = $this->createRepositoryMock();
         $hookConfig   = $this->createHookConfigMock();
         $actionConfig = $this->createActionConfigMock();
         $actionConfig->method('getAction')->willReturn(CH_PATH_FILES . '/bin/success');

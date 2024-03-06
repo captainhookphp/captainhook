@@ -65,8 +65,9 @@ final class Hooks
      *
      * @var array<string, bool>
      */
-    private static array $hooksAllowingUserInput = [
-        self::PREPARE_COMMIT_MSG => true,
+    private static array $hooksReceivingStdInput = [
+        self::PRE_PUSH     => true,
+        self::POST_REWRITE => true,
     ];
 
     /**
@@ -155,9 +156,9 @@ final class Hooks
      * @param  string $hook
      * @return bool
      */
-    public static function allowsUserInput(string $hook): bool
+    public static function receivesStdIn(string $hook): bool
     {
-        return self::$hooksAllowingUserInput[$hook] ?? false;
+        return self::$hooksReceivingStdInput[$hook] ?? false;
     }
 
     /**
