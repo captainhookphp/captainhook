@@ -26,12 +26,12 @@ final class CH
     /**
      * Current CaptainHook version
      */
-    public const VERSION = '5.21.2';
+    public const VERSION = '5.22.0';
 
     /**
      * Release date of the current version
      */
-    public const RELEASE_DATE = '2024-01-23';
+    public const RELEASE_DATE = '2024-03-06';
 
     /**
      * Default configuration file
@@ -41,5 +41,5 @@ final class CH
     /**
      * Minimal required version for the installer
      */
-    public const MIN_REQ_INSTALLER = '5.20.0';
+    public const MIN_REQ_INSTALLER = '5.22.0';
 }
