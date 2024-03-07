@@ -77,7 +77,9 @@ class Docker implements Template
             '# read original hook stdIn to pass it in as --input option',
             'input=$(cat)',
             '',
-            "if sh -c \": >/dev/tty\" >/dev/null 2>/dev/null; then\n\texec < /dev/tty\nfi",
+            'if sh -c ": >/dev/tty" >/dev/null 2>/dev/null; then',
+            '    exec < /dev/tty',
+            'fi',
             '',
             $this->getOptimizeDockerCommand($hook) . ' '
             . $this->resolveBinaryPath()
