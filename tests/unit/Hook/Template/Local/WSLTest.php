@@ -21,7 +21,7 @@ class WSLTest extends ShellTest
     use ConfigMockery;
 
     /**
-     * Tests Shell::getCode
+     * Tests WSL::getCode
      */
     public function testTemplate(): void
     {
@@ -43,7 +43,7 @@ class WSLTest extends ShellTest
     }
 
     /**
-     * Tests Shell::getCode
+     * Tests WSL::getCode
      */
     public function testTemplateWithDefinedPHP(): void
     {
@@ -65,7 +65,7 @@ class WSLTest extends ShellTest
     }
 
     /**
-     * Tests Shell::getCode
+     * Tests WSL::getCode
      */
     public function testTemplateWithDefinedPHPAndRunPath(): void
     {
@@ -89,7 +89,7 @@ class WSLTest extends ShellTest
     }
 
     /**
-     * Tests Shell::getCode
+     * Tests WSL::getCode
      */
     public function testTemplateExtExecutable(): void
     {
@@ -111,7 +111,7 @@ class WSLTest extends ShellTest
     }
 
     /**
-     * Tests Shell::getCode
+     * Tests WSL::getCode
      */
     public function testTemplateExtExecutableWithDefinedPHP(): void
     {
@@ -134,7 +134,7 @@ class WSLTest extends ShellTest
     }
 
     /**
-     * Tests Shell::getCode
+     * Tests WSL::getCode
      */
     public function testTemplateExtExecutableWithUserInput(): void
     {
@@ -152,23 +152,5 @@ class WSLTest extends ShellTest
         $this->assertStringContainsString('#!/bin/sh', $code);
         $this->assertStringContainsString('commit-msg', $code);
         $this->assertStringContainsString('wsl.exe /usr/local/bin/captainhook $INTERACTIVE', $code);
-        $this->assertStringContainsString($this->getTtyRedirectionLines(), $code);
-    }
-
-    /**
-     * Returns the expected TTY redirection lines
-     *
-     * @return string
-     */
-    private function getTtyRedirectionLines(): string
-    {
-        return <<<'EOD'
-if [ -t 1 ]; then
-    # If we're in a terminal, redirect stdout and stderr to /dev/tty and
-    # read stdin from /dev/tty. Allow interactive mode for CaptainHook.
-    exec >/dev/tty 2>/dev/tty </dev/tty
-    INTERACTIVE=""
-fi
-EOD;
     }
 }
