@@ -54,7 +54,7 @@ class Run
     }
 
     /**
-     * Return the run mode shell|docker|php|local
+     * Return the run mode shell|docker|php|local|wsl
      *
      * @return string
      */
