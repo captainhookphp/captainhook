@@ -44,7 +44,6 @@ abstract class Debug implements Action
      * @param \CaptainHook\App\Console\IO       $io
      * @param \SebastianFeldmann\Git\Repository $repository
      * @return void
-     * @throws \CaptainHook\App\Exception\ActionFailed
      */
     protected function debugOutput(IO $io, Repository $repository): void
     {
