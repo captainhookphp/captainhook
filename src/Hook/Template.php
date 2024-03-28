@@ -31,6 +31,7 @@ interface Template
     public const SHELL  = 'shell';
     public const PHP    = 'php';
     public const DOCKER = 'docker';
+    public const WSL    = 'wsl';
 
     /**
      * Return the code for the git hook scripts
