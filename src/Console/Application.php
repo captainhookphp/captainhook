@@ -55,10 +55,11 @@ class Application extends SymfonyApplication
      */
     public function getDefaultCommands(): array
     {
-        $resolver = new Resolver($this->executable);
+        $resolver        = new Resolver($this->executable);
+        $symfonyDefaults = parent::getDefaultCommands();
 
         return array_merge(
-            parent::getDefaultCommands(),
+            array_slice($symfonyDefaults, 0, 2),
             [
                 new Cmd\Install($resolver),
                 new Cmd\Uninstall($resolver),
