@@ -46,7 +46,7 @@ class Express extends Guided implements Setup
     }
 
     /**
-     * Setup the commit message hook
+     * Set up the commit message hook
      *
      * @param  \CaptainHook\App\Config\Hook $config
      * @return void
@@ -60,14 +60,14 @@ class Express extends Guided implements Setup
         );
 
         if (IOUtil::answerToBool($answer)) {
-            $call    = '\\CaptainHook\\App\\Hook\\Message\\Action\\Beams';
+            $call    = '\\CaptainHook' . '\\App' . '\\Hook\\Message\\Action\\Beams';
             $options = ['subjectLength' => 50, 'bodyLineLength' => 72];
             $config->addAction(new Config\Action($call, $options));
         }
     }
 
     /**
-     * Setup the linting hook
+     * Set up the linting hook
      *
      * @param  \CaptainHook\App\Config\Hook $config
      * @return void
@@ -81,7 +81,7 @@ class Express extends Guided implements Setup
         );
 
         if (IOUtil::answerToBool($answer)) {
-            $call    = '\\CaptainHook\\App\\Hook\\PHP\\Action\\Linting';
+            $call    = '\\CaptainHook' . '\\App' . '\\Hook\\PHP\\Action\\Linting';
             $config->addAction(new Config\Action($call));
         }
     }
