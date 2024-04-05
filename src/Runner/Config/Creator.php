@@ -30,28 +30,28 @@ class Creator extends Runner
      *
      * @var bool
      */
-    private $force;
+    private bool $force = false;
 
     /**
      * Extend existing config or create new one
      *
      * @var string
      */
-    private $mode;
+    private string $mode = 'create';
 
     /**
      * Use express setup mode
      *
      * @var bool
      */
-    private $advanced;
+    private bool $advanced = false;
 
     /**
      * Path to the currently executed 'binary'
      *
-     * @var null|string
+     * @var string
      */
-    protected $executable;
+    protected string $executable = '';
 
     /**
      * Execute the configurator
@@ -180,6 +180,6 @@ class Creator extends Runner
      */
     private function getExecutable(): string
     {
-        return $this->executable ?? 'vendor/bin/captainhook';
+        return !empty($this->executable) ? $this->executable : 'vendor/bin/captainhook';
     }
 }
