@@ -118,8 +118,10 @@
       </p>
       <pre><code class="javascript">{
   "config": {
-    "run-mode": "docker",
-    "run-exec": "docker exec -i CONTAINER_NAME"
+    "run": {
+      "mode": "docker",
+      "exec": "docker exec -i CONTAINER_NAME"
+    }
   }
   "pre-commit": {
     ...
