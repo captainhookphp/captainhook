@@ -110,6 +110,25 @@ class BuilderTest extends TestCase
         $this->assertStringContainsString('pre-commit', $code);
         $this->assertStringContainsString('$captainHook->run', $code);
     }
+    /**
+     * Tests Builder::build
+     */
+    public function testBuildWSLTemplate(): void
+    {
+        $resolver   = $this->createResolverMock(CH_PATH_FILES . '/bin/captainhook', false);
+        $repository = $this->createRepositoryMock(CH_PATH_FILES);
+        $config     = $this->createConfigMock(true, CH_PATH_FILES . '/template/captainhook.json');
+        $runConfig  = new Run(['mode' => 'wsl', 'exec' => '', 'path' => '']);
+        $config->method('getRunConfig')->willReturn($runConfig);
+        $config->method('getBootstrap')->willReturn('vendor/autoload.php');
+
+        $template = Builder::build($config, $repository, $resolver);
+        $this->assertInstanceOf(Local\WSL::class, $template);
+
+        $code = $template->getCode('pre-commit');
+        $this->assertStringContainsString('pre-commit', $code);
+        $this->assertStringContainsString('wsl.exe', $code);
+    }
 
     /**
      * Tests Builder::build
