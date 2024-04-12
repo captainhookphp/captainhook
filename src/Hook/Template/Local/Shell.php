@@ -67,7 +67,7 @@ class Shell extends Template\Local
      *
      * @return string
      */
-    private function getExecutable(): string
+    protected function getExecutable(): string
     {
         $executable = !empty($this->config->getPhpPath()) ? $this->config->getPhpPath() . ' ' : '';
 

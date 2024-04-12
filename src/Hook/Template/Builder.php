@@ -18,10 +18,8 @@ use CaptainHook\App\Console\Runtime\Resolver;
 use CaptainHook\App\Hook\Template;
 use CaptainHook\App\Hook\Template\Local\PHP;
 use CaptainHook\App\Hook\Template\Local\Shell;
+use CaptainHook\App\Hook\Template\Local\WSL;
 use RuntimeException;
-use SebastianFeldmann\Camino\Check;
-use SebastianFeldmann\Camino\Path\Directory;
-use SebastianFeldmann\Camino\Path\File;
 use SebastianFeldmann\Git\Repository;
 
 /**
@@ -61,6 +59,12 @@ abstract class Builder
                 );
             case Template::PHP:
                 return new PHP(
+                    $pathInfo,
+                    $config,
+                    $resolver->isPharRelease()
+                );
+            case Template::WSL:
+                return new WSL(
                     $pathInfo,
                     $config,
                     $resolver->isPharRelease()
