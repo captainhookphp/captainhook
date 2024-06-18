@@ -114,7 +114,7 @@ abstract class Hook extends RepositoryAware
     {
         if ($this->resolver->isPharRelease()) {
             $bootstrapFile = dirname($config->getPath()) . '/' . $config->getBootstrap();
-            if (!file_exists($bootstrapFile)) {
+            if (!file_exists($bootstrapFile) && $config->getBootstrap() !== 'vendor/autoload.php') {
                 throw new RuntimeException('bootstrap file not found');
             }
             try {
