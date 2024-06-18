@@ -74,8 +74,8 @@ class Docker implements Template
             '',
             '# installed by CaptainHook ' . CH::VERSION,
             '',
-            '# read original hook stdIn to pass it in as --input option',
-            'input=$(cat)',
+            '# if necessary read original hook stdIn to pass it in as --input option',
+            Hooks::receivesStdIn($hook) ? 'input=$(cat)' : 'input=""',
             '',
             'if sh -c ": >/dev/tty" >/dev/null 2>/dev/null; then',
             '    exec < /dev/tty',
@@ -85,7 +85,7 @@ class Docker implements Template
             . $this->resolveBinaryPath()
             . $config
             . $bootstrap
-            . ' --input="$input"'
+            . ' --input=\""$input"\"'
             . ' hook:' . $hook
             . ' "$@"'
         ];
