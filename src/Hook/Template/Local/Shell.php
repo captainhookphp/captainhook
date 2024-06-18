@@ -15,6 +15,7 @@ namespace CaptainHook\App\Hook\Template\Local;
 
 use CaptainHook\App\CH;
 use CaptainHook\App\Hook\Template;
+use CaptainHook\App\Hooks;
 
 /**
  * Shell class
@@ -43,8 +44,8 @@ class Shell extends Template\Local
             '',
             'INTERACTIVE="--no-interaction"',
             '',
-            '# read original hook stdIn to pass it in as --input option',
-            'input=$(cat)',
+            '# if necessary read original hook stdIn to pass it in as --input option',
+            Hooks::receivesStdIn($hook) ? 'input=$(cat)' : 'input=""',
             '',
             'if [ -t 1 ]; then',
             '    # If we\'re in a terminal, redirect stdout and stderr to /dev/tty and',
