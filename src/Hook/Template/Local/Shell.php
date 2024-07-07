@@ -57,7 +57,7 @@ class Shell extends Template\Local
             $this->getExecutable()
                 . ' $INTERACTIVE'
                 . ' --configuration=' . $this->pathInfo->getConfigPath()
-                . ' --bootstrap=' . $this->config->getBootstrap()
+                . $this->getBootstrapCmdOption()
                 . ' --input="$input"'
                 . ' hook:' . $hook . ' "$@"'
         ];

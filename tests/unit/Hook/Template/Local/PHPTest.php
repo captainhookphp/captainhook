@@ -67,6 +67,7 @@ class PHPTest extends TestCase
         $pathInfo = $this->createMock(PathInfo::class);
         $pathInfo->method('getExecutablePath')->willReturn('./vendor/bin/captainhook');
         $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
+        $pathInfo->method('isPhar')->willReturn(false);
 
         $config = $this->createConfigMock(false, 'captainhook.json');
         $config->method('getBootstrap')->willReturn('vendor/autoload.php');
@@ -87,11 +88,12 @@ class PHPTest extends TestCase
         $pathInfo = $this->createMock(PathInfo::class);
         $pathInfo->method('getExecutablePath')->willReturn('/usr/local/bin/captainhook');
         $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
+        $pathInfo->method('isPhar')->willReturn(true);
 
         $config = $this->createConfigMock(false, 'captainhook.json');
         $config->method('getBootstrap')->willReturn('vendor/autoload.php');
 
-        $template   = new PHP($pathInfo, $config, true);
+        $template   = new PHP($pathInfo, $config);
         $code       = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/usr/bin/env php', $code);
@@ -107,11 +109,12 @@ class PHPTest extends TestCase
         $pathInfo = $this->createMock(PathInfo::class);
         $pathInfo->method('getExecutablePath')->willReturn('tools/captainhook.phar');
         $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
+        $pathInfo->method('isPhar')->willReturn(true);
 
         $config = $this->createConfigMock(false, 'captainhook.json');
         $config->method('getBootstrap')->willReturn('vendor/autoload.php');
 
-        $template   = new PHP($pathInfo, $config, true);
+        $template   = new PHP($pathInfo, $config);
         $code       = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/usr/bin/env php', $code);
@@ -127,11 +130,12 @@ class PHPTest extends TestCase
         $pathInfo = $this->createMock(PathInfo::class);
         $pathInfo->method('getExecutablePath')->willReturn('tools/captainhook.phar');
         $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
+        $pathInfo->method('isPhar')->willReturn(true);
 
         $config = $this->createConfigMock(false, 'captainhook.json');
         $config->method('getBootstrap')->willReturn('vendor/autoload.php');
 
-        $template   = new PHP($pathInfo, $config, true);
+        $template   = new PHP($pathInfo, $config);
         $code       = $template->getCode('post-rewrite');
 
         $this->assertStringContainsString('#!/usr/bin/env php', $code);

@@ -79,7 +79,7 @@ class PreCommitTest extends TestCase
     public function testExecutePhar(): void
     {
         $resolver = $this->createMock(Resolver::class);
-        $resolver->expects($this->once())->method('isPharRelease')->willReturn(true);
+        $resolver->expects($this->atLeast(1))->method('isPharRelease')->willReturn(true);
 
         $repo     = new DummyRepo();
         $output   = new NullOutput();
@@ -106,7 +106,7 @@ class PreCommitTest extends TestCase
     public function testExecutePharBootstrapNotFound(): void
     {
         $resolver = $this->createMock(Resolver::class);
-        $resolver->expects($this->once())->method('isPharRelease')->willReturn(true);
+        $resolver->expects($this->atLeast(1))->method('isPharRelease')->willReturn(true);
 
         $repo     = new DummyRepo();
         $output   = new NullOutput();
@@ -128,7 +128,7 @@ class PreCommitTest extends TestCase
     public function testExecutePharBootstrapNotSet(): void
     {
         $resolver = $this->createMock(Resolver::class);
-        $resolver->expects($this->once())->method('isPharRelease')->willReturn(true);
+        $resolver->expects($this->atLeast(1))->method('isPharRelease')->willReturn(true);
 
         $repo     = new DummyRepo();
         $output   = new NullOutput();

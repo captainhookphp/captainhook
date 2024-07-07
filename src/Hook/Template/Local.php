@@ -15,6 +15,7 @@ namespace CaptainHook\App\Hook\Template;
 
 use CaptainHook\App\Config;
 use CaptainHook\App\Hook\Template;
+use CaptainHook\App\Runner\Bootstrap\Util;
 
 abstract class Local implements Template
 {
@@ -33,24 +34,15 @@ abstract class Local implements Template
     protected Config $config;
 
     /**
-     * Is the executable a phar file
-     *
-     * @var bool
-     */
-    protected bool $isPhar;
-
-    /**
      * Local constructor
      *
      * @param \CaptainHook\App\Hook\Template\PathInfo $pathInfo
      * @param \CaptainHook\App\Config                 $config
-     * @param bool                                    $isPhar
      */
-    public function __construct(PathInfo $pathInfo, Config $config, bool $isPhar)
+    public function __construct(PathInfo $pathInfo, Config $config)
     {
         $this->pathInfo = $pathInfo;
         $this->config   = $config;
-        $this->isPhar   = $isPhar;
     }
 
     /**
@@ -62,6 +54,16 @@ abstract class Local implements Template
     public function getCode(string $hook): string
     {
         return implode(PHP_EOL, $this->getHookLines($hook)) . PHP_EOL;
+    }
+
+    /**
+     * Returns the bootstrap option depending on the current runtime (can be empty)
+     *
+     * @return string
+     */
+    public function getBootstrapCmdOption(): string
+    {
+        return Util::bootstrapCmdOption($this->pathInfo->isPhar(), $this->config);
     }
 
     /**

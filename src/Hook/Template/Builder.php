@@ -19,6 +19,7 @@ use CaptainHook\App\Hook\Template;
 use CaptainHook\App\Hook\Template\Local\PHP;
 use CaptainHook\App\Hook\Template\Local\Shell;
 use CaptainHook\App\Hook\Template\Local\WSL;
+use CaptainHook\App\Runner\Bootstrap\Util;
 use RuntimeException;
 use SebastianFeldmann\Git\Repository;
 
@@ -44,37 +45,23 @@ abstract class Builder
      */
     public static function build(Config $config, Repository $repository, Resolver $resolver): Template
     {
-        $pathInfo       = new PathInfo($repository->getRoot(), $config->getPath(), $resolver->getExecutable());
-        $bootstrapPath  = dirname($config->getPath()) . '/' . $config->getBootstrap();
-
-        if (!file_exists($bootstrapPath)) {
-            throw new RuntimeException('bootstrap file not found: \'' . $bootstrapPath . '\'');
-        }
+        $pathInfo = new PathInfo(
+            $repository->getRoot(),
+            $config->getPath(),
+            $resolver->getExecutable(),
+            $resolver->isPharRelease()
+        );
+        Util::validateBootstrapPath($resolver->isPharRelease(), $config);
 
         switch ($config->getRunConfig()->getMode()) {
             case Template::DOCKER:
-                return new Docker(
-                    $pathInfo,
-                    $config
-                );
+                return new Docker($pathInfo, $config);
             case Template::PHP:
-                return new PHP(
-                    $pathInfo,
-                    $config,
-                    $resolver->isPharRelease()
-                );
+                return new PHP($pathInfo, $config);
             case Template::WSL:
-                return new WSL(
-                    $pathInfo,
-                    $config,
-                    $resolver->isPharRelease()
-                );
+                return new WSL($pathInfo, $config);
             default:
-                return new Shell(
-                    $pathInfo,
-                    $config,
-                    $resolver->isPharRelease()
-                );
+                return new Shell($pathInfo, $config);
         }
     }
 }

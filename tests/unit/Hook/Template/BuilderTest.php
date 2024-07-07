@@ -57,6 +57,41 @@ class BuilderTest extends TestCase
         $this->assertStringContainsString('pre-commit', $code);
         $this->assertStringContainsString('docker exec -i captain-container', $code);
         $this->assertStringContainsString('vendor/bin/captainhook', $code);
+        $this->assertStringContainsString('--bootstrap=vendor/autoload.php', $code);
+    }
+
+    /**
+     * Tests Builder::build
+     */
+    public function testBuildDockerTemplateWithoutBootstrapFromPHAR(): void
+    {
+        $repo = new DummyRepo(
+            [],
+            [
+                'captainhook.json' => '{}',
+                'vendor' => [
+                    'autoload.php' => '',
+                    'bin' => [
+                        'captainhook' => ''
+                    ]
+                ]
+            ]
+        );
+
+        $resolver   = $this->createResolverMock($repo->getRoot() . '/vendor/bin/captainhook', true);
+        $repository = $this->createRepositoryMock($repo->getRoot());
+        $config     = $this->createConfigMock(true, $repo->getRoot() . '/captainhook.json');
+        $runConfig  = new Run(['mode' => 'docker', 'exec' => 'docker exec captain-container', 'path' => '']);
+        $config->method('getRunConfig')->willReturn($runConfig);
+        $config->method('getBootstrap')->willReturn('');
+
+        $template = Builder::build($config, $repository, $resolver);
+        $this->assertInstanceOf(Docker::class, $template);
+
+        $code = $template->getCode('pre-commit');
+        $this->assertStringContainsString('pre-commit', $code);
+        $this->assertStringContainsString('docker exec -i captain-container', $code);
+        $this->assertStringNotContainsString('--bootstrap=', $code);
     }
 
     /**
@@ -94,6 +129,26 @@ class BuilderTest extends TestCase
     /**
      * Tests Builder::build
      */
+    public function testBuildLocalTemplateWithoutBootstrapFromPHAR(): void
+    {
+        $resolver   = $this->createResolverMock(CH_PATH_FILES . '/bin/captainhook', true);
+        $repository = $this->createRepositoryMock(CH_PATH_FILES);
+        $config     = $this->createConfigMock(true, CH_PATH_FILES . '/template/captainhook.json');
+        $runConfig  = new Run(['mode' => 'shell', 'exec' => '', 'path' => '']);
+        $config->method('getRunConfig')->willReturn($runConfig);
+        $config->method('getBootstrap')->willReturn('');
+
+        $template = Builder::build($config, $repository, $resolver);
+        $this->assertInstanceOf(Local\Shell::class, $template);
+
+        $code = $template->getCode('pre-commit');
+        $this->assertStringContainsString('pre-commit', $code);
+        $this->assertStringNotContainsString('--bootstrap=', $code);
+    }
+
+    /**
+     * Tests Builder::build
+     */
     public function testBuildLocalTemplate(): void
     {
         $resolver   = $this->createResolverMock(CH_PATH_FILES . '/bin/captainhook', false);
@@ -110,6 +165,7 @@ class BuilderTest extends TestCase
         $this->assertStringContainsString('pre-commit', $code);
         $this->assertStringContainsString('$captainHook->run', $code);
     }
+
     /**
      * Tests Builder::build
      */
@@ -137,7 +193,7 @@ class BuilderTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        $resolver   = $this->createResolverMock(CH_PATH_FILES . '/bin/captainhook', false);
+        $resolver   = $this->createResolverMock(CH_PATH_FILES . '/bin/captainhook');
         $repository = $this->createRepositoryMock(CH_PATH_FILES);
         $config     = $this->createConfigMock(true, CH_PATH_FILES . '/template/captainhook.json');
         $runConfig  = new Run(['mode' => 'php', 'exec' => '', 'path' => '']);
@@ -159,7 +215,7 @@ class BuilderTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        $resolver   = $this->createResolverMock('./captainhook', false);
+        $resolver   = $this->createResolverMock('./captainhook');
         $repository = $this->createRepositoryMock(CH_PATH_FILES . '/config');
         $config     = $this->createConfigMock(true, CH_PATH_FILES . '/config/valid.json');
         $runConfig  = new Run(['mode' => 'php', 'exec' => '', 'path' => '']);

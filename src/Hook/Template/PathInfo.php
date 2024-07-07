@@ -52,11 +52,19 @@ class PathInfo
     private File $executable;
 
     /**
+     * PHAR or composer runtime
+     *
+     * @var bool
+     */
+    private bool $isPhar;
+
+    /**
      * @param string $repositoryPath
      * @param string $configPath
      * @param string $execPath
+     * @param bool   $isPhar
      */
-    public function __construct(string $repositoryPath, string $configPath, string $execPath)
+    public function __construct(string $repositoryPath, string $configPath, string $execPath, bool $isPhar)
     {
         $this->repositoryAbsolute = self::toAbsolutePath($repositoryPath);
         $this->repository         = new Directory($this->repositoryAbsolute);
@@ -64,8 +72,14 @@ class PathInfo
         $this->config             = new File($this->configAbsolute);
         $this->executableAbsolute = self::toAbsolutePath($execPath);
         $this->executable         = new File($this->executableAbsolute);
+        $this->isPhar             = $isPhar;
     }
 
+    /**
+     * Returns the path to the captainhook executable
+     *
+     * @return string
+     */
     public function getExecutablePath(): string
     {
         // check if the captainhook binary is in the repository bin directory
@@ -76,9 +90,23 @@ class PathInfo
         return $this->getPathFromTo($this->repository, $this->executable);
     }
 
+    /**
+     * Returns the path to the captainhook configuration file
+     * @return string
+     */
     public function getConfigPath(): string
     {
         return $this->getPathFromTo($this->repository, $this->config);
+    }
+
+    /**
+     * Runtime indicator
+     *
+     * @return bool
+     */
+    public function isPhar(): bool
+    {
+        return $this->isPhar;
     }
 
     /**

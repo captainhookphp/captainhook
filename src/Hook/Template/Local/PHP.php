@@ -39,7 +39,7 @@ class PHP extends Template\Local
      */
     public function getHookLines(string $hook): array
     {
-        return $this->isPhar ? $this->getPharHookLines($hook) : $this->getSrcHookLines($hook);
+        return $this->pathInfo->isPhar() ? $this->getPharHookLines($hook) : $this->getSrcHookLines($hook);
     }
 
     /**
@@ -105,12 +105,15 @@ class PHP extends Template\Local
     {
         $configPath     = $this->pathInfo->getConfigPath();
         $executablePath = $this->pathInfo->getExecutablePath();
-        $bootstrap      = $this->config->getBootstrap();
         $stdIn          = $this->getStdInHandling($hook);
 
         $executableInclude = substr($executablePath, 0, 1) == '/'
                            ? '\'' . $executablePath . '\''
                            : '__DIR__ . \'/../../' . $executablePath  . '\'';
+
+        $bootstrapOption       = $this->getBootstrapCmdOption();
+        $bootstrapOptionQuoted = empty($bootstrapOption) ? '' : '            \'' . $bootstrapOption . '\',';
+
         return array_merge(
             [
                 '#!/usr/bin/env php',
@@ -127,7 +130,7 @@ class PHP extends Template\Local
                 '            \'hook:' . $hook . '\',',
                 '            \'--configuration=' . $configPath . ',',
                 '            \'--git-directory=\' . dirname(__DIR__, 2) . \'/.git\',',
-                '            \'--bootstrap=' . $bootstrap . '\',',
+                $bootstrapOptionQuoted,
                 '            \'--input=\' . trim($input) . \'\',',
                 '        ],',
                 '        array_slice($argv, 1)',

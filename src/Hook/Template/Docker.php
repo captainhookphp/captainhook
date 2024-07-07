@@ -17,6 +17,7 @@ use CaptainHook\App\CH;
 use CaptainHook\App\Config;
 use CaptainHook\App\Hook\Template;
 use CaptainHook\App\Hooks;
+use CaptainHook\App\Runner\Bootstrap\Util;
 
 /**
  * Docker class
@@ -67,7 +68,7 @@ class Docker implements Template
     {
         $path2Config = $this->pathInfo->getConfigPath();
         $config      = $path2Config !== CH::CONFIG ? ' --configuration=' . escapeshellarg($path2Config) : '';
-        $bootstrap   = !empty($this->config->getBootstrap()) ? ' --bootstrap=' . $this->config->getBootstrap() : '';
+        $bootstrap   = Util::bootstrapCmdOption($this->pathInfo->isPhar(), $this->config);
 
         $lines = [
             '#!/bin/sh',

@@ -28,12 +28,13 @@ class WSLTest extends ShellTest
         $pathInfo = $this->createMock(PathInfo::class);
         $pathInfo->method('getExecutablePath')->willReturn('vendor/bin/captainhook');
         $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
+        $pathInfo->method('isPhar')->willReturn(false);
 
         $config = $this->createConfigMock(false, 'captainhook.json');
         $config->method('getBootstrap')->willReturn('vendor/autoload.php');
         $config->method('getPhpPath')->willReturn('');
 
-        $template = new WSL($pathInfo, $config, false);
+        $template = new WSL($pathInfo, $config);
         $code     = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);
@@ -50,12 +51,13 @@ class WSLTest extends ShellTest
         $pathInfo = $this->createMock(PathInfo::class);
         $pathInfo->method('getExecutablePath')->willReturn('vendor/bin/captainhook');
         $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
+        $pathInfo->method('isPhar')->willReturn(false);
 
         $config = $this->createConfigMock(false, 'captainhook.json');
         $config->method('getBootstrap')->willReturn('vendor/autoload.php');
         $config->method('getPhpPath')->willReturn('/usr/bin/php7.4');
 
-        $template = new WSL($pathInfo, $config, false);
+        $template = new WSL($pathInfo, $config);
         $code     = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);
@@ -72,6 +74,7 @@ class WSLTest extends ShellTest
         $pathInfo = $this->createMock(PathInfo::class);
         $pathInfo->method('getExecutablePath')->willReturn('vendor/bin/captainhook');
         $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
+        $pathInfo->method('isPhar')->willReturn(false);
 
         $config    = $this->createConfigMock(false, 'captainhook.json');
         $runConfig = new Run(['path' => 'tools/captainhook.phar']);
@@ -79,7 +82,7 @@ class WSLTest extends ShellTest
         $config->method('getBootstrap')->willReturn('vendor/autoload.php');
         $config->method('getPhpPath')->willReturn('/usr/bin/php7.4');
 
-        $template = new WSL($pathInfo, $config, false);
+        $template = new WSL($pathInfo, $config);
         $code     = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);
@@ -96,12 +99,13 @@ class WSLTest extends ShellTest
         $pathInfo = $this->createMock(PathInfo::class);
         $pathInfo->method('getExecutablePath')->willReturn('/usr/local/bin/captainhook');
         $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
+        $pathInfo->method('isPhar')->willReturn(false);
 
         $config = $this->createConfigMock(false, 'captainhook.json');
         $config->method('getBootstrap')->willReturn('vendor/autoload.php');
         $config->method('getPhpPath')->willReturn('');
 
-        $template = new WSL($pathInfo, $config, false);
+        $template = new WSL($pathInfo, $config);
         $code     = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);
@@ -118,12 +122,13 @@ class WSLTest extends ShellTest
         $pathInfo = $this->createMock(PathInfo::class);
         $pathInfo->method('getExecutablePath')->willReturn('/usr/local/bin/captainhook');
         $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
+        $pathInfo->method('isPhar')->willReturn(false);
 
         $config = $this->createConfigMock(false, 'captainhook.json');
         $config->method('getBootstrap')->willReturn('vendor/autoload.php');
         $config->method('getPhpPath')->willReturn('/usr/bin/php7.4');
 
-        $template = new WSL($pathInfo, $config, false);
+        $template = new WSL($pathInfo, $config);
         $code     = $template->getCode('commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);
@@ -141,12 +146,13 @@ class WSLTest extends ShellTest
         $pathInfo = $this->createMock(PathInfo::class);
         $pathInfo->method('getExecutablePath')->willReturn('/usr/local/bin/captainhook');
         $pathInfo->method('getConfigPath')->willReturn('captainhook.json');
+        $pathInfo->method('isPhar')->willReturn(false);
 
         $config = $this->createConfigMock(false, 'captainhook.json');
         $config->method('getBootstrap')->willReturn('vendor/autoload.php');
         $config->method('getPhpPath')->willReturn('');
 
-        $template = new WSL($pathInfo, $config, false);
+        $template = new WSL($pathInfo, $config);
         $code     = $template->getCode('prepare-commit-msg');
 
         $this->assertStringContainsString('#!/bin/sh', $code);
