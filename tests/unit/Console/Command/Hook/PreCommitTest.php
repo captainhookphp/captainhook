@@ -14,9 +14,12 @@ namespace CaptainHook\App\Console\Command\Hook;
 use CaptainHook\App\Console\Runtime\Resolver;
 use CaptainHook\App\Git\DummyRepo;
 use Exception;
+use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\NullOutput;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class PreCommitTest extends TestCase
 {
@@ -117,6 +120,27 @@ class PreCommitTest extends TestCase
 
         $cmd = new PreCommit($resolver);
         $this->assertEquals(1, $cmd->run($input, $output));
+    }
+
+    /**
+     * Tests PreCommit::run
+     */
+    public function testExecutePharBootstrapNotSet(): void
+    {
+        $resolver = $this->createMock(Resolver::class);
+        $resolver->expects($this->once())->method('isPharRelease')->willReturn(true);
+
+        $repo     = new DummyRepo();
+        $output   = new NullOutput();
+        $input    = new ArrayInput(
+            [
+                '--configuration' => CH_PATH_FILES . '/config/empty.json',
+                '--git-directory' => $repo->getGitDir()
+            ]
+        );
+
+        $cmd = new PreCommit($resolver);
+        $this->assertEquals(0, $cmd->run($input, $output));
     }
 
     /**

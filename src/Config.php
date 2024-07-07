@@ -256,13 +256,14 @@ class Config
     /**
      * Return bootstrap file if configured, CWD/vendor/autoload.php by default
      *
+     * @param  string $default
      * @return string
      */
-    public function getBootstrap(): string
+    public function getBootstrap(string $default = 'vendor/autoload.php'): string
     {
         return !empty($this->settings[self::SETTING_BOOTSTRAP])
             ? $this->settings[self::SETTING_BOOTSTRAP]
-            : 'vendor/autoload.php';
+            : $default;
     }
 
     /**
