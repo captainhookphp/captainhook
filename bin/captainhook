@@ -42,6 +42,8 @@ use Symfony\Component\Console\Input\ArgvInput;
 
 (static function($argv)
 {
+    define('__CAPTAINHOOK_RUNNING__', true);
+
     // check installation type [composer bin dir, git clone / phar, composer package dir]
     $composerAutoloadLocations = [
         __DIR__ . '/../autoload.php',
@@ -64,6 +66,8 @@ use Symfony\Component\Console\Input\ArgvInput;
         );
         exit(1);
     }
+
+    $GLOBALS['__composer_autoload_files'] = [];
 
     try {
       require CAPTAINHOOK_COMPOSER_AUTOLOAD;
