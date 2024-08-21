@@ -63,7 +63,8 @@
     "sebastianfeldmann/captainhook": "*"
   },
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "platform": {"php": "8.0.0"}
   },
   "scripts": {
     "post-install-cmd": "tools/phive install --force-accept-unsigned",
