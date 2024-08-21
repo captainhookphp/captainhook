@@ -26,7 +26,7 @@ final class CH
     /**
      * Current CaptainHook version
      */
-    public const VERSION = '5.23.4-alpha-1';
+    public const VERSION = '5.23.4-alpha-2';
 
     /**
      * Release date of the current version
