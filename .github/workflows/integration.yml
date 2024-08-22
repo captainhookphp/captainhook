@@ -9,10 +9,16 @@ jobs:
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
-        php: ['8.0', '8.1', '8.2']
-        buildphar: [false, false, true]
-        experimental: [false]
         include:
+          - php: 8.0
+            buildphar: false
+            experimental: false
+          - php: 8.1
+            buildphar: false
+            experimental: false
+          - php: 8.2
+            buildphar: true
+            experimental: false
           - php: 8.3
             buildphar: true
             experimental: false
@@ -59,7 +65,7 @@ jobs:
     - name: Static code analysis
       run: tools/phpstan analyse
 
-    - name: Force install Symfony 5
+    - name: Force install PHAR Symfony version
       if: ${{ matrix.buildphar }}
       run: COMPOSER=composer.phar.json composer update
 
