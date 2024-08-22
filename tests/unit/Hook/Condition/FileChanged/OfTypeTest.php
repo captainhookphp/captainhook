@@ -60,6 +60,29 @@ class OfTypeTest extends TestCase
         $this->assertTrue($fileChange->isTrue($io, $repository));
     }
 
+    /**
+     * Tests OfType::isTrue
+     */
+    public function testChangedFileButNoneOfType(): void
+    {
+        $io = $this->createIOMock();
+        $io->method('getArgument')->willReturn('hook:pre-push');
+        $io->expects($this->atLeastOnce())
+            ->method('getStandardInput')
+            ->willReturn(
+                [
+                    'refs/heads/main 9dfa0fa6221d75f48b2dfac359127324bedf8409' .
+                    ' refs/heads/main 8309f6e16097754469c485e604900c573bf2c5d8'
+                ]
+            );
+        $operator   = $this->createGitDiffOperator(['fiz.txt', 'foo.txt']);
+        $repository = $this->createRepositoryMock('');
+        $repository->expects($this->once())->method('getDiffOperator')->willReturn($operator);
+
+        $fileChange = new OfType('php');
+        $this->assertFalse($fileChange->isTrue($io, $repository));
+    }
+
 
     /**
      * Tests OfType::isTrue
