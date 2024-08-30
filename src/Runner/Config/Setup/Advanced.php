@@ -107,11 +107,11 @@ class Advanced extends Guided implements Setup
         $options = [];
         $addOption = $this->io->ask('  <info>Add a validator option?</info> <comment>[y,n]</comment> ', 'n');
         while (IOUtil::answerToBool($addOption)) {
-            $options = array_merge($options, $this->getPHPActionOption());
+            $options[] = $this->getPHPActionOption();
             // add another action?
             $addOption = $this->io->ask('  <info>Add another validator option?</info> <comment>[y,n]</comment> ', 'n');
         }
-        return $options;
+        return array_merge(...$options);
     }
 
     /**

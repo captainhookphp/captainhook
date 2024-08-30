@@ -90,9 +90,9 @@ class DoesNotContainRegex extends Check
         $index = $repository->getIndexOperator();
         $files = [];
         foreach ($this->fileExtensions as $ext) {
-            $files = array_merge($files, $index->getStagedFilesOfType($ext));
+            $files[] = $index->getStagedFilesOfType($ext);
         }
-        return $files;
+        return array_merge(...$files);
     }
 
     /**

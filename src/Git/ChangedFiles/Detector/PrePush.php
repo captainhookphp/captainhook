@@ -103,13 +103,10 @@ class PrePush extends Detector
                 $newHash = 'HEAD';
             }
             if (!empty($oldHash)) {
-                $files = array_merge(
-                    $files,
-                    $this->repository->getDiffOperator()->getChangedFiles($oldHash, $newHash, $filter)
-                );
+                $files[] = $this->repository->getDiffOperator()->getChangedFiles($oldHash, $newHash, $filter);
             }
         }
-        return array_unique($files);
+        return array_unique(array_merge(...$files));
     }
 
     /**
