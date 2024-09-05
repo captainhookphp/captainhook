@@ -60,6 +60,7 @@ class Formatter
         'staged_files'  => Placeholder\StagedFiles::class,
         'changed_files' => Placeholder\ChangedFiles::class,
         'branch_files'  => Placeholder\BranchFiles::class,
+        'stdin'         => Placeholder\StdIn::class,
     ];
 
     /**

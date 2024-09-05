@@ -65,14 +65,16 @@ class FormatterTest extends TestCase
         $index  = $this->createGitIndexOperator(['foo/file1.php', 'bar/file2.php', 'baz/file3.php']);
         $io->method('getArguments')->willReturn([]);
         $config->method('getGitDirectory')->willReturn('./');
-        $repo->expects($this->atLeast(1))->method('getIndexOperator')->willReturn($index);
+        $repo->expects($this->exactly(3))->method('getIndexOperator')->willReturn($index);
 
         $formatter = new Formatter($io, $config, $repo);
         $command1  = $formatter->format('cmd1 argument {$STAGED_FILES|in-dir:foo} {$STAGED_FILES|in-dir:baz}');
         $command2  = $formatter->format('cmd2 argument {$STAGED_FILES}');
+        $command3  = $formatter->format('cmd3 argument {$STAGED_FILES}');
 
         $this->assertEquals('cmd1 argument foo/file1.php baz/file3.php', $command1);
         $this->assertEquals('cmd2 argument foo/file1.php bar/file2.php baz/file3.php', $command2);
+        $this->assertEquals('cmd3 argument foo/file1.php bar/file2.php baz/file3.php', $command3);
     }
 
 
