@@ -166,6 +166,27 @@
           </td>
         </tr>
         <tr>
+          <td><strong>{STDIN}</strong></td>
+          <td>*</td>
+          <td>Access original hook stdIn.</td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <h7>Hooks relying on stdIn:</h7>
+            <ul>
+              <li>pre-push</li>
+              <li>post-rewrite</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <h7>Examples:</h7>
+            <pre>
+echo {$STDIN} | bin/my-script-needs-stdin</pre>
+          </td>
+        </tr>
+        <tr>
           <td><strong>{$CONFIG}</strong></td>
           <td>*</td>
           <td>Access config values.</td>
