@@ -110,7 +110,7 @@
         breaks any unit test.
       </p>
 
-      <h5>Placeholders</h5>
+      <h5 id="placeholder">Placeholders</h5>
       <p>
         You can use placeholders in CLI actions that will get replaced by the Cap'n before execution. This way you can
         access the original hook arguments and some other neat stuff.
@@ -127,7 +127,6 @@
   }
 }</code></pre>
 
-      <h5 id="placeholder">Placeholders</h5>
       <p>
         Action placeholders work like this:
         <pre>{$ PLACEHOLDER | OPTION : ARGUMENT }</pre>
@@ -418,24 +417,24 @@ echo {$STDIN} | bin/my-script-needs-stdin</pre>
       </p>
       <pre><code class="javascript">{
   "config": {
-    "bootstrap": "../vendor/autoload.php",
-    "git-directory": "../../.git",
-    "fail-on-first-error": false,
-    "verbosity": "verbose",
     "ansi-colors": false,
-    "includes-level": 2,
-    "includes": [],
-    "plugins": [],
-    "php-path": "/usr/bin/php7.4",
+    "bootstrap": "../vendor/autoload.php",
     "custom": {
       "my-custom-index": "my-custom-value"
     },
+    "fail-on-first-error": false,
+    "git-directory": "../../.git",
+    "includes": [],
+    "includes-level": 2,
+    "plugins": [],
+    "php-path": "/usr/bin/php7.4",
     "run": {
       "mode": "docker",
       "exec": "docker exec -i CONTAINER_NAME",
       "path": "vendor/bin/captainhook",
       "git": "/docker/.git"
-    }
+    },
+    "verbosity": "verbose"
   }
 }</code></pre>
 
@@ -446,29 +445,29 @@ echo {$STDIN} | bin/my-script-needs-stdin</pre>
           <th>Default</th>
         </tr>
         <tr>
+          <td>ansi-colors</td>
+          <td>Enable or disable ANSI color output</td>
+          <td>true</td>
+        </tr>
+        <tr>
           <td>bootstrap</td>
           <td>Path to your bootstrap / autoloader file.</td>
           <td>vendor/autoload.php</td>
         </tr>
         <tr>
-          <td>git-directory</td>
-          <td>Custom path to your repositories .git directory (relative from the configuration file)</td>
-          <td>.git</td>
+          <td>custom</td>
+          <td>List of custom settings you need for replacements or custom actions</td>
+          <td>-</td>
         </tr>
         <tr>
           <td>fail-on-first-error</td>
-          <td>Stop hook execution on first error (true) or execute all actions and collect all errors (false)</td>
+          <td>Stop hook execution on first error (<code>true</code>) or execute all actions and collect all errors (<code>false</code>)</td>
           <td>true</td>
         </tr>
         <tr>
-          <td>verbosity</td>
-          <td>Define the output verbosity [quiet|normal|verbose|debug]</td>
-          <td>verbose</td>
-        </tr>
-        <tr>
-          <td>ansi-colors</td>
-          <td>Enable or disable ANSI color output</td>
-          <td>true</td>
+          <td>git-directory</td>
+          <td>Custom path to your repositories .git directory (relative from the configuration file)</td>
+          <td>.git</td>
         </tr>
         <tr>
           <td>includes</td>
@@ -498,14 +497,14 @@ echo {$STDIN} | bin/my-script-needs-stdin</pre>
           <td>-</td>
         </tr>
         <tr>
-          <td>custom</td>
-          <td>List of custom settings you need for replacements or custom actions</td>
-          <td>-</td>
+          <td>verbosity</td>
+          <td>Define the output verbosity (<code>quiet</code>|<code>normal</code>|<code>verbose</code>|<code>debug</code>)</td>
+          <td>verbose</td>
         </tr>
         <tr><td colspan="3"><strong>Run Configuration</strong></td></tr>
         <tr>
           <td>mode</td>
-          <td>CaptainHook execution mode (shell|php|local|docker)</td>
+          <td>CaptainHook execution mode (<code>shell</code>|<code>php</code>|<code>local</code>|<code>docker</code>)</td>
           <td>shell</td>
         </tr>
         <tr>
@@ -556,6 +555,44 @@ echo {$STDIN} | bin/my-script-needs-stdin</pre>
       <p>
         <strong>ATTENTION:</strong> Remember to exclude the file from version control ;)
       </p>
+
+      <a id="settings-action"></a>
+      <h3>Action settings</h3>
+      <p>
+        You can also configure settings for a specific action.
+      </p>
+      <pre><code class="javascript">{
+  "pre-commit": {
+    "enabled": true,
+    "actions": [
+      {
+        "action": "tools/phpunit.phar --configuration=phpunit.git.xml",
+        "config": {
+          "allow-failure": true,
+          "label": "Unit tests"
+        }
+      }
+    ]
+  }
+}</code></pre>
+
+      <table class="table">
+        <tr>
+          <th style="width:120px">Setting</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+        <tr>
+          <td>allow-failure</td>
+          <td>Indicates if the action can fail without stopping the git operation</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>label</td>
+          <td>The label to display when the action is executed</td>
+          <td>The value of <code>action</code></td>
+        </tr>
+      </table>
 
     </div>
 
