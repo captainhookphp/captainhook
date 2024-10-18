@@ -47,9 +47,6 @@ jobs:
     - name: PHP Version
       run: php -v
 
-    - name: PHP Info
-      run: php -i
-
     - name: Update composer
       run: composer self-update
 
