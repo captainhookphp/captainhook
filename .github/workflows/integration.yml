@@ -13,23 +13,18 @@ jobs:
           - php: 8.0
             buildphar: false
             experimental: false
-            ini: error_reporting="E_ALL"
           - php: 8.1
             buildphar: false
             experimental: false
-            ini: error_reporting="E_ALL"
           - php: 8.2
             buildphar: true
             experimental: false
-            ini: error_reporting="E_ALL"
           - php: 8.3
             buildphar: true
             experimental: false
-            ini: error_reporting="E_ALL"
           - php: 8.4
             buildphar: false
             experimental: true
-            ini: error_reporting="E_ALL & ~E_DEPRECATED"
     env:
       PHAR: build/phar/captainhook.phar
 
@@ -41,7 +36,6 @@ jobs:
       with:
         php-version: ${{ matrix.php }}
         tools: composer:v2
-        ini-values: ${{ matrix.ini }}
         extensions: mbstring
 
     - name: PHP Version
