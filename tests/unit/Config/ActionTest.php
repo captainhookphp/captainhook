@@ -15,100 +15,66 @@ use PHPUnit\Framework\TestCase;
 
 class ActionTest extends TestCase
 {
-    /**
-     * Tests Action::getJsonData
-     */
-    public function testAllowFailure(): void
+    public function testItCanAllowFailure(): void
     {
         $action = new Action('\\Foo\\Bar', [], [], ['allow-failure' => true]);
         $this->assertTrue($action->isFailureAllowed());
     }
 
-    /**
-     * Tests Action::getJsonData
-     */
-    public function testFailureNotAllowedByDefault(): void
+    public function testItDoesNotAllowFailureByDefault(): void
     {
         // nothing configured so should not be allowed
         $action = new Action('\\Foo\\Bar', [], [], []);
         $this->assertFalse($action->isFailureAllowed());
     }
 
-    /**
-     * Tests Action::getJsonData
-     */
-    public function testFailureAllowedByDefault(): void
+    public function testItAllowsChangingTheFailureDefault(): void
     {
         $action = new Action('\\Foo\\Bar');
         $this->assertTrue($action->isFailureAllowed(true));
     }
 
-    /**
-     * Tests Action::getJsonData
-     */
-    public function testFailureExcplitlyNotAllowed(): void
+    public function testFailureCanBeExplicitlyDisallowed(): void
     {
         $action = new Action('\\Foo\\Bar', [], [], ['allow-failure' => false]);
         $this->assertFalse($action->isFailureAllowed(true));
     }
 
-    /**
-     * Tests Action::getAction
-     */
-    public function testGetAction(): void
+    public function testItProvidesAccessToTheAction(): void
     {
         $action = new Action('\\Foo\\Bar');
-
         $this->assertEquals('\\Foo\\Bar', $action->getAction());
     }
 
-    /**
-     * Tests Action::getLabel
-     */
-    public function testGetLabel(): void
+    public function testItProvidesAccessToTheLabel(): void
     {
         $action = new Action('\\Foo\\Bar', [], [], ['label' => 'My label']);
-
         $this->assertEquals('My label', $action->getLabel());
     }
 
-    /**
-     * Tests Action::getLabel
-     */
-    public function testGetLabelEmpty(): void
+    public function testTheLabelIsEmptyByDefault(): void
     {
         $action = new Action('\\Foo\\Bar');
-
         $this->assertEquals('\\Foo\\Bar', $action->getLabel());
     }
 
-    /**
-     * Tests Action::getOptions
-     */
-    public function testGetOptions(): void
+    public function testItProvidedAccessToTheOptions(): void
     {
         $action = new Action('\\Foo\\Bar');
-
         $this->assertEquals([], $action->getOptions()->getAll());
     }
 
-    /**
-     * Tests Action::getJsonData
-     */
-    public function testEmptyOptions(): void
+    public function testThatOptionsAreEmptyByDefault(): void
     {
         $action = new Action('\\Foo\\Bar');
         $config = $action->getJsonData();
-
         $this->assertCount(1, $config);
     }
 
     /**
-     * Tests Action::getJsonData
-     *
      * @throws \Exception
      */
-    public function testConditions(): void
+    public function testConditionsGetExportedToJson(): void
     {
         $conditions = [
             ['exec' => '\\Foo\\Bar', 'args' => []]
@@ -116,16 +82,13 @@ class ActionTest extends TestCase
 
         $action = new Action('\\Foo\\Bar', [], $conditions);
         $config = $action->getJsonData();
-
         $this->assertCount(1, $config['conditions']);
     }
 
     /**
-     * Tests Action::getConditions
-     *
      * @throws \Exception
      */
-    public function testGetConditions(): void
+    public function testItProvidesAccessToConditions(): void
     {
         $conditions = [
             ['exec' => '\\Foo\\Bar', 'args' => []],
@@ -133,18 +96,13 @@ class ActionTest extends TestCase
         ];
 
         $action = new Action('\\Foo\\Bar', [], $conditions);
-
         $this->assertCount(2, $action->getConditions());
     }
 
-    /**
-     * Tests Action::getJsonData
-     */
-    public function testSettings(): void
+    public function testSettingsWillBeExportedToJson(): void
     {
         $action = new Action('\\Foo\\Bar', [], [], ['allow-failure' => true]);
         $config = $action->getJsonData();
-
         $this->assertCount(1, $config['config']);
     }
 }
