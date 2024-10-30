@@ -216,7 +216,7 @@ class Formatter
         foreach ($raw as $rawOption) {
             $matches = [];
             if (preg_match('#^([a-z_\-]+):(.*)?$#i', $rawOption, $matches)) {
-                $options[strtolower($matches[1])] = $matches[2];
+                $options[strtolower($matches[1])] = $matches[2] ?? '';
             }
         }
         return $options;
