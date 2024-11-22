@@ -12,7 +12,9 @@
     "actions": [
       {
         "action": "phpunit --configuration=build/phpunit-hook.xml",
-        "options": [],
+        "options": {
+          "foo": "bar"
+        },
         "conditions": [
           {
             "exec": "and",
@@ -23,9 +25,7 @@
               ]
             },{
               "exec": "\\CaptainHook\\App\\Hook\\Condition\\AnyFileChanged",
-              "args": [
-                ["foo.php", "bar.php"]
-              ]
+              "args": []
             }]
           }
         ]
