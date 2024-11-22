@@ -64,6 +64,7 @@ class Application extends SymfonyApplication
                 new Cmd\Install($resolver),
                 new Cmd\Uninstall($resolver),
                 new Cmd\Configuration($resolver),
+                new Cmd\Info($resolver),
                 new Cmd\Add($resolver),
                 new Cmd\Disable($resolver),
                 new Cmd\Enable($resolver),

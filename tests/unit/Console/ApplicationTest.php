@@ -49,10 +49,9 @@ class ApplicationTest extends TestCase
                        ->disableOriginalConstructor()
                        ->getMock();
 
-        $output->expects($this->atLeastOnce())->method('write');
-
         $app = new Application('captainhook');
         $app->setAutoExit(false);
-        $app->run($input, $output);
+
+        $this->assertEquals(0, $app->run($input, $output));
     }
 }
