@@ -16,6 +16,7 @@ namespace CaptainHook\App\Runner;
 use CaptainHook\App\Exception;
 use CaptainHook\App\Hook\Util as HookUtil;
 use CaptainHook\App\Hooks;
+use CaptainHook\App\Runner\Hook\Arg;
 use RuntimeException;
 use SebastianFeldmann\Camino\Check;
 
@@ -44,7 +45,7 @@ abstract class Files extends RepositoryAware
     protected string $moveExistingTo = '';
 
     /**
-     * Hook that should be handled.
+     * Hook(s) that should be handled.
      *
      * @var array<int, string>
      */
@@ -81,25 +82,14 @@ abstract class Files extends RepositoryAware
      */
     public function setHook(string $hook): self
     {
-        if (empty($hook)) {
-            return $this;
-        }
+        $arg = new Arg(
+            $hook,
+            static function (string $hook): bool {
+                return !HookUtil::isInstallable($hook);
+            }
+        );
 
-        /** @var array<string> $hooks */
-        $hooks = explode(',', $hook);
-        $hooks = array_map('trim', $hooks);
-
-        $hooksValidationCallback = static function (string $hook): bool {
-            return !HookUtil::isInstallable($hook);
-        };
-        if (!empty(($invalidHooks = array_filter($hooks, $hooksValidationCallback)))) {
-            throw new Exception\InvalidHookName(
-                'Invalid hook name \'' . implode('\', \'', $invalidHooks) . '\''
-            );
-        }
-
-        $this->hooksToHandle = $hooks;
-
+        $this->hooksToHandle = $arg->hooks();
         return $this;
     }
 
