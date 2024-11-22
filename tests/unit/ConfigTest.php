@@ -19,38 +19,32 @@ use PHPUnit\Framework\TestCase;
 
 class ConfigTest extends TestCase
 {
-    /**
-     * Tests Config::__construct
-     */
-    public function testConstructor(): void
+    public function testItCanBeCreatedWithoutFile(): void
     {
         $config = new Config('./no-config.json');
         $this->assertFalse($config->isLoadedFromFile());
     }
 
-    /**
-     * Tests Config::isLoadedFromFile
-     */
-    public function testIsLoadedFromFile(): void
+    public function testItCanBeLoadedFromFile(): void
     {
         $config = new Config('valid.json', true);
         $this->assertTrue($config->isLoadedFromFile());
     }
 
-    /**
-     * Tests Config::getHookConfig
-     */
-    public function testGetInvalidHook(): void
+    public function testItCanReturnAllHookConfigs(): void
+    {
+        $config = new Config('valid.json', true);
+        $this->assertNotEmpty($config->getHookConfigs());
+    }
+
+    public function testItDoesNotAllowInvalidHookNames(): void
     {
         $this->expectException(Exception::class);
         $config = new Config('./no-config.json');
         $config->getHookConfig('foo');
     }
 
-    /**
-     * Tests Config::getHookConfigToExecute
-     */
-    public function testGetHookConfigWithVirtualHooks(): void
+    public function testItCombinesHooksAndVirtualHookConfigurations(): void
     {
         $config = new Config('./no-config.json');
         $config->getHookConfig('post-rewrite')->setEnabled(true);
@@ -63,19 +57,13 @@ class ConfigTest extends TestCase
         $this->assertCount(2, $hookConfig->getActions());
     }
 
-    /**
-     * Tests Config::getGitDirectory
-     */
-    public function testAssumeCwdAsGitDir(): void
+    public function testItAssumesCwdAsGitDir(): void
     {
         $config = new Config('./no-config.json');
         $this->assertEquals(getcwd() . '/.git', $config->getGitDirectory());
     }
 
-    /**
-     * Tests Config::getPath
-     */
-    public function testGetPath(): void
+    public function testItCanReturnTheConfigurationPath(): void
     {
         $path   = realpath(__DIR__ . '/../files/config/valid.json');
         $config = new Config($path);
@@ -83,10 +71,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($path, $config->getPath());
     }
 
-    /**
-     * Tests Config::getBootstrap
-     */
-    public function testGetBootstrapDefault(): void
+    public function testIsHasABootstrapDefault(): void
     {
         $path   = realpath(__DIR__ . '/../files/config/valid.json');
         $config = new Config($path);
@@ -94,10 +79,7 @@ class ConfigTest extends TestCase
         $this->assertEquals('vendor/autoload.php', $config->getBootstrap());
     }
 
-    /**
-     * Tests Config::getBootstrap
-     */
-    public function testGetBootstrapSetting(): void
+    public function testItCanSetTheBootstrap(): void
     {
         $path   = realpath(__DIR__ . '/../files/config/valid.json');
         $config = new Config($path, true, ['bootstrap' => 'libs/autoload.php']);
@@ -105,10 +87,7 @@ class ConfigTest extends TestCase
         $this->assertEquals('libs/autoload.php', $config->getBootstrap());
     }
 
-    /**
-     * Tests Config::isFailureAllowed
-     */
-    public function testIsFailureAllowedDefault(): void
+    public function testNoFailuresAreAllowedByDefault(): void
     {
         $path   = realpath(__DIR__ . '/../files/config/valid.json');
         $config = new Config($path, true);
@@ -116,101 +95,69 @@ class ConfigTest extends TestCase
         $this->assertFalse($config->isFailureAllowed());
     }
 
-    /**
-     * Tests Config::isFailureAllowed
-     */
-    public function testIsFailureAllowedSet(): void
+    public function testAllowFailureCanBeChanged(): void
     {
         $path   = realpath(__DIR__ . '/../files/config/valid.json');
         $config = new Config($path, true, ['allow-failure' => true]);
 
         $this->assertTrue($config->isFailureAllowed());
     }
-    /**
-     * Tests Config::useAnsiColors
-     */
-    public function testAnsiColorsEnabledByDefault(): void
+
+    public function testColorsAreEnabledByDefault(): void
     {
         $config = new Config('foo.json', true);
         $this->assertTrue($config->useAnsiColors());
     }
 
-    /**
-     * Tests Config::useAnsiColors
-     */
-    public function testDisableAnsiColors(): void
+    public function testAnsiColorsCanBeDisabled(): void
     {
         $config = new Config('foo.json', true, ['ansi-colors' => false]);
         $this->assertFalse($config->useAnsiColors());
     }
 
-    /**
-     * Tests Config::getRunMode
-     */
-    public function testGetRunMode(): void
+    public function testProvidesAccessToRunMode(): void
     {
         $config = new Config('foo.json', true, ['run-mode' => 'docker', 'run-exec' => 'foo']);
         $this->assertEquals('docker', $config->getRunConfig()->getMode());
     }
 
-    /**
-     * Tests Config::getRunExec
-     */
-    public function testGetRunExec(): void
+    public function testProvidesAccessToRunExec(): void
     {
         $config = new Config('foo.json', true, ['run-mode' => 'docker', 'run-exec' => 'foo']);
         $this->assertEquals('foo', $config->getRunConfig()->getDockerCommand());
     }
 
-    /**
-     * Tests Config::getRunPath
-     */
-    public function testGetRunPathEmptyByDefault(): void
+    public function testRunPathIsEmptyByDefault(): void
     {
         $config = new Config('foo.json', true, ['run-mode' => 'docker', 'run-exec' => 'foo']);
         $this->assertEquals('', $config->getRunConfig()->getCaptainsPath());
     }
 
-    /**
-     * Tests Config::getCustomSettings
-     */
-    public function testGetCustomSettings(): void
+    public function testAllowsCustomSettings(): void
     {
         $config = new Config('foo.json', true, ['custom' => ['foo' => 'foo']]);
         $this->assertEquals(['foo' => 'foo'], $config->getCustomSettings());
     }
 
-    /**
-     * Tests Config::getRunPath
-     */
-    public function testGetRunPath(): void
+    public function testProvidesAccessToRunPath(): void
     {
         $config = new Config('foo.json', true, ['run-mode' => 'docker', 'run-exec' => 'foo', 'run-path' => '/foo']);
         $this->assertEquals('/foo', $config->getRunConfig()->getCaptainsPath());
     }
 
-    /**
-     * Tests Config::failOnFirstError default
-     */
-    public function testFailOnFirstErrorDefault(): void
+    public function testFailOnFirstErrorIsTrueByDefault(): void
     {
         $config = new Config('foo.json', true, []);
         $this->assertTrue($config->failOnFirstError());
     }
 
-    /**
-     * Tests Config::failOnFirstError
-     */
-    public function testFailOnFirstError(): void
+    public function testFailOnFirstErrorCanBeChanged(): void
     {
         $config = new Config('foo.json', true, ['fail-on-first-error' => false]);
         $this->assertFalse($config->failOnFirstError());
     }
 
-    /**
-     * Tests Config::getJsonData
-     */
-    public function testGetJsonData(): void
+    public function testCanBeExportedToJsonData(): void
     {
         $config = new Config('./no-config.json');
         $json   = $config->getJsonData();
@@ -221,10 +168,7 @@ class ConfigTest extends TestCase
         $this->assertIsArray($json['pre-push']);
     }
 
-    /**
-     * Tests Config::getJsonData
-     */
-    public function testGetJsonDataWithSettings(): void
+    public function testCanBeExportedToJsonDataWithSettings(): void
     {
         $config = new Config(
             './no-config.json',
@@ -241,9 +185,6 @@ class ConfigTest extends TestCase
         $this->assertIsArray($json['pre-push']);
     }
 
-    /**
-     * Tests Config::getJsonData
-     */
     public function testGetJsonDataWithoutEmptyConfig(): void
     {
         $config = new Config('foo.json', true, []);
@@ -252,9 +193,6 @@ class ConfigTest extends TestCase
         $this->assertArrayNotHasKey('config', $json);
     }
 
-    /**
-     * Tests Config::getJsonData
-     */
     public function testGetJsonDataWithConfigSection(): void
     {
         $config = new Config('foo.json', true, ['run-mode' => 'docker', 'run-exec' => 'foo']);

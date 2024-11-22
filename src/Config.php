@@ -346,6 +346,16 @@ class Config
     }
 
     /**
+     * Return hook configs
+     *
+     * @return array<string, \CaptainHook\App\Config\Hook>
+     */
+    public function getHookConfigs(): array
+    {
+        return $this->hooks;
+    }
+
+    /**
      * Returns a hook config containing all the actions to execute
      *
      * Returns all actions from the triggered hook but also any actions of virtual hooks that might be triggered.
