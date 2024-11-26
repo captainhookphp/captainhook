@@ -138,7 +138,7 @@ class Reader extends Runner\RepositoryAware
     {
         if ($this->extensive) {
             $this->io->write(
-                ' ' . str_repeat('-', 18 - strlen($config->getName())) .
+                ' ' . str_repeat('-', 52 - strlen($config->getName())) .
                 '--[enabled: ' . $this->yesOrNo($config->isEnabled()) .
                 ', installed: ' . $this->yesOrNo($this->repository->hookExists($config->getName())) . ']'
             );
