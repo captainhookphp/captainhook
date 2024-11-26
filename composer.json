@@ -71,7 +71,7 @@
     "compile": "tools/box compile",
     "test": "tools/phpunit --testsuite UnitTests",
     "test:integration": "tools/phpunit --testsuite IntegrationTests --no-coverage",
-    "analyse": "tools/phpstan analyse",
+    "static": "tools/phpstan analyse",
     "style": "tools/phpcs --standard=psr12 src tests"
   }
 }
