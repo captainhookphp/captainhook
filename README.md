@@ -78,7 +78,7 @@ Here's an example *captainhook.json* configuration file.
     "enabled": true,
     "actions": [
       {
-        "action": "\\CaptainHook\\App\\Hook\\Message\\Action\\Beams",
+        "action": "\\CaptainHook\\App\\Hook\\Message\\Action\\Beams"
       }
     ]
   },
