@@ -33,14 +33,14 @@ final class Factory
      *
      * @var int
      */
-    private $maxIncludeLevel = 1;
+    private int $maxIncludeLevel = 1;
 
     /**
      * Current level of inclusion
      *
      * @var int
      */
-    private $includeLevel = 0;
+    private int $includeLevel = 0;
 
     /**
      * Create a CaptainHook configuration
@@ -156,7 +156,7 @@ final class Factory
      */
     private function extractSettings(array $json): array
     {
-        return isset($json['config']) && is_array($json['config']) ? $json['config'] : [];
+        return Util::extractListFromJson($json, 'config');
     }
 
     /**
@@ -167,7 +167,7 @@ final class Factory
      */
     private function extractConditions(mixed $json): array
     {
-        return isset($json['conditions']) && is_array($json['conditions']) ? $json['conditions'] : [];
+        return Util::extractListFromJson($json, 'conditions');
     }
 
     /**
@@ -178,7 +178,7 @@ final class Factory
      */
     private function extractOptions(mixed $json): array
     {
-        return isset($json['options']) && is_array($json['options']) ? $json['options'] : [];
+        return Util::extractListFromJson($json, 'options');
     }
 
     /**
@@ -309,10 +309,7 @@ final class Factory
     {
         $includes  = [];
         $directory = dirname($path);
-        $files     = isset($json['config'][Config::SETTING_INCLUDES])
-                     && is_array($json['config'][Config::SETTING_INCLUDES])
-                   ? $json['config'][Config::SETTING_INCLUDES]
-                   : [];
+        $files     = Util::extractListFromJson(Util::extractListFromJson($json, 'config'), Config::SETTING_INCLUDES);
 
         foreach ($files as $file) {
             $includes[] = $this->includeConfig($directory . DIRECTORY_SEPARATOR . $file);

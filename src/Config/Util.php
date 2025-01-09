@@ -129,6 +129,18 @@ abstract class Util
     }
 
     /**
+     * Extracts a list from a json data struct with the necessary safeguards
+     *
+     * @param  array<string, mixed>  $json
+     * @param  string                $value
+     * @return array<string, mixed>
+     */
+    public static function extractListFromJson(array $json, string $value): array
+    {
+        return isset($json[$value]) && is_array($json[$value]) ? $json[$value] : [];
+    }
+
+    /**
      * Write the config to disk
      *
      * @param  \CaptainHook\App\Config $config
