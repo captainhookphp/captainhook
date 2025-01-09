@@ -6,7 +6,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/captainhookphp/captainhook/badges/quality-score.png?b=main&v=1)](https://scrutinizer-ci.com/g/captainhookphp/captainhook/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/captainhookphp/captainhook/badges/coverage.png?b=main&v=1)](https://scrutinizer-ci.com/g/captainhookphp/captainhook/?branch=master)
 [![X](https://img.shields.io/badge/X-%40captainhookphp-black.svg)](https://twitter.com/intent/user?screen_name=captainhookphp)
-[![Mastodon](https://img.shields.io/badge/Mastodon-%40phpc.social%40captainhook-purple.svg)](https://phpc.social/@captainhook)
+[![Mastodon](https://img.shields.io/badge/Mastodon-%40captainhook-purple.svg)](https://phpc.social/@captainhook)
 
 # CaptainHook
 
