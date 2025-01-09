@@ -13,6 +13,7 @@ namespace CaptainHook\App\Storage\File;
 
 use CaptainHook\App\Storage\File;
 use RuntimeException;
+use stdClass;
 
 /**
  * Class Json
@@ -30,7 +31,7 @@ final class Json extends File
      * @param  bool $assoc
      * @return \stdClass|array<string, mixed>|null
      */
-    public function read(bool $assoc = false)
+    public function read(bool $assoc = false): array|stdClass|null
     {
         $json = json_decode(parent::read(), $assoc);
         if (json_last_error() !== JSON_ERROR_NONE) {

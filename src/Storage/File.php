@@ -28,7 +28,7 @@ class File
      *
      * @var string
      */
-    protected $path;
+    protected string $path;
 
     /**
      * File constructor.
