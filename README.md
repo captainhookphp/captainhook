@@ -29,7 +29,7 @@ For more information have a look at the [documentation](https://captainhookphp.g
 ## Installation
 
 The preferred method to install *CaptainHook* is to install the PHAR file.
-You can do so by using [Phive](https://phar.io/) or download the PHAR from the GitHub [release page](https://github.com/captainhookphp/captainhook/releases/latest).
+You can do so by using [Phive](https://phar.io/), use the PHAR Composer package, or download the PHAR from the GitHub [release page](https://github.com/captainhookphp/captainhook/releases/latest).
 ```bash
 phive install captainhook
 ```
@@ -102,7 +102,7 @@ Here's an example *captainhook.json* configuration file.
 
 ## Contributing
 
-So you'd like to contribute to the `CaptainHook` library? Excellent! Thank you very much.
+So you'd like to contribute to the `CaptainHook` project? Excellent! Thank you very much.
 I can absolutely use your help.
 
 Have a look at the [contribution guidelines](CONTRIBUTING.md).
