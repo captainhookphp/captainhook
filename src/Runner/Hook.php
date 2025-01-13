@@ -17,7 +17,6 @@ use CaptainHook\App\Event\Dispatcher;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Hook\Constrained;
 use CaptainHook\App\Hook\Template\Inspector;
-use CaptainHook\App\Hooks;
 use CaptainHook\App\Plugin;
 use CaptainHook\App\Runner\Action\Log as ActionLog;
 use CaptainHook\App\Runner\Hook\Log as HookLog;
