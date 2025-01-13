@@ -361,10 +361,20 @@ abstract class Hook extends RepositoryAware
      */
     private function getHookPlugins(): array
     {
-        if ($this->hookPlugins !== null) {
-            return $this->hookPlugins;
+        if ($this->hookPlugins == null) {
+            $this->hookPlugins = $this->setupHookPlugins();
         }
+        return $this->hookPlugins;
+    }
 
+    /**
+     *
+     * Setup configured hook plugins
+     *
+     * @return array<Plugin\Hook>
+     */
+    private function setupHookPlugins(): array
+    {
         $this->hookPlugins = [];
 
         foreach ($this->config->getPlugins() as $pluginConfig) {
@@ -379,10 +389,7 @@ abstract class Hook extends RepositoryAware
                 IO::VERBOSE
             );
 
-            if (
-                is_a($pluginClass, Constrained::class, true)
-                && !$pluginClass::getRestriction()->isApplicableFor($this->hook)
-            ) {
+            if ($this->isPluginApplicableForCurrentHook($pluginClass)) {
                 $this->io->write('Skipped because plugin is not applicable for hook ' . $this->hook, true, IO::VERBOSE);
                 continue;
             }
@@ -436,5 +443,15 @@ abstract class Hook extends RepositoryAware
     {
         $inspector = new Inspector($this->hook, $this->io, $this->repository);
         $inspector->inspect();
+    }
+
+    /**
+     * @param  string $pluginClass
+     * @return bool
+     */
+    private function isPluginApplicableForCurrentHook(string $pluginClass): bool
+    {
+        return is_a($pluginClass, Constrained::class, true)
+               && !$pluginClass::getRestriction()->isApplicableFor($this->hook);
     }
 }
