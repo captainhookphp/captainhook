@@ -150,7 +150,8 @@
   <p>
     Extracts an issue key from the current branch name and appends or prepends it to your commit messages
     subject or body. If the commit message already contains the key nothing is added. If you set the <em>force</em>
-    option to <em>true</em> it will fail if no issue key can be extracted.
+    option to <em>true</em> it will fail if no issue key can be extracted. You can optionally use a <em>pattern</em>
+    if you want to add a delimiter or another character.
   </p>
   <pre><code class="javascript">{
   "action": "\CaptainHook\App\Hook\Message\Action\InjectIssueKeyFromBranch",
@@ -158,6 +159,7 @@
     "regex": "#([A-Z]+\\-[0-9]+)#i",
     "into": "body",
     "mode": "append",
+    "pattern": "$1:",
     "prefix": "\\n\\nIssue: ",
     "force": false
   }
