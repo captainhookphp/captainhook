@@ -148,7 +148,7 @@ class InjectIssueKeyFromBranchTest extends TestCase
             'prefix' => PHP_EOL . PHP_EOL . 'issue: '
         ]));
 
-        $expected = 'bar' . PHP_EOL . PHP_EOL . 'issue: ABCD-12345' . PHP_EOL;
+        $expected = 'bar' . PHP_EOL . PHP_EOL . 'issue: ABCD-12345';
         $hook     = new InjectIssueKeyFromBranch();
         $hook->execute($config, $io, $repo, $action);
 
@@ -256,9 +256,9 @@ class InjectIssueKeyFromBranchTest extends TestCase
         $config  = $this->createConfigMock();
         $action  = $this->createActionConfigMock();
         $action->method('getOptions')->willReturn(new Options([
-            'into' => 'subject',
-            'pattern' => '$1:',
-            'mode' => 'prepend',
+            'into'    => 'subject',
+            'pattern' => '$1: ',
+            'mode'    => 'prepend',
         ]));
 
         $hook = new InjectIssueKeyFromBranch();
@@ -284,9 +284,9 @@ class InjectIssueKeyFromBranchTest extends TestCase
         $config  = $this->createConfigMock();
         $action  = $this->createActionConfigMock();
         $action->method('getOptions')->willReturn(new Options([
-            'into' => 'subject',
+            'into'    => 'subject',
             'pattern' => '',
-            'mode' => 'prepend',
+            'mode'    => 'prepend',
         ]));
 
         $hook = new InjectIssueKeyFromBranch();

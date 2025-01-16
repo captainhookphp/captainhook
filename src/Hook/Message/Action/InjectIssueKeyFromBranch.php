@@ -49,6 +49,18 @@ use SebastianFeldmann\Git\Repository;
 class InjectIssueKeyFromBranch implements Action, Constrained
 {
     /**
+     * Mode constants
+     */
+    private const MODE_APPEND  = 'append';
+    private const MODE_PREPEND = 'prepend';
+
+    /**
+     * Target constants
+     */
+    private const TARGET_SUBJECT = 'subject';
+    private const TARGET_BODY    = 'body';
+
+    /**
      * Returns a list of applicable hooks
      *
      * @return \CaptainHook\App\Hook\Restriction
@@ -70,27 +82,43 @@ class InjectIssueKeyFromBranch implements Action, Constrained
      */
     public function execute(Config $config, IO $io, Repository $repository, Config\Action $action): void
     {
-        $branch  = $repository->getInfoOperator()->getCurrentBranch();
         $options = $action->getOptions();
-        $match   = [];
+        $branch  = $repository->getInfoOperator()->getCurrentBranch();
         $pattern = $options->get('regex', '#([A-Z]+\-[0-9]+)#i');
+        $issueID = $this->extractIssueId($branch, $pattern);
 
-        // can we actually find an issue id?
-        if (!preg_match($pattern, $branch, $match)) {
+        // did we actually find an issue id?
+        if (empty($issueID)) {
             if ($options->get('force', false)) {
                 throw new ActionFailed('No issue key found in branch name');
             }
-            return;
         }
 
-        $issueID = $match[1] ?? '';
-        $msg     = $repository->getCommitMsg();
+        $msg = $repository->getCommitMsg();
 
-        // make sure the issue key is not already in our commit message
+        // make sure the issue key is not already in the commit message
         if (stripos($msg->getSubject() . $msg->getContent(), $issueID) !== false) {
             return;
         }
+
         $repository->setCommitMsg($this->createNewCommitMessage($options, $msg, $issueID));
+    }
+
+    /**
+     * Extract issue id from branch name
+     *
+     * @param  string $branch
+     * @param  string $pattern
+     * @return string
+     */
+    private function extractIssueId(string $branch, string $pattern): string
+    {
+        $match = [];
+        // can we actually find an issue id?
+        if (!preg_match($pattern, $branch, $match)) {
+            return '';
+        }
+        return $match[1] ?? '';
     }
 
     /**
@@ -104,26 +132,21 @@ class InjectIssueKeyFromBranch implements Action, Constrained
     private function createNewCommitMessage(Options $options, CommitMessage $msg, string $issueID): CommitMessage
     {
         // let's figure out where to put the issueID
-        $target = $options->get('into', 'body');
-        $mode   = $options->get('mode', 'append');
-        $prefix = $options->get('prefix', ' ');
-        $pattern = $options->get('pattern', '');
+        $target = $options->get('into', self::TARGET_BODY);
+        $mode   = $options->get('mode', self::MODE_APPEND);
 
         // overwrite either subject or body
-        $newMsgData          = ['subject' => $msg->getSubject(), 'body' => $msg->getBody()];
-        $newMsgData[$target] = $this->injectIssueId($issueID, $newMsgData[$target], $mode, $prefix, $pattern);
+        $pattern          = $this->handlePrefixAndSuffix($mode, $options);
+        $msgData          = [self::TARGET_SUBJECT => $msg->getSubject(), self::TARGET_BODY => $msg->getBody()];
+        $msgData[$target] = $this->injectIssueId($issueID, $msgData[$target], $mode, $pattern);
 
-        $comments = '';
-        foreach ($msg->getLines() as $line) {
-            if (strpos(trim($line), $msg->getCommentCharacter()) === 0) {
-                $comments .= $line . PHP_EOL;
-            }
-        }
+        // combine all the parts to create a new commit message
+        $msgText = $msgData[self::TARGET_SUBJECT] . PHP_EOL
+                 . PHP_EOL
+                 . $msgData[self::TARGET_BODY] . PHP_EOL
+                 . $msg->getComments();
 
-        return new CommitMessage(
-            $newMsgData['subject'] . PHP_EOL . PHP_EOL . $newMsgData['body'] . PHP_EOL . $comments,
-            $msg->getCommentCharacter()
-        );
+        return new CommitMessage($msgText, $msg->getCommentCharacter());
     }
 
     /**
@@ -132,22 +155,40 @@ class InjectIssueKeyFromBranch implements Action, Constrained
      * @param  string $issueID
      * @param  string $msg
      * @param  string $mode
-     * @param  string $prefix
      * @param  string $pattern
      * @return string
      */
-    private function injectIssueId(string $issueID, string $msg, string $mode, string $prefix, string $pattern): string
+    private function injectIssueId(string $issueID, string $msg, string $mode, string $pattern): string
     {
-        if (!empty($pattern)) {
-            $issueID = preg_replace_callback(
-                '/\$(\d+)/',
-                function ($matches) use ($issueID) {
-                    return $matches[1] === '1' ? $issueID : '';
-                },
-                $pattern
-            );
-        }
+        $issueID = preg_replace_callback(
+            '/\$(\d+)/',
+            function ($matches) use ($issueID) {
+                return $matches[1] === '1' ? $issueID : '';
+            },
+            $pattern
+        );
 
-        return ltrim($mode === 'prepend' ? $prefix . $issueID . ' ' . $msg : $msg . $prefix . $issueID);
+        return ltrim($mode === self::MODE_PREPEND ? $issueID . $msg : $msg . $issueID);
+    }
+
+    /**
+     * Make sure the prefix and suffix options still works even if they should not be used anymore
+     *
+     * @param  string                          $mode
+     * @param  \CaptainHook\App\Config\Options $options
+     * @return string
+     */
+    private function handlePrefixAndSuffix(string $mode, Options $options): string
+    {
+        $space   = '';
+        $pattern = $options->get('pattern', '');
+        if (empty($pattern)) {
+            $space   = ' ';
+            $pattern = '$1';
+        }
+        // depending on the mode use a whitespace as prefix or suffix
+        $prefix = $options->get('prefix', $mode == 'append' ? $space : '');
+        $suffix = $options->get('suffix', $mode == 'prepend' ? $space : '');
+        return $prefix . $pattern . $suffix;
     }
 }
