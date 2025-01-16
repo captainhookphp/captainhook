@@ -26,7 +26,7 @@ everybody in your team activates the hooks locally.
 
 You can run cli commands, use some built in validators, or write
 your own PHP classes that get executed by *CaptainHook*.
-For more information have a look at the [documentation](https://captainhookphp.github.io/captainhook/ "CaptainHook Documentation").
+For more information have a look at the [documentation](https://php.captainhook.info/ "CaptainHook Documentation").
 
 ## Installation
 
@@ -101,6 +101,10 @@ Here's an example *captainhook.json* configuration file.
   }
 }
 ```
+
+## Documentation
+
+The full documentation can be found at [php.captainhook.info](https://php.captainhook.info/ "CaptainHook dcoumentation").
 
 ## Contributing
 
