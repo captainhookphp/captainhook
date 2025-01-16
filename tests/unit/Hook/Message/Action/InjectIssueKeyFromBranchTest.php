@@ -17,8 +17,8 @@ use CaptainHook\App\Console\IO\Mockery as IOMockery;
 use CaptainHook\App\Exception\ActionFailed;
 use CaptainHook\App\Mockery as CHMockery;
 use CaptainHook\App\RepoMock;
-use SebastianFeldmann\Git\CommitMessage;
 use PHPUnit\Framework\TestCase;
+use SebastianFeldmann\Git\CommitMessage;
 
 class InjectIssueKeyFromBranchTest extends TestCase
 {
@@ -44,7 +44,7 @@ class InjectIssueKeyFromBranchTest extends TestCase
     public function testPrependSubject(): void
     {
         $repo = new RepoMock();
-        $info = $this->createGitInfoOperator('5.0.0', 'freature/ABCD-12345-foo-bar-baz');
+        $info = $this->createGitInfoOperator('5.0.0', 'feature/ABCD-12345-foo-bar-baz');
 
         $repo->setCommitMsg(new CommitMessage('foo' . PHP_EOL . PHP_EOL . 'bar'));
         $repo->setInfoOperator($info);
@@ -71,7 +71,7 @@ class InjectIssueKeyFromBranchTest extends TestCase
     public function testAppendSubject(): void
     {
         $repo = new RepoMock();
-        $info = $this->createGitInfoOperator('5.0.0', 'freature/ABCD-12345-foo-bar-baz');
+        $info = $this->createGitInfoOperator('5.0.0', 'feature/ABCD-12345-foo-bar-baz');
 
         $repo->setCommitMsg(new CommitMessage('foo' . PHP_EOL . PHP_EOL . 'bar'));
         $repo->setInfoOperator($info);
@@ -98,7 +98,7 @@ class InjectIssueKeyFromBranchTest extends TestCase
     public function testAppendBodyWithPrefix(): void
     {
         $repo = new RepoMock();
-        $info = $this->createGitInfoOperator('5.0.0', 'freature/ABCD-12345-foo-bar-baz');
+        $info = $this->createGitInfoOperator('5.0.0', 'feature/ABCD-12345-foo-bar-baz');
 
         $repo->setCommitMsg(new CommitMessage('foo' . PHP_EOL . PHP_EOL . 'bar'));
         $repo->setInfoOperator($info);
@@ -130,7 +130,7 @@ class InjectIssueKeyFromBranchTest extends TestCase
     public function testAppendBodyWithPrefixWithComments(): void
     {
         $repo = new RepoMock();
-        $info = $this->createGitInfoOperator('5.0.0', 'freature/ABCD-12345-foo-bar-baz');
+        $info = $this->createGitInfoOperator('5.0.0', 'feature/ABCD-12345-foo-bar-baz');
 
         $repo->setCommitMsg(
             new CommitMessage(
@@ -221,7 +221,7 @@ class InjectIssueKeyFromBranchTest extends TestCase
     public function testIssueKeyAlreadyInMSG(): void
     {
         $repo = new RepoMock();
-        $info = $this->createGitInfoOperator('5.0.0', 'freature/ABCD-12345-foo-bar-baz');
+        $info = $this->createGitInfoOperator('5.0.0', 'feature/ABCD-12345-foo-bar-baz');
 
         $repo->setCommitMsg(new CommitMessage('ABCD-12345 foo' . PHP_EOL . PHP_EOL . 'bar'));
         $repo->setInfoOperator($info);
@@ -231,6 +231,62 @@ class InjectIssueKeyFromBranchTest extends TestCase
         $action  = $this->createActionConfigMock();
         $action->method('getOptions')->willReturn(new Options([
             'into' => 'subject',
+        ]));
+
+        $hook = new InjectIssueKeyFromBranch();
+        $hook->execute($config, $io, $repo, $action);
+
+        $this->assertEquals('ABCD-12345 foo', $repo->getCommitMsg()->getSubject());
+    }
+
+    /**
+     * Tests InjectIssueKeyFromBranch::execute
+     *
+     * @throws \Exception
+     */
+    public function testSubjectWithPattern(): void
+    {
+        $repo = new RepoMock();
+        $info = $this->createGitInfoOperator('5.0.0', 'feature/ABCD-12345-foo-bar-baz');
+
+        $repo->setCommitMsg(new CommitMessage('foo' . PHP_EOL . PHP_EOL . 'bar'));
+        $repo->setInfoOperator($info);
+
+        $io      = $this->createIOMock();
+        $config  = $this->createConfigMock();
+        $action  = $this->createActionConfigMock();
+        $action->method('getOptions')->willReturn(new Options([
+            'into' => 'subject',
+            'pattern' => '$1:',
+            'mode' => 'prepend',
+        ]));
+
+        $hook = new InjectIssueKeyFromBranch();
+        $hook->execute($config, $io, $repo, $action);
+
+        $this->assertEquals('ABCD-12345: foo', $repo->getCommitMsg()->getSubject());
+    }
+
+    /**
+     * Tests InjectIssueKeyFromBranch::execute
+     *
+     * @throws \Exception
+     */
+    public function testSubjectWithEmptyPattern(): void
+    {
+        $repo = new RepoMock();
+        $info = $this->createGitInfoOperator('5.0.0', 'feature/ABCD-12345-foo-bar-baz');
+
+        $repo->setCommitMsg(new CommitMessage('foo' . PHP_EOL . PHP_EOL . 'bar'));
+        $repo->setInfoOperator($info);
+
+        $io      = $this->createIOMock();
+        $config  = $this->createConfigMock();
+        $action  = $this->createActionConfigMock();
+        $action->method('getOptions')->willReturn(new Options([
+            'into' => 'subject',
+            'pattern' => '',
+            'mode' => 'prepend',
         ]));
 
         $hook = new InjectIssueKeyFromBranch();

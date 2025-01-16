@@ -107,10 +107,11 @@ class InjectIssueKeyFromBranch implements Action, Constrained
         $target = $options->get('into', 'body');
         $mode   = $options->get('mode', 'append');
         $prefix = $options->get('prefix', ' ');
+        $pattern = $options->get('pattern', '');
 
         // overwrite either subject or body
         $newMsgData          = ['subject' => $msg->getSubject(), 'body' => $msg->getBody()];
-        $newMsgData[$target] = $this->injectIssueId($issueID, $newMsgData[$target], $mode, $prefix);
+        $newMsgData[$target] = $this->injectIssueId($issueID, $newMsgData[$target], $mode, $prefix, $pattern);
 
         $comments = '';
         foreach ($msg->getLines() as $line) {
@@ -132,10 +133,21 @@ class InjectIssueKeyFromBranch implements Action, Constrained
      * @param  string $msg
      * @param  string $mode
      * @param  string $prefix
+     * @param  string $pattern
      * @return string
      */
-    private function injectIssueId(string $issueID, string $msg, string $mode, string $prefix): string
+    private function injectIssueId(string $issueID, string $msg, string $mode, string $prefix, string $pattern): string
     {
+        if (!empty($pattern)) {
+            $issueID = preg_replace_callback(
+                '/\$(\d+)/',
+                function ($matches) use ($issueID) {
+                    return $matches[1] === '1' ? $issueID : '';
+                },
+                $pattern
+            );
+        }
+
         return ltrim($mode === 'prepend' ? $prefix . $issueID . ' ' . $msg : $msg . $prefix . $issueID);
     }
 }
