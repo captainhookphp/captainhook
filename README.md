@@ -1,5 +1,5 @@
 [![Latest Stable Version](https://poser.pugx.org/captainhook/captainhook/v/stable.svg?v=1)](https://packagist.org/packages/captainhook/captainhook)
-[![PHP Version](http://poser.pugx.org/captainhook/captainhook/require/php)](https://packagist.org/packages/captainhook/captainhook)
+[![PHP Version](https://poser.pugx.org/captainhook/captainhook/require/php)](https://packagist.org/packages/captainhook/captainhook)
 [![Downloads](https://poser.pugx.org/captainhook/captainhook/downloads)](https://packagist.org/packages/captainhook/captainhook/stats)
 [![Downloads](https://poser.pugx.org/captainhook/captainhook/d/monthly)](https://packagist.org/packages/captainhook/captainhook/stats)
 [![Downloads](https://poser.pugx.org/captainhook/captainhook/d/daily)](https://packagist.org/packages/captainhook/captainhook/stats)
