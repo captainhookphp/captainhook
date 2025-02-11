@@ -32,7 +32,7 @@ jobs:
         with:
           coverage: none
           extensions: mbstring
-          php-version: 8.2
+          php-version: 8.0
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-dev --no-interaction --no-progress
