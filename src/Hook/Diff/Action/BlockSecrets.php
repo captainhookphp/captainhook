@@ -252,9 +252,9 @@ class BlockSecrets implements Action, Constrained
     {
         if (Util::isRunningHook($this->io, Hooks::PRE_PUSH)) {
             $detector = new PrePush();
-            $ranges  = $detector->getRanges($this->io);
-            $newHash = 'HEAD';
-            $oldHash = 'HEAD@{1}';
+            $ranges   = $detector->getRanges($this->io);
+            $newHash  = 'HEAD';
+            $oldHash  = 'HEAD@{1}';
             if (!empty($ranges) && !$ranges[0]->to()->isZeroRev()) {
                 $oldHash = $ranges[0]->from()->id();
                 $newHash = $ranges[0]->to()->id();
