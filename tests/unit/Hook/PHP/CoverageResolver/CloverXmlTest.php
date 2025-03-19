@@ -24,7 +24,18 @@ class CloverXMLTest extends TestCase
         $resolver = new CloverXML(CH_PATH_FILES . '/coverage/valid.xml');
         $coverage = $resolver->getCoverage();
 
-        $this->assertEquals(95.0, $coverage);
+        $this->assertEquals(95, $coverage);
+    }
+
+    /**
+     * Tests CloverXML::getCoverage
+     */
+    public function testValid100Percent(): void
+    {
+        $resolver = new CloverXML(CH_PATH_FILES . '/coverage/valid-100.xml');
+        $coverage = $resolver->getCoverage();
+
+        $this->assertEquals(100, $coverage);
     }
 
     /**
@@ -36,6 +47,17 @@ class CloverXMLTest extends TestCase
 
         $resolver = new CloverXML('foo.xml');
         $this->assertNull($resolver);
+    }
+
+    /**
+     * Tests CloverXML::__construct
+     */
+    public function testCrapMetrics(): void
+    {
+        $this->expectException(Exception::class);
+
+        $resolver = new CloverXML(CH_PATH_FILES . '/coverage/invalid-crap.xml');
+        $resolver->getCoverage();
     }
 
     /**

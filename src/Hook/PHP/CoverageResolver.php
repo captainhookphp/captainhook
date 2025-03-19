@@ -24,7 +24,7 @@ interface CoverageResolver
     /**
      * Return test coverage in percent.
      *
-     * @return float
+     * @return int
      */
-    public function getCoverage(): float;
+    public function getCoverage(): int;
 }

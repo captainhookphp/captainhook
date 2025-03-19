@@ -47,9 +47,9 @@ class PHPUnit implements CoverageResolver
      * Shamelessly ripped from bruli/php-git-hooks.
      *
      * @author Pablo Braulio
-     * @return float
+     * @return int
      */
-    public function getCoverage(): float
+    public function getCoverage(): int
     {
         $processor = new Processor();
         $result    = $processor->run($this->phpUnit . ' --coverage-text|grep Classes|cut -d " " -f 4|cut -d "%" -f 1');
@@ -57,6 +57,6 @@ class PHPUnit implements CoverageResolver
         if (!$result->isSuccessful() || empty($output)) {
             throw new RuntimeException('Error while executing PHPUnit: ' . $result->getStdErr());
         }
-        return (float) $output;
+        return (int) ceil((float) $output);
     }
 }

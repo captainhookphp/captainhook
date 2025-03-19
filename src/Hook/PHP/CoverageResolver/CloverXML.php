@@ -63,20 +63,30 @@ class CloverXML implements CoverageResolver
     /**
      * Return test coverage in percent.
      *
-     * @return float
+     * @return int
      */
-    public function getCoverage(): float
+    public function getCoverage(): int
     {
-        $statements = (string) $this->xml->project->metrics->attributes()->statements;
-        $covered    = (string) $this->xml->project->metrics->attributes()->coveredstatements;
+        $xmlStatements = (string) $this->xml->project->metrics->attributes()->statements;
+        $xmlCovered    = (string) $this->xml->project->metrics->attributes()->coveredstatements;
 
-        if ($statements < 1 || !is_numeric($covered)) {
+        if (!is_numeric($xmlStatements) || !is_numeric($xmlCovered)) {
             throw new RuntimeException(
                 'could not read coverage data from clover xml file ' .
-                '(statements: ' . $statements . ', coveredstatements: ' . $covered . ')'
+                '(statements: ' . $xmlStatements . ', coveredstatements: ' . $xmlCovered . ')'
             );
         }
 
-        return $covered / ((int)$statements * 0.01);
+        $statements = (int) $xmlStatements;
+        $covered    = (int) $xmlCovered;
+
+        if ($statements < 1) {
+            throw new RuntimeException(
+                'zero statements found ' .
+                '(statements: ' . $xmlStatements . ', coveredstatements: ' . $xmlCovered . ')'
+            );
+        }
+
+        return (int) ceil(($covered / $statements) * 100);
     }
 }

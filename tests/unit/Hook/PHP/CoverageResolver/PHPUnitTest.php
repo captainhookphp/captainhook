@@ -28,7 +28,7 @@ class PHPUnitTest extends TestCase
         $resolver = new PHPUnit(CH_PATH_FILES . '/bin/phpunit');
         $coverage = $resolver->getCoverage();
 
-        $this->assertEquals(95.0, $coverage);
+        $this->assertEquals(95, $coverage);
     }
 
     /**
