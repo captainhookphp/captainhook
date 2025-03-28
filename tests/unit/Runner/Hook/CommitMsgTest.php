@@ -46,7 +46,7 @@ class CommitMsgTest extends TestCase
         $io       = $this->createIOMock();
         $config   = $this->createConfigMock();
         $configOp = $this->createMock(ConfigOperator::class);
-        $configOp->expects($this->once())->method('getSafely')->willReturn('#');
+        $configOp->expects($this->once())->method('getSettingSafely')->willReturn('#');
 
         $dummy = new DummyRepo(['hooks' => ['commit-msg' => '# hook script']]);
         $repo  = $this->createRepositoryMock($dummy->getRoot());
@@ -78,7 +78,7 @@ class CommitMsgTest extends TestCase
         $io       = $this->createIOMock();
         $config   = $this->createConfigMock();
         $configOp = $this->createMock(ConfigOperator::class);
-        $configOp->expects($this->once())->method('getSafely')->willReturn('#');
+        $configOp->expects($this->once())->method('getSettingSafely')->willReturn('#');
 
         $dummy = new DummyRepo(['hooks' => ['commit-msg' => '# hook script']]);
         $repo  = $this->createRepositoryMock($dummy->getRoot());
@@ -124,7 +124,7 @@ class CommitMsgTest extends TestCase
         $hookConfig->method('getActions')->willReturn([$actionConfig]);
         $config->method('getHookConfigToExecute')->willReturn($hookConfig);
         $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
-        $configOp->method('getSafely')->willReturn('#');
+        $configOp->method('getSettingSafely')->willReturn('#');
         $repo->method('getConfigOperator')->willReturn($configOp);
         $io->expects($this->once())->method('getArgument')->willReturn('');
 

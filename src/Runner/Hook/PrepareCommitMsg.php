@@ -68,7 +68,7 @@ class PrepareCommitMsg extends Hook
      */
     public function beforeHook(): void
     {
-        $this->commentChar = $this->repository->getConfigOperator()->getSafely('core.commentchar', '#');
+        $this->commentChar = $this->repository->getConfigOperator()->getSettingSafely('core.commentchar', '#');
         $this->file        = $this->io->getArgument(Hooks::ARG_MESSAGE_FILE);
         $this->mode        = $this->io->getArgument(Hooks::ARG_MODE);
         $this->hash        = $this->io->getArgument(Hooks::ARG_HASH);

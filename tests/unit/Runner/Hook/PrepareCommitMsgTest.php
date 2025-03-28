@@ -46,7 +46,7 @@ class PrepareCommitMsgTest extends TestCase
         $config->expects($this->atLeastOnce())->method('isHookEnabled')->willReturn(true);
 
         $configOp = $this->createGitConfigOperator();
-        $configOp->method('getSafely')->willReturn('#');
+        $configOp->method('getSettingSafely')->willReturn('#');
         // setup fake vfs repos directory
         $dummy = new DummyRepo(['config' => '#config', 'hooks' => ['prepare-commit-msg' => '# hook script']]);
         $repo  = new Repository($dummy->getRoot());
@@ -80,7 +80,7 @@ class PrepareCommitMsgTest extends TestCase
         $repo->method('getHooksDir')->willReturn($dummy->getHookDir());
 
         $configOp = $this->createGitConfigOperator();
-        $configOp->method('getSafely')->willReturn('#');
+        $configOp->method('getSettingSafely')->willReturn('#');
         $repo->method('getConfigOperator')->willReturn($configOp);
 
         $io           = $this->createIOMock();
